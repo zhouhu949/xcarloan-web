@@ -1,0 +1,33 @@
+{
+  "include": [
+    "typings/*.d.ts",
+    "src/**/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": true,
+  "compilerOptions": {
+    // "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noImplicitAny": false,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": false,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    }
+  }
+}

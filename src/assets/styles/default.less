@@ -1,0 +1,240 @@
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding: 0;
+  margin: 0;
+  min-width: 1280px;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+.page {
+  min-width: 100%;
+  min-height: 100%;
+  background: white;
+  border: 1px solid #DDDDDD;
+  overflow: auto;
+  padding: 5px;
+  .pagination {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 80px;
+      display: inline-block;
+    }
+  }
+  .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
+    color: black !important;
+    border-top: 2px solid #265ea2 !important;
+  }
+  .submitBar {
+    height: 70px;
+    width: 100%;
+    background: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border: 1px solid #ddd;
+  } // 默认按钮内部文字颜色
+  .defaultButton {
+    color: #265EA2;
+  } // 蓝色按钮
+  .blueButton {
+    background: #265EA2;
+    color: #fff;
+    margin-left: 10px;
+  }
+  .blueButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  } // 页面底部大按钮
+  .highButton {
+    height: 46px;
+    border-radius: 0;
+    background: #265EA2;
+    color: #fff;
+  }
+  .highButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highDefaultButton {
+    height: 46px;
+    border-radius: 0;
+    background: #E4E4E4;
+    color: #265EA2;
+    ;
+  }
+  .ivu-tabs-nav-scroll {
+    overflow: unset;
+  }
+}
+
+.ivu-modal {
+  .blueButton {
+    background: #265EA2;
+    color: #fff;
+  }
+  .blueButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highButton {
+    height: 46px;
+    border-radius: 0;
+    background: #265EA2;
+    color: #fff;
+  }
+  .highButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highDefaultButton {
+    height: 46px;
+    border-radius: 0;
+    background: #E4E4E4;
+    color: #265EA2;
+    ;
+  }
+}
+
+.ivu-tree-title-selected,
+.ivu-tree-title-selected:hover {
+  background: #C8DFF4 !important;
+}
+
+.form-style() {
+  // 设置宽度
+  .set-input-width(@width) {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-input-number,
+    .ivu-select-single .ivu-select-selection {
+      width: @width;
+    }
+  }
+  .ivu-form {
+    .set-input-width(200px);
+    
+    &.mini {
+      .set-input-width(150px);
+    }
+    &.small {
+      .set-input-width(180px);
+    }
+    &.normal {
+      .set-input-width(200px);
+    }
+    &.medium {
+      .set-input-width(240px);
+    }
+    &.large {
+      .set-input-width(320px);
+    }
+  }
+  .data-form {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 180px;
+      display: inline-block;
+    }
+    .ivu-date-picker {
+      .ivu-date-picker-editor {
+        width: 200px;
+      }
+    }
+  }
+}
+
+// 去掉table表格padding
+// body .ivu-modal .ivu-select-dropdown {
+//   position: fixed !important;
+// }
+.table-style {
+  .i-table {
+    .ivu-btn-text {
+      padding: 6px 8px;
+    }
+    .ivu-table-cell {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.modal-style() {
+  .ivu-modal-wrap {
+    .ivu-modal-header {
+      background: #265EA2;
+      .ivu-modal-header-inner {
+        color: white;
+      }
+    }
+    .ivu-modal-body {
+      min-height: 500px;
+      overflow: auto;
+    }
+  }
+}
+
+.tooltop-style(){
+  .ivu-tooltip{
+    .ivu-tooltip-inner{
+      white-space:normal;
+      word-break:break-all;
+      word-wrap:break-word; 
+    }
+  }
+}
+
+.select-style() {
+  .ivu-select-dropdown {
+    transform-origin: center top 0px;
+    position: absolute;
+    left: -2px;
+    top: 32px;
+  }
+}
+
+.grid-style() {
+  @DataGridColor: #DCDDE0; // datagrid边框
+  .grid-content {
+    border-top: 1px solid @DataGridColor  !important;
+    border-left: 1px solid@DataGridColor  !important;
+    .data-grid-item {
+      border-right: 1px solid @DataGridColor  !important;
+      border-bottom: 1px solid @DataGridColor  !important;
+      .data-grid-item__label {
+        padding-right: 8px;
+      }
+      .data-grid-item__separate {
+        background: @DataGridColor  !important;
+      }
+      .data-grid-item__content {
+        min-height: 30px;
+      }
+    }
+  }
+}
+
+#app,
+.ivu-modal {
+  .page,
+  .component {
+    .form-style(); // .input-style();
+    // .button-style();
+    .table-style();
+    .select-style();
+    .grid-style(); // .radio-style();
+    .tooltop-style()
+    // .fixed-style();
+  }
+  .modal-style();
+}

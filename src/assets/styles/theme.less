@@ -1,0 +1,74 @@
+// iview主题
+@import '~iview/src/styles/index.less';
+// // Here are the variables to cover, such as:
+// // @primary-color: #8c0776;
+.generateTheme(@theme) {
+  .component.work-header {
+    background: @COLOR1;
+  }
+  // TODO: 写了一坨有时间整理
+  .component.work-menu>.ivu-menu {
+    background-color: @COLOR2;
+    .sub-menu-container,
+    .leaf-menu-container {
+      &>.ivu-menu-submenu-title{
+        background-color: @COLOR1;
+      }
+      background-color: @COLOR1;
+      .work-menu-title {
+        background-color: @COLOR6;
+      }
+    } // 1级菜单颜色
+    .menu-level-1 {
+      &>.sub-menu-container {
+        &>.ivu-menu-submenu-title{
+          background-color: @COLOR2;
+        }
+        background-color: @COLOR2;
+        &>.ivu-menu-submenu-title>.work-menu-title {
+          background-color: @COLOR2;
+        }
+      }
+      &>.leaf-menu-container {
+        background-color: @COLOR2;
+        &>.ivu-menu-submenu-title{
+          background-color: @COLOR2;
+        }
+        &>.work-menu-title {
+          background-color: @COLOR2;
+        }
+      }
+    }
+    .leaf-menu-container,
+    .sub-menu-container {
+      color: @COLOR3;
+      .icon-container {
+        border-color: @COLOR5;
+      }
+      &:hover {
+        &>.work-menu-title {
+          background-color: @COLOR4;
+          color:#80838a;
+          &>.icon-container {
+            background-color: @COLOR7;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 主题列表
+body {
+  // 默认主题
+  .theme-default {
+    @theme: default;
+    @import "./themes/@{theme}.less";
+    .generateTheme(@theme)
+  } // test1主题
+  .theme-theme1 {
+    @theme: theme1;
+    @import "./themes/@{theme}.less";
+    .generateTheme(@theme)
+  }
+}
