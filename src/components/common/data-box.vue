@@ -1,14 +1,15 @@
 <template>
   <section class="component data-box">
     <div class="table">
-      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="onCurrentChange" @on-selection-change="currentSelect" size="small"></i-table>
+      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="columns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="onCurrentChange" @on-selection-change="currentSelect" size="small"></i-table>
     </div>
     <div v-if="page" class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex" :total="page.total" :page-size-opts="pageSizeOpts" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
     </div>
 
     <template class="dialog">
-      <i-modal title="列配置" v-model="dialog.dataBoxConfig" @on-ok="updateConfig">
+      <!-- <i-modal title="列配置" v-model="dialog.dataBoxConfig" @on-ok="updateConfig"> -->
+      <i-modal title="列配置" v-model="dialog.dataBoxConfig">
         <data-box-config ref="data-box-config" v-model="dialog.dataBoxConfig" :id="id" v-if="filterColumns" :dataColumns="columns" :configColumns="filterColumns" @close="dialog.dataBoxConfig=false"></data-box-config>
       </i-modal>
     </template>
@@ -22,7 +23,7 @@ import { Prop, Emit } from "vue-property-decorator";
 import { PageService } from "~/utils/page.service";
 import { Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { UserService } from "~/services/manage-service/user.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 import DataBoxConfig from "~/components/common/data-box-config.vue";
 
 @Component({
@@ -31,7 +32,7 @@ import DataBoxConfig from "~/components/common/data-box-config.vue";
   }
 })
 export default class DataBox extends Vue {
-  @Dependencies(UserService) userService: UserService;
+  @Dependencies(SysUserService) sysUserService: SysUserService;
 
   // 列配置数据
   @Prop({
@@ -219,7 +220,7 @@ export default class DataBox extends Vue {
    * 获取过滤列
    */
   getFilterColumns() {
-    this.userService.findListboxByUserIdAndResoPid(this.id).subscribe(
+    this.sysUserService.findListboxByUserIdAndResoPid(this.id).subscribe(
       data => {
         this.filterColumns = data;
         this.getTableColumns();
@@ -285,7 +286,7 @@ export default class DataBox extends Vue {
     this.table = this.$refs["table"];
 
     if (!!this.id) {
-      this.getFilterColumns();
+      // this.getFilterColumns();
     } else {
       this.getTableColumns();
     }

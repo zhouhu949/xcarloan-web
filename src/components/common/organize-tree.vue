@@ -34,7 +34,7 @@
       let fun = (id) => {
         // 递归对象子元素
         let list = data
-          .filter(x => x.deptPid === id)
+          .filter(x => x.orgPid === id)
           .map(node => {
             // 递归构建子节点
             let children = fun(node.id)
@@ -57,7 +57,7 @@
             }
             return node
           })
-
+          
         return list
       }
 

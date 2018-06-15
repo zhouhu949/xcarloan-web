@@ -6,7 +6,7 @@
           <Icon v-show="!this.expanded" type="arrow-right-b"></Icon>
           <Icon v-show="this.expanded" type="arrow-down-b"></Icon>
         </span>
-        <a @click="selectItemHandle">{{data.deptName}}</a>
+        <a @click="selectItemHandle">{{data.orgName}}</a>
         <small v-show="root&&root.selected === data" class="icon-box">
           <a @click="editItemHandle" href="#" class="el-icon-edit">
             <div style="display:inline-block">

@@ -1,7 +1,7 @@
 <template>
   <section class="component work-menu-item" :class="`menu-level-${level}`">
     <template v-if="data.children&&data.children.length">
-      <i-submenu :name="data.path||data.id" :key="data.id" class="sub-menu-container">
+      <i-submenu :name="data.resourceUrl||data.id" :key="data.id" class="sub-menu-container">
         <template slot="title">
           <work-menu-title :data="data"></work-menu-title>
         </template>
@@ -9,7 +9,7 @@
       </i-submenu>
     </template>
     <template v-else>
-      <i-menu-item :key="data.id" :name="data.path" class="leaf-menu-container">
+      <i-menu-item :key="data.id" :name="data.resourceUrl" class="leaf-menu-container">
         <work-menu-title :data="data"></work-menu-title>
       </i-menu-item>
     </template>

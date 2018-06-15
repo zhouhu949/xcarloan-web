@@ -22,14 +22,14 @@ import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { Dependencies } from "~/core/decorator";
-import { UserService } from "~/services/manage-service/user.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 
 @Component({
   components: {}
 })
 export default class DataPowerModal extends Vue {
   @Dependencies(ManageService) private manageService: ManageService;
-  @Dependencies(UserService) private userService: UserService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
 
   private columns1: any;
   private treeData: Array<any> = [];
@@ -44,7 +44,7 @@ export default class DataPowerModal extends Vue {
   created() {}
   getAllOrg(userId) {
     // 获取用户数据权限
-    this.userService
+    this.sysUserService
       .findUserPrivileges({
         userId: userId
       })
@@ -62,7 +62,7 @@ export default class DataPowerModal extends Vue {
    * 获取组织树的原始数据
    */
   getOriginTreeData() {
-    this.manageService.getAllDepartment().subscribe(
+    this.manageService.findAllOrganizationByAuth().subscribe(
       data => {
         this.allData = data;
         this.createNewTree(this.allData);
@@ -125,7 +125,7 @@ export default class DataPowerModal extends Vue {
       this.userAllocatePrivilegeModel.privilegeDeptsId = [];
     }
     this.userAllocatePrivilegeModel.userId = userId;
-    this.userService
+    this.sysUserService
       .userAllocatePrivileges(this.userAllocatePrivilegeModel)
       .subscribe(
         data => {

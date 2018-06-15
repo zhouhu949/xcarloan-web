@@ -1,11 +1,11 @@
 <template>
   <section class="component work-menu-title">
     <div class="icon-container">
-      <svg-icon v-if="data.icon" :iconSize="21" :iconClass="data.icon"></svg-icon>
+      <svg-icon v-if="data.resourceIcoUrl" :iconSize="21" :iconClass="data.resourceIcoUrl"></svg-icon>
       <svg-icon v-else iconClass="more"></svg-icon>
     </div>
     <div class="title-container">
-      {{data.resoname}}
+      {{data.resourceName}}
     </div>
   </section>
 </template>

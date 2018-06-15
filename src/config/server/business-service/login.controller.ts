@@ -14,10 +14,10 @@ export default {
   /**
    * 通过token获取用户信息
    */
-  getUserByToken: {
+  getUserInfoByToken: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getUserByToken',
+    action: 'getUserInfoByToken',
     type: 'GET'
   }
 }

@@ -49,22 +49,21 @@ export default class WorkMenu extends Vue {
     // 生成菜单项
     let createMenus = item => {
       let children = this.menuResource
-        .filter(x => x.pid === item.id)
+        .filter(x => x.resourcePid === item.id)
         .map(x => {
           return createMenus(Object.assign({}, x));
         })
-        .sort((x: any, y: any) => x.sort - y.sort);
+        .sort((x: any, y: any) => x.resourceOrder - y.resourceOrder);
 
       if (children && children.length) {
         item.children = children;
       }
       return item;
     };
-
     // 过滤菜单项
     let menus = this.menuResource
-      .filter(x => x.filetype === 429)
-      .sort((x: any, y: any) => x.sort - y.sort)
+      .filter(x => x.resourceFileType === 10029)
+      .sort((x: any, y: any) => x.resourceOrder - y.resourceOrder)
       .map(createMenus);
     this.menuList = menus;
   }

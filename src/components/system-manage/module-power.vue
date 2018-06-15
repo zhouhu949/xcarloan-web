@@ -25,7 +25,7 @@ import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Observable } from "rxjs";
-import { RoleService } from "~/services/manage-service/role.service";
+import { SysRolesService } from "~/services/manage-service/sys-roles.service";
 import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { RoleResoService } from "~/services/manage-service/role-reso.service";
@@ -39,7 +39,7 @@ import DataTree from "~/components/common/data-tree.vue";
   }
 })
 export default class ModulePower extends Vue {
-  @Dependencies(RoleService) private roleService: RoleService;
+  @Dependencies(SysRolesService) private sysRolesService: SysRolesService;
   @Dependencies(RoleResoService) private roleResoService: RoleResoService;
   @Dependencies(PageService) private pageService: PageService;
 
@@ -169,7 +169,7 @@ export default class ModulePower extends Vue {
     let menuResourceIds = this.tree.getCheckedKeys()
     let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
     return new Promise((resolve, reject) => {
-      this.roleService.roleAllocateResources({
+      this.sysRolesService.roleAllocateResources({
         roleId: this.roleId,
         resourcesId: [...menuResourceIds, ...controlResourceIds]
       }).subscribe(() => {

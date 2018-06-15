@@ -27,9 +27,9 @@ export class LoginService {
   /**
    * 通过token登录
    */
-  getUserByToken() {
+  getUserInfoByToken() {
     return this.netService.send({
-      server: manageService.loginController.getUserByToken
+      server: manageService.loginController.getUserInfoByToken
     })
   }
   /**

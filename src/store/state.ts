@@ -17,8 +17,8 @@ export default {
   tokenExpire: false,
   // 页面列表
   pageList: [{
-    path: 'home',
-    resoname: '主页'
+    resourceUrl: 'home',
+    resourceName: '主页'
   }],
   // 当前打开的页面
   currentPage: '',

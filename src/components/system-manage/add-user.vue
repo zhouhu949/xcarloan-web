@@ -30,14 +30,22 @@
         <i-col :span="12">
           <i-form-item label="性别" prop="userSex">
             <i-select v-model="addUserModel.userSex">
-              <i-option v-for="{value,label} in $dict.getDictData('0406')" :key="value" :label="label" :value="value"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData(10008)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="12">
+        <!-- <i-col :span="12">
           <i-form-item label="数据权限" prop="userManager">
             <i-select v-model="addUserModel.userManager">
               <i-option v-for="{value,label} in $dict.getDictData('0405')" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col> -->
+        <i-col :span="12">
+          <i-form-item label="状态" prop="userStatus">
+            <i-select v-model="addUserModel.userStatus">
+              <i-option label="启用" :value="0" :key="0"></i-option>
+              <i-option label="停用" :value="1" :key="1"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -58,12 +66,12 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="状态" prop="userStatus">
+          <!-- <i-form-item label="状态" prop="userStatus">
             <i-select v-model="addUserModel.userStatus">
               <i-option label="启用" :value="0" :key="0"></i-option>
               <i-option label="停用" :value="1" :key="1"></i-option>
             </i-select>
-          </i-form-item>
+          </i-form-item> -->
         </i-col>
         <i-col :span="12"></i-col>
       </i-row>
@@ -108,7 +116,7 @@ export default class AddUser extends Vue {
     loginDevice: 414,
     loginType: 411,
     userType: 409,
-    userStatus: 0
+    userStatus: 10022
   };
   private rules: any;
 
@@ -189,6 +197,7 @@ export default class AddUser extends Vue {
   }
   confirmAddUser() {
     // 获取相关数据
+    console.log(this.deptObject)
     this.addUserModel.deptId = this.deptObject.id;
     this.addUserModel.companyName = this.deptObject.companyName;
     this.addUserModel.deptName = this.deptObject.deptName;
@@ -196,7 +205,7 @@ export default class AddUser extends Vue {
     let registerForm = <Form>this.$refs["add-user"];
     registerForm.validate(valid => {
       if (valid) {
-        this.manageService.createUser(this.addUserModel).subscribe(
+        this.manageService.addUser(this.addUserModel).subscribe(
           val => {
             this.$Message.success("新增成功!");
             this.$emit("close");

@@ -4,8 +4,8 @@
       <div slot="extra" class="extra-container">
         <i-icon type="close" @click.native="closeAllTabs"></i-icon>
       </div>
-      <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
-        <component ref="pages" :is="getComponentName(page.path)"></component>
+      <TabPane v-for="page in pageList" :key="page.resourceUrl" :label="page.resourceName" :name="page.resourceUrl" :closable="page.resourceUrl !== 'home'">
+        <component ref="pages" :is="getComponentName(page.resourceUrl)"></component>
       </TabPane>
     </Tabs>
   </section>
@@ -75,7 +75,6 @@ export default class WorkTab extends Vue {
   @Watch("currentPage")
   onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
-
     let getTargetComponent = () => {
       return components.find(x => x.$options.name === this.getComponentName(value));
     }

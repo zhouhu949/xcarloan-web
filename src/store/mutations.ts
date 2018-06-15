@@ -56,25 +56,22 @@ export default {
    * @param page 
    */
   openPage(state, target) {
-    let page, path, params
-
+    let page, resourceUrl, params
     if (typeof target === "string") {
-      path = target
+      resourceUrl = target
     } else {
-      path = target.path
+      resourceUrl = target.resourceUrl
       params = target.params
     }
 
     // 获取是否是显示中的页面
-    page = state.pageList.find(x => x.path === path)
-
-
+    page = state.pageList.find(x => x.resourceUrl === resourceUrl)
     if (page) {
       // 当前页面已经打开
       page.params = params
     } else {
       // 当前页面未打开
-      page = state.menuResource.find(x => x.path === path)
+      page = state.menuResource.find(x => x.resourceUrl === resourceUrl)
       // 添加新页面
       state.pageList.push(Object.assign({
         params
@@ -82,7 +79,7 @@ export default {
     }
 
     // 切换显示页面
-    state.currentPage = page.path
+    state.currentPage = page.resourceUrl
   },
   /**
    * 关闭页面
@@ -90,14 +87,14 @@ export default {
    * @param path 
    */
   closePage(state, path) {
-    let page = state.pageList.find(x => x.path === path)
+    let page = state.pageList.find(x => x.resourceUrl === path)
 
     if(!page){
       return
     }
 
     let index = state.pageList.indexOf(page)
-    state.currentPage = state.pageList[index - 1].path
+    state.currentPage = state.pageList[index - 1].resourceUrl
     
     if (index > 0) {
       state.pageList.splice(index, 1)
@@ -109,8 +106,8 @@ export default {
    */
   closeAllPage(state) {
     state.pageList = [{
-      path: 'home',
-      resoname: '主页'
+      resourceUrl: 'home',
+      resourceName: '主页'
     }]
     state.currentPage = 'home'
   },

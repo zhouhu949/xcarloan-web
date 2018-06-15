@@ -14,7 +14,7 @@ import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
-import { UserService } from "~/services/manage-service/user.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 @Component({
@@ -24,7 +24,7 @@ import { PageService } from "~/utils/page.service";
 })
 export default class AllotRoleModal extends Vue {
   @Dependencies(ManageService) private manageService: ManageService;
-  @Dependencies(UserService) private userService: UserService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Dependencies(PageService) private pageService: PageService;
   private columns1: any;
   private roleList: Array<any> = [];
