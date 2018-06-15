@@ -5,7 +5,7 @@
         <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
             <template slot="input">
                 <i-form-item prop="realName" label="操作人：">
-                    <i-input v-model="systemLogModel.realName"></i-input>
+                    <i-input v-model="systemLogModel.operator"></i-input>
                 </i-form-item>
                 <i-form-item prop="clientIp" label="客户端IP：">
                     <i-input v-model="systemLogModel.clientIp"></i-input>
@@ -29,7 +29,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { ManageService } from '~/services/manage-service/manage.service'
-import { SystemLogsService } from '~/services/manage-service/system-logs.service'
+import { SysLogsService } from '~/services/manage-service/sys-logs.service'
 import { PageService } from '~/utils/page.service'
 import { CommonService } from '~/utils/common.service'
 import { FilterService } from '~/utils/filter.service'
@@ -42,7 +42,7 @@ import { FilterService } from '~/utils/filter.service'
 })
 export default class SystemLogDownload extends Page {
   @Dependencies(ManageService) private manageService: ManageService
-  @Dependencies(SystemLogsService) private systemLogsService: SystemLogsService
+  @Dependencies(SysLogsService) private systemLogsService: SysLogsService
   @Dependencies(PageService) private pageService: PageService
 
   private columns1: any
@@ -91,7 +91,7 @@ export default class SystemLogDownload extends Page {
       {
         title: '操作人',
         editable: true,
-        key: 'realName',
+        key: 'operator',
         align: 'center',
         minWidth: this.$common.getColumnWidth(3),
       },
@@ -105,7 +105,7 @@ export default class SystemLogDownload extends Page {
       {
         title: '执行方法',
         editable: true,
-        key: 'exeMethod',
+        key: 'excuteMethod',
         align: 'center',
         minWidth: this.$common.getColumnWidth(6),
       },
@@ -119,14 +119,14 @@ export default class SystemLogDownload extends Page {
       {
         title: '请求执行时长（秒）',
         editable: true,
-        key: 'exeTime',
+        key: 'excuteTime',
         align: 'center',
         minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '执行类型',
         editable: true,
-        key: 'exeType',
+        key: 'excuteType',
         align: 'center',
         minWidth: this.$common.getColumnWidth(4),
       }
@@ -134,7 +134,7 @@ export default class SystemLogDownload extends Page {
   }
   search() {
     this.manageService
-      .querySystemLogsPage(this.systemLogModel, this.pageService)
+      .querySysLogsPage(this.systemLogModel, this.pageService)
       .subscribe(
         data =>this.systemLogsList = data,
         err => this.$Message.error(err)
@@ -166,7 +166,7 @@ export default class SystemLogDownload extends Page {
     if (multipleSelection && multipleSelection.length) {
       let sysLogsIds = multipleSelection.map(v => v.id)
       this.systemLogsService
-        .exportSystemLogs({
+        .exportSysLogs({
           sysLogsIds: sysLogsIds
         })
         .subscribe(

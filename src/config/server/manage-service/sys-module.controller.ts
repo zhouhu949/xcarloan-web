@@ -1,7 +1,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'roleReso'
+const CONTROLLER = 'sysModuleController'
 
 export default {
   /**
@@ -25,20 +25,20 @@ export default {
   /**
    * 修改资源图标
    */
-  modifyResoIcon: {
+  editResourceIcon: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'modifyResoIcon',
-    type: requestType.Post
+    action: 'editResourceIcon',
+    type: requestType.Put
   },
   /**
    * 修改资源名称
    */
-  modifyResoName: {
+  editResourceName: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'modifyResoName',
-    type: requestType.Post
+    action: 'editResourceName',
+    type: requestType.Put
   },
   /**
    * 查询所有角色资源
@@ -52,19 +52,19 @@ export default {
   /**
   * 根据父id查询子类
   */
-  getSonReso: {
+ findChildMenu: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getSonReso',
+    action: 'findChildMenu',
     type: requestType.Get
   },
   /**
    * 获取系统目录菜单
    */
-  findRoleResoMenu: {
+  findRoleMenu: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'findRoleResoMenu',
+    action: 'findRoleMenu',
     type: requestType.Get
   },
   /**

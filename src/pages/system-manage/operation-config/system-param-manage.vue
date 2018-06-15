@@ -9,8 +9,8 @@
                 </i-form-item>
                 <i-form-item prop="paramStatus" label="是否启用：">
                     <i-select v-model="systemParameterModel.paramStatus" clearable>
-                        <i-option label="启用" :value="0" :key="0"></i-option>
-                        <i-option label="停用" :value="1" :key="1"></i-option>
+                        <i-option label="启用" :value="10002" :key="10002"></i-option>
+                        <i-option label="停用" :value="10003" :key="10003"></i-option>
                     </i-select>
                 </i-form-item>
             </template>
@@ -39,6 +39,8 @@ import { Dependencies } from '~/core/decorator'
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Layout } from '~/core/decorator'
 import ModifySystemParams from '~/components/system-manage/modify-system-params.vue'
+import { SysParameterService } from '~/services/manage-service/sys-parameter.service'
+
 
 @Layout('workspace')
 @Component({
@@ -50,6 +52,8 @@ import ModifySystemParams from '~/components/system-manage/modify-system-params.
 })
 export default class OrderTransfer extends Page {
   @Dependencies() private pageService: PageService
+  @Dependencies(SysParameterService)
+  private systemParameterService: SysParameterService
   private columns1: any
   private columns2: any
   private systemParamsData: Array<Object> = []
@@ -64,7 +68,7 @@ export default class OrderTransfer extends Page {
   private checkRadio: String = ''
   private modifySysParamsModel: any
   mounted() {
-    
+    this.getSystemParam()
   }
   created() {
     this.modifySysParamsModel = {
@@ -127,13 +131,13 @@ export default class OrderTransfer extends Page {
         align: 'center',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) => {
-          return h('span', {}, row.paramStatus === 0 ? '启用' : '停用')
+          return h('span', {}, row.paramStatus === 10002 ? '启用' : '停用')
         }
       },
       {
         title: '说明',
         editable: true,
-        key: 'paramRemark',
+        key: 'remark',
         align: 'center',
         minWidth: this.$common.getColumnWidth(10),
       }
@@ -162,13 +166,28 @@ export default class OrderTransfer extends Page {
     let _sysParams: any = this.$refs['modify-sys-param']
     _sysParams.makeData(row)
   }
-
+  /**
+   * 获取分页查询系统参数
+   */
+  getSystemParam() {
+    this.systemParameterService
+      .querySysParameterPage(this.systemParameterModel, this.pageService)
+      .subscribe(
+        val => {
+          this.systemParamsData = val
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
   confirmModifySysParams() {
     let _modify: any = this.$refs['modify-sys-param']
     _modify.confirmModify()
   }
   closeBtn() {
     this.editSysParamsModal = false
+    this.getSystemParam()
   }
   /**
    * 重置搜索

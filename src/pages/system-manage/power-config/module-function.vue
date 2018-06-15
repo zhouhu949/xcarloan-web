@@ -86,7 +86,7 @@
             <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
                 <i-form :label-width="60" style="margin-top:20px;">
                     <i-form-item label="资源名称" prop="resoName">
-                        <i-input v-model="modifyNameDataset.resoName" :maxlength="20"></i-input>
+                        <i-input v-model="modifyNameDataset.resourceName" :maxlength="20"></i-input>
                     </i-form-item>
                 </i-form>
                 <div style="text-align:right;" slot="footer">
@@ -98,8 +98,8 @@
         <template>
             <i-modal class="modify-chart-resources to-view-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
                 <i-form class="chart-resources-itiem" :label-width="60">
-                    <i-form-item label="资源图标" prop="resoIcon">
-                        <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
+                    <i-form-item label="资源图标" prop="resourceIcon">
+                        <i-input v-model="modifyIconData.resourceIcon" :maxlength="15"></i-input>
                     </i-form-item>
                 </i-form>
                 <div class="pop-button" slot="footer">
@@ -119,7 +119,7 @@ import FunctionModule from '~/components/system-manage/function-module.vue'
 import ToView from '~/components/system-manage/to-view.vue'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
-import { RoleResoService } from '~/services/manage-service/role-reso.service'
+import { SysModuleService } from '~/services/manage-service/sys-module.service'
 import { PageService } from '~/utils/page.service'
 
 @Layout('workspace')
@@ -131,7 +131,7 @@ import { PageService } from '~/utils/page.service'
   }
 })
 export default class ModuleFunction extends Page {
-  @Dependencies(RoleResoService) private roleResoService: RoleResoService
+  @Dependencies(SysModuleService) private sysModuleService: SysModuleService
   @Dependencies(PageService) private pageService: PageService
 
   private treeData: Array<any> = []
@@ -145,12 +145,12 @@ export default class ModuleFunction extends Page {
   private resoPid: number = 0
   private allData: Array<any> = []
   private modifyNameDataset: any = {
-    resoName: '',
-    id: ''
+    resourceName: '',
+    resourceId: ''
   }
   private modifyIconData: any = {
-    id: '',
-    resoIcon: ''
+    resourceId: '',
+    resourceIcon: ''
   }
   private id: any = ''
 
@@ -183,8 +183,8 @@ export default class ModuleFunction extends Page {
                 },
                 on: {
                   click: () => {
-                    this.modifyIconData.resoIcon = row.resoIcon
-                    this.modifyIconData.id = row.id
+                    this.modifyIconData.resourceIcon = row.resourceIcoUrl
+                    this.modifyIconData.resourceId = row.id
                     this.modifyIconModal = true
                   }
                 }
@@ -202,8 +202,8 @@ export default class ModuleFunction extends Page {
                 },
                 on: {
                   click: () => {
-                    this.modifyNameDataset.resoName = row.resoName
-                    this.modifyNameDataset.id = row.id
+                    this.modifyNameDataset.resourceName = row.resourceName
+                    this.modifyNameDataset.resourceId = row.id
                     this.modifyNameModal = true
                   }
                 }
@@ -235,37 +235,25 @@ export default class ModuleFunction extends Page {
       {
         align: 'center',
         editable: true,
-        key: 'resoInitName',
-        title: '资源初始化名称'
-      },
-      {
-        align: 'center',
-        editable: true,
-        key: 'resoName',
+        key: 'resourceName',
         title: '资源名称'
       },
       {
         align: 'center',
         editable: true,
-        key: 'resoInitIcon',
-        title: '资源初始化图标'
-      },
-      {
-        align: 'center',
-        editable: true,
-        key: 'resoIcon',
+        key: 'resourceIcoUrl',
         title: '资源图标'
       },
       // {
       //   align: "center",
       //   editable: true,
-      //   key: "resoStatus",
+      //   key: "resourceStatus",
       //   title: "状态"
       // },
       {
         align: 'center',
         editable: true,
-        key: 'resoRemark',
+        key: 'remark',
         title: '备注'
       }
     ]
@@ -276,7 +264,7 @@ export default class ModuleFunction extends Page {
    * 重置名称
    */
   ResetNameClick() {
-    this.roleResoService.resetResoName().subscribe(
+    this.sysModuleService.resetResoName().subscribe(
       data => {
         this.$Message.success('重置名称成功！')
       },
@@ -289,7 +277,7 @@ export default class ModuleFunction extends Page {
    * 重置图标
    */
   ResetIconClick() {
-    this.roleResoService.resetResoIcon().subscribe(
+    this.sysModuleService.resetResoIcon().subscribe(
       data => {
         this.$Message.success('重置图标成功！')
       },
@@ -308,8 +296,10 @@ export default class ModuleFunction extends Page {
    * 确定修改资源名称
    */
   confirmmodifyName() {
-    this.roleResoService.modifyResoName(this.modifyNameDataset).subscribe(
+    this.$Spin.show()
+    this.sysModuleService.editResourceName(this.modifyNameDataset).subscribe(
       data => {
+        this.$Spin.hide()
         this.$Message.success('修改成功！')
         this.modifyNameModal = false
         this.roleReso()
@@ -329,8 +319,10 @@ export default class ModuleFunction extends Page {
    * 确定修改资源图标
    */
   confirmmodifyIcon() {
-    this.roleResoService.modifyResoIcon(this.modifyIconData).subscribe(
+    this.$Spin.show()
+    this.sysModuleService.editResourceIcon(this.modifyIconData).subscribe(
       data => {
+        this.$Spin.hide()
         this.$Message.success('修改成功！')
         this.modifyIconModal = false
         this.roleReso()
@@ -345,7 +337,7 @@ export default class ModuleFunction extends Page {
    * 获取树接口
    */
   getTreeDate() {
-    this.roleResoService.findRoleResoMenu().subscribe(data => {
+    this.sysModuleService.findRoleMenu().subscribe(data => {
       this.allData = data
       this.resoPid = data.pid
       this.createNewTree(this.allData)
@@ -355,26 +347,26 @@ export default class ModuleFunction extends Page {
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => v.pid === 10000).sort(function(a, b) {
+    let root = allData.filter(v => v.resourceFileType === 10029).sort(function(a, b) {
       return a.sort - b.sort
     }) // 获取树根
     this.treeData = []
     // 遍历根对象push进树中
     root.forEach(item => {
       let node1 = {
-        title: item.resoname,
+        title: item.resourceName,
         id: item.id,
-        resoSysname: item.resoSysname,
-        resoInitName: item.resoInitName,
-        resoCode: item.resoCode,
-        resoLevel: item.resoLevel,
-        resoStatus: item.resoStatus,
-        resoPath: item.resoPath,
-        resoInitIcon: item.resoInitIcon,
-        resoIcon: item.resoIcon,
-        resoType: item.resoType,
-        resoFiletype: item.resoFiletype,
-        resoRemark: item.resoRemark,
+        // resoSysname: item.resoSysname,
+        // resoInitName: item.resoInitName,
+        resoCode: item.resourceCode,
+        resoLevel: item.resourceLevel,
+        resourceStatus: item.resoStatus,
+        resoPath: item.resourceUrl,
+        // resoInitIcon: item.resoInitIcon,
+        resoIcon: item.resourceIcoUrl,
+        resoType: item.resourceType,
+        resoFiletype: item.resourceFileType,
+        resoRemark: item.remark,
         expand: true,
         children: this.getChild(item)
       }
@@ -389,43 +381,43 @@ export default class ModuleFunction extends Page {
     let child: any = []
     // 判断子的父id与全部数据的id相等
     this.allData.map(val => {
-      if (item.id === val.pid) {
-        if (val.pid) {
+      if (item.id === val.resourcePid) {
+        if (val.resourcePid) {
           let node2 = {
-            title: val.resoname,
-            resoName: val.resoname,
+            title: val.resourceName,
+            resoName: val.resourceName,
             id: val.id,
-            resoSysname: val.resoSysname,
-            resoInitName: val.resoInitName,
-            resoCode: val.resoCode,
-            resoLevel: val.resoLevel,
-            resoStatus: val.resoStatus,
-            resoPath: val.resoPath,
-            resoInitIcon: val.resoInitIcon,
-            resoIcon: val.resoIcon,
-            resoType: val.resoType,
-            resoFiletype: val.resoFiletype,
-            resoRemark: val.resoRemark,
+            // resoSysname: val.resoSysname,
+            // resoInitName: val.resoInitName,
+            resoCode: val.resourceCode,
+            resoLevel: val.resourceLevel,
+            resoStatus: val.resourceStatus,
+            resoPath: val.resourceUrl,
+            // resoInitIcon: val.resoInitIcon,
+            resoIcon: val.resourceIcoUrl,
+            resoType: val.resourceType,
+            resoFiletype: val.resourceFileType,
+            resoRemark: val.remark,
             expand: false,
             children: this.getChild(val) // 迭代产生根
           }
           child.push(node2)
         } else if (val.pid === null) {
           let node2 = {
-            title: val.resoname,
+            title: val.resourceName,
             id: val.id,
-            resoName: val.resoname,
-            resoSysname: val.resoSysname,
-            resoInitName: val.resoInitName,
-            resoCode: val.resoCode,
-            resoLevel: val.resoLevel,
-            resoStatus: val.resoStatus,
-            resoPath: val.resoPath,
-            resoInitIcon: val.resoInitIcon,
-            resoIcon: val.resoIcon,
-            resoType: val.resoType,
-            resoFiletype: val.resoFiletype,
-            resoRemark: val.resoRemark,
+            resoName: val.resourceName,
+            // resoSysname: val.resoSysname,
+            // resoInitName: val.resoInitName,
+            resoCode: val.resourceCode,
+            resoLevel: val.resourceLevel,
+            resoStatus: val.resourceStatus,
+            resoPath: val.resourceUrl,
+            // resoInitIcon: val.resoInitIcon,
+            resoIcon: val.resourceIcoUrl,
+            resoType: val.resourceType,
+            resoFiletype: val.resourceFileType,
+            resoRemark: val.remark,
             expand: false,
             children: this.getChild(val)
           }
@@ -443,8 +435,8 @@ export default class ModuleFunction extends Page {
     }
   }
   roleReso() {
-    this.roleResoService
-      .getSonReso(
+    this.sysModuleService
+      .findChildMenu(
         {
           id: this.id
         },

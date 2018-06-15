@@ -28,7 +28,7 @@ import { Observable } from "rxjs";
 import { SysRolesService } from "~/services/manage-service/sys-roles.service";
 import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { RoleResoService } from "~/services/manage-service/role-reso.service";
+import { SysModuleService } from "~/services/manage-service/sys-module.service";
 import { PageService } from "~/utils/page.service";
 import DataTree from "~/components/common/data-tree.vue";
 
@@ -40,7 +40,7 @@ import DataTree from "~/components/common/data-tree.vue";
 })
 export default class ModulePower extends Vue {
   @Dependencies(SysRolesService) private sysRolesService: SysRolesService;
-  @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+  @Dependencies(SysModuleService) private sysModuleService: SysModuleService;
   @Dependencies(PageService) private pageService: PageService;
 
   // 角色id
@@ -118,7 +118,7 @@ export default class ModulePower extends Vue {
    * controlResource 右侧列表使用
   */
   getResourceData() {
-    this.roleResoService.findAllResourceAndMenu(this.roleId).subscribe(data => {
+    this.sysModuleService.findAllResourceAndMenu(this.roleId).subscribe(data => {
       // 全部资源数据
       this.resourceData = data;
 

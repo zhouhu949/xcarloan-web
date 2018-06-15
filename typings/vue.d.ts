@@ -14,5 +14,6 @@ declare module 'vue/types/vue' {
     $Modal: any
     $dialog: any
     $common: any
+    $Spin: any
   }
 }

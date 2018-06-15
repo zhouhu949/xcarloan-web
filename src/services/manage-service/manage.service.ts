@@ -104,10 +104,10 @@ export class ManageService {
      * @param data
      * @param page
      */
-    querySystemLogsPage(data, page) {
+    querySysLogsPage(data, page) {
         const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
-            server: manageService.systemLogsController.querySystemLogsPage,
+            server: manageService.SysLogsController.querySysLogsPage,
             data: {
                 clientIp: data.clientIp,
                 exeType: data.exeType,

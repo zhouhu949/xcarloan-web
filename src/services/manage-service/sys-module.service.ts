@@ -2,7 +2,7 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
-export class RoleResoService {
+export class SysModuleService {
   @Inject(NetService)
   private netService: NetService
 
@@ -11,7 +11,7 @@ export class RoleResoService {
    */
   resetResoIcon() {
     return this.netService.send({
-      server: manageService.roleResoController.resetResoIcon,
+      server: manageService.sysModuleController.resetResoIcon,
     })
   }
 
@@ -20,24 +20,24 @@ export class RoleResoService {
    */
   resetResoName() {
     return this.netService.send({
-      server: manageService.roleResoController.resetResoName,
+      server: manageService.sysModuleController.resetResoName,
     })
   }
   /**
   * 修改资源图标
   */
-  modifyResoIcon(data) {
+ editResourceIcon(data) {
     return this.netService.send({
-      server: manageService.roleResoController.modifyResoIcon,
+      server: manageService.sysModuleController.editResourceIcon,
       data
     })
   }
   /**
    * 修改资源名称
    */
-  modifyResoName(data) {
+  editResourceName(data) {
     return this.netService.send({
-      server: manageService.roleResoController.modifyResoName,
+      server: manageService.sysModuleController.editResourceName,
       data
     })
   }
@@ -46,27 +46,28 @@ export class RoleResoService {
    */
   getAllResource() {
     return this.netService.send({
-      server: manageService.roleResoController.getAllResource
+      server: manageService.sysModuleController.getAllResource
     })
   }
   /**
    * 根据父id查询子类分页
    */
-  getSonReso({ id }, page) {
+  findChildMenu({ id }, page) {
     return this.netService.send({
-      server: manageService.roleResoController.getSonReso,
-      data: {
-        id: id
-      },
+      server: manageService.sysModuleController.findChildMenu,
+      // data: {
+      //   id: id
+      // },
+      append: id,
       page: page
     })
   }
   /**
    * 获取系统目录菜单
    */
-  findRoleResoMenu() {
+  findRoleMenu() {
     return this.netService.send({
-      server: manageService.roleResoController.findRoleResoMenu
+      server: manageService.sysModuleController.findRoleMenu
     })
   }
   /**
@@ -74,7 +75,7 @@ export class RoleResoService {
    */
   getSonResoNoPage({ id }) {
     return this.netService.send({
-      server: manageService.roleResoController.getSonResoNoPage,
+      server: manageService.sysModuleController.getSonResoNoPage,
       data: {
         id: id
       }
@@ -85,7 +86,7 @@ export class RoleResoService {
    */
   findRoleResoResourceByRoleId({ roleIds }) {
     return this.netService.send({
-      server: manageService.roleResoController.findRoleResoResourceByRoleId,
+      server: manageService.sysModuleController.findRoleResoResourceByRoleId,
       data: {
         roleIds: roleIds
       }
@@ -96,7 +97,7 @@ export class RoleResoService {
    */
   findRoleResoMenuByRoleId({ roleIds }) {
     return this.netService.send({
-      server: manageService.roleResoController.findRoleResoMenuByRoleId,
+      server: manageService.sysModuleController.findRoleResoMenuByRoleId,
       data: {
         roleIds: roleIds
       }
@@ -107,7 +108,7 @@ export class RoleResoService {
    */
   findAllResourceAndMenu(roleId) {
     return this.netService.send({
-      server: manageService.roleResoController.findAllResourceAndMenu,
+      server: manageService.sysModuleController.findAllResourceAndMenu,
       data: { roleId: roleId }
     })
   }

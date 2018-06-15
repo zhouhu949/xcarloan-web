@@ -27,9 +27,16 @@
         <i-col :span="24">
           <i-form-item label="是否启用" prop="paramStatus">
             <i-select v-model="sysParamModel.paramStatus">
-              <i-option label="启用" :value="0" :key="0"></i-option>
-              <i-option label="停用" :value="1" :key="1"></i-option>
+              <i-option label="启用" :value="10002" :key="10002"></i-option>
+              <i-option label="停用" :value="10003" :key="10003"></i-option>
             </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="24">
+          <i-form-item label="说明" prop="remark">
+            <i-input type="textarea" v-model="sysParamModel.remark"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -42,17 +49,21 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
+import { SysParameterService } from "~/services/manage-service/sys-parameter.service";
 @Component({
   components: {}
 })
 export default class ModifySystemParams extends Vue {
+  @Dependencies(SysParameterService)
+  private sysParameterService: SysParameterService;
   private sysParamModel: any = {
     paramCode: "",
     paramName: "",
     paramValue: "",
-    paramStatus: ""
+    paramStatus: "",
+    remark: ""
   };
-  created() { }
+  created() {}
   makeData(row) {
     this.sysParamModel.paramCode = row.paramCode;
     this.sysParamModel.paramName = row.paramName;
@@ -62,10 +73,29 @@ export default class ModifySystemParams extends Vue {
     this.sysParamModel.paramValue = row.paramValue;
     this.sysParamModel.paramType = row.paramType;
     this.sysParamModel.paramSign = row.paramSign;
+    this.sysParamModel.remark = row.remark;
   }
-
+  /**
+     * 确认修改
+     */
+    confirmModify() {
+      this.$Spin.show()
+      this.sysParameterService
+        .updateSysParameter(this.sysParamModel)
+        .subscribe(
+          val => {
+            this.$Spin.hide()
+            this.$emit("close");
+            this.$Message.success("修改成功");
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
 }
-
 </script>
 <style lang="less" scoped>
 .component.modify-system-params {

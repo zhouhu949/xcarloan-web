@@ -2,23 +2,17 @@
 <template>
   <section class="component to-view">
     <i-form :label-width="110" :model="ToviewrowData" class="data-form">
-      <i-form-item label="资源初始化名称" prop="resoInitName">
-        <i-input v-model="ToviewrowData.resoInitName" readonly></i-input>
+      <i-form-item label="资源名称" prop="resourceName">
+        <i-input v-model="ToviewrowData.resourceName" readonly></i-input>
       </i-form-item>
-      <i-form-item label="资源名称" prop="resoName">
-        <i-input v-model="ToviewrowData.resoName" readonly></i-input>
+      <i-form-item label="资源图标" prop="resourceIcoUrl">
+        <i-input v-model="ToviewrowData.resourceIcoUrl" readonly></i-input>
       </i-form-item>
-      <i-form-item label="资源初始化图标" prop="resoInitIcon">
-        <i-input v-model="ToviewrowData.resoInitIcon" readonly></i-input>
-      </i-form-item>
-      <i-form-item label="资源图标" prop="resoIcon">
-        <i-input v-model="ToviewrowData.resoIcon" readonly></i-input>
-      </i-form-item>
-      <i-form-item label="状态" prop="resoStatus">
-        <i-input v-model="ToviewrowData.resoStatus" readonly></i-input>
-      </i-form-item>
-      <i-form-item label="备注" prop="resoRemark">
-        <i-input v-model="ToviewrowData.resoRemark" readonly></i-input>
+      <!-- <i-form-item label="状态" prop="resourceStatus">
+        <i-input v-model="ToviewrowData.resourceStatus" readonly></i-input>
+      </i-form-item> -->
+      <i-form-item label="备注" prop="remark">
+        <i-input type="textarea" v-model="ToviewrowData.remark" readonly></i-input>
       </i-form-item>
     </i-form>
   </section>

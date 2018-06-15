@@ -2,25 +2,25 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'systemLogs'
+const CONTROLLER = 'SysLogsController'
 
 export default {
   /**
    * 分页查询操作日志
    */
-  querySystemLogsPage: {
+  querySysLogsPage: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'querySystemLogsPage',
+    action: 'querySysLogsPage',
     type: requestType.Get
   },
   /**
    * 导出系统日志
    */
-  exportSystemLogs: {
+  exportSysLogs: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'exportSystemLogs',
+    action: 'exportSysLogs',
     type: requestType.Post
   }
 }
