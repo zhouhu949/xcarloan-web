@@ -16,12 +16,12 @@
         </i-row>
         <i-row>
           <div class="add-org-tree">
-            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+            <organize-tree :dataList="orgData" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
           </div>
         </i-row>
       </i-col>
       <i-col :span="20">
-        <data-form hidden-date-search :model="userSearchModel" @on-search="searchUserListByCondition" :page="pageService">
+        <data-form ref="user-search-form" hidden-date-search :model="userSearchModel" @on-search="searchUserListByCondition" :page="pageService">
           <template slot="input">
             <i-form-item prop="userName" label="用户名：">
               <i-input v-model="userSearchModel.userName" placeholder="请输入用户名"></i-input>
@@ -31,7 +31,7 @@
             </i-form-item>
             <i-form-item prop="status" label="是否启用">
               <i-select v-model="userSearchModel.userStatus">
-                <i-option v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
+                <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </template>
@@ -48,32 +48,6 @@
           <i-button @click="allotRoleModal=false">取消</i-button>
           <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
         </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal v-model="modifyUserModal" title="修改用户" :width="800">
-        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
-        <div slot="footer">
-          <i-button @click="modifyUserModal=false">取消</i-button>
-          <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal v-model="addNewUserModal" title="新增用户" :width="800" class="addUser" @on-visible-change="newUserModalChange">
-        <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
-        <div slot="footer">
-          <i-button @click="addNewUserModal=false">取消</i-button>
-          <i-button class="blueButton" @click="confirmAddUser">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal v-model="deviceManageModal" title="设备管理" :width="800" class="device-manage" class-name="no-footer">
-        <device-manage ref="device-manage"></device-manage>
       </i-modal>
     </template>
 
@@ -97,14 +71,12 @@
 
 <script lang="ts">
 import Page from '~/core/page'
-import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
 import allotRoleModal from '~/components/system-manage/allot-role-modal.vue'
 import UserList from '~/components/system-manage/user-list.vue'
 import WaitHandleCase from '~/components/system-manage/wait-handle-case.vue'
 import ModulePower from '~/components/system-manage/module-power.vue'
 import ModifyUser from '~/components/system-manage/modify-user.vue'
-import AddUser from '~/components/system-manage/add-user.vue'
 import DeviceManage from '~/components/system-manage/device-manage.vue'
 import BatchManageDevice from '~/components/system-manage/batch-manage-device.vue' // 批量管理设备
 import ModifyOrg from "~/components/system-manage/modify-org.vue";
@@ -121,18 +93,20 @@ import { LoginService } from '~/services/manage-service/login.service'
 import { Modal } from 'iview'
 import { SysUserService } from '~/services/manage-service/sys-user.service'
 import { CommonService } from '~/utils/common.service'
+import DataForm from "~/components/common/data-form.vue";
+import { Action, State, namespace } from "vuex-class";
+
+// 引入机构模块
+const OrgModule = namespace("orgSpace");
 
 @Layout('workspace')
 @Component({
   components: {
-    DataBox,
     allotRoleModal,
     UserList,
     WaitHandleCase,
     ModulePower,
     ModifyUser,
-    AddUser,
-    DeviceManage,
     OrganizeTree,
     BatchManageDevice,
     DataPowerModal
@@ -145,6 +119,10 @@ export default class OrgUserManage extends Page {
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(LoginService) private loginService: LoginService
   @Dependencies(SysUserService) private sysUserService: SysUserService
+
+  @OrgModule.State orgData;
+  @OrgModule.Action getOrgData;
+
   private columns1: any
   private userList: Array<Object> = []
   private columns2: any
@@ -152,7 +130,7 @@ export default class OrgUserManage extends Page {
   // 机构
   private dataList: Array<any> = []
   // 机构ID
-  private orgId: number = 0;
+  private selectOrg: any = undefined;
 
   private allotRoleModal: Boolean = false
   private modifyUserModal: Boolean = false
@@ -162,7 +140,8 @@ export default class OrgUserManage extends Page {
   private userName: String = ''
   // 查询用户数据Model
   private userSearchModel: any = {}
-  private deptObject: any
+  private userSearchform: DataForm;
+
   private modifyUserModel: any
   private userId: number | null = null
   private userIds: Array<any> = []
@@ -188,8 +167,9 @@ export default class OrgUserManage extends Page {
   }
   private companyId: any = 0
   mounted() {
+    this.userSearchform = this.$refs['user-search-form'] as DataForm
     this.getUserListByCondition()
-    this.getTree()
+    this.getOrgData()
   }
   created() {
     this.modifyUserModel = {
@@ -285,23 +265,6 @@ export default class OrgUserManage extends Page {
               }
             },
             '设备管理'
-          ),
-          h(
-            'i-button',
-            {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#265EA2'
-              },
-              on: {
-                click: () => {
-                  this.dataPowerClick(row)
-                }
-              }
-            },
-            '数据权限'
           )
         ])
 
@@ -450,37 +413,71 @@ export default class OrgUserManage extends Page {
    * 修改用户
    */
   modifyUser(row) {
-    // this.modifyUserModal = true
-    // this.modifyUserModel = row
-    // let _modifyUser: any = this.$refs['modify-user']
-    // _modifyUser.getData(this.modifyUserModel)
-    // _modifyUser.findAllOrganizationByAuth()
+    this.$dialog.show({
+      title: "修改用户",
+      footer: true,
+      onOk: editUser => {
+        return editUser.updateUser().then(v => {
+          if (v) this.searchUserListByCondition()
+          return v
+        })
+      },
+      render: h => h(ModifyUser, {
+        props: {
+          userData: row
+        }
+      })
+    })
   }
 
+  /**
+   * 重置用户密码 
+   */
   resetPwd(row) {
-    this.loginService
-      .resetPassword({
-        userId: row.id
-      })
-      .subscribe(val => {
-        this.$Message.success('重置成功')
-      })
+    this.sysUserService.resetPassword(row.id)
+      .subscribe(
+        val => this.$Message.success('重置成功'),
+        err => this.$Message.error(err.msg)
+      )
   }
 
   deviceManageOpen(row) {
-    this.deviceManageModal = true
-    this.userName = row.userName
-    let _deviceManage: any = this.$refs['device-manage']
-    _deviceManage.makeData(row)
+    this.$dialog.show({
+      title: '设备锁维护',
+      render: h => h(DeviceManage, {
+        props: {
+          userInfo: {
+            id: row.id,
+            userName: row.userUsername
+          }
+        }
+      })
+    })
   }
 
   /**
    * 新增用户
    */
   addNewUser() {
-    this.addNewUserModal = true
-    let _addUser: any = this.$refs['add-user']
-    _addUser.makeData(this.deptObject)
+    if (!this.selectOrg) {
+      this.$Message.info("请选择机构")
+      return
+    }
+    this.$dialog.show({
+      title: "新增用户",
+      footer: true,
+      onOk: addUser => {
+        return addUser.createUser().then(v => {
+          if (v) this.searchUserListByCondition()
+          return v
+        })
+      },
+      render: h => h(ModifyUser, {
+        props: {
+          orgId: this.selectOrg.id
+        }
+      })
+    })
   }
 
   allotRole(row) {
@@ -514,12 +511,12 @@ export default class OrgUserManage extends Page {
 
   closeEditOrg() {
     this.editNewOrgModal = false
-    // this.getTree()
+    // this.getOrgData()
   }
 
   closeOrg() {
     this.addNewOrgModal = false
-    // this.getTree()
+    // this.getOrgData()
   }
   buttonOnlyOne1() {
     if (!this.warnStatus) {
@@ -568,16 +565,11 @@ export default class OrgUserManage extends Page {
       )
   }
   searchUserListByCondition() {
-    this.userSearchModel.orgId = this.orgId
-    this.manageService
-      .getUsersByDeptPage(this.userSearchModel, this.pageService)
+    if (this.selectOrg) this.userSearchModel.orgId = this.selectOrg.id
+    this.manageService.getUsersByDeptPage(this.userSearchModel, this.pageService)
       .subscribe(
-        data => {
-          this.userList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data => this.userList = data,
+        err => this.$Message.error(err.msg)
       )
   }
 
@@ -585,21 +577,13 @@ export default class OrgUserManage extends Page {
    * 树change
    */
   onChange(value) {
-    this.orgId = value.id
-    this.userSearchModel.orgId = value.id
-    this.deptLevel = value.deptLevel
-    this.deptObject = value
-    this.addOrgModel = value
-    this.manageService
-      .getUsersByDeptPage(this.userSearchModel, this.pageService)
-      .subscribe(
-        data => {
-          this.userList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
+    this.selectOrg = value
+    // 需要先重置用户搜索条件
+    this.userSearchform.onResetForm()
+    // 重置分页
+    this.pageService.reset()
+    // 查找用户
+    this.searchUserListByCondition()
   }
 
   /**
@@ -625,11 +609,11 @@ export default class OrgUserManage extends Page {
       title: '提示',
       content: '确定删除此组织机构吗？',
       onOk: () => {
-        this.sysOrgService.deleteOrganization(this.orgId)
+        this.sysOrgService.deleteOrganization(this.selectOrg.id)
           .subscribe(
             data => {
               this.$Message.success('删除成功！')
-              this.getTree()
+              this.getOrgData()
             },
             err => {
               this.$Message.error(err.msg)
@@ -640,25 +624,10 @@ export default class OrgUserManage extends Page {
   }
 
   /**
-   * 获取机构树 数据
-   */
-  private getTree() {
-    this.sysOrgService.findAllOrganizationByAuth().subscribe(
-      data => {
-        this.deptObject = data[0]
-        this.dataList = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-    )
-  }
-
-  /**
    * 添加机构
    */
   private addDept() {
-    if (this.orgId === 0) {
+    if (!this.selectOrg) {
       this.$Message.info("请选择一个父级机构再操作")
       return
     }
@@ -673,27 +642,28 @@ export default class OrgUserManage extends Page {
       footer: true,
       onOk: addOrg => {
         return addOrg.create().then(v => {
-          if (v) this.getTree()
+          if (v) this.getOrgData()
           return v
         })
       },
       render: h => h(ModifyOrg, {
         props: {
-          pid: this.orgId
+          pid: this.selectOrg.id
         }
       })
     })
   }
 
-
-
+  /**
+   * 编辑机构
+   */
   private editDept(val) {
     this.$dialog.show({
       title: "机构维护",
       footer: true,
       onOk: modify => {
         return modify.update().then(v => {
-          if (v) this.getTree()
+          if (v) this.getOrgData()
           return v
         })
       },
@@ -705,10 +675,6 @@ export default class OrgUserManage extends Page {
     })
   }
 
-
-  cancelEditOrg() {
-    this.editNewOrgModal = false
-  }
 
   confirmModifyUser() {
     let _modifyUser: any = this.$refs['modify-user']
@@ -740,17 +706,6 @@ export default class OrgUserManage extends Page {
   confirmBatchManageDevice() {
     let _batchManage: any = this.$refs['batch-manage-device']
     _batchManage.confirmBatchMange()
-  }
-  /**
-   * 重置搜索
-   */
-  refreshRoleList() {
-    this.userSearchModel = {
-      userName: '',
-      realName: '',
-      status: '',
-      orgId: 1
-    }
   }
 }
 </script>

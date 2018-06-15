@@ -1,65 +1,50 @@
 <!--修改用户-->
 <template>
   <section class="component modify-user">
-    <i-form :label-width="110" class="modify-user-form" :model="modifyModel" ref="modify-user" :rules="rules">
+    <i-form :label-width="110" class="modify-user-form" :model="model" ref="modify-user" :rules="rules">
       <i-row>
         <i-col :span="12">
-          <i-form-item label="用户名" prop="userUsername">
-            <i-input v-model="modifyModel.userUsername" :disabled="true"></i-input>
+          <i-form-item label="用户名" prop="userName">
+            <i-input v-model="model.userName" :readonly="!orgId"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="姓名" prop="userUsername">
-            <i-input v-model="modifyModel.userRealname"></i-input>
+          <i-form-item label="姓名" prop="realName">
+            <i-input v-model="model.realName"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="电话" prop="userPhone">
-            <i-input v-model="modifyModel.userPhone"></i-input>
+          <i-form-item label="电话" prop="phone">
+            <i-input v-model="model.phone"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="邮箱" prop="userEmail">
-            <i-input v-model="modifyModel.userEmail"></i-input>
+          <i-form-item label="邮箱" prop="email">
+            <i-input v-model="model.email"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="性别" prop="userSex">
-            <i-select v-model="modifyModel.userSex">
-              <i-option v-for="{value,label} in $dict.getDictData('0406')" :key="value" :label="label" :value="value"></i-option>
+          <i-form-item label="性别" prop="sex">
+            <i-select v-model="model.sex">
+              <i-option v-for="{value,label} in $dict.getDictData(10008)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="12">
-          <i-form-item label="数据权限" prop="userManager">
-            <i-select v-model="modifyModel.userManager">
-              <i-option v-for="{value,label} in $dict.getDictData('0405')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
         <i-col :span="12">
           <i-form-item label="所属机构" prop="deptNames">
-            <Cascader :data="depatmentData" :render-format="format" v-model="modifyModel.deptNames" change-on-select></Cascader>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="公司名称" prop="companyName">
-            <i-input v-model="modifyModel.companyName" :disabled="true"></i-input>
+            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" change-on-select :disabled="!!orgId"></Cascader>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="状态" prop="userStatus">
-            <i-select v-model="modifyModel.userStatus">
-              <i-option label="启用" :value="0" :key="0"></i-option>
-              <i-option label="停用" :value="1" :key="1"></i-option>
+          <i-form-item label="是否启用" prop="state">
+            <i-select v-model="model.state">
+              <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -67,8 +52,8 @@
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="备注" prop="userRemark">
-            <i-input type="textarea" v-model="modifyModel.userRemark" :maxlength="100"></i-input>
+          <i-form-item label="备注" prop="remark">
+            <i-input type="textarea" v-model="model.remark" :maxlength="100"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -84,185 +69,162 @@ import { ManageService } from "~/services/manage-service/manage.service";
 import { Dependencies } from "~/core/decorator";
 import { SysOrgService } from "~/services/manage-service/sys-org.service";
 import { CommonService } from "~/utils/common.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
+import { State, namespace } from "vuex-class";
+import { Form } from "iview";
+
+const OrgMoudle = namespace("orgSpace")
 
 @Component({
   components: {}
 })
 export default class ModifyUser extends Vue {
-  @Dependencies(ManageService) private manageService: ManageService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Dependencies(SysOrgService) private sysOrgService: SysOrgService;
-  @Prop() modifyUserModel: any;
-  private modifyModel: any = {
-    userUsername: "",
-    userRealname: "",
-    userPhone: "",
-    userEmail: "",
-    companyName: "",
-    deptName: "",
+  // 机构数据
+  @OrgMoudle.State orgData;
+  @Prop() userData;
+  @Prop() orgId;
+
+  private form: Form;
+  private model: any = {
+    userName: "",
+    realName: "",
+    phone: "",
+    email: "",
     deptNames: [],
-    userSex: "",
-    userManager: "",
-    userRemark: "",
-    userStatus: 0
+    sex: "",
+    remark: "",
+    state: 10022 // 启用
   };
+
   private rules: any;
-  private allOrg: Array<any> = [];
-  private depatmentData: any = [];
+  private orgTreeData: any = [];
 
   created() {
     this.rules = {
-      userUsername: { required: true, message: "用户名不能为空", trigger: "blur" },
-      userRealname: { required: true, message: "姓名不能为空", trigger: "blur" },
-      userPhone: { required: true, validator: this.$validator.phoneNumber, message: "请输入正确的电话号码", trigger: "blur" },
-      userEmail: { required: true, message: "请输入正确的邮箱", trigger: "blur", type: "email" },
-      userSex: { required: true, message: "请选择性别", type: "number", trigger: "blur" },
-      userManager: { required: true, type: "number", message: "请选择数据权限", trigger: "change" },
-      deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur" }
+      userName: [
+        { required: true, message: "用户名不能为空", trigger: "blur" },
+        { validator: this.$validator.userName, trigger: "blur" }
+      ],
+      realName: { required: true, message: "姓名不能为空", trigger: "blur" },
+      phone: [
+        { required: true, message: "电话号码不能为空", trigger: "blur" },
+        { validator: this.$validator.phoneNumber, trigger: "blur" }
+      ],
+      email: { required: true, message: "请输入正确的邮箱", trigger: "blur", type: "email" },
+      sex: { required: true, message: "请选择性别", trigger: "blur", type: "number" },
+      deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur", type: "array" }
     };
   }
-  findAllOrganizationByAuth(){
-    //获取所有组织机构
-    // 重组部门数据，以适应联级选择器
-    this.manageService.findAllOrganizationByAuth().subscribe(
-      data => {
-        let stairList = []
-          for (let i of data) {
-            if (i.orgPid == 0) {
-              stairList.push({
-                pid: i.orgPid,
-                label: i.orgName,
-                id: i.id,
-                value: i.id,
-                children: [],
-              })
-            }
-          }
-          for (let i of stairList) {
-            for (let s of data) {
-              if (i.id == s.orgPid) {
-                i.children.push({
-                  pid: s.orgPid,
-                  label: s.orgName,
-                  id: s.id,
-                  value: s.id,
-                  children: [],
-                })
-              }
-            }
-          }
-          for (let i of stairList[0].children) {
-            for (let s of data) {
-              if (i.id == s.orgPid) {
-                i.children.push({
-                  pid: s.orgPid,
-                  label: s.orgName,
-                  id: s.id,
-                  value: s.id,
-                  children: [],
-                })
-              }
-            }
-          }
-         this.depatmentData = stairList
 
-
-
-        this.allOrg = data
-        // let treeSource = data.map(v => {
-        //   return {
-        //     id: v.id,
-        //     pid: v.deptPid,
-        //     value: v.id,
-        //     label: v.deptName
-        //   }
-        // })
-        // this.depatmentData = CommonService.departmentData(treeSource)
-        // console.log(this.depatmentData)
-      },
-      err => this.$Message.error(err.msg)
-    );
-  }
 
   mounted() {
-    // this.findAllOrganizationByAuth()  
+    this.form = this.$refs["modify-user"] as Form
+    // 组织机构树
+    let treeSource = this.orgData.map(v => {
+      return {
+        id: v.id,
+        pid: v.orgPid,
+        value: v.id,
+        label: v.orgName
+      }
+    })
+    this.orgTreeData = this.$common.departmentData(treeSource)
+    // 判断属性是否传了orgId
+    if (this.orgId) {
+      this.model.orgId = this.orgId
+    } else {
+      this.model = {
+        orgId: this.userData.deptId,
+        id: this.userData.id,
+        userName: this.userData.userUsername,
+        realName: this.userData.userRealname,
+        phone: this.userData.userPhone,
+        email: this.userData.userEmail,
+        deptName: this.userData,
+        deptNames: [],
+        sex: this.userData.userSex,
+        remark: this.userData.userRemark,
+        state: this.userData.userStatus // 启用
+      }
+    }
+    this.getOwnerData()
   }
 
-  cancelUpdate() {
-    this.$emit("close");
-  }
-  updateUser() {
-    this.modifyModel.deptId = this.modifyModel.deptName.id;
-    this.manageService.updateUser(this.modifyModel).subscribe(
-      val => {
-        this.$Message.success("修改成功！");
-        this.$emit("close");
-      },
-      err => this.$Message.error(err.msg)
-    );
-  }
-  getData(data) {
-    this.modifyModel.userUsername = data.userUsername;
-    this.modifyModel.id = data.id;
-    this.modifyModel.deptId = data.deptId;
-    this.modifyModel.userRealname = data.userRealname;
-    this.modifyModel.userPhone = data.userPhone;
-    this.modifyModel.userEmail = data.userEmail;
-    this.modifyModel.companyName = data.companyName;
-    this.modifyModel.deptName = data.deptName;
-    this.modifyModel.userSex = data.userSex;
-    this.modifyModel.userManager = data.userManager;
-    this.modifyModel.userRemark = data.userRemark;
-    this.modifyModel.userStatus = data.userStatus;
-    this.findAllOrganizationByAuth()
-    this.getOwnerData();
-    // // 根据deptId获取公司名称
-    // this.sysOrgService
-    //   .findCompanyByDeptId({
-    //     deptId: data.deptId
-    //   })
-    //   .subscribe(
-    //   data => (this.modifyModel.companyName = data.companyChinaname)
-    //   );
-  }
   /**
-   * 根据机构查询公司
+   * 更新用户
    */
-  changeOrg(val) {
-    // this.sysOrgService
-    //   .findCompanyByDeptId({
-    //     deptId: val
-    //   })
-    //   .subscribe(
-    //   data => (this.modifyModel.companyName = data.companyChinaname)
-    //   );
+  updateUser() {
+    return new Promise((resolve) => {
+      this.form.validate(v => {
+        if (!v) return resolve(false)
+        this.sysUserService.updateUser(this.model).subscribe(
+          data => {
+            this.$Message.success('修改用户成功')
+            resolve(true)
+          },
+          err => {
+            this.$Message.error(err.msg)
+            resolve(false)
+          }
+        )
+      })
+    })
   }
 
-  format(labels, selectedData) {
+  /**
+   * 新增用户
+   */
+  createUser() {
+    return new Promise((resolve) => {
+      this.form.validate(v => {
+        if (!v) return resolve(false)
+        this.sysUserService.addUser(this.model).subscribe(
+          data => {
+            this.$Message.success('新增用户成功')
+            resolve(true)
+          },
+          err => {
+            this.$Message.error(err.msg)
+            resolve(false)
+          }
+        )
+      })
+    })
+  }
+
+  /**
+   * 级联选择器选择之后显示的内容
+   */
+  private format(labels, selectedData) {
     const index = labels.length - 1;
-    this.modifyModel.deptName = selectedData[index];
+    this.model.deptName = selectedData[index];
     return labels[index];
   }
 
-  getOwnerData() {
-    if (this.allOrg.length === 0) {
+  /**
+   * 组织级联选择器显示的数据
+   */
+  private getOwnerData() {
+    if (this.orgData.length === 0) {
       return [];
     }
     let getParent = id => {
-      let current = this.allOrg.find(v => v.id === id);
+      let current = this.orgData.find(v => v.id === id);
       if (current) {
-        let parent = getParent(current.deptPid);
+        let parent = getParent(current.orgPid);
         return parent.concat(current);
       } else {
         return [];
       }
     };
 
-    this.modifyModel.deptNames = getParent(this.modifyModel.deptId).map(
-      v => v.id
-    );
+    this.model.deptNames = getParent(this.model.orgId).map(v => v.id);
   }
 }
 </script>
+
 
 <style lang="less">
 .component.modify-user {

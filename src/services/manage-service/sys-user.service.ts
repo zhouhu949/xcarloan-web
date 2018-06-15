@@ -1,7 +1,6 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import { requestType } from "~/config/enum.config";
 import store from "~/store"
 
 export class SysUserService {
@@ -23,12 +22,88 @@ export class SysUserService {
    * 用户注册
    * @param data
    */
-  userRegister(data) {
+  @Debounce()
+  addUser(data) {
     return this.netService.send({
-      server: manageService.sysUserController.userRegister,
-      data
+      server: manageService.sysUserController.addUser,
+      data: {
+        deptId: data.orgId,
+        userEmail: data.email,
+        userPhone: data.phone,
+        userPhoto: "",
+        userRealname: data.realName,
+        userRemark: data.remark,
+        userSex: data.sex,
+        userStatus: data.state,
+        userUsername: data.userName
+      },
+      loading: true
     })
   }
+  /**
+   * 修改用户
+   * @param data 
+   */
+  @Debounce()
+  updateUser(data) {
+    return this.netService.send({
+      server: manageService.sysUserController.addUser,
+      data: {
+        id: data.id,
+        deptId: data.orgId,
+        userEmail: data.email,
+        userPhone: data.phone,
+        userPhoto: "",
+        userRealname: data.realName,
+        userRemark: data.remark,
+        userSex: data.sex,
+        userStatus: data.state,
+        userUsername: data.userName
+      },
+      loading: true
+    })
+  }
+  /**
+   * 重置用户密码
+   * @param id 用户ID
+   */
+  @Debounce()
+  resetPassword(id) {
+    return this.netService.send({
+      server: manageService.sysUserController.resetPassword,
+      append: id
+    })
+  }
+
+  /**
+   * 获取用户所有设备
+   * @param ids 所选用户ID
+   */
+  findUserDevice(ids){
+    return this.netService.send({
+      server: manageService.sysUserController.findUserDevice,
+      data: {
+        userIds: ids
+      }
+    })
+  }
+
+  /**
+   * 修改用户设备锁状态
+   * @param type 需要修改的状态
+   * @param ids 所选设备锁ID集合
+   */
+  updateUserDevice(type,ids){
+    return this.netService.send({
+      server: manageService.sysUserController.updateUserDevice,
+      data: {
+        type: type,
+        ids: ids
+      }
+    })
+  }
+
+
   /**
    * 查询用户列表菜单
    */

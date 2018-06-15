@@ -25,6 +25,8 @@ export class ValidatorService {
 
   // 验证正则列表
   static regex = {
+    // 用户名
+    userName: /^[a-zA-Z0-9_-]{6,16}$/,
     // 手机号
     phoneNumber: /^1([^1,2])\d{9}$/,
     // 身份证18位
@@ -100,6 +102,16 @@ export class ValidatorService {
       callback();
     } else {
       callback(new Error("请输入正确的车牌照号码"));
+    }
+  }
+  /**
+   * 验证手机号
+   */
+  static userName(rule, value, callback) {
+    if (ValidatorService.regex.userName.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入6-16位[字母,数字,下划线,减号]"));
     }
   }
 
