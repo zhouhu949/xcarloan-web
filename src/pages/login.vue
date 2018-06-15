@@ -23,7 +23,7 @@
                 <i-checkbox v-model="loginModel.remember">
                   <span>记住用户名与密码</span>
                 </i-checkbox>
-                <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button>
+                <!-- <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button> -->
               </i-form-item>
               <i-form-item :label-width="0" style="text-align:center">
                 <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>

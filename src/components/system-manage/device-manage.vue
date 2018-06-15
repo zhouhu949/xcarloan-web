@@ -1,31 +1,38 @@
 <!--设备管理-->
 <template>
   <section class="component device-manage">
-    <span class="form-name" >当前用户名：{{this.userName}}</span>
-    <i-table :columns="columns1" :data="deviceList"></i-table>
+    <span class="form-name">当前用户名：
+      <b>{{this.userInfo.userName}}</b>
+    </span>
+    <data-box :columns="columns1" :data="deviceList" :showConfigColumn="false" :height="200"></data-box>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import { LoginService } from "~/services/manage-service/login.service";
 import { Dependencies } from "~/core/decorator";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 
 @Component({
-  components: {
-    DataBox
-  }
+  components: {}
 })
 export default class DeviceManage extends Vue {
-  @Dependencies(LoginService) private loginService: LoginService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
+  @Prop({
+    required: true,
+    type: Object
+  }) userInfo;
+
   private columns1: any;
   private deviceList: Array<any> = [];
-  private userName: String = "";
-  private id:any = '';
-  mounted() {}
+  private id: any = '';
+
+
+  mounted() {
+    this.getUserLocks()
+  }
   created() {
     this.columns1 = [
       {
@@ -45,26 +52,11 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    //启用or禁用设备
-                    this.loginService
-                      .disableDevice({
-                        userIds: [row.userId],
-                        userType: row.type,
-                        userStatus: row.status === 0 ? 1 : 0
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("操作成功！");
-                          this.getDeviceList();
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
+                    this.setLockState(row.id, 0)
                   }
                 }
               },
-              row.status === 0 ? "禁用设备" : "启用设备"
+              row.deviceStatus === 10002 ? "禁用设备" : "启用设备"
             ),
             h(
               "i-button",
@@ -77,26 +69,11 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    //停用设备锁or启用设备锁
-                    this.loginService
-                      .enableDeviceKey({
-                        userIds: [row.userId],
-                        userType: row.type,
-                        userValidate: row.validate === 0 ? 1 : 0
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("操作成功！");
-                          this.getDeviceList();
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
+                    this.setLockState(row.id, 1)
                   }
                 }
               },
-              row.validate === 0 ? "停用设备锁" : "启用设备锁"
+              row.deviceValidate === 10002 ? "停用设备锁" : "启用设备锁"
             ),
             h(
               "i-button",
@@ -109,20 +86,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    // 重置设备
-                    this.loginService
-                      .resetDevice({
-                        userIds: [row.userId],
-                        userType: row.type
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("重置成功！");
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
+                    this.setLockState(row.id, 2)
                   }
                 }
               },
@@ -134,57 +98,59 @@ export default class DeviceManage extends Vue {
       {
         align: "center",
         title: "类型",
-        key: "type",
+        key: "deviceType",
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.type));
+          return h("span", {}, this.$filter.dictConvert(row.deviceType));
         }
       },
       {
         align: "center",
-        title: "是否禁用",
-        key: "status",
+        title: "设备是否启用",
+        key: "deviceValidate",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.status === 0 ? "否" : "是");
+          return h("span", {}, this.$filter.dictConvert(row.deviceValidate));
         }
       },
       {
         align: "center",
-        title: "设备锁状态",
-        key: "validate",
+        title: "设备锁是否启用",
+        key: "deviceStatus",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.validate === 0 ? "启用" : "停用");
+          return h("span", {}, this.$filter.dictConvert(row.deviceStatus));
         }
       }
     ];
   }
-  makeData(row) {
-    this.userName = row.userUsername;
-    this.id = row.id
-    this.getDeviceList();
-  }
-  getDeviceList() {
-    // let userId = this.$store.state.userData.id;
-    this.loginService
-      .getUserDevice({
-        userId: this.id
-      })
+
+  /**
+   * 获取用户设备锁
+   */
+  getUserLocks() {
+    this.sysUserService.findUserDevice([this.userInfo.id])
       .subscribe(
-        data => {
-          this.deviceList = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+        data => this.deviceList = data,
+        err => this.$Message.error(err.msg)
       );
   }
-  moveOut(row) {}
+
+  /**
+   * 设置锁状态
+   */
+  setLockState(id, type) {
+    this.sysUserService.updateUserDevice(type, [id]).subscribe(
+      data => {
+        this.$Message.success("修改成功")
+        this.getUserLocks()
+      },
+      err => this.$Message.error(err.msg)
+    )
+  }
 }
 </script>
 <style lang="less" scoped>
-    .component.device-manage{
-        .form-name{
-            margin-left:20px;
-        }
-    }
-
+.component.device-manage {
+  .form-name {
+    margin-left: 20px;
+  }
+}
 </style>

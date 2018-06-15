@@ -189,31 +189,31 @@ export default class Register extends Vue {
     register.resetFields();
   }
   registerClick() {
-    let registerForm: any = this.$refs["register-form"];
-    registerForm.validate(valid => {
-      if (!valid) return false;
-      if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
-        this.$Message.error("两次密码输入不一致，请重新输入!");
-        return false;
-      }
-      this.sysUserService.userRegister({
-        userUsername: this.registerModel.userUsername,
-        userRealname: this.registerModel.userRealname,
-        userPassword: md5(this.registerModel.confirmPwd),
-        confirmPwd: md5(this.registerModel.confirmPwd),
-        userPhone: this.registerModel.userPhone,
-        company: this.registerModel.company
-      }).subscribe(
-        data => {
-          this.$Message.success("注册成功!");
-          this.$emit("close");
-          this.resetForm();
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-        );
-    });
+    // let registerForm: any = this.$refs["register-form"];
+    // registerForm.validate(valid => {
+    //   if (!valid) return false;
+    //   if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
+    //     this.$Message.error("两次密码输入不一致，请重新输入!");
+    //     return false;
+    //   }
+    //   this.sysUserService.userRegister({
+    //     userUsername: this.registerModel.userUsername,
+    //     userRealname: this.registerModel.userRealname,
+    //     userPassword: md5(this.registerModel.confirmPwd),
+    //     confirmPwd: md5(this.registerModel.confirmPwd),
+    //     userPhone: this.registerModel.userPhone,
+    //     company: this.registerModel.company
+    //   }).subscribe(
+    //     data => {
+    //       this.$Message.success("注册成功!");
+    //       this.$emit("close");
+    //       this.resetForm();
+    //     },
+    //     ({ msg }) => {
+    //       this.$Message.error(msg);
+    //     }
+    //     );
+    // });
   }
 }
 </script>

@@ -29,8 +29,46 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'updateUser',
+    type: requestType.Put
+  },
+  /**
+   * 重置用户密码
+   */
+  resetPassword: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'resetPassword',
+    type: requestType.Put
+  },
+  /**
+   * 获取用户所有设备
+   */
+  findUserDevice: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findUserDevice',
     type: requestType.Post
   },
+  /**
+   * 更改用户设备锁信息
+   */
+  updateUserDevice:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateUserDevice',
+    type: requestType.Put
+  },
+
+
+
+
+
+
+
+
+
+
+
   /**
    * 给用户分配角色
    */
@@ -57,15 +95,6 @@ export default {
     controller: CONTROLLER,
     action: 'findRolesByUserId',
     type: requestType.Get
-  },
-  /**
-   * 用户注册
-   */
-  userRegister: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'userRegister',
-    type: requestType.Post
   },
   /**
    * 查询用户列表菜单
@@ -106,7 +135,7 @@ export default {
   /**
    * 导出用户
    */
-  exportUserList:{
+  exportUserList: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'exportUserList',

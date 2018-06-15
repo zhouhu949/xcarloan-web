@@ -12,7 +12,7 @@
       </i-form-item>
       <i-form-item label="是否启用" prop="orgStatus">
         <i-select v-model="orgModel.orgStatus">
-          <i-option v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
+          <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="orgRemark">
