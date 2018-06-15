@@ -134,6 +134,11 @@ export default {
   ready(state) {
     state.ready = true
   },
+  /**
+   * 更新公司数据
+   * @param state 
+   * @param data 
+   */
   updateCompanyList(state, data) {
     state.companyList = data
   }

@@ -14,7 +14,7 @@ export default {
     type: requestType.Get
   },
   /**
-   * 新增组织机构
+   * 新增组织机构 
    */
   addOrganization: {
     service: SERVICE,
@@ -23,30 +23,21 @@ export default {
     type: requestType.Post
   },
   /**
-   * 删除组织机构
+   * 删除组织机构 
    */
-  deleteDept: {
+  deleteOrganization: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'deleteDept',
+    action: 'deleteOrganization',
     type: requestType.Delete
   },
   /**
-   * 更新组织机构
+   * 更新组织机构 
    */
-  updateDepartment: {
+  editOrganization: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'updateDepartment',
+    action: 'editOrganization',
     type: requestType.Post
-  },
-  /**
-   * 根据机构查公司
-   */
-  findCompanyByDeptId: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findCompanyByDeptId',
-    type: requestType.Get
   }
 }

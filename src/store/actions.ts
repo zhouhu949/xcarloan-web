@@ -60,17 +60,5 @@ export default {
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')
-  },
-
-  /**
-   * 获取公司名称
-   */
-  async getCompanyList({ commit }) {
-    let { CompanyService } = await creatCompanyService()
-    let companyService = new CompanyService()
-    // 获取公司名称
-    companyService.getAllCompany().subscribe(data => {
-      this.commit('updateCompanyList', data)
-    });
   }
 }

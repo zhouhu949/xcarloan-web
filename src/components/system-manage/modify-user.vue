@@ -184,7 +184,7 @@ export default class ModifyUser extends Vue {
   }
 
   mounted() {
-    this.findAllOrganizationByAuth()  
+    // this.findAllOrganizationByAuth()  
   }
 
   cancelUpdate() {
@@ -215,26 +215,26 @@ export default class ModifyUser extends Vue {
     this.modifyModel.userStatus = data.userStatus;
     this.findAllOrganizationByAuth()
     this.getOwnerData();
-    // 根据deptId获取公司名称
-    this.sysOrgService
-      .findCompanyByDeptId({
-        deptId: data.deptId
-      })
-      .subscribe(
-      data => (this.modifyModel.companyName = data.companyChinaname)
-      );
+    // // 根据deptId获取公司名称
+    // this.sysOrgService
+    //   .findCompanyByDeptId({
+    //     deptId: data.deptId
+    //   })
+    //   .subscribe(
+    //   data => (this.modifyModel.companyName = data.companyChinaname)
+    //   );
   }
   /**
    * 根据机构查询公司
    */
   changeOrg(val) {
-    this.sysOrgService
-      .findCompanyByDeptId({
-        deptId: val
-      })
-      .subscribe(
-      data => (this.modifyModel.companyName = data.companyChinaname)
-      );
+    // this.sysOrgService
+    //   .findCompanyByDeptId({
+    //     deptId: val
+    //   })
+    //   .subscribe(
+    //   data => (this.modifyModel.companyName = data.companyChinaname)
+    //   );
   }
 
   format(labels, selectedData) {

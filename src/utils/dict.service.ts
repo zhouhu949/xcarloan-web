@@ -3,15 +3,15 @@ import store from '~/store'
 export class DictService {
     /**
      * 获取字典数据
-     * @param codes
+     * @param id
      */
-    static getDictData(...codes) {
+    static getDictData(...ids) {
         let results: Array<string> = []
 
         // 获取字典项
-        codes.forEach(code => {
+        ids.forEach(id => {
             let items = store.state.dictData
-                .filter(x => x.dictId === code)
+                .filter(x => x.dictId === id)
                 .map(x => ({
                     value: x.id,
                     label: x.dictItemName,

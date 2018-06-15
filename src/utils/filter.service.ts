@@ -33,7 +33,7 @@ export class FilterService {
       target = dictData.find(x => x.id === id)
     }
 
-    return target ? target.name : ""
+    return target ? target.dictItemName : ""
   }
 
   /**

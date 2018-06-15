@@ -13,39 +13,44 @@ export class SysOrgService {
   addOrganization(data) {
     return this.netService.send({
       server: manageService.sysOrgController.addOrganization,
-      data: data
+      data: data,
+      loading: true
     })
   }
   /**
    * 删除组织机构
    */
-  deleteDept({ deptId }) {
+  deleteOrganization(orgId) {
     return this.netService.send({
-      server: manageService.sysOrgController.deleteDept,
+      server: manageService.sysOrgController.deleteOrganization,
+      append: orgId,
+      loading: true
+    })
+  }
+  /**
+   * 更新组织机构
+   */
+  editOrganization(data) {
+    return this.netService.send({
+      server: manageService.sysOrgController.editOrganization,
       data: {
-        deptId: deptId
-      }
+        id: data.id,
+        orgPid: data.orgPid,
+        orgName: data.orgName,
+        orgRemark: data.orgRemark,
+        orgStatus: data.orgStatus,
+        orgType: data.orgType
+      },
+      loading: true
     })
   }
 
   /**
-   * 更新组织机构
-   */
-  updateDepartment(data) {
-    return this.netService.send({
-      server: manageService.sysOrgController.updateDepartment,
-      data: data
-    })
-  }
-  /**
    * 根据机构查询公司
    */
-  findCompanyByDeptId({ deptId }) {
+  findAllOrganizationByAuth() {
     return this.netService.send({
-      server: manageService.sysOrgController.findCompanyByDeptId,
-      data: {
-        deptId: deptId
-      }
+      server: manageService.sysOrgController.findAllOrganizationByAuth
     })
   }
 }
