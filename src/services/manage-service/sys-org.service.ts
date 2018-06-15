@@ -3,16 +3,16 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
-export class DepartmentService {
+export class SysOrgService {
   @Inject(NetService)
   private netService: NetService
 
   /**
    * 新增组织机构
    */
-  createDepartment(data) {
+  addOrganization(data) {
     return this.netService.send({
-      server: manageService.departmentController.createDepartment,
+      server: manageService.sysOrgController.addOrganization,
       data: data
     })
   }
@@ -21,7 +21,7 @@ export class DepartmentService {
    */
   deleteDept({ deptId }) {
     return this.netService.send({
-      server: manageService.departmentController.deleteDept,
+      server: manageService.sysOrgController.deleteDept,
       data: {
         deptId: deptId
       }
@@ -33,7 +33,7 @@ export class DepartmentService {
    */
   updateDepartment(data) {
     return this.netService.send({
-      server: manageService.departmentController.updateDepartment,
+      server: manageService.sysOrgController.updateDepartment,
       data: data
     })
   }
@@ -42,7 +42,7 @@ export class DepartmentService {
    */
   findCompanyByDeptId({ deptId }) {
     return this.netService.send({
-      server: manageService.departmentController.findCompanyByDeptId,
+      server: manageService.sysOrgController.findCompanyByDeptId,
       data: {
         deptId: deptId
       }

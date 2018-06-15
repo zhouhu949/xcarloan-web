@@ -31,13 +31,13 @@ import Vue from "vue";
 import md5 from "md5";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { UserService } from "~/services/manage-service/user.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 import { Form } from "iview";
 @Component({
   components: {}
 })
 export default class Register extends Vue {
-  @Dependencies(UserService) private userService: UserService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
   private registerModel: any = {
     userUsername: "",
     userRealname: "",
@@ -196,7 +196,7 @@ export default class Register extends Vue {
         this.$Message.error("两次密码输入不一致，请重新输入!");
         return false;
       }
-      this.userService.userRegister({
+      this.sysUserService.userRegister({
         userUsername: this.registerModel.userUsername,
         userRealname: this.registerModel.userRealname,
         userPassword: md5(this.registerModel.confirmPwd),

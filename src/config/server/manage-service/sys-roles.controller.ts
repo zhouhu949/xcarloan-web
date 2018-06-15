@@ -1,7 +1,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'role'
+const CONTROLLER = 'sysRolesController'
 
 export default {
   /**

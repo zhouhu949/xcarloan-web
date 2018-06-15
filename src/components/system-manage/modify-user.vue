@@ -82,7 +82,7 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { Dependencies } from "~/core/decorator";
-import { DepartmentService } from "~/services/manage-service/department.service";
+import { SysOrgService } from "~/services/manage-service/sys-org.service";
 import { CommonService } from "~/utils/common.service";
 
 @Component({
@@ -90,7 +90,7 @@ import { CommonService } from "~/utils/common.service";
 })
 export default class ModifyUser extends Vue {
   @Dependencies(ManageService) private manageService: ManageService;
-  @Dependencies(DepartmentService) private departmentService: DepartmentService;
+  @Dependencies(SysOrgService) private sysOrgService: SysOrgService;
   @Prop() modifyUserModel: any;
   private modifyModel: any = {
     userUsername: "",
@@ -120,17 +120,17 @@ export default class ModifyUser extends Vue {
       deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur" }
     };
   }
-  getAllDepartment(){
+  findAllOrganizationByAuth(){
     //获取所有组织机构
     // 重组部门数据，以适应联级选择器
-    this.manageService.getAllDepartment().subscribe(
+    this.manageService.findAllOrganizationByAuth().subscribe(
       data => {
-         let stairList = []
+        let stairList = []
           for (let i of data) {
-            if (i.deptPid == 0) {
+            if (i.orgPid == 0) {
               stairList.push({
-                pid: i.deptPid,
-                label: i.deptName,
+                pid: i.orgPid,
+                label: i.orgName,
                 id: i.id,
                 value: i.id,
                 children: [],
@@ -139,10 +139,10 @@ export default class ModifyUser extends Vue {
           }
           for (let i of stairList) {
             for (let s of data) {
-              if (i.id == s.deptPid) {
+              if (i.id == s.orgPid) {
                 i.children.push({
-                  pid: s.deptPid,
-                  label: s.deptName,
+                  pid: s.orgPid,
+                  label: s.orgName,
                   id: s.id,
                   value: s.id,
                   children: [],
@@ -152,10 +152,10 @@ export default class ModifyUser extends Vue {
           }
           for (let i of stairList[0].children) {
             for (let s of data) {
-              if (i.id == s.deptPid) {
+              if (i.id == s.orgPid) {
                 i.children.push({
-                  pid: s.deptPid,
-                  label: s.deptName,
+                  pid: s.orgPid,
+                  label: s.orgName,
                   id: s.id,
                   value: s.id,
                   children: [],
@@ -177,14 +177,14 @@ export default class ModifyUser extends Vue {
         //   }
         // })
         // this.depatmentData = CommonService.departmentData(treeSource)
-        console.log(this.depatmentData)
+        // console.log(this.depatmentData)
       },
       err => this.$Message.error(err.msg)
     );
   }
 
   mounted() {
-    this.getAllDepartment()  
+    this.findAllOrganizationByAuth()  
   }
 
   cancelUpdate() {
@@ -213,10 +213,10 @@ export default class ModifyUser extends Vue {
     this.modifyModel.userManager = data.userManager;
     this.modifyModel.userRemark = data.userRemark;
     this.modifyModel.userStatus = data.userStatus;
-    this.getAllDepartment()
+    this.findAllOrganizationByAuth()
     this.getOwnerData();
     // 根据deptId获取公司名称
-    this.departmentService
+    this.sysOrgService
       .findCompanyByDeptId({
         deptId: data.deptId
       })
@@ -228,7 +228,7 @@ export default class ModifyUser extends Vue {
    * 根据机构查询公司
    */
   changeOrg(val) {
-    this.departmentService
+    this.sysOrgService
       .findCompanyByDeptId({
         deptId: val
       })

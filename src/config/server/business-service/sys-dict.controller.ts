@@ -1,5 +1,5 @@
 const SERVICE = 'business-service'
-const CONTROLLER = 'dataDictController'
+const CONTROLLER = 'sysDictController'
 
 export default  {
    /**

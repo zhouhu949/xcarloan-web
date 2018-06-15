@@ -4,8 +4,8 @@
     <i-form :label-width="110" class="addOrg" ref="add-org-form" :model="addModel" :rules="rules">
       <i-row>
         <i-col :span="24">
-          <i-form-item label="机构名称" prop="deptName">
-            <i-input v-model="addModel.deptName"></i-input>
+          <i-form-item label="机构名称" prop="orgName">
+            <i-input v-model="addModel.orgName"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -20,10 +20,10 @@
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="状态" prop="deptStatus">
-            <i-select v-model="addModel.deptStatus">
-              <i-option label="启用" :value="0" :key="0"></i-option>
-              <i-option label="停用" :value="1" :key="1"></i-option>
+          <i-form-item label="状态" prop="orgStatus">
+            <i-select v-model="addModel.orgStatus">
+              <i-option label="启用" :value="10002" :key="10002"></i-option>
+              <i-option label="停用" :value="10003" :key="10003"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -39,8 +39,8 @@
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="备注" prop="deptRemark">
-            <i-input v-model="addModel.deptRemark" type="textarea"></i-input>
+          <i-form-item label="备注" prop="orgRemark">
+            <i-input v-model="addModel.orgRemark" type="textarea"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -52,18 +52,18 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { DepartmentService } from "~/services/manage-service/department.service";
+import { SysOrgService } from "~/services/manage-service/sys-org.service";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Dependencies } from "~/core/decorator";
 @Component({
   components: {}
 })
 export default class AddOrg extends Vue {
-  @Dependencies(DepartmentService) private departmentService: DepartmentService;
+  @Dependencies(SysOrgService) private departmentService: SysOrgService;
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Prop() addOrgModel: any;
   private rules: any = {
-    deptName: [
+    orgName: [
       {
         required: true,
         trigger: "blur",
@@ -74,12 +74,12 @@ export default class AddOrg extends Vue {
   private getAllCompany: any;
   private companyObject: Array<Object> = []; // 公司信息
   private addModel: any = {
-    deptName: "",
+    orgName: "",
     deptLevel: 402,
-    deptStatus: 0,
+    orgStatus: 0,
     companyId: "",
-    deptRemark: "",
-    deptPid: 1
+    orgRemark: "",
+    orgPid: 1
   };
   private companyId:any = '' //判断是否点击的是机构数的添加机构
   created() {}
@@ -88,7 +88,7 @@ export default class AddOrg extends Vue {
     _addOrg.validate(valid => {
       if (valid) {
         if (this.addOrgModel && this.addOrgModel.id) {
-          this.addModel.deptPid = this.addOrgModel.id;
+          this.addModel.orgPid = this.addOrgModel.id;
         }
         this.addModel.deptCode = this.addOrgModel.deptCode;
         this.departmentService.createDepartment(this.addModel).subscribe(

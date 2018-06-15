@@ -1,25 +1,25 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'user'
+const CONTROLLER = 'sysUserController'
 
 export default {
   /**
    * 分页查询角色列表
    */
-  getUsersByDeptPage: {
+  findUserByOrgAuth: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getUsersByDeptPage',
+    action: 'findUserByOrgAuth',
     type: requestType.Get
   },
   /**
    * 新增用户
    */
-  createUser: {
+  addUser: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'createUser',
+    action: 'addUser',
     type: requestType.Post
   },
   /**

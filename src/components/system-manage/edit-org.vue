@@ -52,14 +52,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { DepartmentService } from "~/services/manage-service/department.service";
+import { SysOrgService } from "~/services/manage-service/sys-org.service";
 import { Dependencies } from "~/core/decorator";
 import { CompanyService } from "~/services/manage-service/company.service";
 @Component({
   components: {}
 })
 export default class EditOrg extends Vue {
-  @Dependencies(DepartmentService) private departmentService: DepartmentService;
+  @Dependencies(SysOrgService) private departmentService: SysOrgService;
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Prop() deptObject;
   @Watch("deptObject")

@@ -10,7 +10,7 @@ import Component from "vue-class-component";
 import Dialog from "~/core/dialog";
 import { Prop, Emit, Model } from "vue-property-decorator";
 import { Watch } from "vue-property-decorator";
-import { UserService } from "~/services/manage-service/user.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 import { Dependencies } from "~/core/decorator";
 import clone from "clone";
 
@@ -18,7 +18,7 @@ import clone from "clone";
   components: {}
 })
 export default class DataBoxConfig extends Vue {
-  @Dependencies(UserService) private userService: UserService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Model("visibleChange") visible: boolean;
 
   @Emit("visibleChange")
@@ -198,7 +198,7 @@ export default class DataBoxConfig extends Vue {
   }
 
   submit(callback) {
-    this.userService
+    this.sysUserService
       .userAllocateListbox(this.id, this.remoteColumn)
       .subscribe(data => {
         this.closeDialog();

@@ -1,13 +1,13 @@
 import Vue from 'vue'
 
-const creatDataDictService = () => import('~/services/manage-service/data-dict.service')
+const creatSysDictService = () => import('~/services/manage-service/sys-dict.service')
 const createLoginService = () => import('~/services/manage-service/login.service')
 
 export default async function ({ store, router }) {
-  let { DataDictService } = await creatDataDictService()
+  let { SysDictService } = await creatSysDictService()
   let { LoginService } = await createLoginService()
 
-  let dataDictService = new DataDictService()
+  let sysDictService = new SysDictService()
   let loginService = new LoginService()
 
   // 启动数据初始化
@@ -47,7 +47,7 @@ export default async function ({ store, router }) {
       }
 
       // 更新用户数据
-      loginService.getUserByToken().subscribe((data) => {
+      loginService.getUserInfoByToken().subscribe((data) => {
         // 更新用户控件资源
         store.dispatch('updateUserLoginData', data)
         reslove()
@@ -65,7 +65,7 @@ export default async function ({ store, router }) {
    */
   function updateDictData() {
     return new Promise((reslove, reject) => {
-      dataDictService.getAll().subscribe((data) => {
+      sysDictService.getAll().subscribe((data) => {
         store.commit('updateDictData', data)
         reslove()
       }, () => {

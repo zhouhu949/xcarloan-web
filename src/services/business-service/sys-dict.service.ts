@@ -2,7 +2,7 @@ import { businessService } from '~/config/server'
 import { NetService } from '~/utils/net.service'
 import { Inject } from "~/core/decorator";
 
-export class DataDictSerivce {
+export class SysDictSerivce {
 
   @Inject()
   private netService: NetService
@@ -12,7 +12,7 @@ export class DataDictSerivce {
    */
   getDictHash() {
     return this.netService.send({
-      server: businessService.dataDictController.getDictHash,
+      server: businessService.sysDictController.getDictHash,
     })
   }
 
@@ -21,7 +21,7 @@ export class DataDictSerivce {
   */
   getDictData() {
     return this.netService.send({
-      server: businessService.dataDictController.getDictData,
+      server: businessService.sysDictController.getDictData,
     })
   }
 }

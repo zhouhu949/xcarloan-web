@@ -1,7 +1,9 @@
 <!--机构与用户管理-->
 <template>
     <section class="page org-user-manage">
-        <page-header title="机构与用户管理" hidden-print @on-export="exportName">
+        <!-- <page-header title="机构与用户管理" hidden-print @on-export="exportName"> -->
+        <!-- 暂时取消导出功能 -->
+        <page-header title="机构与用户管理" hidden-print hidden-export>
             <i-button class="blueButton" @click="addNewUser">新增用户</i-button>
             <i-button class="blueButton" @click="buttonOnlyOne1">批量分配角色</i-button>
             <i-button class="blueButton" @click="buttonOnlyOne2">批量管理设备</i-button>
@@ -133,13 +135,13 @@ import OrganizeTree from '~/components/common/organize-tree.vue'
 import { Dependencies } from '~/core/decorator'
 import { RoleService } from '~/services/role-service/role.service'
 import { ManageService } from '~/services/manage-service/manage.service'
-import { DepartmentService } from '~/services/manage-service/department.service'
+import { SysOrgService } from '~/services/manage-service/sys-org.service'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { FilterService } from '~/utils/filter.service'
 import { LoginService } from '~/services/manage-service/login.service'
 import { Modal } from 'iview'
-import { UserService } from '~/services/manage-service/user.service'
+import { SysUserService } from '~/services/manage-service/sys-user.service'
 import { CommonService } from '~/utils/common.service'
 
 @Layout('workspace')
@@ -163,10 +165,10 @@ import { CommonService } from '~/utils/common.service'
 export default class OrgUserManage extends Page {
   // @Dependencies(RoleService) private roleService: RoleService;
   @Dependencies(ManageService) private manageService: ManageService
-  @Dependencies(DepartmentService) private departmentService: DepartmentService
+  @Dependencies(SysOrgService) private departmentService: SysOrgService
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(LoginService) private loginService: LoginService
-  @Dependencies(UserService) private userService: UserService
+  @Dependencies(SysUserService) private sysUserService: SysUserService
   private columns1: any
   private userList: Array<Object> = []
   private columns2: any
@@ -205,7 +207,7 @@ export default class OrgUserManage extends Page {
   }
   private companyId: any = 0
   mounted() {
-    this.manageService.getAllDepartment().subscribe(
+    this.manageService.findAllOrganizationByAuth().subscribe(
       data => {
         this.deptObject = data[0]
         this.dataList = data
@@ -230,7 +232,7 @@ export default class OrgUserManage extends Page {
       status: '',
       phone: ''
     }
-    this.manageService.getAllDepartment().subscribe(data => {
+    this.manageService.findAllOrganizationByAuth().subscribe(data => {
       this.deptObject = data[0]
       this.dataList = data
     })
@@ -238,7 +240,7 @@ export default class OrgUserManage extends Page {
       userName: '',
       realName: '',
       status: '',
-      deptId: 1
+      orgId: 1
     }
     this.columns1 = [
       {
@@ -442,7 +444,7 @@ export default class OrgUserManage extends Page {
         align: 'center',
         title: '所属机构',
         editable: true,
-        key: 'deptName',
+        key: 'orgName',
         minWidth: this.$common.getColumnWidth(4)
       },
       {
@@ -452,9 +454,9 @@ export default class OrgUserManage extends Page {
         key: 'status',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) => {
-          if (row.userStatus === 0) {
+          if (row.userStatus === 10022) {
             return h('span', {}, '启用')
-          } else if (row.userStatus === 1) {
+          } else if (row.userStatus === 10023) {
             return h('span', {}, '停用')
           }
         }
@@ -501,23 +503,13 @@ export default class OrgUserManage extends Page {
         align: 'center',
         editable: true,
         title: '创建时间',
-        key: 'operateTime',
+        key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
+            FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss')
           )
-        }
-      },
-      {
-        align: 'center',
-        title: '数据权限',
-        editable: true,
-        key: 'userManager',
-        minWidth: this.$common.getColumnWidth(6),
-        render: (h, { row, column, index }) => {
-          return h('span', {}, this.$dict.getDictName(row.userManager))
         }
       }
     ]
@@ -531,7 +523,7 @@ export default class OrgUserManage extends Page {
       this.$Message.warning('请选择导出项！')
     } else {
       let id: any = this.multipleSelection.map(v => v.id)
-      this.userService.exportUserList({ userIds: id }).subscribe(
+      this.sysUserService.exportUserList({ userIds: id }).subscribe(
         data => {
           CommonService.downloadFile(data, '导出用户')
           this.$Message.success('导出成功！')
@@ -589,7 +581,7 @@ export default class OrgUserManage extends Page {
     this.modifyUserModel = row
     let _modifyUser: any = this.$refs['modify-user']
     _modifyUser.getData(this.modifyUserModel)
-    _modifyUser.getAllDepartment()
+    _modifyUser.findAllOrganizationByAuth()
   }
 
   resetPwd(row) {
@@ -694,7 +686,7 @@ export default class OrgUserManage extends Page {
       .subscribe(
         data => {
           this.userList = data.filter(x => {
-            return x.userStatus == 0
+            return x.userStatus == 10022
           })
         },
         ({ msg }) => {
@@ -719,7 +711,7 @@ export default class OrgUserManage extends Page {
    * 树change
    */
   onChange(value) {
-    this.userListModel.deptId = value.id
+    this.userListModel.orgId = value.id
     this.deptLevel = value.deptLevel
     this.deptObject = value
     this.addOrgModel = value
@@ -776,7 +768,7 @@ export default class OrgUserManage extends Page {
   }
 
   getTree() {
-    this.manageService.getAllDepartment().subscribe(
+    this.manageService.findAllOrganizationByAuth().subscribe(
       data => {
         this.deptObject = data[0]
         this.dataList = data
@@ -831,7 +823,7 @@ export default class OrgUserManage extends Page {
   }
 
   editDept(val) {
-    console.log(val, 778)
+    // console.log(val, 778)
     this.editNewOrgModal = true
     let _edit: any = this.$refs['edit-org']
     _edit.getDeptInfo(val)
@@ -886,7 +878,7 @@ export default class OrgUserManage extends Page {
       userName: '',
       realName: '',
       status: '',
-      deptId: 1
+      orgId: 1
     }
   }
 }

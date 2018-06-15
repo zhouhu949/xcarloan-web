@@ -4,7 +4,7 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import store from "~/store"
 
-export class UserService {
+export class SysUserService {
   @Inject(NetService)
   private netService: NetService
 
@@ -13,7 +13,7 @@ export class UserService {
    */
   findRolesByUserId({ userId }) {
     return this.netService.send({
-      server: manageService.userController.findRolesByUserId,
+      server: manageService.sysUserController.findRolesByUserId,
       data: {
         userId: userId
       }
@@ -25,7 +25,7 @@ export class UserService {
    */
   userRegister(data) {
     return this.netService.send({
-      server: manageService.userController.userRegister,
+      server: manageService.sysUserController.userRegister,
       data
     })
   }
@@ -34,7 +34,7 @@ export class UserService {
    */
   findListboxByUserIdAndResoPid(resoPid) {
     return this.netService.send({
-      server: manageService.userController.findListboxByUserIdAndResoPid,
+      server: manageService.sysUserController.findListboxByUserIdAndResoPid,
       data: {
         userId: store.state.userData.id,
         resoPid: resoPid
@@ -46,7 +46,7 @@ export class UserService {
    */
   userAllocateListbox(id, data) {
     return this.netService.send({
-      server: manageService.userController.userAllocateListbox,
+      server: manageService.sysUserController.userAllocateListbox,
       data: {
         userId: store.state.userData.id,
         resoPid: id,
@@ -59,7 +59,7 @@ export class UserService {
    */
   userAllocatePrivileges(data) {
     return this.netService.send({
-      server: manageService.userController.userAllocatePrivileges,
+      server: manageService.sysUserController.userAllocatePrivileges,
       data: data
     })
   }
@@ -68,7 +68,7 @@ export class UserService {
    */
   findUserPrivileges({ userId }) {
     return this.netService.send({
-      server: manageService.userController.findUserPrivileges,
+      server: manageService.sysUserController.findUserPrivileges,
       data: {
         userId: userId
       }
@@ -79,7 +79,7 @@ export class UserService {
    */
   exportUserList(data) {
     return this.netService.send({
-      server: manageService.userController.exportUserList,
+      server: manageService.sysUserController.exportUserList,
       data: data
     })
   }

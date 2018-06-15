@@ -25,10 +25,10 @@ export default {
   /**
    * 重置密码
    */
-  getUserByToken: {
+  getUserInfoByToken: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getUserByToken',
+    action: 'getUserInfoByToken',
     type: requestType.Get
   },
   /**

@@ -2,7 +2,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'dataDict'
+const CONTROLLER = 'sysDict'
 
 export default {
   /**

@@ -1,25 +1,25 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'department'
+const CONTROLLER = 'sysOrgController'
 
 export default {
   /**
    * 获取组织机构
    */
-  getAllDepartment: {
+  findAllOrganizationByAuth: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getAllDepartment',
+    action: 'findAllOrganizationByAuth',
     type: requestType.Get
   },
   /**
    * 新增组织机构
    */
-  createDepartment: {
+  addOrganization: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'createDepartment',
+    action: 'addOrganization',
     type: requestType.Post
   },
   /**

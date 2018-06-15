@@ -11,9 +11,9 @@ export class ManageService {
     /**
      * 获取组织
      */
-    getAllDepartment() {
+    findAllOrganizationByAuth() {
         return this.netService.send({
-            server: manageService.departmentController.getAllDepartment
+            server: manageService.sysOrgController.findAllOrganizationByAuth
         })
     }
     /**
@@ -22,7 +22,7 @@ export class ManageService {
      */
     queryRolePage({ roleName, roleStatus, userId }, page) {
         return this.netService.send({
-            server: manageService.roleController.queryRolePage,
+            server: manageService.sysRolesController.queryRolePage,
             data: {
                 roleName: roleName,
                 roleStatus: roleStatus,
@@ -37,7 +37,7 @@ export class ManageService {
      */
     getUsersByDeptPage(data, page) {
         return this.netService.send({
-            server: manageService.userController.getUsersByDeptPage,
+            server: manageService.sysUserController.findUserByOrgAuth,
             data: data,
             page: page
         })
@@ -45,9 +45,9 @@ export class ManageService {
     /**
      * 新增用户
      */
-    createUser(data) {
+    addUser(data) {
         return this.netService.send({
-            server: manageService.userController.createUser,
+            server: manageService.sysUserController.addUser,
             data: data
         })
     }
@@ -56,7 +56,7 @@ export class ManageService {
      */
     updateUser(data) {
         return this.netService.send({
-            server: manageService.userController.updateUser,
+            server: manageService.sysUserController.updateUser,
             data: data
         })
     }
@@ -65,7 +65,7 @@ export class ManageService {
      */
     updateRole(data) {
         return this.netService.send({
-            server: manageService.roleController.updateRole,
+            server: manageService.sysRolesController.updateRole,
             data: data
         })
     }
@@ -74,7 +74,7 @@ export class ManageService {
      */
     createRole(data) {
         return this.netService.send({
-            server: manageService.roleController.createRole,
+            server: manageService.sysRolesController.createRole,
             data: data
         })
     }
@@ -83,7 +83,7 @@ export class ManageService {
      */
     deleteRole({ roleId }) {
         return this.netService.send({
-            server: manageService.roleController.deleteRole,
+            server: manageService.sysRolesController.deleteRole,
             data: {
                 roleId: roleId
             }
@@ -94,7 +94,7 @@ export class ManageService {
      */
     getUserByRoleIdPage(data, page) {
         return this.netService.send({
-            server: manageService.roleController.getUserByRoleIdPage,
+            server: manageService.sysRolesController.getUserByRoleIdPage,
             data: data,
             page: page
         })
@@ -163,7 +163,7 @@ export class ManageService {
      */
     userAllocateRoles(data) {
         return this.netService.send({
-            server: manageService.userController.userAllocateRoles,
+            server: manageService.sysUserController.userAllocateRoles,
             data: data
         })
     }
@@ -174,7 +174,7 @@ export class ManageService {
      */
     userBatchAllocateRoles(data) {
         return this.netService.send({
-            server: manageService.userController.userBatchAllocateRoles,
+            server: manageService.sysUserController.userBatchAllocateRoles,
             data: data
         })
     }

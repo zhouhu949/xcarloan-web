@@ -1,7 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-export class RoleService {
+export class SysRolesService {
     @Inject()
     private netService: NetService
 
@@ -10,7 +10,7 @@ export class RoleService {
      */
     queryRolePage(data, page) {
         return this.netService.send({
-            server: manageService.roleController.queryRolePage,
+            server: manageService.sysRolesController.queryRolePage,
             data: data,
             page: page
         })
@@ -20,7 +20,7 @@ export class RoleService {
      */
     updateRole(data) {
         return this.netService.send({
-            server: manageService.roleController.updateRole,
+            server: manageService.sysRolesController.updateRole,
             data: data
         })
     }
@@ -29,7 +29,7 @@ export class RoleService {
    */
     createRole(data) {
         return this.netService.send({
-            server: manageService.roleController.createRole,
+            server: manageService.sysRolesController.createRole,
             data: data
         })
     }
@@ -38,7 +38,7 @@ export class RoleService {
   */
     deleteRole(data) {
         return this.netService.send({
-            server: manageService.roleController.deleteRole,
+            server: manageService.sysRolesController.deleteRole,
             data: data
         })
     }
@@ -47,7 +47,7 @@ export class RoleService {
    */
     getUserByRoleIdPage(data, page) {
         return this.netService.send({
-            server: manageService.roleController.getUserByRoleIdPage,
+            server: manageService.sysRolesController.getUserByRoleIdPage,
             data: data,
             page: page
         })
@@ -57,7 +57,7 @@ export class RoleService {
    */
     findResourceByRoleId({ roleId }) {
         return this.netService.send({
-            server: manageService.roleController.findResourceByRoleId,
+            server: manageService.sysRolesController.findResourceByRoleId,
             data: {
                 roleId: roleId
             }
@@ -68,7 +68,7 @@ export class RoleService {
      */
     roleAllocateResources({ roleId, resourcesId }) {
         return this.netService.send({
-            server: manageService.roleController.roleAllocateResources,
+            server: manageService.sysRolesController.roleAllocateResources,
             data: {
                 roleId: roleId,
                 resourcesId: resourcesId
@@ -80,7 +80,7 @@ export class RoleService {
    */
   exportRole(data) {
     return this.netService.send({
-      server: manageService.roleController.exportRole,
+      server: manageService.sysRolesController.exportRole,
       data: data
     })
   }

@@ -11,10 +11,10 @@ export class DictService {
         // 获取字典项
         codes.forEach(code => {
             let items = store.state.dictData
-                .filter(x => x.typeCode === code)
+                .filter(x => x.dictId === code)
                 .map(x => ({
                     value: x.id,
-                    label: x.name
+                    label: x.dictItemName,
                 }))
 
             results.push(...items)

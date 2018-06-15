@@ -3,7 +3,7 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
-export class DataDictService {
+export class SysDictService {
   @Inject(NetService)
   private netService: NetService
 
@@ -12,7 +12,7 @@ export class DataDictService {
    */
   getDataDictByTypeCode({ typeCode }) {
     return this.netService.send({
-      server: manageService.dataDictController.getDataDictByTypeCode,
+      server: manageService.sysDictController.getDataDictByTypeCode,
       data: {
         typeCode: typeCode
       }
@@ -23,7 +23,7 @@ export class DataDictService {
    */
   createOrModifyDataDict(data) {
     return this.netService.send({
-      server: manageService.dataDictController.createOrModifyDataDict,
+      server: manageService.sysDictController.createOrModifyDataDict,
       data: data
     })
   }
@@ -32,7 +32,7 @@ export class DataDictService {
    */
   deleteDataDict({ id }) {
     return this.netService.send({
-      server: manageService.dataDictController.deleteDataDict,
+      server: manageService.sysDictController.deleteDataDict,
       data: {
         id: id
       }
@@ -43,7 +43,7 @@ export class DataDictService {
   */
   getAllDataDict(data, page) {
     return this.netService.send({
-      server: manageService.dataDictController.getAllDataDict,
+      server: manageService.sysDictController.getAllDataDict,
       data: data,
       page: page
     })
@@ -53,13 +53,13 @@ export class DataDictService {
   */
   getAll() {
     return this.netService.send({
-      server: manageService.dataDictController.getAll,
+      server: manageService.sysDictController.getAll,
     })
   }
 
   getDictHash() {
     return this.netService.send({
-      server: manageService.dataDictController.getDictHash,
+      server: manageService.sysDictController.getDictHash,
     })
   }
 
@@ -68,7 +68,7 @@ export class DataDictService {
   */
   getDictData() {
     return this.netService.send({
-      server: manageService.dataDictController.getDictData,
+      server: manageService.sysDictController.getDictData,
     })
   }
 
@@ -77,7 +77,7 @@ export class DataDictService {
   */
   getDataDictByTypeCodeWithPage(data, page) {
     return this.netService.send({
-      server: manageService.dataDictController.getDataDictByTypeCodeWithPage,
+      server: manageService.sysDictController.getDataDictByTypeCodeWithPage,
       data: data,
       page: page
     })

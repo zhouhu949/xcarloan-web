@@ -18,7 +18,7 @@ import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { DataDictService } from "~/services/manage-service/data-dict.service";
+import { SysDictService } from "~/services/manage-service/sys-dict.service";
 import { Prop } from "vue-property-decorator";
 import { PageService } from "~/utils/page.service";
 
@@ -29,7 +29,7 @@ import { PageService } from "~/utils/page.service";
   }
 })
 export default class WaitHandleCase extends Vue {
-  @Dependencies(DataDictService) private dataDictService: DataDictService;
+  @Dependencies(SysDictService) private sysDictService: SysDictService;
   @Dependencies(PageService) private pageService: PageService;
 
   @Prop() row: Object;

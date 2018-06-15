@@ -6,7 +6,7 @@
       <div>
         <div style="position: relative;left: 350px;color:#fff;text-align:center;margin-bottom:28px;">
           <img src="/static/images/common/logo.png" alt="">
-          <span style="font-size:12px;margin-left:4px;">v2.0.0</span>
+          <span style="font-size:12px;margin-left:4px;">v3.0.0</span>
         </div>
         <div class="loginContainer">
           <div style="font-size:20px;color:#1D4F8B;font-weight:bold;margin-bottom:20px;margin-left:56px;font-family:AdobeHeitiStd-Regular">登录</div>
@@ -134,7 +134,7 @@ export default class Login extends Vue {
         .login({
           username: this.loginModel.username,
           password: this.loginModel.password,
-          loginDevice: 414,
+          loginDevice: 10020,
           loginType: 411
         })
         .subscribe(
