@@ -198,12 +198,12 @@ export default class DataBoxConfig extends Vue {
   }
 
   submit(callback) {
-    this.sysUserService
-      .userAllocateListbox(this.id, this.remoteColumn)
-      .subscribe(data => {
-        this.closeDialog();
-        callback();
-      });
+    // this.sysUserService
+    //   .userAllocateListbox(this.id, this.remoteColumn)
+    //   .subscribe(data => {
+    //     this.closeDialog();
+    //     callback();
+    //   });
   }
 }
 </script>

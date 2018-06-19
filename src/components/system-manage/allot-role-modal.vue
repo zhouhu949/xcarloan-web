@@ -1,159 +1,135 @@
 <!--分配角色-->
 <template>
-  <section class="component org-user-manage">
-    <span>角色名称：</span>
-    <i-input class="form-input" v-model="roleListModel.roleName"></i-input>
-    <i-button class="form-button" @click="getRoleList">搜索</i-button>
-    <data-box :columns="columns1" :data="roleList" ref="databox" @onPageChange="getRoleList" :page="pageService" :noDefaultRow="true"></data-box>
+  <section class="component user-role-manage">
+    <data-form ref="user-search-form" hidden-date-search :model="model" @on-search="searchRolesByAuth" :page="pageService">
+      <template slot="input">
+        <i-form-item prop="roleName" label="角色名：">
+          <i-input v-model="model.roleName" placeholder="请输入角色名称"></i-input>
+        </i-form-item>
+        <i-form-item prop="roleStatus" label="是否启用：">
+          <i-select v-model="model.roleStatus">
+            <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="columns1" :data="dataSet" ref="databox" @on-selection-change="onSelectionChanged" @onPageChange="searchRolesByAuth" :page="pageService" :height="500"></data-box>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
-import { ManageService } from "~/services/manage-service/manage.service";
+import { SysRoleService } from "~/services/manage-service/sys-role.service";
 import { SysUserService } from "~/services/manage-service/sys-user.service";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 @Component({
-  components: {
-    DataBox
-  }
+  components: {}
 })
 export default class AllotRoleModal extends Vue {
-  @Dependencies(ManageService) private manageService: ManageService;
+  @Dependencies(SysRoleService) private sysRoleService: SysRoleService;
   @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Dependencies(PageService) private pageService: PageService;
-  private columns1: any;
-  private roleList: Array<any> = [];
-  private roleListModel: any = {
-    roleName: "",
-    userId: ""
-  };
-  private allotRoleModel: any; // 单个分配角色model
-  private batchAllotModel: any; // 批量分配角色model
-  private multipleRoleId; // 所选角色array
-  private checkRoleId: Array<any> = []; // 反显的角色id
-
-  private checkUserId: number = 0;
-  @Prop() userId: any; // 单个用户id
-  @Prop() batchAllotFlag: Boolean;
   @Prop() userIds: any;
-  created() {
-    this.allotRoleModel = {
-      userId: "",
-      rolesId: []
-    };
-    this.batchAllotModel = {
-      usersId: [],
-      rolesId: []
-    };
-    this.columns1 = [
-      {
-        align: "center",
-        type: "selection",
-        minWidth: 60
-      },
-      {
-        align: "center",
-        title: "角色名称",
-        key: "roleName"
-      },
-      {
-        align: "center",
-        title: "备注",
-        key: "roleRemark"
-      }
-    ];
+
+  // 用户所拥有的角色ID
+  private userRoles: Set<Number> = new Set<Number>()
+  private dataSet: Array<any> = [];
+  private model: any = {
+    roleName: "",
+    roleStatus: ""
+  };
+
+  // 列配置
+  private columns1 = [
+    {
+      align: "center",
+      type: "selection",
+      width: 60
+    },
+    {
+      align: "center",
+      title: "角色名称",
+      key: "roleName",
+      minWidth: this.$common.getColumnWidth(5)
+    },
+    {
+      align: "center",
+      title: "备注",
+      key: "roleDesc",
+      minWidth: this.$common.getColumnWidth(5)
+    }
+  ];
+
+  /**
+   * 选择项发生改变时
+   */
+  private onSelectionChanged(selections) {
+    selections.forEach(v => this.userRoles.add(v.id))
   }
 
-  getRoleList() {
-    // this.roleListModel.userId = this.checkUserId
-    // 获取所有角色
-    this.manageService
-      .queryRolePage(this.roleListModel, this.pageService)
+  /**
+   * 获取用户的角色
+   */
+  private getUserRoles() {
+    this.sysUserService.findUserRole(this.userIds[0])
       .subscribe(
         data => {
-          this.roleList = data.filter(x=>{
-            return x.roleStatus==0
-          });
-          this.checkRoleId = data.filter(v => v._checked).map(x => x.id);
+          data.forEach(v => this.userRoles.add(v.roleId));
+          // this.searchRolesByAuth()
         },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
+        err => this.$Message.error(err.msg)
+      )
   }
-  makeData(row) {
-    this.roleListModel.userId = row.id;
-    this.getRoleList();
-  }
-  allotRole() {
-    this.multipleRoleId = this.$refs["databox"];
-    this.multipleRoleId = this.multipleRoleId.getCurrentSelection();
-    // 获取roleId
-    if (this.multipleRoleId) {
-      this.allotRoleModel.rolesId = this.multipleRoleId.map(v => v.id);
-      this.batchAllotModel.rolesId = this.multipleRoleId.map(v => v.id);
-    } else {
-      this.multipleRoleId = [];
-      this.allotRoleModel.rolesId = this.multipleRoleId.concat(
-        this.checkRoleId
-      );
-      this.batchAllotModel.rolesId = this.multipleRoleId.concat(
-        this.checkRoleId
-      );
-    }
 
-    // 根据flag判断是批量分配还是单个分配角色
-    if (!this.multipleRoleId.length && !this.checkRoleId.length) {
-      this.$Message.info("请选择角色！");
-    } else {
-      if (this.batchAllotFlag) {
-        this.batchAllotModel.usersId = this.userIds;
-        this.manageService
-          .userBatchAllocateRoles(this.batchAllotModel)
-          .subscribe(
-            val => {
-              this.$Message.success("批量分配成功！");
-              this.$emit("closeAndRefreshTree");
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            }
-          );
-      } else {
-        this.allotRoleModel.userId = this.userId;
-        this.manageService.userAllocateRoles(this.allotRoleModel).subscribe(
-          val => {
-            this.$Message.success("分配成功！");
-            this.$emit("closeAndRefreshTree");
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
+  /**
+   * 获取自己所能分配的所有角色
+   */
+  private searchRolesByAuth() {
+    this.sysRoleService.findAllRoleByAuth(this.model, this.pageService)
+      .subscribe(
+        data => {
+          this.dataSet = data;
+          // 如果有用户所拥有的角色，需要返显
+          if (this.userRoles.size) {
+            this.dataSet.forEach(v => {
+              v._checked = this.userRoles.has(v.id)
+            })
           }
-        );
-      }
+        },
+        err => this.$Message.error(err.msg)
+      )
+  }
+
+  /**
+   * 更新用户角色
+   */
+  updateUserRole() {
+    return new Promise((resolve) => {
+      this.sysUserService.userBatchAllocateRoles(Array.from(this.userRoles), this.userIds).subscribe(
+        data => {
+          this.$Message.success("更新成功")
+          resolve(true)
+        },
+        err => {
+          this.$Message.error(err.msg)
+          resolve(false)
+        }
+      )
+    })
+  }
+
+  async mounted() {
+    if (this.userIds) {
+      // 如果是一个用户，需要先获取用户所拥有的角色之后再获取所有的角色资源
+      if (this.userIds.length === 1) await this.getUserRoles()
+      this.searchRolesByAuth()
     }
   }
-  resetForm() {
-    this.roleListModel.roleName = "";
-  }
+
 }
 </script>
  <style lang="less" scoped>
-    .component.org-user-manage{
-        .form-input{
-            display:inline-block;
-            width:20%;
-        }
-        .form-button{
-            background: #265ea2;
-            color: #fff;
-            margin-left:10px;
-        }
-    }
-
 </style>

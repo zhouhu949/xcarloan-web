@@ -52,7 +52,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row.id, 0)
+                    this.setLockState(row, 0)
                   }
                 }
               },
@@ -69,7 +69,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row.id, 1)
+                    this.setLockState(row, 1)
                   }
                 }
               },
@@ -86,7 +86,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row.id, 2)
+                    this.setLockState(row, 2)
                   }
                 }
               },
@@ -136,10 +136,10 @@ export default class DeviceManage extends Vue {
   /**
    * 设置锁状态
    */
-  setLockState(id, type) {
-    this.sysUserService.updateUserDevice(type, [id]).subscribe(
+  setLockState(row, type) {
+    this.sysUserService.updateUserDevice(type, [row.id],row.deviceStatus).subscribe(
       data => {
-        this.$Message.success("修改成功")
+        this.$Message.success("设置成功")
         this.getUserLocks()
       },
       err => this.$Message.error(err.msg)

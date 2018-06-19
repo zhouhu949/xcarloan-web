@@ -1,7 +1,6 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import store from "~/store"
 
 export class SysUserService {
   @Inject(NetService)
@@ -10,12 +9,10 @@ export class SysUserService {
   /**
    * 获取用户所属角色
    */
-  findRolesByUserId({ userId }) {
+  findUserRole(userId: Number) {
     return this.netService.send({
-      server: manageService.sysUserController.findRolesByUserId,
-      data: {
-        userId: userId
-      }
+      server: manageService.sysUserController.findUserRole,
+      append: userId
     })
   }
   /**
@@ -79,7 +76,7 @@ export class SysUserService {
    * 获取用户所有设备
    * @param ids 所选用户ID
    */
-  findUserDevice(ids){
+  findUserDevice(ids) {
     return this.netService.send({
       server: manageService.sysUserController.findUserDevice,
       data: {
@@ -90,72 +87,53 @@ export class SysUserService {
 
   /**
    * 修改用户设备锁状态
+   * @param deviceState 当前状态
    * @param type 需要修改的状态
    * @param ids 所选设备锁ID集合
    */
-  updateUserDevice(type,ids){
+  updateUserDevice(type: Number, ids: Array<Number>, deviceState?: Number) {
     return this.netService.send({
       server: manageService.sysUserController.updateUserDevice,
       data: {
+        deviceState: deviceState,
         type: type,
         ids: ids
       }
     })
   }
 
+  /**
+   * 设置用户角色
+   * @param roleIds 需要赋予的角色ID
+   * @param userIds 所选的用户
+   */
+  userBatchAllocateRoles(roleIds, userIds) {
+    return this.netService.send({
+      server: manageService.sysUserController.userBatchAllocateRoles,
+      data: {
+        roleIds,
+        userIds
+      },
+      loading: true
+    })
+  }
 
   /**
-   * 查询用户列表菜单
+   * 根据机构ID和其他条件查询用户分页数据
+   * @param data 查询用户实体
+   * @param page 分页服务
    */
-  findListboxByUserIdAndResoPid(resoPid) {
+  findUserByOrgAuth(data,page){
     return this.netService.send({
-      server: manageService.sysUserController.findListboxByUserIdAndResoPid,
+      server: manageService.sysUserController.findUserByOrgAuth,
       data: {
-        userId: store.state.userData.id,
-        resoPid: resoPid
-      }
-    })
-  }
-  /**
-   * 用户分配列表菜单
-   */
-  userAllocateListbox(id, data) {
-    return this.netService.send({
-      server: manageService.sysUserController.userAllocateListbox,
-      data: {
-        userId: store.state.userData.id,
-        resoPid: id,
-        userResourceList: data
-      }
-    })
-  }
-  /**
-   * 用户分配权限
-   */
-  userAllocatePrivileges(data) {
-    return this.netService.send({
-      server: manageService.sysUserController.userAllocatePrivileges,
-      data: data
-    })
-  }
-  /**
-   * 获取用户数据权限
-   */
-  findUserPrivileges({ userId }) {
-    return this.netService.send({
-      server: manageService.sysUserController.findUserPrivileges,
-      data: {
-        userId: userId
-      }
-    })
-  }
-  /**
-   * 导出用户
-   */
-  exportUserList(data) {
-    return this.netService.send({
-      server: manageService.sysUserController.exportUserList,
-      data: data
+        orgId: data.orgId,
+        userName: data.userName,
+        realName: data.realName,
+        userStatus: data.userStatus
+      },
+      page,
+      loading: true
     })
   }
 }

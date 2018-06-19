@@ -65,7 +65,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { ManageService } from "~/services/manage-service/manage.service";
 import { Dependencies } from "~/core/decorator";
 import { SysOrgService } from "~/services/manage-service/sys-org.service";
 import { CommonService } from "~/utils/common.service";
@@ -83,6 +82,7 @@ export default class ModifyUser extends Vue {
   @Dependencies(SysOrgService) private sysOrgService: SysOrgService;
   // 机构数据
   @OrgMoudle.State orgData;
+  @OrgMoudle.Getter getOwnerData;
   @Prop() userData;
   @Prop() orgId;
 
@@ -149,7 +149,7 @@ export default class ModifyUser extends Vue {
         state: this.userData.userStatus // 启用
       }
     }
-    this.getOwnerData()
+    this.model.deptNames = this.getOwnerData(this.model.orgId)
   }
 
   /**
@@ -201,26 +201,6 @@ export default class ModifyUser extends Vue {
     const index = labels.length - 1;
     this.model.deptName = selectedData[index];
     return labels[index];
-  }
-
-  /**
-   * 组织级联选择器显示的数据
-   */
-  private getOwnerData() {
-    if (this.orgData.length === 0) {
-      return [];
-    }
-    let getParent = id => {
-      let current = this.orgData.find(v => v.id === id);
-      if (current) {
-        let parent = getParent(current.orgPid);
-        return parent.concat(current);
-      } else {
-        return [];
-      }
-    };
-
-    this.model.deptNames = getParent(this.model.orgId).map(v => v.id);
   }
 }
 </script>

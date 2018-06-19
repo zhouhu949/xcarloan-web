@@ -1,16 +1,13 @@
 <!--机构与用户管理-->
 <template>
   <section class="page org-user-manage">
-    <!-- <page-header title="机构与用户管理" hidden-print @on-export="exportName"> -->
-    <!-- 暂时取消导出功能 -->
     <page-header title="机构与用户管理" hidden-print hidden-export>
       <i-button class="blueButton" @click="addNewUser">新增用户</i-button>
-      <i-button class="blueButton" @click="buttonOnlyOne1">批量分配角色</i-button>
-      <i-button class="blueButton" @click="buttonOnlyOne2">批量管理设备</i-button>
+      <i-button class="blueButton" @click="batchAllotRole">批量分配角色</i-button>
+      <i-button class="blueButton" @click="batchManageDevice">批量管理设备</i-button>
     </page-header>
     <i-row class="data-form">
       <i-col :span="4" class="data-form-item">
-
         <i-row class="add-agency">
           <i-button class="blue-button" @click="addDept">添加机构</i-button>
         </i-row>
@@ -21,7 +18,7 @@
         </i-row>
       </i-col>
       <i-col :span="20">
-        <data-form ref="user-search-form" hidden-date-search :model="userSearchModel" @on-search="searchUserListByCondition" :page="pageService">
+        <data-form ref="user-search-form" hidden-date-search :model="userSearchModel" @on-search="searchUserByCondition" :page="pageService">
           <template slot="input">
             <i-form-item prop="userName" label="用户名：">
               <i-input v-model="userSearchModel.userName" placeholder="请输入用户名"></i-input>
@@ -37,35 +34,10 @@
           </template>
         </data-form>
 
-        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
+        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="searchUserByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
       </i-col>
     </i-row>
 
-    <template>
-      <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'" @on-visible-change="visiableChange">
-        <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal"></allot-role-modal>
-        <div slot="footer">
-          <i-button @click="allotRoleModal=false">取消</i-button>
-          <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="批量管理设备" v-model="batchManageDeviceModal" :width="700" class="batch-manage-device">
-        <batch-manage-device ref="batch-manage-device" @close="closeAndRefreshBatch"></batch-manage-device>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="数据权限" v-model="dataPowerModal" @on-visible-change="dataPowerModalChange">
-        <data-power-modal ref="data-power" @close="dataPowerModal=false"></data-power-modal>
-        <div slot="footer">
-          <i-button @click="dataPowerModal=false">取消</i-button>
-          <i-button @click="confirmDataPower" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -73,28 +45,19 @@
 import Page from '~/core/page'
 import Component from 'vue-class-component'
 import allotRoleModal from '~/components/system-manage/allot-role-modal.vue'
-import UserList from '~/components/system-manage/user-list.vue'
-import WaitHandleCase from '~/components/system-manage/wait-handle-case.vue'
-import ModulePower from '~/components/system-manage/module-power.vue'
 import ModifyUser from '~/components/system-manage/modify-user.vue'
 import DeviceManage from '~/components/system-manage/device-manage.vue'
 import BatchManageDevice from '~/components/system-manage/batch-manage-device.vue' // 批量管理设备
 import ModifyOrg from "~/components/system-manage/modify-org.vue";
-import DataPowerModal from '~/components/system-manage/data-power-modal.vue'
 import OrganizeTree from '~/components/common/organize-tree.vue'
 import { Dependencies } from '~/core/decorator'
-import { RoleService } from '~/services/role-service/role.service'
-import { ManageService } from '~/services/manage-service/manage.service'
 import { SysOrgService } from '~/services/manage-service/sys-org.service'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
-import { LoginService } from '~/services/manage-service/login.service'
-import { Modal } from 'iview'
 import { SysUserService } from '~/services/manage-service/sys-user.service'
-import { CommonService } from '~/utils/common.service'
-import DataForm from "~/components/common/data-form.vue";
 import { Action, State, namespace } from "vuex-class";
+import DataForm from "~/components/common/data-form.vue";
+import { } from "clone";
 
 // 引入机构模块
 const OrgModule = namespace("orgSpace");
@@ -103,21 +66,14 @@ const OrgModule = namespace("orgSpace");
 @Component({
   components: {
     allotRoleModal,
-    UserList,
-    WaitHandleCase,
-    ModulePower,
     ModifyUser,
     OrganizeTree,
-    BatchManageDevice,
-    DataPowerModal
+    BatchManageDevice
   }
 })
 export default class OrgUserManage extends Page {
-  // @Dependencies(RoleService) private roleService: RoleService;
-  @Dependencies(ManageService) private manageService: ManageService
   @Dependencies(SysOrgService) private sysOrgService: SysOrgService
   @Dependencies(PageService) private pageService: PageService
-  @Dependencies(LoginService) private loginService: LoginService
   @Dependencies(SysUserService) private sysUserService: SysUserService
 
   @OrgModule.State orgData;
@@ -143,7 +99,6 @@ export default class OrgUserManage extends Page {
   private userSearchform: DataForm;
 
   private modifyUserModel: any
-  private userId: number | null = null
   private userIds: Array<any> = []
   private multipleUserId: any
   private batchAllotFlag: Boolean = false
@@ -151,25 +106,11 @@ export default class OrgUserManage extends Page {
   private deptCode: String = ''
   // private deptPid: number | null = null;
   private editNewOrgModal: Boolean = false
-  private batchManageDeviceModal: Boolean = false
-  private warnStatus: any = null
-  private dataPowerModal: Boolean = false // 数据权限弹出框
-  private multipleSelection: any = []
-  private addOrgModel: any = {
-    deptName: '',
-    deptStatus: 0,
-    companyName: '',
-    deptRemark: '',
-    deptLevel: '',
-    deptCode: '',
-    deptPid: '',
-    companyId: ''
-  }
+
   private companyId: any = 0
   mounted() {
     this.userSearchform = this.$refs['user-search-form'] as DataForm
-    this.getUserListByCondition()
-    this.getOrgData()
+    this.searchUserByCondition()
   }
   created() {
     this.modifyUserModel = {
@@ -339,7 +280,7 @@ export default class OrgUserManage extends Page {
         render: (h, { row, columns, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -360,65 +301,24 @@ export default class OrgUserManage extends Page {
     ]
   }
 
-  onSelectionChange(selection) {
-    this.multipleSelection = selection
-  }
-  exportName() {
-    if (this.multipleSelection.length === 0) {
-      this.$Message.warning('请选择导出项！')
-    } else {
-      let id: any = this.multipleSelection.map(v => v.id)
-      this.sysUserService.exportUserList({ userIds: id }).subscribe(
-        data => {
-          CommonService.downloadFile(data, '导出用户')
-          this.$Message.success('导出成功！')
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-    }
-  }
-  dataPowerModalChange(flag) {
-    if (!flag) {
-      let _dataPower: any = this.$refs['data-power']
-      _dataPower.resetTree()
-    }
-  }
-
   /**
-   * 确定数据权限
+   * databox 复选框，选中的时候处理
    */
-  confirmDataPower() {
-    let _dataPower: any = this.$refs['data-power']
-    _dataPower.allotUserDataPower(this.userId)
+  private onSelectionChange(selection) {
+    this.userIds = (selection || []).map(v => v.id)
   }
 
-  closeAndRefreshBatch() {
-    this.batchManageDeviceModal = false
-    this.getUserListByCondition()
-  }
-
-  modifyUserClose() {
-    this.modifyUserModal = false
-    this.getUserListByCondition()
-  }
-
-  closeAdd() {
-    this.addNewUserModal = false
-    this.getUserListByCondition()
-  }
 
   /**
    * 修改用户
    */
-  modifyUser(row) {
+  private modifyUser(row) {
     this.$dialog.show({
       title: "修改用户",
       footer: true,
       onOk: editUser => {
         return editUser.updateUser().then(v => {
-          if (v) this.searchUserListByCondition()
+          if (v) this.searchUserByCondition()
           return v
         })
       },
@@ -433,7 +333,7 @@ export default class OrgUserManage extends Page {
   /**
    * 重置用户密码 
    */
-  resetPwd(row) {
+  private resetPwd(row) {
     this.sysUserService.resetPassword(row.id)
       .subscribe(
         val => this.$Message.success('重置成功'),
@@ -441,7 +341,7 @@ export default class OrgUserManage extends Page {
       )
   }
 
-  deviceManageOpen(row) {
+  private deviceManageOpen(row) {
     this.$dialog.show({
       title: '设备锁维护',
       render: h => h(DeviceManage, {
@@ -458,7 +358,7 @@ export default class OrgUserManage extends Page {
   /**
    * 新增用户
    */
-  addNewUser() {
+  private addNewUser() {
     if (!this.selectOrg) {
       this.$Message.info("请选择机构")
       return
@@ -468,7 +368,7 @@ export default class OrgUserManage extends Page {
       footer: true,
       onOk: addUser => {
         return addUser.createUser().then(v => {
-          if (v) this.searchUserListByCondition()
+          if (v) this.searchUserByCondition()
           return v
         })
       },
@@ -480,93 +380,65 @@ export default class OrgUserManage extends Page {
     })
   }
 
-  allotRole(row) {
-    this.allotRoleModal = true
-    this.batchAllotFlag = false
-    let _allotRole = <Modal>this.$refs['allot-role-modal']
-    _allotRole.makeData(row)
-    _allotRole.getRoleList()
-    this.userId = row.id
+  /**
+   * 分配角色
+   */
+  private allotRole(row) {
+    this.userIds = [row.id]
+    this.batchAllotRole()
   }
   /**
    * 批量分配角色
    */
-  batchAllotRole() {
-    let multiple: any = this.$refs['databox']
-    this.multipleUserId = multiple.getCurrentSelection()
-    if (!this.multipleUserId || !this.multipleUserId.length) {
-      this.warnStatus = true
-      setTimeout(() => {
-        this.warnStatus = false
-      }, 2000)
-      return this.$Message.error('请选择用户')
-    } else {
-      this.allotRoleModal = true
-      let _allotRole = <Modal>this.$refs['allot-role-modal']
-      _allotRole.getRoleList()
-      this.batchAllotFlag = true
-      this.userIds = this.multipleUserId.map(v => v.id)
+  private batchAllotRole() {
+    if (this.userIds.length === 0) {
+      this.$Message.info("请先选择用户")
+      return;
     }
+    this.$dialog.show({
+      title: "分配角色",
+      footer: true,
+      width: 750,
+      onOk: allotRole => {
+        return allotRole.updateUserRole().then(v => {
+          if (v) this.searchUserByCondition()
+          return v
+        })
+      },
+      render: h => h(allotRoleModal, {
+        props: {
+          userIds: this.userIds
+        }
+      })
+    })
   }
 
-  closeEditOrg() {
-    this.editNewOrgModal = false
-    // this.getOrgData()
-  }
 
-  closeOrg() {
-    this.addNewOrgModal = false
-    // this.getOrgData()
-  }
-  buttonOnlyOne1() {
-    if (!this.warnStatus) {
-      this.batchAllotRole()
-    }
-  }
-  buttonOnlyOne2() {
-    if (!this.warnStatus) {
-      this.batchManageDevice()
-    }
-  }
 
   /**
    * 批量管理设备
    */
-  batchManageDevice() {
-    let multiple: any = this.$refs['databox']
-    this.multipleUserId = multiple.getCurrentSelection()
-    if (!this.multipleUserId || !this.multipleUserId.length) {
-      this.warnStatus = true
-      setTimeout(() => {
-        this.warnStatus = false
-      }, 2000)
-      return this.$Message.error('请选择用户')
-    } else {
-      this.batchManageDeviceModal = true
-      this.userIds = this.multipleUserId.map(v => v.id)
-      let _batchManage: any = this.$refs['batch-manage-device']
-      _batchManage.makeData(this.multipleUserId)
+  private batchManageDevice() {
+    if (this.userIds.length === 0) {
+      this.$Message.info("请先选择用户")
+      return;
     }
+    this.$dialog.show({
+      title: "批量管理设备",
+      render: h => h(BatchManageDevice, {
+        props: {
+          userIds: this.userIds
+        }
+      })
+    })
   }
 
-  getUserListByCondition() {
-    // let deptId =
-    this.manageService
-      .getUsersByDeptPage(this.userSearchModel, this.pageService)
-      .subscribe(
-        data => {
-          this.userList = data.filter(x => {
-            return x.userStatus == 10022
-          })
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-  }
-  searchUserListByCondition() {
+  /**
+   * 根据机构ID和其他条件搜索用户分页数据
+   */
+  private searchUserByCondition() {
     if (this.selectOrg) this.userSearchModel.orgId = this.selectOrg.id
-    this.manageService.getUsersByDeptPage(this.userSearchModel, this.pageService)
+    this.sysUserService.findUserByOrgAuth(this.userSearchModel, this.pageService)
       .subscribe(
         data => this.userList = data,
         err => this.$Message.error(err.msg)
@@ -576,35 +448,18 @@ export default class OrgUserManage extends Page {
   /**
    * 树change
    */
-  onChange(value) {
+  private onChange(value) {
     this.selectOrg = value
     // 需要先重置用户搜索条件
     this.userSearchform.onResetForm()
     // 重置分页
     this.pageService.reset()
     // 查找用户
-    this.searchUserListByCondition()
+    this.searchUserByCondition()
   }
 
-  /**
-   * 数据权限
-   */
-  dataPowerClick(row) {
-    this.dataPowerModal = true
-    this.userId = row.id
-    let _dataPower: any = this.$refs['data-power']
-    _dataPower.getAllOrg(this.userId)
-  }
 
-  /**
-   * 确认分配角色
-   */
-  allotRoleClick() {
-    let _addRole = <Modal>this.$refs['allot-role-modal']
-    _addRole.allotRole()
-  }
-
-  removeDept() {
+  private removeDept() {
     this.$Modal.confirm({
       title: '提示',
       content: '确定删除此组织机构吗？',
@@ -675,38 +530,6 @@ export default class OrgUserManage extends Page {
     })
   }
 
-
-  confirmModifyUser() {
-    let _modifyUser: any = this.$refs['modify-user']
-    _modifyUser.updateUser()
-  }
-
-  visiableChange(val) {
-    if (!val) {
-      let _allotRole = <Modal>this.$refs['allot-role-modal']
-      _allotRole.resetForm()
-    }
-  }
-
-  newUserModalChange(val) {
-    if (!val) {
-      let _addUser = <Modal>this.$refs['add-user']
-      _addUser.resetForm()
-    }
-  }
-
-  confirmAddUser() {
-    let _addUser = <Modal>this.$refs['add-user']
-    _addUser.confirmAddUser()
-  }
-
-  /**
-   * 确定批量管理设备
-   */
-  confirmBatchManageDevice() {
-    let _batchManage: any = this.$refs['batch-manage-device']
-    _batchManage.confirmBatchMange()
-  }
 }
 </script>
 

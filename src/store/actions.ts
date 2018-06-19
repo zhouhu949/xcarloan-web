@@ -38,7 +38,7 @@ export default {
       operator: user.operator,
       operateTime: user.operateTime
     });
-
+    dispatch('orgSpace/getOrgData')
     commit('updateTokenExpire', false)
   },
   /**
@@ -57,6 +57,8 @@ export default {
     commit('updateTokenExpire', true);
     // 关闭页面
     commit('closeAllPage')
+    // 清空机构资源
+    commit("orgSpace/updateOrgData",[])
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')

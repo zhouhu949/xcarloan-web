@@ -20,7 +20,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import { ManageService } from "~/services/manage-service/manage.service";
 import { Dependencies } from "~/core/decorator";
 import { SysUserService } from "~/services/manage-service/sys-user.service";
 
@@ -28,7 +27,6 @@ import { SysUserService } from "~/services/manage-service/sys-user.service";
   components: {}
 })
 export default class DataPowerModal extends Vue {
-  @Dependencies(ManageService) private manageService: ManageService;
   @Dependencies(SysUserService) private sysUserService: SysUserService;
 
   private columns1: any;
@@ -43,34 +41,34 @@ export default class DataPowerModal extends Vue {
   private flag: Boolean = false; // 判断数组为空是本身为空还是点击后为空
   created() {}
   getAllOrg(userId) {
-    // 获取用户数据权限
-    this.sysUserService
-      .findUserPrivileges({
-        userId: userId
-      })
-      .subscribe(
-        data => {
-          this.defaultCheckId = data;
-          this.getOriginTreeData();
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
+    // // 获取用户数据权限
+    // this.sysUserService
+    //   .findUserPrivileges({
+    //     userId: userId
+    //   })
+    //   .subscribe(
+    //     data => {
+    //       this.defaultCheckId = data;
+    //       this.getOriginTreeData();
+    //     },
+    //     ({ msg }) => {
+    //       this.$Message.error(msg);
+    //     }
+    //   );
   }
   /**
    * 获取组织树的原始数据
    */
   getOriginTreeData() {
-    this.manageService.findAllOrganizationByAuth().subscribe(
-      data => {
-        this.allData = data;
-        this.createNewTree(this.allData);
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+    // this.manageService.findAllOrganizationByAuth().subscribe(
+    //   data => {
+    //     this.allData = data;
+    //     this.createNewTree(this.allData);
+    //   },
+    //   ({ msg }) => {
+    //     this.$Message.error(msg);
+    //   }
+    // );
   }
   /**
    * 生成树
@@ -125,17 +123,17 @@ export default class DataPowerModal extends Vue {
       this.userAllocatePrivilegeModel.privilegeDeptsId = [];
     }
     this.userAllocatePrivilegeModel.userId = userId;
-    this.sysUserService
-      .userAllocatePrivileges(this.userAllocatePrivilegeModel)
-      .subscribe(
-        data => {
-          this.$Message.success("数据权限分配成功！");
-          this.$emit("close");
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
+    // this.sysUserService
+    //   .userAllocatePrivileges(this.userAllocatePrivilegeModel)
+    //   .subscribe(
+    //     data => {
+    //       this.$Message.success("数据权限分配成功！");
+    //       this.$emit("close");
+    //     },
+    //     ({ msg }) => {
+    //       this.$Message.error(msg);
+    //     }
+    //   );
   }
   /**
    * 树复选框change事件

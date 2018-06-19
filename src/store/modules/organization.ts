@@ -6,6 +6,28 @@ export default {
     // 当前用户所对应的机构数据
     orgData: []
   },
+  getters: {
+    /**
+     * 组织级联选择器返现的数据
+     * @param orgId 机构ID
+     */
+    getOwnerData: (state) => (orgId) => {
+      if (state.orgData.length === 0) {
+        return [];
+      }
+      let getParent = id => {
+        let current = state.orgData.find(v => v.id === id);
+        if (current) {
+          let parent = getParent(current.orgPid);
+          return parent.concat(current);
+        } else {
+          return [];
+        }
+      };
+
+      return getParent(orgId).map(v => v.id);
+    }
+  },
   mutations: {
     /**
      * 更新机构数据

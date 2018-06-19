@@ -25,7 +25,7 @@ import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Observable } from "rxjs";
-import { SysRolesService } from "~/services/manage-service/sys-roles.service";
+import { SysRoleService } from "~/services/manage-service/sys-role.service";
 import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { SysModuleService } from "~/services/manage-service/sys-module.service";
@@ -39,7 +39,7 @@ import DataTree from "~/components/common/data-tree.vue";
   }
 })
 export default class ModulePower extends Vue {
-  @Dependencies(SysRolesService) private sysRolesService: SysRolesService;
+  @Dependencies(SysRoleService) private sysRoleService: SysRoleService;
   @Dependencies(SysModuleService) private sysModuleService: SysModuleService;
   @Dependencies(PageService) private pageService: PageService;
 
@@ -168,18 +168,18 @@ export default class ModulePower extends Vue {
   public submit() {
     let menuResourceIds = this.tree.getCheckedKeys()
     let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
-    return new Promise((resolve, reject) => {
-      this.sysRolesService.roleAllocateResources({
-        roleId: this.roleId,
-        resourcesId: [...menuResourceIds, ...controlResourceIds]
-      }).subscribe(() => {
-        this.$Message.success('模块权限配置成功！')
-        resolve()
-      }, err => {
-        this.$Message.err(err.msg)
-        reject()
-      })
-    })
+    // return new Promise((resolve, reject) => {
+    //   this.sysRoleService.roleAllocateResources({
+    //     roleId: this.roleId,
+    //     resourcesId: [...menuResourceIds, ...controlResourceIds]
+    //   }).subscribe(() => {
+    //     this.$Message.success('模块权限配置成功！')
+    //     resolve()
+    //   }, err => {
+    //     this.$Message.err(err.msg)
+    //     reject()
+    //   })
+    // })
 
   }
 }

@@ -5,7 +5,7 @@ const CONTROLLER = 'sysUserController'
 
 export default {
   /**
-   * 分页查询角色列表
+   * 分页查询用户列表
    */
   findUserByOrgAuth: {
     service: SERVICE,
@@ -52,93 +52,28 @@ export default {
   /**
    * 更改用户设备锁信息
    */
-  updateUserDevice:{
+  updateUserDevice: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'updateUserDevice',
     type: requestType.Put
   },
-
-
-
-
-
-
-
-
-
-
-
   /**
-   * 给用户分配角色
+   * 获取用户所拥有的
    */
-  userAllocateRoles: {
+  findUserRole: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'userAllocateRoles',
-    type: requestType.Post
+    action: 'findUserRole',
+    type: requestType.Get
   },
   /**
-   * 批量分配用户角色
+   * 给用户分配角色
    */
   userBatchAllocateRoles: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'userBatchAllocateRoles',
-    type: requestType.Post
-  },
-  /**
-   * 获取用户所属角色
-   */
-  findRolesByUserId: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findRolesByUserId',
-    type: requestType.Get
-  },
-  /**
-   * 查询用户列表菜单
-   */
-  findListboxByUserIdAndResoPid: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findListboxByUserIdAndResoPid',
-    type: requestType.Get
-  },
-  /**
-   * 用户分配列表菜单
-   */
-  userAllocateListbox: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'userAllocateListbox',
-    type: requestType.Post
-  },
-  /**
-   * 用户分配权限
-   */
-  userAllocatePrivileges: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'userAllocatePrivileges',
-    type: requestType.Post
-  },
-  /**
-   * 获取用户数据权限
-   */
-  findUserPrivileges: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findUserPrivileges',
-    type: requestType.Get
-  },
-  /**
-   * 导出用户
-   */
-  exportUserList: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'exportUserList',
     type: requestType.Post
   }
 }

@@ -1,43 +1,42 @@
 <!--设备管理-->
 <template>
-  <section class="equipment org-user-manage">
-    <!-- <i-tabs @on-click="tabClick">
-      <i-tab-pane label="PC端" name="pc"></i-tab-pane>
-      <i-tab-pane label="移动端" name="app"></i-tab-pane>
-    </i-tabs> -->
-    <div class="equipment-button">
-      <i-button @click="onKeyUserDevice" class="blue-button">一键启用设备</i-button>
-      <i-button @click="onKeyForbidDevice" class="blue-button">一键禁用设备</i-button>
-      <i-button @click="onKeyUserDeviceLock" class="blue-button">一键启用设备锁</i-button>
-      <i-button @click="onKeyForbidDeviceLock" class="blue-button">一键停用设备锁</i-button>
-      <i-button @click="onKeyResetDevice" class="blue-button">一键重置设备</i-button>
+  <section class="component batch-manage-device">
+    <div class="command-button">
+      <i-button @click="onKeyEnableDevice(true)">一键启用设备</i-button>
+      <i-button @click="onKeyEnableDevice(false)">一键禁用设备</i-button>
+      <i-button @click="onKeyEnableLock(true)">一键启用设备锁</i-button>
+      <i-button @click="onKeyEnableLock(false)">一键停用设备锁</i-button>
+      <i-button @click="onKeyResetDevice">一键重置设备</i-button>
     </div>
     <div class="equipment-table">
-      <i-table :columns="columns1" :data="deviceList" ref="table" @on-selection-change="currentSelect"></i-table>
+      <i-table :columns="columns1" :data="dataSet" ref="table" @on-selection-change="onSelectionChanged"></i-table>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { UserDeviceService } from "~/services/manage-service/user-device.service";
+import { SysUserService } from "~/services/manage-service/sys-user.service";
 
 @Component({
-  components: {
-    DataBox
-  }
+  components: {}
 })
 export default class BatchManageDevice extends Vue {
-  @Dependencies(UserDeviceService) private userDeviceService: UserDeviceService;
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
+  @Prop() userIds;
+
   private columns1: any;
-  private deviceList: Array<any> = [];
+  private deviceIds: Array<Number> = [];
   private userName: String = "";
   private multipleSelect: Array<any> = [];
-  mounted() {}
+
+  // 设备状态数据表
+  private dataSet: any = [];
+
+
   created() {
     this.columns1 = [
       {
@@ -50,213 +49,119 @@ export default class BatchManageDevice extends Vue {
         title: "用户名",
         key: "userName"
       },
-      // {
-      //   align: "center",
-      //   title: "类型",
-      //   key: "name"
-      // },
       {
         align: "center",
-        title: "是否禁用",
-        key: "status",
+        title: "设备类型",
+        key: "deviceType",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.status === 0 ? "否" : "是");
+          return h("span", {}, this.$filter.dictConvert(row.deviceType));
         }
       },
       {
         align: "center",
-        title: "设备锁状态",
-        key: "validate",
+        title: "设备锁是否启用",
+        key: "deviceStatus",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.validate === 0 ? "启用" : "停用");
+          return h("span", {}, this.$filter.dictConvert(row.deviceStatus));
+        }
+      },
+      {
+        align: "center",
+        title: "设备是否启用",
+        key: "deviceValidate",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$filter.dictConvert(row.deviceValidate));
         }
       }
     ];
   }
-  /**
-   * tab点击事件
-   */
-  tabClick(val) {
-    console.log(val, 987);
+
+  mounted() {
+    if (this.userIds) this.getData()
   }
+
   /**
-   * 一键启用设备
+   * 选择项发生改变
    */
-  onKeyUserDevice() {
-    if (!this.multipleSelect.length) {
+  private onSelectionChanged(selecton) {
+    this.multipleSelect = selecton
+    this.deviceIds = (selecton || []).map(v => v.id)
+  }
+
+  /**
+   * 一键启用/禁用设备
+   */
+  onKeyEnableDevice(enable) {
+    if (!this.deviceIds.length) {
       this.$Message.error("请选择设备");
     } else {
-      let userIds = this.multipleSelect.map(v => v.userId);
-      this.userDeviceService
-        .enableDevice({
-          userIds: userIds,
-          userStatus: 0,
-          userType: 414
-        })
+      this.sysUserService.updateUserDevice(0, this.deviceIds, enable ? 10002 : 10003)
         .subscribe(
           data => {
-            this.$Message.success("一键启用设备成功！");
-            this.multipleSelect = [];
-
-            this.$emit("close");
+            this.$Message.success("设置成功");
+            this.getData()
           },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
+          err => this.$Message.error(err.msg)
         );
     }
   }
   /**
-   * 一键禁用设备
+   * 一键启用/禁用设备
    */
-  onKeyForbidDevice() {
-    if (!this.multipleSelect.length) {
+  onKeyEnableLock(enable) {
+    if (!this.deviceIds.length) {
       this.$Message.error("请选择设备");
     } else {
-      let userIds = this.multipleSelect.map(v => v.userId);
-      this.userDeviceService
-        .disableDevice({
-          userIds: userIds,
-          userStatus: 1,
-          userType: 414
-        })
+      this.sysUserService.updateUserDevice(1, this.deviceIds, enable ? 10002 : 10003)
         .subscribe(
           data => {
-            this.$Message.success("一键禁用设备成功！");
-            this.multipleSelect = [];
-
-            this.$emit("close");
+            this.$Message.success("设置成功");
+            this.getData()
           },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
+          err => this.$Message.error(err.msg)
         );
     }
   }
-  /**
-   * 一键启用设备锁
-   */
-  onKeyUserDeviceLock() {
-    if (!this.multipleSelect.length) {
-      this.$Message.error("请选择设备");
-    } else {
-      let userIds = this.multipleSelect.map(v => v.userId);
-      this.userDeviceService
-        .enableDeviceLock({
-          userIds: userIds,
-          userValidate: 0,
-          userType: 414
-        })
-        .subscribe(
-          data => {
-            this.$Message.success("一键启用设备锁成功！");
-            this.multipleSelect = [];
 
-            this.$emit("close");
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-  }
-  /**
-   * 一键停用设备锁
-   */
-  onKeyForbidDeviceLock() {
-    if (!this.multipleSelect.length) {
-      this.$Message.error("请选择设备");
-    } else {
-      let userIds = this.multipleSelect.map(v => v.userId);
-      this.userDeviceService
-        .disableDeviceLock({
-          userIds: userIds,
-          userValidate: 1,
-          userType: 414
-        })
-        .subscribe(
-          data => {
-            this.$Message.success("一键停用设备锁成功！");
-            this.multipleSelect = [];
-
-            this.$emit("close");
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-  }
   /**
    * 一键重置设备
    */
   onKeyResetDevice() {
-    if (!this.multipleSelect.length) {
+    if (!this.deviceIds.length) {
       this.$Message.error("请选择设备");
     } else {
-      let userIds = this.multipleSelect.map(v => v.userId);
-      this.userDeviceService
-        .resetDevice({
-          userIds: userIds,
-          userType: 414
-        })
+      this.sysUserService.updateUserDevice(2, this.deviceIds)
         .subscribe(
           data => {
-            this.$Message.success("一键重置设备成功！");
-            this.multipleSelect = [];
-            this.$emit("close");
+            this.$Message.success("设置成功");
+            this.getData()
           },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
+          err => this.$Message.error(err.msg)
         );
     }
   }
-  makeData(row) {
-    console.log(row, 333);
-    let ids = row.map(v => v.id);
-    console.log(ids, 898988);
-    this.userDeviceService
-      .getUserDevice({
-        ids: ids
-      })
+
+  /**
+   * 获取用户设备状态数据
+   */
+  getData() {
+    this.sysUserService.findUserDevice(this.userIds)
       .subscribe(
-        data => {
-          this.deviceList = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+        data => this.dataSet = data,
+        err => this.$Message.error(err.msg)
       );
   }
-  /**
-   * 批量管理设备确定
-   */
-  confirmBatchMange() {}
-  currentSelect(val) {
-    console.log(val, 7778);
-    this.multipleSelect = val;
-  }
+
 }
 </script>
  <style lang="less" scoped>
-    .equipment.org-user-manage{
-      .equipment-button{
-          display:flex;
-          justify-content:space-around;
-          margin:10px 0;
-          .blue-button{
-            background: #265ea2;
-            color: #fff;
-          }
-      }
-      .equipment-table{
-          width:100%;
-          height:400px;
-          border:1px solid #dddddd;
-          overflow:auto;
-      }
-
+.component .batch-manage-device {
+  .command-button {
+    .ivu-btn {
+      background: #265ea2;
+      color: #fff;
+      margin: 5px 10px 10px;
     }
-
+  }
+}
 </style>

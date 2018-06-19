@@ -1,5 +1,5 @@
 import sysOrgController from './sys-org.controller'
-import sysRolesController from './sys-roles.controller'
+import sysRoleController from './sys-role.controller'
 import sysUserController from './sys-user.controller'
 import SysLogsController from './sys-logs.controller'
 import systemBackupController from './system-backup.controller'
@@ -15,7 +15,7 @@ import SysParameterController from './sys-parameter.controller'
 
 export const manageService = {
   sysOrgController,
-  sysRolesController,
+  sysRoleController,
   sysUserController,
   SysLogsController,
   systemBackupController,

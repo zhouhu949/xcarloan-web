@@ -3,7 +3,7 @@ export default {
    * 获取当前用户名
    * @param param0 
    */
-  userName({ state }) {
+  userName(state) {
     return (state.userData || {}).userName
   }
 }

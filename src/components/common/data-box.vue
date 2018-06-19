@@ -220,16 +220,16 @@ export default class DataBox extends Vue {
    * 获取过滤列
    */
   getFilterColumns() {
-    this.sysUserService.findListboxByUserIdAndResoPid(this.id).subscribe(
-      data => {
-        this.filterColumns = data;
-        this.getTableColumns();
-      },
-      () => {
-        this.filterColumns = null;
-        this.getTableColumns();
-      }
-    );
+    // this.sysUserService.findListboxByUserIdAndResoPid(this.id).subscribe(
+    //   data => {
+    //     this.filterColumns = data;
+    //     this.getTableColumns();
+    //   },
+    //   () => {
+    //     this.filterColumns = null;
+    //     this.getTableColumns();
+    //   }
+    // );
   }
 
   updateConfig() {

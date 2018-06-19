@@ -1,8 +1,6 @@
 <!--角色维护--> 
 <template>
   <section class="page role-maintenance">
-    <!-- <page-header title="角色维护" hidden-print @on-export="exportRole"> -->
-    <!-- 暂时取消导出功能 -->
     <page-header title="角色维护" hidden-print hidden-export>
       <command-button label="新增角色" @click="addNewRole"></command-button>
     </page-header>
@@ -22,16 +20,6 @@
     </data-form>
     <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
 
-    <template>
-      <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
-        <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role" @close="closeAndRefresh"></modify-role>
-        <div slot="footer">
-          <i-button class="Ghost" @click="modifyRoleModal=false">取消</i-button>
-          <i-button class="blueButton" @click="submitEditRole">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-
     <!-- <template>
       <i-modal v-model="modulePowerModal" title="模块权限" :width="800">
         <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
@@ -43,28 +31,12 @@
     </template> -->
 
     <template>
-      <i-modal v-model="userListModal" title="用户列表" :width="800" class-name="no-footer" @on-visible-change="visibleChange">
-        <user-list ref="user-list"></user-list>
-      </i-modal>
-    </template>
-
-    <template>
       <i-modal width="300" v-model="waitHandleCaseModal" title="待办事项配置">
         <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
         <div slot="footer">
           <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
           <i-button class="blueButton" @click="submitRole">确定</i-button>
         </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="新增角色" v-model="addRoleModal">
-        <add-role ref="add-role" @refreshRoleList="refreshRoleList"></add-role>
-        <template slot="footer">
-          <i-button @click="addRoleCancel">取消</i-button>
-          <i-button @click="addRole" class="blueButton">确定</i-button>
-        </template>
       </i-modal>
     </template>
   </section>
@@ -79,13 +51,10 @@ import UserList from '~/components/system-manage/user-list.vue'
 import WaitHandleCase from '~/components/system-manage/wait-handle-case.vue'
 import ModulePower from '~/components/system-manage/module-power.vue'
 import OrgPower from '~/components/system-manage/org-power.vue'
-import AddRole from '~/components/system-manage/add-role.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
-
 import { Dependencies } from '~/core/decorator'
-import { ManageService } from '~/services/manage-service/manage.service'
 import { OrderService } from '~/services/business-service/order.service'
-import { SysRolesService } from '~/services/manage-service/sys-roles.service'
+import { SysRoleService } from '~/services/manage-service/sys-role.service'
 import { BackLogService } from '~/services/manage-service/back-log.service'
 import { Layout } from '~/core/decorator'
 import { Modal } from 'iview'
@@ -98,17 +67,14 @@ import { CommonService } from '~/utils/common.service'
   components: {
     SvgIcon,
     DataBox,
-    ModifyRole,
     UserList,
     WaitHandleCase,
-    ModulePower,
-    AddRole
+    ModulePower
   }
 })
 export default class RoleMaintenance extends Page {
   @Dependencies(OrderService) private orderService: OrderService
-  @Dependencies(SysRolesService) private sysRolesService: SysRolesService
-  @Dependencies(ManageService) private manageService: ManageService
+  @Dependencies(SysRoleService) private sysRoleService: SysRoleService
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(BackLogService) private backLogService: BackLogService
 
@@ -126,9 +92,7 @@ export default class RoleMaintenance extends Page {
 
   private modifyRoleModal: Boolean = false // 修改角色
   // private modulePowerModal: Boolean = false // 模块权限
-  private userListModal: Boolean = false // 用户列表
   private waitHandleCaseModal: Boolean = false // 待办事项配置
-  private addRoleModal: Boolean = false // 新增角色
 
   private rowIdFun: any = ''
   private roleId: Number = 0
@@ -240,7 +204,15 @@ export default class RoleMaintenance extends Page {
                 },
                 on: {
                   click: () => {
-                    this.userList(row)
+                    this.$dialog.show({
+                      title: "用户列表",
+                      isView: true,
+                      render: h => h(UserList, {
+                        props: {
+                          roleId: row.id
+                        }
+                      })
+                    })
                   }
                 }
               },
@@ -316,6 +288,21 @@ export default class RoleMaintenance extends Page {
       }
     ]
   }
+
+  private addNewRole(){
+    this.$dialog.show({
+      title:"新增角色",
+      footer: true,
+      onOk: () =>{
+
+      },
+      render: h => h(ModifyRole)
+    })
+  }
+
+
+
+
   /**
    * 保存角色的模块权限
    */
@@ -323,72 +310,48 @@ export default class RoleMaintenance extends Page {
     let modulePower: any = this.$refs['module-power'] as ModulePower
     modulePower.submit()
   }
-  addNewRole() {
-    this.addRoleModal = true
-  }
+ 
 
-  closeAndRefresh() {
-    this.modifyRoleModal = false
-    this.getRoleListByCondition()
-  }
-  /**
-   * 取消新增
-   */
-  addRoleCancel() {
-    this.addRoleModal = false
-    let _addRole = <Modal>this.$refs['add-role']
-    _addRole.reset()
-  }
   getRoleListByCondition() {
-    this.manageService
-      .queryRolePage(
-        {
-          roleName: this.roleModel.roleName,
-          roleStatus: this.roleModel.roleStatus,
-          userId: ''
-        },
-        this.pageService
-      )
-      .subscribe(
-        data => {
-          this.roleList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
+    // this.manageService
+    //   .queryRolePage(
+    //     {
+    //       roleName: this.roleModel.roleName,
+    //       roleStatus: this.roleModel.roleStatus,
+    //       userId: ''
+    //     },
+    //     this.pageService
+    //   )
+    //   .subscribe(
+    //     data => {
+    //       this.roleList = data
+    //     },
+    //     ({ msg }) => {
+    //       this.$Message.error(msg)
+    //     }
+    //   )
   }
   /**
    *只获取已启用状态的角色
    */
   getRoleListByConditionOn() {
-    this.manageService
-      .queryRolePage(
-        {
-          roleName: this.roleModel.roleName,
-          roleStatus: this.roleModel.roleStatus,
-          userId: ''
-        },
-        this.pageService
-      )
-      .subscribe(
-        data => {
-          this.roleList = data.filter(v => v.roleStatus == 0)
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-  }
-  refreshRoleList() {
-    //清空搜索条件并刷新列表
-    this.roleModel = {
-      roleName: '',
-      roleStatus: '',
-      userId: ''
-    }
-    this.getRoleListByCondition()
-    this.addRoleModal = false
+    // this.manageService
+    //   .queryRolePage(
+    //     {
+    //       roleName: this.roleModel.roleName,
+    //       roleStatus: this.roleModel.roleStatus,
+    //       userId: ''
+    //     },
+    //     this.pageService
+    //   )
+    //   .subscribe(
+    //     data => {
+    //       this.roleList = data.filter(v => v.roleStatus == 0)
+    //     },
+    //     ({ msg }) => {
+    //       this.$Message.error(msg)
+    //     }
+    //   )
   }
   /**
    * 新增角色弹窗的确定
@@ -407,25 +370,25 @@ export default class RoleMaintenance extends Page {
     _modifyRole.makeData(row) // 给修改角色赋值
   }
   deleteRole(row) {
-    this.$Modal.confirm({
-      title: '提示',
-      content: '确定删除此角色吗？',
-      onOk: () => {
-        this.manageService
-          .deleteRole({
-            roleId: row.id
-          })
-          .subscribe(
-            val => {
-              this.$Message.success('删除成功！')
-              this.getRoleListByCondition()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
-          )
-      }
-    })
+    // this.$Modal.confirm({
+    //   title: '提示',
+    //   content: '确定删除此角色吗？',
+    //   onOk: () => {
+    //     this.manageService
+    //       .deleteRole({
+    //         roleId: row.id
+    //       })
+    //       .subscribe(
+    //         val => {
+    //           this.$Message.success('删除成功！')
+    //           this.getRoleListByCondition()
+    //         },
+    //         ({ msg }) => {
+    //           this.$Message.error(msg)
+    //         }
+    //       )
+    //   }
+    // })
   }
   /**
    * 修改角色确定按钮
@@ -446,7 +409,7 @@ export default class RoleMaintenance extends Page {
       footer: true,
       width: 1000,
       onOk: modulePower => {
-        return modulePower.submit().catch(v => {return false})
+        return modulePower.submit().catch(v => { return false })
       },
       render: h => h(ModulePower, { props: { roleId: row.id } })
     })
@@ -467,11 +430,6 @@ export default class RoleMaintenance extends Page {
     })
   }
 
-  userList(row) {
-    this.userListModal = true
-    let _userList = <Modal>this.$refs['user-list']
-    _userList.getUserListByRole(row.id)
-  }
   waitHandleCaseConfig(row) {
     this.waitHandleCaseModal = true
     this.roleId = row.id
@@ -484,38 +442,13 @@ export default class RoleMaintenance extends Page {
       roleOpen.refresh(this.rowIdFun)
     }
   }
-  visibleChange(val) {
-    if (!val) {
-      let _userList = <Modal>this.$refs['user-list']
-      _userList.resetFrom()
-    }
-  }
+
   /**
    * 代办事项配置确定提交
    */
   submitRole() {
     let _waitHandle: any = this.$refs['wait-handle']
     _waitHandle.configWaitHandle(this.roleId)
-  }
-  /**
-   * 导出角色维护
-   */
-  exportRole() {
-    let databox = this.$refs['databox'] as DataBox
-    let multipleSelection = databox.getCurrentSelection()
-    if (multipleSelection && multipleSelection.length) {
-      let sysLogsIds = multipleSelection.map(v => v.id)
-      this.sysRolesService
-        .exportRole({
-          roleIds: sysLogsIds
-        })
-        .subscribe(data => {
-          CommonService.downloadFile(data, '导出角色维护')
-          this.$Message.success('导出成功！')
-        })
-    } else {
-      this.$Message.info('请先选择角色再导出！')
-    }
   }
 }
 </script>

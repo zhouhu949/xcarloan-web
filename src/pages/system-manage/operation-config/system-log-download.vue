@@ -28,7 +28,6 @@ import DataBox from '~/components/common/data-box.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
-import { ManageService } from '~/services/manage-service/manage.service'
 import { SysLogsService } from '~/services/manage-service/sys-logs.service'
 import { PageService } from '~/utils/page.service'
 import { CommonService } from '~/utils/common.service'
@@ -41,7 +40,6 @@ import { FilterService } from '~/utils/filter.service'
   }
 })
 export default class SystemLogDownload extends Page {
-  @Dependencies(ManageService) private manageService: ManageService
   @Dependencies(SysLogsService) private systemLogsService: SysLogsService
   @Dependencies(PageService) private pageService: PageService
 
@@ -133,12 +131,12 @@ export default class SystemLogDownload extends Page {
     ]
   }
   search() {
-    this.manageService
-      .querySysLogsPage(this.systemLogModel, this.pageService)
-      .subscribe(
-        data =>this.systemLogsList = data,
-        err => this.$Message.error(err)
-      )
+    // this.manageService
+    //   .querySysLogsPage(this.systemLogModel, this.pageService)
+    //   .subscribe(
+    //     data =>this.systemLogsList = data,
+    //     err => this.$Message.error(err)
+    //   )
   }
   /**
    * 列配置
