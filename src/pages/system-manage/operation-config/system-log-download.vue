@@ -1,10 +1,10 @@
 <!--系统日志下载-->
 <template>
     <section class="page system-log-download">
-        <page-header title="系统日志下载" @on-export="exportLogs" ></page-header>
+        <page-header title="系统日志下载" hiddenPrint hiddenExport></page-header>
         <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
             <template slot="input">
-                <i-form-item prop="realName" label="操作人：">
+                <i-form-item prop="operator" label="操作人：">
                     <i-input v-model="systemLogModel.operator"></i-input>
                 </i-form-item>
                 <i-form-item prop="clientIp" label="客户端IP：">
@@ -40,7 +40,7 @@ import { FilterService } from '~/utils/filter.service'
   }
 })
 export default class SystemLogDownload extends Page {
-  @Dependencies(SysLogsService) private systemLogsService: SysLogsService
+  @Dependencies(SysLogsService) private sysLogsService: SysLogsService
   @Dependencies(PageService) private pageService: PageService
 
   private columns1: any
@@ -131,12 +131,12 @@ export default class SystemLogDownload extends Page {
     ]
   }
   search() {
-    // this.manageService
-    //   .querySysLogsPage(this.systemLogModel, this.pageService)
-    //   .subscribe(
-    //     data =>this.systemLogsList = data,
-    //     err => this.$Message.error(err)
-    //   )
+    this.sysLogsService
+      .querySysLogsPage(this.systemLogModel, this.pageService)
+      .subscribe(
+        data =>this.systemLogsList = data,
+        err => this.$Message.error(err)
+      )
   }
   /**
    * 列配置
@@ -153,30 +153,6 @@ export default class SystemLogDownload extends Page {
       exeType: '',
       exeTime: '',
       realName:''
-    }
-  }
-  /**
-   * 导出系统日志列表
-   */
-  exportLogs() {
-    let databox = this.$refs['databox'] as DataBox
-    let multipleSelection = databox.getCurrentSelection()
-    if (multipleSelection && multipleSelection.length) {
-      let sysLogsIds = multipleSelection.map(v => v.id)
-      this.systemLogsService
-        .exportSysLogs({
-          sysLogsIds: sysLogsIds
-        })
-        .subscribe(
-          data => {
-            CommonService.downloadFile(data.url, '系统日志下载')
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
-        )
-    } else {
-      this.$Message.info('请先选择日志再导出！')
     }
   }
 }

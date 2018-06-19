@@ -4,7 +4,6 @@ import sysUserController from './sys-user.controller'
 import SysLogsController from './sys-logs.controller'
 import systemBackupController from './system-backup.controller'
 import companyController from './company.controller'
-import dataDictTypeController from './data-dict-type.controller'
 import sysDictController from './sys-dict.controller'
 import sysModuleController from './sys-module.controller'
 import loginController from './login.controller'
@@ -20,7 +19,6 @@ export const manageService = {
   SysLogsController,
   systemBackupController,
   companyController,
-  dataDictTypeController,
   sysDictController,
   sysModuleController,
   loginController,

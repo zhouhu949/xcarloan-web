@@ -15,12 +15,21 @@ export default {
     type: requestType.Get
   },
   /**
-   * 新增/修改数据字典项
+   * 修改数据字典项
    */
-  createOrModifyDataDict: {
+  updateDataDict: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'createOrModifyDataDict',
+    action: 'updateDataDict',
+    type: requestType.Post
+  },
+  /**
+   * 新增数据字典项
+   */
+  createSysDataDict: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createSysDataDict',
     type: requestType.Post
   },
   /**
@@ -76,5 +85,32 @@ export default {
     controller: CONTROLLER,
     action: 'getDataDictByTypeCodeWithPage',
     type: 'GET'
+  },
+  /**
+   * 查询所有数据字典类型
+   */
+  getAllSysDictType: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAllSysDictType',
+    type: requestType.Get
+  },
+  /**
+ * 修改数据字典类型
+ */
+  modifyDataDictType: {
+      service: SERVICE,
+      controller: CONTROLLER,
+      action: 'modifyDataDictType',
+      type: requestType.Post
+  },
+  /**
+   * 新增数据字典类型
+   */
+  createDataDictType: {
+    service: SERVICE,
+      controller: CONTROLLER,
+      action: 'createDataDictType',
+      type: requestType.Post
   }
 }

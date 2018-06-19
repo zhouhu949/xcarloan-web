@@ -13,14 +13,5 @@ export default {
     controller: CONTROLLER,
     action: 'querySysLogsPage',
     type: requestType.Get
-  },
-  /**
-   * 导出系统日志
-   */
-  exportSysLogs: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'exportSysLogs',
-    type: requestType.Post
   }
 }

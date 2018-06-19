@@ -19,14 +19,24 @@ export class SysDictService {
     })
   }
   /**
-   * 新增/修改数据字典项
+   * 修改数据字典项
    */
-  createOrModifyDataDict(data) {
+  updateDataDict(data) {
     return this.netService.send({
-      server: manageService.sysDictController.createOrModifyDataDict,
+      server: manageService.sysDictController.updateDataDict,
       data: data
     })
   }
+  /**
+   * 新增数据字典项
+   */
+  createSysDataDict(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.createSysDataDict,
+      data: data
+    })
+  }
+   
   /**
    * 删除数据字典项
    */
@@ -80,6 +90,30 @@ export class SysDictService {
       server: manageService.sysDictController.getDataDictByTypeCodeWithPage,
       data: data,
       page: page
+    })
+  }
+
+  /**
+   * 查询所有数据字典类型
+   */
+  getAllSysDictType() {
+    return this.netService.send({
+        server: manageService.sysDictController.getAllSysDictType,
+    })
+  }
+  modifyDataDictType(data) {
+    return this.netService.send({
+        server: manageService.sysDictController.modifyDataDictType,
+        data
+    })
+  }
+  /**
+   * 新增数据字典类型
+   */
+  createDataDictType(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.createDataDictType,
+      data
     })
   }
 }

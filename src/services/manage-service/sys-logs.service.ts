@@ -6,15 +6,13 @@ export class SysLogsService {
   private netService: NetService
 
   /**
-   * 导出系统日志
+   * 分页查询操作日志
    */
-  exportSysLogs({ sysLogsIds }) {
+  querySysLogsPage(data, page) {
     return this.netService.send({
-      server: manageService.SysLogsController.exportSysLogs,
-      data: {
-        sysLogsIds: sysLogsIds
-      }
+      server: manageService.SysLogsController.querySysLogsPage,
+      data: data,
+      page: page
     })
   }
-
 }
