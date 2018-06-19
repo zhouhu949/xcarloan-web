@@ -44,20 +44,19 @@
 <script lang="ts">
 import Page from '~/core/page'
 import Component from 'vue-class-component'
-import allotRoleModal from '~/components/system-manage/allot-role-modal.vue'
-import ModifyUser from '~/components/system-manage/modify-user.vue'
+import { Layout } from '~/core/decorator'
+import { Dependencies } from '~/core/decorator'
+import { Action, State, namespace } from "vuex-class";
+import { PageService } from '~/utils/page.service'
+import { SysOrgService } from '~/services/manage-service/sys-org.service'
+import { SysUserService } from '~/services/manage-service/sys-user.service'
+import OrganizeTree from '~/components/common/organize-tree.vue'
+import DataForm from "~/components/common/data-form.vue";
+import ModifyOrg from "~/components/system-manage/modify-org.vue";
 import DeviceManage from '~/components/system-manage/device-manage.vue'
 import BatchManageDevice from '~/components/system-manage/batch-manage-device.vue' // 批量管理设备
-import ModifyOrg from "~/components/system-manage/modify-org.vue";
-import OrganizeTree from '~/components/common/organize-tree.vue'
-import { Dependencies } from '~/core/decorator'
-import { SysOrgService } from '~/services/manage-service/sys-org.service'
-import { Layout } from '~/core/decorator'
-import { PageService } from '~/utils/page.service'
-import { SysUserService } from '~/services/manage-service/sys-user.service'
-import { Action, State, namespace } from "vuex-class";
-import DataForm from "~/components/common/data-form.vue";
-import { } from "clone";
+import ModifyUser from '~/components/system-manage/modify-user.vue'
+import UserRoleManage from '~/components/system-manage/user-role-manage.vue'
 
 // 引入机构模块
 const OrgModule = namespace("orgSpace");
@@ -65,7 +64,6 @@ const OrgModule = namespace("orgSpace");
 @Layout('workspace')
 @Component({
   components: {
-    allotRoleModal,
     ModifyUser,
     OrganizeTree,
     BatchManageDevice
@@ -405,7 +403,7 @@ export default class OrgUserManage extends Page {
           return v
         })
       },
-      render: h => h(allotRoleModal, {
+      render: h => h(UserRoleManage, {
         props: {
           userIds: this.userIds
         }

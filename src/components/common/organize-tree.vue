@@ -61,7 +61,6 @@ export default class OrganizeTree extends Vue {
 
     // 生成数据树
     this.dataTree = fun(0)
-    console.log(this.dataTree)
   }
   private dataTree: Array<any> = [] // 数据树
   private selected: String = '' // 当前选择项

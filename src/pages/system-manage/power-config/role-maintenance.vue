@@ -2,15 +2,15 @@
 <template>
   <section class="page role-maintenance">
     <page-header title="角色维护" hidden-print hidden-export>
-      <command-button label="新增角色" @click="addNewRole"></command-button>
+      <command-button label="新增角色" @click="roleOperate()"></command-button>
     </page-header>
-    <data-form hidden-date-search :model="roleModel" @on-search="getRoleListByCondition">
+    <data-form hidden-date-search :model="model" @on-search="searchRolesByAuth">
       <template slot="input">
         <i-form-item prop="roleName" label="角色名称：">
-          <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
+          <i-input placeholder="请输入角色姓名" v-model="model.roleName"></i-input>
         </i-form-item>
         <i-form-item prop="roleStatus" label="启用状态：">
-          <i-select v-model="roleModel.roleStatus" clearable>
+          <i-select v-model="model.roleStatus" clearable>
             <i-option label="启用" :value="0" :key="0"></i-option>
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
@@ -18,27 +18,8 @@
       </template>
 
     </data-form>
-    <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
+    <data-box :id="20" :columns="columns1" :data="dataSet" @onPageChange="searchRolesByAuth" :page="pageService" ref="databox"></data-box>
 
-    <!-- <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" :width="800">
-        <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
-        <div slot="footer">
-          <i-button @click="modulePowerModal=false">取消</i-button>
-          <i-button @click="saveModulePower" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template> -->
-
-    <template>
-      <i-modal width="300" v-model="waitHandleCaseModal" title="待办事项配置">
-        <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
-        <div slot="footer">
-          <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
-          <i-button class="blueButton" @click="submitRole">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -48,7 +29,6 @@ import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
 import ModifyRole from '~/components/system-manage/modify-role.vue'
 import UserList from '~/components/system-manage/user-list.vue'
-import WaitHandleCase from '~/components/system-manage/wait-handle-case.vue'
 import ModulePower from '~/components/system-manage/module-power.vue'
 import OrgPower from '~/components/system-manage/org-power.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
@@ -68,7 +48,6 @@ import { CommonService } from '~/utils/common.service'
     SvgIcon,
     DataBox,
     UserList,
-    WaitHandleCase,
     ModulePower
   }
 })
@@ -80,8 +59,8 @@ export default class RoleMaintenance extends Page {
 
   private columns1: any
   private ids: any = []
-  private roleList: any = []
-  // private roleList: Array<Object> = [];
+  private dataSet: any = []
+  // private dataSet: Array<Object> = [];
   private searchOptions: Boolean = false
   private openCreateCompact: Boolean = false
   private openColumnsConfig: Boolean = false
@@ -97,7 +76,7 @@ export default class RoleMaintenance extends Page {
   private rowIdFun: any = ''
   private roleId: Number = 0
   // private currentRoleId: number | null = null
-  private roleModel = {
+  private model = {
     roleName: '',
     roleStatus: '',
     userId: ''
@@ -110,7 +89,7 @@ export default class RoleMaintenance extends Page {
   }
 
   mounted() {
-    this.getRoleListByConditionOn()
+    this.searchRolesByAuth()
 
   }
 
@@ -140,7 +119,7 @@ export default class RoleMaintenance extends Page {
                 },
                 on: {
                   click: () => {
-                    this.modifyRole(row)
+                    this.roleOperate(row)
                   }
                 }
               },
@@ -238,66 +217,92 @@ export default class RoleMaintenance extends Page {
           ])
         }
       },
-      {
-        align: 'center',
-        editable: true,
-        title: '状态',
-        key: 'roleStatus',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, columns, index }) => {
-          if (row.roleStatus === 0) {
-            return h('span', {}, '启用')
-          } else if (row.roleStatus === 1) {
-            return h('span', {}, '停用')
-          }
-        }
-      },
+
       {
         align: 'center',
         editable: true,
         title: '角色名称',
         key: 'roleName',
+        minWidth: this.$common.getColumnWidth(5),
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '机构名称',
+        key: 'orgName',
+        minWidth: this.$common.getColumnWidth(4),
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '所属部门',
+        key: 'deptName',
+        minWidth: this.$common.getColumnWidth(4),
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '启用状态',
+        key: 'roleStatus',
         minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row, columns, index }) => h('p', {}, this.$filter.dictConvert(row.roleStatus))
       },
       {
         align: 'center',
         editable: true,
         title: '备注',
-        key: 'roleRemark',
+        key: 'roleDesc',
         minWidth: this.$common.getColumnWidth(8),
       },
       {
         align: 'center',
         editable: true,
         title: '操作人',
-        key: 'realName',
+        key: 'operatorName',
         minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
         editable: true,
-        title: '创建时间',
-        key: 'operateTime',
+        title: '操作时间',
+        key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(6),
-        render: (h, { row, columns, index }) => {
-          return h(
-            'span',
-            FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
-          )
-        }
+        render: (h, { row, columns, index }) => h('span', {}, this.$filter.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
       }
     ]
   }
 
-  private addNewRole(){
+  /**
+   * 角色维护
+   * @param val 需要维护的角色数据
+   */
+  private roleOperate(val?: Object) {
     this.$dialog.show({
-      title:"新增角色",
+      title: val ? "新增角色" : "角色维护",
       footer: true,
-      onOk: () =>{
-
+      onOk: modifyRole => {
+        return modifyRole.submit(v => {
+          if (v) this.getRoleListByCondition()
+          return v
+        })
       },
-      render: h => h(ModifyRole)
+      render: h => h(ModifyRole, {
+        props: {
+          roleData: val
+        }
+      })
     })
+  }
+
+  /**
+ * 获取自己所能操作的所有角色
+ */
+  private searchRolesByAuth() {
+    this.sysRoleService.findAllRoleByAuth(this.model, this.pageService)
+      .subscribe(
+        data => this.dataSet = data,
+        err => this.$Message.error(err.msg)
+      )
   }
 
 
@@ -310,21 +315,21 @@ export default class RoleMaintenance extends Page {
     let modulePower: any = this.$refs['module-power'] as ModulePower
     modulePower.submit()
   }
- 
+
 
   getRoleListByCondition() {
     // this.manageService
     //   .queryRolePage(
     //     {
-    //       roleName: this.roleModel.roleName,
-    //       roleStatus: this.roleModel.roleStatus,
+    //       roleName: this.model.roleName,
+    //       roleStatus: this.model.roleStatus,
     //       userId: ''
     //     },
     //     this.pageService
     //   )
     //   .subscribe(
     //     data => {
-    //       this.roleList = data
+    //       this.dataSet = data
     //     },
     //     ({ msg }) => {
     //       this.$Message.error(msg)
@@ -338,15 +343,15 @@ export default class RoleMaintenance extends Page {
     // this.manageService
     //   .queryRolePage(
     //     {
-    //       roleName: this.roleModel.roleName,
-    //       roleStatus: this.roleModel.roleStatus,
+    //       roleName: this.model.roleName,
+    //       roleStatus: this.model.roleStatus,
     //       userId: ''
     //     },
     //     this.pageService
     //   )
     //   .subscribe(
     //     data => {
-    //       this.roleList = data.filter(v => v.roleStatus == 0)
+    //       this.dataSet = data.filter(v => v.roleStatus == 0)
     //     },
     //     ({ msg }) => {
     //       this.$Message.error(msg)

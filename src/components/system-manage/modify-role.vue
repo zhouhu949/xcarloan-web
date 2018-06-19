@@ -6,11 +6,11 @@
         <i-input v-model="model.roleName"></i-input>
       </i-form-item>
       <i-form-item label="所属机构" prop="deptNames">
-        <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" change-on-select :disabled="!!orgId"></Cascader>
+        <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" change-on-select @on-change="onChange"></Cascader>
       </i-form-item>
       <i-form-item label="状态" prop="roleStatus">
         <i-select v-model="model.roleStatus">
-          <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
+          <i-option v-for="{value,label} in $dict.getDictData(10009)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="roleRemark">
@@ -37,14 +37,14 @@ export default class ModifyRole extends Vue {
   @Prop() roleData
 
   // 机构数据
-  @OrgMoudle.Getter departmentList;
+  @OrgMoudle.State orgData;
   @OrgMoudle.Getter getOwnerData;
 
-  private orgTreeData: any;
+  private orgTreeData: any = [];
 
   private model: any = {
     roleName: '',
-    roleStatus: 10022, // 启用
+    roleStatus: 10026, // 启用
     roleRemark: '',
     deptNames: [],
     orgId: ""
@@ -55,13 +55,14 @@ export default class ModifyRole extends Vue {
       { required: true, message: "请输入角色名称", trigger: "blur" },
       { validator: this.$validator.nomalStr, trigger: "blur" }
     ],
-    roleStatus: { required: true, message: "请输入角色名称", trigger: "blur", type: "number" }
+    roleStatus: { required: true, message: "请选择状态", trigger: "blur", type: "number" },
+    deptNames: { required: true, message: "请选择角色所属机构", trigger: "blur", type: "array" }
   }
 
 
   mounted() {
     // 组织机构树
-    let treeSource = this.departmentList.map(v => {
+    let treeSource = this.orgData.map(v => {
       return {
         id: v.id,
         pid: v.orgPid,
@@ -72,6 +73,7 @@ export default class ModifyRole extends Vue {
     this.orgTreeData = this.$common.departmentData(treeSource)
 
     if (this.roleData) {
+      console.log(this.roleData)
       this.model.id = this.roleData.id
       this.model.orgId = this.roleData.deptId
       this.model.roleName = this.roleData.roleName
@@ -85,33 +87,69 @@ export default class ModifyRole extends Vue {
   /**
    * 级联选择器选择之后显示的内容
    */
-  private format(labels, selectedData) {
-    const index = labels.length - 1;
-    this.model.orgId = selectedData[index];
-    return labels[index];
+  private format(labels) {
+    return labels[labels.length - 1];
+  }
+
+  /**
+   * 获取选择的结果
+   */
+  private onChange(value) {
+    this.model.orgId = value[value.length - 1]
   }
 
 
+  /**
+   * 添加权限
+   */
   private addRole() {
+    return new Promise((resolve, reject) => {
+      this.sysRoleService.addRole(this.model).subscribe(
+        data => resolve(true),
+        err => reject(err)
+      )
+    })
 
   }
 
+  /**
+   * 修改权限
+   */
   private modifyRole() {
-
+    return new Promise((resolve, reject) => {
+      this.sysRoleService.updateRole(this.model).subscribe(
+        data => resolve(true),
+        err => reject(err)
+      )
+    })
   }
 
-
+  /**
+   * 提交权限数据
+   */
   submit() {
     let form = this.$refs['form'] as Form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve(false)
-        // this.sysRoleService.
+        let result = this.roleData ? this.modifyRole() : this.addRole()
+        result.then(v => {
+          this.$Message.success("操作成功")
+          resolve(true)
+        }).catch(err => {
+          this.$Message.error(err.msg)
+          resolve(false)
+        })
       })
     })
   }
 }
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.component.modify-role {
+  .ivu-cascader-rel {
+    width: auto;
+  }
+}
 </style>
