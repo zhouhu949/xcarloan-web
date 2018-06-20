@@ -16,7 +16,7 @@ export default {
   /**
    * 通过角色ID获取用户分页数据
    */
-  queryUserByRoleIdPage:{
+  queryUserByRoleIdPage: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'queryUserByRoleIdPage',
@@ -25,19 +25,28 @@ export default {
   /**
    * 新增角色
    */
-  addRole:{
+  addRole: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'addRole',
     type: requestType.Post
   },
-   /**
+  /**
    * 维护角色
    */
-  updateRole:{
+  updateRole: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'updateRole',
     type: requestType.Put
+  },
+  /**
+   * 删除角色
+   */
+  deleteRole: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteRole',
+    type: requestType.Delete
   }
 }

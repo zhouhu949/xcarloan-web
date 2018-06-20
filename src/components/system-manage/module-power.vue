@@ -24,13 +24,13 @@
 import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
-import { Observable } from "rxjs";
 import { SysRoleService } from "~/services/manage-service/sys-role.service";
 import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { SysModuleService } from "~/services/manage-service/sys-module.service";
 import { PageService } from "~/utils/page.service";
 import DataTree from "~/components/common/data-tree.vue";
+import { State } from "vuex-class";
 
 @Component({
   components: {
@@ -45,10 +45,12 @@ export default class ModulePower extends Vue {
 
   // 角色id
   @Prop() roleId;
+  // 菜单资源
+  @State menuResource;
+  // 控件资源
+  @State controlResource;
 
   private resourceData = [];
-  private menuResource = [];
-  private controlResource = [];
   private menuResourceData = [];
   private controlResourceData = [];
 
@@ -118,24 +120,22 @@ export default class ModulePower extends Vue {
    * controlResource 右侧列表使用
   */
   getResourceData() {
-    this.sysModuleService.findAllResourceAndMenu(this.roleId).subscribe(data => {
-      // 全部资源数据
-      this.resourceData = data;
+    //  // 全部资源数据
+    //   this.resourceData = data;
 
-      // 菜单资源数据
-      this.menuResource = data.filter(x => [422, 421, 429].includes(x.filetype))
-        .map(x => {
-          x.title = x.resoname;
-          return x
-        });
+    //   // 菜单资源数据
+    //   this.menuResource = data.filter(x => [422, 421, 429].includes(x.filetype))
+    //     .map(x => {
+    //       x.title = x.resoname;
+    //       return x
+    //     });
 
-      // 菜单资源数据
-      this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
-      // 转换_checked 属性值为Boolean类型
-      this.controlResource.forEach(v => v._checked = Boolean(v._checked))
+    //   // 菜单资源数据
+    //   this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
+    //   // 转换_checked 属性值为Boolean类型
+    //   this.controlResource.forEach(v => v._checked = Boolean(v._checked))
 
-      this.createMenuResourceData();
-    });
+    //   this.createMenuResourceData();
   }
 
   /**
