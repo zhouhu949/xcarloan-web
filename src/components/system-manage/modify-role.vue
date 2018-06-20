@@ -70,7 +70,7 @@ export default class ModifyRole extends Vue {
         label: v.orgName
       }
     })
-    this.orgTreeData = this.$common.departmentData(treeSource)
+    this.orgTreeData = this.$common.generateTreeData(treeSource)
 
     if (this.roleData) {
       this.model.id = this.roleData.id

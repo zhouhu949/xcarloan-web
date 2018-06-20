@@ -89,6 +89,94 @@ export class SysRoleService {
     })
   }
 
+  /**
+   * 给角色关联资源
+   * @param roleId 角色ID
+   * @param resourceIds 资源ID集合
+   */
+  @Debounce()
+  roleResource(roleId, resourceIds) {
+    return this.netService.send({
+      server: manageService.sysRoleController.roleResource,
+      data: {
+        resourceIds: resourceIds,
+        roleId: roleId
+      },
+      loading: true
+    })
+  }
 
+  /**
+   * 获取数据权限下所有的机构，并标出该角色已选择排除的机构
+   */
+  findRoleExceptOrg(roleId) {
+    return this.netService.send({
+      server: manageService.sysRoleController.findRoleExceptOrg,
+      append: roleId
+    })
+  }
+  /**
+   * 获取权限下的所有的机构，并标出该角色已选择的机构
+   */
+  findRoleOrg(roleId) {
+    return this.netService.send({
+      server: manageService.sysRoleController.findRoleOrg,
+      append: roleId
+    })
+  }
 
+  /**
+   * 角色排除机构数据权限
+   * @param roleId 角色ID
+   * @param orgIds 机构
+   */
+  @Debounce()
+  roleExceptOrg(roleId, orgIds) {
+    return this.netService.send({
+      server: manageService.sysRoleController.roleExceptOrg,
+      data: {
+        orgIds: orgIds,
+        roleId: roleId
+      },
+      loading: true
+    })
+  }
+
+  /**
+   * 角色配置机构数据权限
+   * @param roleId 角色ID
+   * @param orgIds 机构
+   */
+  @Debounce()
+  roleOrg(roleId, orgIds) {
+    return this.netService.send({
+      server: manageService.sysRoleController.roleOrg,
+      data: {
+        orgIds: orgIds,
+        roleId: roleId
+      },
+      loading: true
+    })
+  }
+
+  /**
+   * 删除角色排除机构
+   */
+  @Debounce()
+  deleteRoleExceptOrg(authId) {
+    return this.netService.send({
+      server: manageService.sysRoleController.deleteRoleExceptOrg,
+      append: authId
+    })
+  }
+  /**
+   * 删除角色授权机构
+   */
+  @Debounce()
+  deleteRoleOrg(authId) {
+    return this.netService.send({
+      server: manageService.sysRoleController.deleteRoleOrg,
+      append: authId
+    })
+  }
 }

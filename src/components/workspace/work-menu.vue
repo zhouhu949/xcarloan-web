@@ -24,10 +24,10 @@ import WorkMenuItem from "~/components/workspace/work-menu-item.vue";
   }
 })
 export default class WorkMenu extends Vue {
-  @State("pageList") pageList;
-  @Mutation("openPage") openPage;
-  @State("menuResource") menuResource;
-  @State("currentPage") currentPage;
+  @State pageList;
+  @Mutation openPage;
+  @State menuResource;
+  @State currentPage;
   private currentMenuItem: any = null;
   private showMenuPoptip = false;
   private isExpand = true;
@@ -37,18 +37,19 @@ export default class WorkMenu extends Vue {
 
   private menuList = [];
 
-  @Watch("menuResource")
+  @Watch("menuResource", { immediate: true })
   onMenuResourceChange() {
-    this.createMenuList();
+    let menuData = this.menuResource.map(v => Object.assign({}, v))
+    this.createMenuList(menuData);
   }
 
   @Watch("currentPage")
-  onCurrentPageChange(value) {}
+  onCurrentPageChange(value) { }
 
-  createMenuList() {
+  createMenuList(menuData) {
     // 生成菜单项
     let createMenus = item => {
-      let children = this.menuResource
+      let children = menuData
         .filter(x => x.resourcePid === item.id)
         .map(x => {
           return createMenus(Object.assign({}, x));
@@ -61,7 +62,7 @@ export default class WorkMenu extends Vue {
       return item;
     };
     // 过滤菜单项
-    let menus = this.menuResource
+    let menus = menuData
       .filter(x => x.resourceFileType === 10029)
       .sort((x: any, y: any) => x.resourceOrder - y.resourceOrder)
       .map(createMenus);
@@ -77,10 +78,6 @@ export default class WorkMenu extends Vue {
     if (path) {
       this.openPage(path);
     }
-  }
-
-  mounted() {
-    this.createMenuList();
   }
 }
 </script>

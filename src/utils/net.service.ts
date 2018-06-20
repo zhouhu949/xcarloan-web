@@ -216,12 +216,16 @@ export class NetService {
 
         // 错误类型检测
         switch (ex.response.status) {
-          case 403:
-            {
-              //
-            }
+          case 500:
+            error.msg = "服务端内部错误,请稍后重试"
+            break;
+          default:
+            error.msg = "服务器内部错误,请稍后重试"
             break;
         }
+        return loadingPromise.then(emitResult(() => {
+          observer.error(error)
+        }))
       })
     })
 

@@ -22,10 +22,10 @@ export default {
     action: 'editResourceName',
     type: requestType.Put
   },
- /**
-  * 根据父id查询子类
-  */
- findChildMenu: {
+  /**
+   * 根据父id查询子类
+   */
+  findChildMenu: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findChildMenu',
@@ -38,6 +38,24 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getRoleMenu',
+    type: requestType.Get
+  },
+  /**
+   * 获取角色下的菜单
+   */
+  findMenuByRoleId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findMenuByRoleId',
+    type: requestType.Get
+  },
+  /**
+   * 获取角色下的资源
+   */
+  findResourceByRoleId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findResourceByRoleId',
     type: requestType.Get
   }
 }

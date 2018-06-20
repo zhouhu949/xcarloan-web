@@ -48,7 +48,7 @@ export default class DataTree extends Vue {
   emitSelectChange(data) { }
 
   @Emit("on-currentChecked-change")
-  emitCurrentCheckedChange(id, value) {}
+  emitCurrentCheckedChange(id, value) { }
 
   private nodeMap = new Map<DataTreeNode, any>();
 

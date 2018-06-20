@@ -6,14 +6,14 @@
       <i-col :span="10">
         <i-card title="模块名">
           <div class="module-name">
-            <data-tree ref="data-tree" @on-currentChecked-change="onCurrentCheckedChange" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
+            <data-tree ref="data-tree" @on-currentChecked-change="onCurrentCheckedChange" show-checkbox :data="menuResourceData" @on-select-change="(data) => currentNode = data"></data-tree>
           </div>
         </i-card>
       </i-col>
       <!--表格-->
       <i-col :span="14">
         <i-card title="模块功能">
-          <data-box ref="data-box" @on-selection-change="onSelectionChange" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+          <data-box ref="data-box" @on-selection-change="onSelectionChange" :showConfigColumn="false" :columns="columns" :data="currentMenuControlResource"></data-box>
         </i-card>
       </i-col>
     </i-row>
@@ -45,14 +45,24 @@ export default class ModulePower extends Vue {
 
   // 角色id
   @Prop() roleId;
-  // 菜单资源
+  // 菜单资源 state 只可作为基础数据。（不可绑定，可做COPY)
   @State menuResource;
-  // 控件资源
+  // 控件资源 state 只可作为基础数据。（不可绑定，可做COPY)
   @State controlResource;
 
-  private resourceData = [];
   private menuResourceData = [];
   private controlResourceData = [];
+
+  // 当前选中节点
+  private currentNode: any = {};
+
+
+  /**
+   * 当前菜单对应的控件资源
+   */
+  get currentMenuControlResource() {
+    return this.controlResourceData.filter(v => v.pid === this.currentNode.id)
+  }
 
   // 树组件
   private tree: any = {};
@@ -76,13 +86,13 @@ export default class ModulePower extends Vue {
       },
       {
         align: "left",
-        key: "resoname",
+        key: "resourceName",
         title: "功能名称",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "left",
-        key: "resoRemark",
+        key: "remark",
         title: "描述",
         minWidth: this.$common.getColumnWidth(6)
       }
@@ -93,94 +103,90 @@ export default class ModulePower extends Vue {
    * 选择项发生改变的时候
    */
   onSelectionChange(selection) {
-    let checkdIds = selection.map(v => v.id)
-    this.controlResourceData.forEach(x => x._checked = checkdIds.includes(x.id))
+    let checkdIds: Array<Number> = selection.map(v => v.id)
+    this.currentMenuControlResource.forEach(v => v._checked = checkdIds.includes(v.id))
+    if (this.currentMenuControlResource.length > 1) {
+      this.currentNode._checked = true
+    }
   }
 
   /**
    * 当前选中节点的checked 发生变化
   */
   onCurrentCheckedChange(id, value) {
-    this.controlResource.filter(x => x.pid === id).forEach(x => { x._checked = value })
-  }
-
-  /**
-   * 获取控件资源通过id
-   */
-  getControlResourcesById(data) {
-    this.controlResourceData = this.controlResource.filter(
-      x => [423, 424, 425].includes(x.filetype) && x.pid === data.id
-    )
-  }
-
-  /**
-   * 获取资源数据
-   * 分两组数据
-   * menuResource 左侧树使用
-   * controlResource 右侧列表使用
-  */
-  getResourceData() {
-    //  // 全部资源数据
-    //   this.resourceData = data;
-
-    //   // 菜单资源数据
-    //   this.menuResource = data.filter(x => [422, 421, 429].includes(x.filetype))
-    //     .map(x => {
-    //       x.title = x.resoname;
-    //       return x
-    //     });
-
-    //   // 菜单资源数据
-    //   this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
-    //   // 转换_checked 属性值为Boolean类型
-    //   this.controlResource.forEach(v => v._checked = Boolean(v._checked))
-
-    //   this.createMenuResourceData();
-  }
-
-  /**
-   * 生成菜单资源数据
-   * 生成树形结构
-   */
-  createMenuResourceData() {
-    let parents = this.menuResource.filter(x => x.pid === 10000);
-
-    let fun = item => {
-      let children = this.menuResource.filter(x => x.pid === item.id);
-
-      if (children && children.length) {
-        item.children = children.map(fun);
-      }
-
-      return item;
-    };
-
-    this.menuResourceData = parents.map(fun);
+    if (!value) {
+      this.controlResourceData.filter(v => v.pid === id).forEach(v => v._checked = value)
+    }
   }
 
 
   mounted() {
     this.tree = this.$refs['data-tree']
-    // 获取所有资源数据
-    this.getResourceData();
+    let option = { keyName: "id", parentKeyName: "resourcePid" }
+    let treeData = this.$common.generateTreeData(this.menuResource, option)
+    Promise.all([this.getMenuByRole(), this.getResourceByRole()]).then(([menus, resources]) => {
+      // 获取所有资源数据
+      function getNodes(data) {
+        if (!data) return
+        return data.map(v => {
+          return {
+            id: v.id,
+            title: v.resourceName,
+            _checked: (menus as Array<Number>).includes(v.id),
+            children: getNodes(v.children)
+          }
+        })
+      }
+      // 返回组合后的菜单树数据
+      this.menuResourceData = getNodes(treeData)
+      this.controlResourceData = this.controlResource.map(v => Object.assign({ _checked: (resources as Array<Number>).includes(v.id) }, v))
+    })
   }
 
+
+
+  /**
+   * 根据角色获取菜单
+   */
+  private getMenuByRole() {
+    return new Promise((resolve, reject) => {
+      this.sysModuleService.findMenuByRoleId(this.roleId).subscribe(
+        data => resolve(data.map(v => v.id)),
+        err => reject(err)
+      )
+    })
+  }
+
+  /**
+   * 根据角色获取资源
+   */
+  private getResourceByRole() {
+    return new Promise((resolve, reject) => {
+      this.sysModuleService.findResourceByRoleId(this.roleId).subscribe(
+        data => resolve(data.map(v => v.id)),
+        err => reject(err)
+      )
+    })
+  }
+
+  /**
+   * 提交修改
+   */
   public submit() {
     let menuResourceIds = this.tree.getCheckedKeys()
-    let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
-    // return new Promise((resolve, reject) => {
-    //   this.sysRoleService.roleAllocateResources({
-    //     roleId: this.roleId,
-    //     resourcesId: [...menuResourceIds, ...controlResourceIds]
-    //   }).subscribe(() => {
-    //     this.$Message.success('模块权限配置成功！')
-    //     resolve()
-    //   }, err => {
-    //     this.$Message.err(err.msg)
-    //     reject()
-    //   })
-    // })
-
+    let controlResourceIds = this.controlResourceData.filter(x => x._checked).map(x => x.id)
+    return new Promise((resolve) => {
+      this.sysRoleService.roleResource(this.roleId, [...menuResourceIds, ...controlResourceIds])
+        .subscribe(
+          () => {
+            this.$Message.success('模块权限配置成功！')
+            resolve(true)
+          }, err => {
+            this.$Message.err(err.msg)
+            resolve(false)
+          }
+        )
+    })
   }
 }
 </script>

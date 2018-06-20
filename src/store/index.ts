@@ -22,7 +22,7 @@ const store = new Vuex.Store({
     workspace: workspace,
     purchase: purchase,
     mortgage: mortgage,
-    orgSpace : organization
+    orgSpace: organization
   },
   state,
   getters,
