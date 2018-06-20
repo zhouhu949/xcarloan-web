@@ -48,18 +48,22 @@ export class CommonService {
 
 
   /**
-  * 用户部门数据
-  * @param sourece
-  */
-  static departmentData(sourece) {
-    if (!sourece) {
-      return
+   * 生成树型结构数据
+   * @param sourceList 包含id 和 pid 的线性数据
+   * @param options 数据项配置 配置 keyName: 主键名称,parentKeyName: 父级键名称
+   */
+  static generateTreeData(sourceList, options?: { keyName: string; parentKeyName: string; }) {
+    if (!sourceList) {
+      return []
     }
+
+    let keyName = options ? options.keyName : 'id';
+    let parentKeyName = options ? options.parentKeyName : 'pid';
 
     // 生成部门结构数据
     let fun = node => {
       // 递归对象子元素
-      let children = sourece.filter(x => node.id === x.pid).map(fun);
+      let children = sourceList.filter(x => x[parentKeyName] === node[keyName]).map(fun);
 
       if (children && children.length) {
         return Object.assign({}, node, { children })
@@ -69,12 +73,11 @@ export class CommonService {
     };
 
     // 过滤父节点
-    let rootList = sourece.filter(x => {
-      if (!x.deptPid) {
+    let rootList = sourceList.filter(x => {
+      if (!x[parentKeyName]) {
         return true;
       }
-
-      return !sourece.find(item => item.id === x.pid);
+      return !sourceList.find(item => item[keyName] === x[parentKeyName]);
     });
 
     // 生成树形结构

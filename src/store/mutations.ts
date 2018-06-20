@@ -70,8 +70,10 @@ export default {
       // 当前页面已经打开
       page.params = params
     } else {
+      // 查找未打开的页面信息
+      let findResult = state.menuResource.find(x => x.resourceUrl === resourceUrl)
       // 当前页面未打开
-      page = state.menuResource.find(x => x.resourceUrl === resourceUrl)
+      page = Object.assign({}, findResult)
       // 添加新页面
       state.pageList.push(Object.assign({
         params
@@ -89,13 +91,13 @@ export default {
   closePage(state, path) {
     let page = state.pageList.find(x => x.resourceUrl === path)
 
-    if(!page){
+    if (!page) {
       return
     }
 
     let index = state.pageList.indexOf(page)
     state.currentPage = state.pageList[index - 1].resourceUrl
-    
+
     if (index > 0) {
       state.pageList.splice(index, 1)
     }

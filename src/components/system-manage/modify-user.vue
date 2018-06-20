@@ -36,7 +36,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="所属机构" prop="deptNames">
-            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" @onChange="onDeptChange" change-on-select :disabled="!!orgId"></Cascader>
+            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" @on-change="onDeptChange" change-on-select :disabled="!!orgId"></Cascader>
           </i-form-item>
         </i-col>
       </i-row>
@@ -131,7 +131,7 @@ export default class ModifyUser extends Vue {
         label: v.orgName
       }
     })
-    this.orgTreeData = this.$common.departmentData(treeSource)
+    this.orgTreeData = this.$common.generateTreeData(treeSource)
     // 判断属性是否传了orgId
     if (this.orgId) {
       this.model.orgId = this.orgId

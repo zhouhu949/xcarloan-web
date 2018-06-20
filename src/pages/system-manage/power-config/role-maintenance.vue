@@ -25,29 +25,19 @@
 
 <script lang="ts">
 import Page from '~/core/page'
-import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
 import ModifyRole from '~/components/system-manage/modify-role.vue'
 import UserList from '~/components/system-manage/user-list.vue'
 import ModulePower from '~/components/system-manage/module-power.vue'
 import OrgPower from '~/components/system-manage/org-power.vue'
-import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
 import { SysRoleService } from '~/services/manage-service/sys-role.service'
 import { Layout } from '~/core/decorator'
-import { Modal } from 'iview'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
-import { CommonService } from '~/utils/common.service'
 
 @Layout('workspace')
 @Component({
-  components: {
-    SvgIcon,
-    DataBox,
-    UserList,
-    ModulePower
-  }
+  components: {}
 })
 export default class RoleMaintenance extends Page {
   @Dependencies(SysRoleService) private sysRoleService: SysRoleService
@@ -86,7 +76,6 @@ export default class RoleMaintenance extends Page {
 
   mounted() {
     this.searchRolesByAuth()
-
   }
 
   created() {
@@ -137,6 +126,21 @@ export default class RoleMaintenance extends Page {
                 }
               },
               '删除'
+            ),
+            h(
+              'i-button',
+              {
+                props: {
+                  type: 'text'
+                },
+                style: {
+                  color: '#265EA2'
+                },
+                on: {
+                  click: () => this.showOrgPower(row)
+                }
+              },
+              '机构权限'
             ),
             h(
               'i-button',
@@ -270,60 +274,6 @@ export default class RoleMaintenance extends Page {
   }
 
 
-
-
-  /**
-   * 保存角色的模块权限
-   */
-  saveModulePower() {
-    let modulePower: any = this.$refs['module-power'] as ModulePower
-    modulePower.submit()
-  }
-
-
-  getRoleListByCondition() {
-    // this.manageService
-    //   .queryRolePage(
-    //     {
-    //       roleName: this.model.roleName,
-    //       roleStatus: this.model.roleStatus,
-    //       userId: ''
-    //     },
-    //     this.pageService
-    //   )
-    //   .subscribe(
-    //     data => {
-    //       this.dataSet = data
-    //     },
-    //     ({ msg }) => {
-    //       this.$Message.error(msg)
-    //     }
-    //   )
-  }
-  /**
-   *只获取已启用状态的角色
-   */
-  getRoleListByConditionOn() {
-    // this.manageService
-    //   .queryRolePage(
-    //     {
-    //       roleName: this.model.roleName,
-    //       roleStatus: this.model.roleStatus,
-    //       userId: ''
-    //     },
-    //     this.pageService
-    //   )
-    //   .subscribe(
-    //     data => {
-    //       this.dataSet = data.filter(v => v.roleStatus == 0)
-    //     },
-    //     ({ msg }) => {
-    //       this.$Message.error(msg)
-    //     }
-    //   )
-  }
-
-
   /**
    * 删除角色
    */
@@ -354,7 +304,7 @@ export default class RoleMaintenance extends Page {
       footer: true,
       width: 1000,
       onOk: modulePower => {
-        return modulePower.submit().catch(v => { return false })
+        return modulePower.submit().then(v => v)
       },
       render: h => h(ModulePower, { props: { roleId: row.id } })
     })
@@ -366,35 +316,14 @@ export default class RoleMaintenance extends Page {
   showOrgPower(row) {
     this.$dialog.show({
       title: '机构权限设置',
-      fotter: true,
-      width: 1000,
-      onOk: () => {
-        alert(1111)
-      },
-      render: h => h(OrgPower, {})
+      render: h => h(OrgPower, {
+        props: {
+          roleId: row.id
+        }
+      })
     })
   }
 
-  waitHandleCaseConfig(row) {
-    this.waitHandleCaseModal = true
-    this.roleId = row.id
-    let waitHandle: any = this.$refs['wait-handle']
-    waitHandle.getData(this.roleId)
-  }
-  modulePoweropen(val) {
-    if (val) {
-      let roleOpen: any = this.$refs['module-power']
-      roleOpen.refresh(this.rowIdFun)
-    }
-  }
-
-  /**
-   * 代办事项配置确定提交
-   */
-  submitRole() {
-    let _waitHandle: any = this.$refs['wait-handle']
-    _waitHandle.configWaitHandle(this.roleId)
-  }
 }
 </script>
 

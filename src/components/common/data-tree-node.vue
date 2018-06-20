@@ -68,9 +68,7 @@ export default class DataTreeNode extends Vue {
     this.updateParentChecked(value)
 
     // 发送节点更新事件
-    if (this.data.filetype === 421) {
-      this.root.emitCurrentCheckedChange(this.data.id, value)
-    }
+    this.root.emitCurrentCheckedChange(this.data.id, value)
 
   }
 
@@ -106,9 +104,7 @@ export default class DataTreeNode extends Vue {
       nodes.forEach(item => {
         item.checked = value
         // 发送节点更新事件
-        if (item.data.filetype === 421) {
-          this.root.emitCurrentCheckedChange(item.data.id, value)
-        }
+        this.root.emitCurrentCheckedChange(item.data.id, value)
         item.updateChildrenChecked()
       })
     }

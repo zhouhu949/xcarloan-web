@@ -1,9 +1,3 @@
-import router from '~/router'
-
-const creatCompanyService = () => import('~/services/manage-service/company.service')
-// const createPrincipalService = () => import('~/services/business-service/principal.service')
-// const createDepartmentService = () => import('~/services/business-service/department.service')
-// const createOutsourceService = () => import('~/services/business-service/outsource.service')
 
 export default {
   /**
@@ -38,8 +32,8 @@ export default {
       operator: user.operator,
       operateTime: user.operateTime
     });
-    dispatch('orgSpace/getOrgData')
-    commit('updateTokenExpire', false)
+    dispatch("orgSpace/getOrgData")
+    commit("updateTokenExpire", false)
   },
   /**
    * 清除登录数据
@@ -58,7 +52,7 @@ export default {
     // 关闭页面
     commit('closeAllPage')
     // 清空机构资源
-    commit("orgSpace/updateOrgData",[])
+    commit("orgSpace/updateOrgData", [])
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')

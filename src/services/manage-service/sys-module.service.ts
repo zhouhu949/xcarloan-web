@@ -1,6 +1,5 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 export class SysModuleService {
   @Inject(NetService)
@@ -44,4 +43,23 @@ export class SysModuleService {
       page: page
     })
   }
+  /**
+   * 获取角色下的菜单
+   */
+  findMenuByRoleId(roleId) {
+    return this.netService.send({
+      server: manageService.sysModuleController.findMenuByRoleId,
+      append: roleId,
+    })
+  }
+  /**
+   * 获取角色下的资源
+   */
+  findResourceByRoleId(roleId) {
+    return this.netService.send({
+      server: manageService.sysModuleController.findResourceByRoleId,
+      append: roleId,
+    })
+  }
+
 }
