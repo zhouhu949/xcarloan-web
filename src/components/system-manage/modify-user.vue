@@ -36,7 +36,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="所属机构" prop="deptNames">
-            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" change-on-select :disabled="!!orgId"></Cascader>
+            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" @onChange="onDeptChange" change-on-select :disabled="!!orgId"></Cascader>
           </i-form-item>
         </i-col>
       </i-row>
@@ -93,6 +93,7 @@ export default class ModifyUser extends Vue {
     phone: "",
     email: "",
     deptNames: [],
+    orgId: "",
     sex: "",
     remark: "",
     state: 10022 // 启用
@@ -142,7 +143,6 @@ export default class ModifyUser extends Vue {
         realName: this.userData.userRealname,
         phone: this.userData.userPhone,
         email: this.userData.userEmail,
-        deptName: this.userData,
         deptNames: [],
         sex: this.userData.userSex,
         remark: this.userData.userRemark,
@@ -197,10 +197,15 @@ export default class ModifyUser extends Vue {
   /**
    * 级联选择器选择之后显示的内容
    */
-  private format(labels, selectedData) {
-    const index = labels.length - 1;
-    this.model.deptName = selectedData[index];
-    return labels[index];
+  private format(labels) {
+    return labels[labels.length - 1];
+  }
+
+  /**
+   * 当级联选择器选择的值发生改变时
+   */
+  private onDeptChange(value) {
+    this.model.orgId = value[value.length - 1]
   }
 }
 </script>

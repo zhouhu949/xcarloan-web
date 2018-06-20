@@ -76,6 +76,19 @@ export class SysRoleService {
     })
   }
 
+  /**
+   * 删除角色
+   * @param id 角色ID
+   */
+  @Debounce()
+  deleteRole(id) {
+    return this.netService.send({
+      server: manageService.sysRoleController.updateRole,
+      append: id,
+      loading: true
+    })
+  }
+
 
 
 }

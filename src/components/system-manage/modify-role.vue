@@ -5,12 +5,12 @@
       <i-form-item label="角色名称" prop="roleName">
         <i-input v-model="model.roleName"></i-input>
       </i-form-item>
-      <i-form-item label="所属机构" prop="deptNames">
+      <i-form-item label="所属部门" prop="deptNames">
         <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" change-on-select @on-change="onChange"></Cascader>
       </i-form-item>
       <i-form-item label="状态" prop="roleStatus">
         <i-select v-model="model.roleStatus">
-          <i-option v-for="{value,label} in $dict.getDictData(10009)" :key="value" :label="label" :value="value"></i-option>
+          <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="roleRemark">
@@ -44,7 +44,7 @@ export default class ModifyRole extends Vue {
 
   private model: any = {
     roleName: '',
-    roleStatus: 10026, // 启用
+    roleStatus: 10022, // 启用
     roleRemark: '',
     deptNames: [],
     orgId: ""
@@ -56,7 +56,7 @@ export default class ModifyRole extends Vue {
       { validator: this.$validator.nomalStr, trigger: "blur" }
     ],
     roleStatus: { required: true, message: "请选择状态", trigger: "blur", type: "number" },
-    deptNames: { required: true, message: "请选择角色所属机构", trigger: "blur", type: "array" }
+    deptNames: { required: true, message: "请选择角色所属部门", trigger: "blur", type: "array" }
   }
 
 
@@ -73,7 +73,6 @@ export default class ModifyRole extends Vue {
     this.orgTreeData = this.$common.departmentData(treeSource)
 
     if (this.roleData) {
-      console.log(this.roleData)
       this.model.id = this.roleData.id
       this.model.orgId = this.roleData.deptId
       this.model.roleName = this.roleData.roleName

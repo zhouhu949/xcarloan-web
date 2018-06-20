@@ -1,114 +1,114 @@
 <!--模块功能-->
 <template>
-    <section class="page module-function">
-        <page-header title="模块功能" hidden-print hidden-export></page-header>
-        <i-row class="data-form">
-            <!--树-->
-            <i-col :span="4" class="form-item">
-                <div class="form-item-name">
-                    <span>模块名称</span>
-                </div>
-                <div class="form-item-tree">
-                    <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
-                </div>
-            </i-col>
-            <!--表格-->
-            <i-col :span="20">
-                <data-box :id="34" :columns="treeColumns" :data="treeDatabox" @onPageChange="roleReso" :page="pageService"></data-box>
-            </i-col>
-        </i-row>
+  <section class="page module-function">
+    <page-header title="模块功能" hidden-print hidden-export></page-header>
+    <i-row class="data-form">
+      <!--树-->
+      <i-col :span="4" class="form-item">
+        <div class="form-item-name">
+          <span>模块名称</span>
+        </div>
+        <div class="form-item-tree">
+          <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
+        </div>
+      </i-col>
+      <!--表格-->
+      <i-col :span="20">
+        <data-box :id="34" :columns="treeColumns" :data="treeDatabox" @onPageChange="roleReso" :page="pageService"></data-box>
+      </i-col>
+    </i-row>
 
-        <template>
-            <i-modal class="module-level" title="模块添加/修改" v-model="addModuleFunctionModal" width="600">
-                <i-form class="form-level" :label-width="110">
-                    <i-form-item label="模块名称">
-                        <i-input class="input"></i-input>
-                    </i-form-item>
-                    <i-form-item label="排序">
-                        <i-select class="input">
-                            <i-option label="进销存系统" value="进销存系统" key="进销存系统"></i-option>
-                            <i-option label="汽车金融系统" value="汽车金融系统" key="汽车金融系统"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item label="状态">
-                        <i-select class="input">
-                            <i-option label="启用" value="启用" key="启用"></i-option>
-                            <i-option label="停用" value="停用" key="停用"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item label="权限图标">
-                        <i-input class="input"></i-input>
-                    </i-form-item>
-                    <i-form-item label="模块等级">
-                        <i-select class="input">
-                            <i-option label="一级菜单" value="一级菜单" key="一级菜单"></i-option>
-                            <i-option label="下级菜单" value="下级菜单" key="下级菜单"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item label="父级目录">
-                        <i-input class="input"></i-input>
-                    </i-form-item>
-                    <i-form-item label="模块路径(url)">
-                        <i-input class="input"></i-input>
-                    </i-form-item>
-                    <i-form-item label="模块编号">
-                        <i-input class="input"></i-input>
-                    </i-form-item>
-                    <i-form-item label="所属系统">
-                        <i-select class="input">
-                            <i-option label="进销存系统" value="进销存系统" key="进销存系统"></i-option>
-                            <i-option label="汽车金融系统" value="汽车金融系统" key="汽车金融系统"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item label="描述">
-                        <i-input type="textarea" class="input"></i-input>
-                    </i-form-item>
-                    <div slot="footer">
-                        <i-button>取消</i-button>
-                        <i-button class="blueButton">确定</i-button>
-                    </div>
-                </i-form>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal class="module-level" title="模块添加/修改" v-model="addModuleFunctionModal" width="600">
+        <i-form class="form-level" :label-width="110">
+          <i-form-item label="模块名称">
+            <i-input class="input"></i-input>
+          </i-form-item>
+          <i-form-item label="排序">
+            <i-select class="input">
+              <i-option label="进销存系统" value="进销存系统" key="进销存系统"></i-option>
+              <i-option label="汽车金融系统" value="汽车金融系统" key="汽车金融系统"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item label="状态">
+            <i-select class="input">
+              <i-option label="启用" value="启用" key="启用"></i-option>
+              <i-option label="停用" value="停用" key="停用"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item label="权限图标">
+            <i-input class="input"></i-input>
+          </i-form-item>
+          <i-form-item label="模块等级">
+            <i-select class="input">
+              <i-option label="一级菜单" value="一级菜单" key="一级菜单"></i-option>
+              <i-option label="下级菜单" value="下级菜单" key="下级菜单"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item label="父级目录">
+            <i-input class="input"></i-input>
+          </i-form-item>
+          <i-form-item label="模块路径(url)">
+            <i-input class="input"></i-input>
+          </i-form-item>
+          <i-form-item label="模块编号">
+            <i-input class="input"></i-input>
+          </i-form-item>
+          <i-form-item label="所属系统">
+            <i-select class="input">
+              <i-option label="进销存系统" value="进销存系统" key="进销存系统"></i-option>
+              <i-option label="汽车金融系统" value="汽车金融系统" key="汽车金融系统"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item label="描述">
+            <i-input type="textarea" class="input"></i-input>
+          </i-form-item>
+          <div slot="footer">
+            <i-button>取消</i-button>
+            <i-button class="blueButton">确定</i-button>
+          </div>
+        </i-form>
+      </i-modal>
+    </template>
 
-        <!--功能模块-->
-        <template>
-            <i-modal v-model="functionModuleModal" width="1200" title="功能模块">
-                <function-module></function-module>
-            </i-modal>
-        </template>
-        <template>
-            <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
-                <to-view ref="to-view"></to-view>
-            </i-modal>
-        </template>
-        <template>
-            <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
-                <i-form :label-width="60" style="margin-top:20px;">
-                    <i-form-item label="资源名称" prop="resoName">
-                        <i-input v-model="modifyNameDataset.resourceName" :maxlength="20"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div style="text-align:right;" slot="footer">
-                    <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
-                    <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-        <template>
-            <i-modal class="modify-chart-resources to-view-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
-                <i-form class="chart-resources-itiem" :label-width="60">
-                    <i-form-item label="资源图标" prop="resourceIcon">
-                        <i-input v-model="modifyIconData.resourceIcon" :maxlength="15"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div class="pop-button" slot="footer">
-                    <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
-                    <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+    <!--功能模块-->
+    <template>
+      <i-modal v-model="functionModuleModal" width="1200" title="功能模块">
+        <function-module></function-module>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
+        <to-view ref="to-view"></to-view>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
+        <i-form :label-width="60" style="margin-top:20px;">
+          <i-form-item label="资源名称" prop="resoName">
+            <i-input v-model="modifyNameDataset.resourceName" :maxlength="20"></i-input>
+          </i-form-item>
+        </i-form>
+        <div style="text-align:right;" slot="footer">
+          <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
+          <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal class="modify-chart-resources to-view-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
+        <i-form class="chart-resources-itiem" :label-width="60">
+          <i-form-item label="资源图标" prop="resourceIcon">
+            <i-input v-model="modifyIconData.resourceIcon" :maxlength="15"></i-input>
+          </i-form-item>
+        </i-form>
+        <div class="pop-button" slot="footer">
+          <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
+          <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -260,32 +260,8 @@ export default class ModuleFunction extends Page {
 
     this.treeDatabox = [] //表格数据存储
   }
-  /**
-   * 重置名称
-   */
-  ResetNameClick() {
-    this.sysModuleService.resetResoName().subscribe(
-      data => {
-        this.$Message.success('重置名称成功！')
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-    )
-  }
-  /**
-   * 重置图标
-   */
-  ResetIconClick() {
-    this.sysModuleService.resetResoIcon().subscribe(
-      data => {
-        this.$Message.success('重置图标成功！')
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-    )
-  }
+
+
   /**
    * 取消修改资源名称
    */
@@ -337,7 +313,7 @@ export default class ModuleFunction extends Page {
    * 获取树接口
    */
   getTreeDate() {
-    this.sysModuleService.findRoleMenu().subscribe(data => {
+    this.sysModuleService.getRoleMenu().subscribe(data => {
       this.allData = data
       this.resoPid = data.pid
       this.createNewTree(this.allData)
@@ -347,7 +323,7 @@ export default class ModuleFunction extends Page {
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => v.resourceFileType === 10029).sort(function(a, b) {
+    let root = allData.filter(v => v.resourceFileType === 10029).sort(function (a, b) {
       return a.sort - b.sort
     }) // 获取树根
     this.treeData = []
@@ -436,12 +412,7 @@ export default class ModuleFunction extends Page {
   }
   roleReso() {
     this.sysModuleService
-      .findChildMenu(
-        {
-          id: this.id
-        },
-        this.pageService
-      )
+      .findChildMenu(this.id, this.pageService)
       .subscribe(
         data => {
           this.treeDatabox = data

@@ -33,9 +33,7 @@ import ModulePower from '~/components/system-manage/module-power.vue'
 import OrgPower from '~/components/system-manage/org-power.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
-import { OrderService } from '~/services/business-service/order.service'
 import { SysRoleService } from '~/services/manage-service/sys-role.service'
-import { BackLogService } from '~/services/manage-service/back-log.service'
 import { Layout } from '~/core/decorator'
 import { Modal } from 'iview'
 import { PageService } from '~/utils/page.service'
@@ -52,10 +50,8 @@ import { CommonService } from '~/utils/common.service'
   }
 })
 export default class RoleMaintenance extends Page {
-  @Dependencies(OrderService) private orderService: OrderService
   @Dependencies(SysRoleService) private sysRoleService: SysRoleService
   @Dependencies(PageService) private pageService: PageService
-  @Dependencies(BackLogService) private backLogService: BackLogService
 
   private columns1: any
   private ids: any = []
@@ -103,7 +99,7 @@ export default class RoleMaintenance extends Page {
       },
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(15),
+        minWidth: this.$common.getColumnWidth(12),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -167,21 +163,6 @@ export default class RoleMaintenance extends Page {
                   color: '#265EA2'
                 },
                 on: {
-                  click: () => this.showOrgPower(row)
-                }
-              },
-              '机构权限'
-            ),
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
                   click: () => {
                     this.$dialog.show({
                       title: "用户列表",
@@ -196,24 +177,7 @@ export default class RoleMaintenance extends Page {
                 }
               },
               '用户列表'
-            ),
-            // h(
-            //   'i-button',
-            //   {
-            //     props: {
-            //       type: 'text'
-            //     },
-            //     style: {
-            //       color: '#265EA2'
-            //     },
-            //     on: {
-            //       click: () => {
-            //         this.waitHandleCaseConfig(row)
-            //       }
-            //     }
-            //   },
-            //   '待办事项配置'
-            // )
+            )
           ])
         }
       },
@@ -281,8 +245,8 @@ export default class RoleMaintenance extends Page {
       title: val ? "新增角色" : "角色维护",
       footer: true,
       onOk: modifyRole => {
-        return modifyRole.submit(v => {
-          if (v) this.getRoleListByCondition()
+        return modifyRole.submit().then(v => {
+          if (v) this.searchRolesByAuth()
           return v
         })
       },
@@ -358,57 +322,33 @@ export default class RoleMaintenance extends Page {
     //     }
     //   )
   }
+
+
   /**
-   * 新增角色弹窗的确定
+   * 删除角色
    */
-  addRole() {
-    let _addRole = <Modal>this.$refs['add-role']
-    _addRole.addChangeRole()
+  private deleteRole(row) {
+    let roleName = row.roleName;
+    this.$Modal.confirm({
+      title: "提示",
+      content: `确定删除 <b>${roleName}</b> 角色吗？`,
+      onOk: () => {
+        this.sysRoleService.deleteRole(row.id).subscribe(
+          val => {
+            this.$Message.success(`删除 <b>${roleName}</b> 成功！`)
+            this.searchRolesByAuth()
+          },
+          err => this.$Message.error(err.msg)
+        )
+      }
+    })
   }
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-  modifyRole(row) {
-    this.modifyRoleModal = true
-    this.modifyRoleModel = row
-    let _modifyRole: any = this.$refs['modify-role']
-    _modifyRole.makeData(row) // 给修改角色赋值
-  }
-  deleteRole(row) {
-    // this.$Modal.confirm({
-    //   title: '提示',
-    //   content: '确定删除此角色吗？',
-    //   onOk: () => {
-    //     this.manageService
-    //       .deleteRole({
-    //         roleId: row.id
-    //       })
-    //       .subscribe(
-    //         val => {
-    //           this.$Message.success('删除成功！')
-    //           this.getRoleListByCondition()
-    //         },
-    //         ({ msg }) => {
-    //           this.$Message.error(msg)
-    //         }
-    //       )
-    //   }
-    // })
-  }
-  /**
-   * 修改角色确定按钮
-   */
-  submitEditRole() {
-    let modifyRole = <Modal>this.$refs['modify-role']
-    modifyRole.changeRole()
-  }
+
 
   /**
    * 显示模块权限
    */
   showModulePower(row) {
-    // this.currentRoleId = row.id
-    // this.modulePowerModal = true
     this.$dialog.show({
       title: '权限模块维护',
       footer: true,
