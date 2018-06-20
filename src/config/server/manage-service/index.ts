@@ -11,6 +11,7 @@ import fileUploadController from './file-upload-controller.controller'
 import userDeviceController from './user-device.controller'
 import backLogController from './back-log.controller'
 import SysParameterController from './sys-parameter.controller'
+import basicExpenseController from './basic-expense.controller'
 
 export const manageService = {
   sysOrgController,
@@ -25,5 +26,6 @@ export const manageService = {
   fileUploadController,
   userDeviceController,
   backLogController,
-  SysParameterController
+  SysParameterController,
+  basicExpenseController
 }
