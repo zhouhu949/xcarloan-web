@@ -79,12 +79,10 @@ export default class ModifySystemParams extends Vue {
      * 确认修改
      */
     confirmModify() {
-      this.$Spin.show()
       this.sysParameterService
         .updateSysParameter(this.sysParamModel)
         .subscribe(
           val => {
-            this.$Spin.hide()
             this.$emit("close");
             this.$Message.success("修改成功");
           },

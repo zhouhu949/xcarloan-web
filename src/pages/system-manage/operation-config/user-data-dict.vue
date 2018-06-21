@@ -1,86 +1,43 @@
 <!--数据字典-->
-<template> 
-    <section class="page data-dict">
-        <page-header title="用户字典" hiddenPrint hiddenExport>
-            <command-button class="command-add" label="新增数据" @click="dataModal=true"></command-button>
-        </page-header>
-        <i-row class="data-form">
-            <i-row type="flex" align="top" justify="start">
-                <i-col :span="4">
-                    <div class="data-form-item">
-                        <div class="data-form-item-icon"></div>
-                        <span>数据类型</span>
-                        <span @click="addVehicle" class="data-form-item-add">
-                            <svg-icon iconClass="tianjiawenjian"></svg-icon>
-                        </span>
-                    </div>
-                    <div class="data-form-list">
-                        <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.dictName" :class="{'dataTypeCss':checkId===item.id}" @click="checkDataType(item)">
-                            <span style="">{{item.dictName}}</span>
-                        </div>
-                    </div>
-                </i-col>
-                <i-col class="command" :span="20">
-                    <data-form hidden-date-search :model="dictAguments" @on-search="seach">
-                        <template slot="input">
-                            <i-form-item prop="dictItemName" label="数据名称">
-                                <i-input v-model="dictAguments.dictItemName"></i-input>
-                            </i-form-item>
-                        </template>
-                    </data-form>
-                    <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
-                </i-col>
-            </i-row>
-        </i-row>
-
-        <template>
-            <i-modal v-model="addNameModal" :width="500" :title="checkModal?'编辑数据':'新增数据'" class="toViewModalClass">
-                <i-form :label-width="60" style="margin-top:20px;">
-                    <i-form-item label="名称" prop="dictItemName">
-                        <i-input v-model="addModel.dictItemName"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="canceladd">取消</i-button>
-                    <i-button @click="buttonOnlyOne" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal v-model="adddatatypeModal" :width="500" title="新增数据字典类型" class="toViewModalClass">
-                <i-form :label-width="60" style="margin-top:20px;" :model="addDataType" :rules="rulesAddDataType" ref="add-data-type">
-                    <i-form-item label="名称" prop="name">
-                        <i-input v-model="addDataType.dictName"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="canceladdtype" class="defalutButton">取消</i-button>
-                    <i-button @click="confirmmaddtype" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-        <template>
-            <i-modal title="新增数据" v-model="dataModal">
-                <i-form ref="add-data" :model="addDataModel" :rules="rulesAddDate" :label-width="80">
-                    <i-form-item label="数据名称" prop="dictItemName">
-                        <i-input v-model="addDataModel.dictItemName"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancelAddData">取消</i-button>
-                    <i-button class="blueButton" @click="submitAddData">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+<template>
+  <section class="page user-data-dict">
+    <page-header title="用户字典" hiddenPrint hiddenExport>
+      <command-button class="command-add" label="新增数据" @click="createDictItem"></command-button>
+    </page-header>
+    <i-row class="data-form">
+      <i-row type="flex" align="top" justify="start">
+        <i-col :span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
+            <span>数据类型</span>
+            <span @click="createDictType" class="data-form-item-add">
+              <svg-icon iconClass="tianjiawenjian"></svg-icon>
+            </span>
+          </div>
+          <div class="data-form-list">
+            <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.dictName" :class="{'dataTypeCss':checkId===item.id}" @click="checkDataType(item)">
+              <span style="">{{item.dictName}}</span>
+            </div>
+          </div>
+        </i-col>
+        <i-col class="command" :span="20">
+          <data-form hidden-date-search :model="dictAguments" @on-search="seach">
+            <template slot="input">
+              <i-form-item prop="dictItemName" label="数据名称">
+                <i-input v-model="dictAguments.dictItemName"></i-input>
+              </i-form-item>
+            </template>
+          </data-form>
+          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
+        </i-col>
+      </i-row>
+    </i-row>
+  </section>
 </template>
 
 <script lang="ts">
 import Page from '~/core/page'
-import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
-import SvgIcon from '~/components/common/svg-icon.vue'
 import { Form } from 'iview'
 import { Dependencies } from '~/core/decorator'
 import { OrderService } from '~/services/business-service/order.service'
@@ -88,12 +45,12 @@ import { Layout } from '~/core/decorator'
 import { SysDictService } from '~/services/manage-service/sys-dict.service'
 import { PageService } from '~/utils/page.service'
 import { setTimeout } from 'core-js';
+import CreateDictType from '~/components/system-manage/create-dict-type.vue'
+import CreateModifyDict from '~/components/system-manage/create-modify-dict.vue'
 
 @Layout('workspace')
 @Component({
   components: {
-    DataBox,
-    SvgIcon
   }
 })
 export default class SysDict extends Page {
@@ -127,10 +84,75 @@ export default class SysDict extends Page {
   }
   private addDataType: any = {
     dictName: '',
-    dictType: '10000'
+    dictType: '10001'
   }
   private checked: any = {}
   private addDataModel: any = {}
+
+  /**
+   * 新增用户字典类型
+   */
+  createDictType() {
+    this.$dialog.show({
+      title: "新增数据字典类型",
+      footer: true,
+      width: 700,
+      onOk: create => {
+        return create.createDictType().then(v => {
+          if (v) this.getAllDictType()
+          return v
+        })
+      },
+      render: h => h(CreateDictType, {
+        props: {
+          dictData: this.addDataType
+        }
+      })
+    })
+  }
+  /**
+   * 新增用户字典项
+   */
+  createDictItem() {
+    this.$dialog.show({
+      title: "新增数据",
+      footer: true,
+      width: 700,
+      onOk: editDictItem => {
+        return editDictItem.createDictItem().then(v => {
+          if (v) this.checkDataType(this.item)
+          return v
+        })
+      },
+      render: h => h(CreateModifyDict, {
+        props: {
+          dictData: this.addDataModel,
+          checked: this.checked
+        }
+      })
+    })
+  }
+  /**
+   * 编辑用户字典项
+   */
+  editDictItem() {
+    this.$dialog.show({
+      title: "编辑数据",
+      footer: true,
+      width: 700,
+      onOk: edit => {
+        return edit.editDataItem().then(v => {
+          if (v) this.checkDataType(this.item)
+          return v
+        })
+      },
+      render: h => h(CreateModifyDict, {
+        props: {
+          dictData: this.addModel
+        }
+      })
+    })
+  }
 
   created() {
     this.rulesAddDate = {
@@ -163,16 +185,14 @@ export default class SysDict extends Page {
     }
     this.dataNames = []
     this.item = {
-      dictCode: '0000',
-      id: '10000'
+      dictCode: '',
+      id: ''
     }
     this.dictAguments = {
-      // dictCode: '',
       dictItemName: '',
       id: ''
     }
     this.getAllDictType()
-    this.checkDataType(this.item)
     this.columns1 = [
       {
         title: '序号',
@@ -187,7 +207,6 @@ export default class SysDict extends Page {
         align: 'center',
         minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
-          // console.log(row)
           return h('div', [
             h(
               'i-button',
@@ -200,8 +219,6 @@ export default class SysDict extends Page {
                 },
                 on: {
                   click: () => {
-                    this.checkModal = true
-                    this.addNameModal = true
                     this.addModel.dictItemName = row.dictItemName
                     this.id = row.id
                     this.addModel.dictId = row.dictId
@@ -209,6 +226,7 @@ export default class SysDict extends Page {
                     this.addModel.dictItemStatus = row.dictItemStatus
                     this.addModel.dictItemTreeCode = row.dictItemTreeCode
                     this.addModel.id = row.id
+                    this.editDictItem()
                   }
                 }
               },
@@ -243,136 +261,15 @@ export default class SysDict extends Page {
     ]
   }
 
-  cancelAddData() {
-    this.dataModal = false
-    let _addData: any = this.$refs['add-data']
-    _addData.resetFields()
-  }
-
-  getOrderInfoByTime() {}
-
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-
-  exportMonthReport() {}
-
-  /**
-   * 新增数据
-   */
-  addData() {
-    this.checkModal = false
-    this.addNameModal = true
-  }
-
-  /**
-   * 点击一次判断
-   */
-  buttonOnlyOne() {
-    if (!this.warnStatus) {
-      this.$Spin.show()
-      this.confirmmadd()
-    }
-  }
-
-  /**
-   * 确定
-   */
-  confirmmadd() {
-    if (this.addModel.dictItemName.indexOf(' ') >= 0 || this.addModel.dictItemName === '') {
-      this.warnStatus = true
-      setTimeout(() => {
-        this.warnStatus = false
-      }, 2000)
-      return this.$Message.warning('请输入名称！')
-    }
-
-    if (this.checkModal) {
-      this.addModel.id = this.id
-    } else {
-      if (this.dataNames.length) {
-        this.addModel.sort = this.dataNames[this.dataNames.length - 1].sort + 1
-      } else {
-        this.addModel.sort = 0
-      }
-    }
-    // this.addModel.dictCode = this.dictAguments.dictCode
-    this.sysDictService.updateDataDict(this.addModel).subscribe(
-      val => {
-        this.$Spin.hide()
-        this.$Message.success('操作成功！')
-        this.seach()
-        this.addNameModal = false
-        this.addModel.dictId = 0
-        this.addModel.dictItemCode = ''
-        this.addModel.dictItemName = ''
-        this.addModel.dictItemStatus = 0
-        this.addModel.dictItemTreeCode = ''
-        this.addModel.id = ''
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-    )
-  }
-
-  /**
-   * 取消
-   */
-  canceladd() {
-    this.addNameModal = false
-    this.addModel.dictItemName = ''
-  }
-
-  /**
-   * 编辑
-   */
-  editDict(val) {}
-
-  /**
-   * 添加数据字典类型
-   */
-  addVehicle() {
-    this.adddatatypeModal = true
-  }
-
-  /**
-   * 取消
-   */
-  canceladdtype() {
-    this.adddatatypeModal = false
-    this.addDataType.dictName = ''
-  }
-
-  /**
-   * 确定
-   */
-  confirmmaddtype() {
-    let formValid = <Form>this.$refs['add-data-type']
-    formValid.validate(valid => {
-      if (!valid) return false
-      this.sysDictService
-        .createDataDictType(this.addDataType)
-        .subscribe(
-          val => {
-            this.$Message.success('操作成功！')
-            this.getAllDictType()
-            this.adddatatypeModal = false
-            this.addDataType.dictName = ''
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
-        )
-    })
-  }
-
   /**
    * 查询所有数据字典类型
    */
   getAllDictType() {
-    this.sysDictService.getAllSysDictType().subscribe(val => {
+    this.sysDictService.getAllUserDictType().subscribe(val => {
       this.dataType = val
+      this.item.id = this.dataType[0].id
+      this.item.dictCode = this.dataType[0].dictCode
+      this.checkDataType(this.item)
     })
   }
 
@@ -383,7 +280,6 @@ export default class SysDict extends Page {
     this.checked = item
     this.checkId = item.id
     this.dictCodes = item.dictCode
-    // this.dictAguments.dictCode = item.dictCode
     this.dictAguments.id = item.id
     this.sysDictService
       .getDataDictByTypeCodeWithPage(this.dictAguments, this.pageService)
@@ -400,14 +296,12 @@ export default class SysDict extends Page {
       title: '提示',
       content: '确定删除吗？',
       onOk: () => {
-        this.$Spin.show()
         this.sysDictService
           .deleteDataDict({
             id: item.id
           })
           .subscribe(
             val => {
-              this.$Spin.hide()
               this.$Message.success('操作成功！')
               this.seach()
             },
@@ -426,54 +320,13 @@ export default class SysDict extends Page {
     this.checkDataType(this.checked)
   }
 
-  /**
-   * 新增数据按钮
-   */
-  submitAddData() {
-    this.$Spin.show()
-    let form = <Form>this.$refs['add-data']
-    this.addDataModel.dictCode = this.dictCodes
-    this.addDataModel.dictId = this.checkId
-    form.validate(valid => {
-      if (!valid) return false
-      if (this.addDataModel.dictItemName.indexOf(' ') >= 0) {
-        this.$Message.warning('请输入名称！')
-        return
-      }
-      this.sysDictService.createSysDataDict(this.addDataModel).subscribe(
-        val => {
-          this.$Spin.hide()
-          this.$Message.success('新增数据成功！')
-          this.cancelAddData()
-          this.dataModal = false
-          this.checkDataType(this.checked)
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-    })
-  }
-
-  /**
-   * 重置搜索
-   */
-  resetSeach() {
-    alert(111)
-    this.dictAguments = {
-      // dictCode: '',
-      dictItemName: '',
-      id: ''
-    }
-  }
-
   mounted() {
-    this.checkId = 10000
+    this.checkId = 10001
   }
 }
 </script>
 <style lang="less" scoped>
-.page.data-dict {
+.page.user-data-dict {
   .data-form {
     margin-top: 10px;
     .data-form-item {
@@ -530,19 +383,21 @@ export default class SysDict extends Page {
 .dataTypeCss {
   background: #e4f4fa;
 }
-
 </style>
 <style lang="less">
-.page.data-dict {
+.page.user-data-dict {
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;
     }
   }
   .ivu-select.ivu-select-single.ivu-select-small,
-   .ivu-select-single .ivu-select-selection {
-      width: 80px !important;
-      display: inline-block;
-    }
+  .ivu-select-single .ivu-select-selection {
+    width: 80px !important;
+    display: inline-block;
+  }
+  .component.dialog .dialog-modal .ivu-modal .ivu-modal-content{
+    min-width: 520px;
+  }
 }
 </style>

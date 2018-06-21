@@ -1,6 +1,6 @@
 <!--查看模块功能-->
 <template>
-  <section class="component to-view">
+  <section class="component check-module">
     <i-form :label-width="110" :model="ToviewrowData" class="data-form">
       <i-form-item label="资源名称" prop="resourceName">
         <i-input v-model="ToviewrowData.resourceName" readonly></i-input>
@@ -26,7 +26,7 @@
   } from "vue-property-decorator";
 
   @Component({})
-  export default class ToView extends Vue {
+  export default class CheckModule extends Vue {
     private ToviewrowData: any = {
       resoInitName: '',
       resoName: '',
@@ -44,7 +44,7 @@
 
 </script>
 <style lang="less" scoped>
-  .component.to-view {
+  .component.check-module {
     .data-form {
       margin-top: 20px;
     }

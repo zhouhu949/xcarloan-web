@@ -12,7 +12,8 @@ export class SysModuleService {
   editResourceIcon(data) {
     return this.netService.send({
       server: manageService.sysModuleController.editResourceIcon,
-      data
+      data,
+      loading: true
     })
   }
   /**
@@ -21,7 +22,8 @@ export class SysModuleService {
   editResourceName(data) {
     return this.netService.send({
       server: manageService.sysModuleController.editResourceName,
-      data
+      data,
+      loading: true
     })
   }
   /**
@@ -44,7 +46,18 @@ export class SysModuleService {
     })
   }
   /**
-   * 获取角色下的菜单
+   * 根据父id查询子类不分页
+   */
+  // getSonResoNoPage({ id }) {
+  //   return this.netService.send({
+  //     server: manageService.sysModuleController.getSonResoNoPage,
+  //     data: {
+  //       id: id
+  //     }
+  //   })
+  // }
+  /**
+   * 获取角色已有按钮和输入框
    */
   findMenuByRoleId(roleId) {
     return this.netService.send({

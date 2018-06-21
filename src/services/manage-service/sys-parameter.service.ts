@@ -33,7 +33,8 @@ export class SysParameterService {
  updateSysParameter(data) {
     return this.netService.send({
       server: manageService.SysParameterController.updateSysParameter,
-      data: data
+      data: data,
+      loading: true
     })
   }
 }

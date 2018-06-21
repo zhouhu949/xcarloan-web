@@ -1,24 +1,24 @@
 <!--系统日志下载-->
 <template>
-    <section class="page system-log-download">
-        <page-header title="系统日志下载" hiddenPrint hiddenExport></page-header>
-        <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
-            <template slot="input">
-                <i-form-item prop="operator" label="操作人：">
-                    <i-input v-model="systemLogModel.operator"></i-input>
-                </i-form-item>
-                <i-form-item prop="clientIp" label="客户端IP：">
-                    <i-input v-model="systemLogModel.clientIp"></i-input>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="操作时间：">
-                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-            </template>
+  <section class="page system-log-download">
+    <page-header title="系统日志下载" hiddenPrint hiddenExport></page-header>
+    <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
+      <template slot="input">
+        <i-form-item prop="operator" label="操作人：">
+          <i-input v-model="systemLogModel.operator"></i-input>
+        </i-form-item>
+        <i-form-item prop="clientIp" label="客户端IP：">
+          <i-input v-model="systemLogModel.clientIp"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="操作时间：">
+          <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+      </template>
 
-        </data-form>
+    </data-form>
 
-        <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
-    </section>
+    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
+  </section>
 </template>
 
 <script lang="ts">
@@ -52,8 +52,8 @@ export default class SystemLogDownload extends Page {
     clientIp: '',
     exeType: '',
     exeTime: '',
-    realName:'',
-    dateRange:[]
+    realName: '',
+    dateRange: []
   }
 
   created() {
@@ -61,8 +61,8 @@ export default class SystemLogDownload extends Page {
       clientIp: '',
       exeType: '',
       exeTime: '',
-      realName:'',
-      dateRange:[]
+      realName: '',
+      dateRange: []
     }
     this.search()
 
@@ -70,7 +70,7 @@ export default class SystemLogDownload extends Page {
       {
         type: 'selection',
         align: 'center',
-        width:40,
+        width: 40,
         fixed: 'left'
       },
       {
@@ -134,7 +134,7 @@ export default class SystemLogDownload extends Page {
     this.sysLogsService
       .querySysLogsPage(this.systemLogModel, this.pageService)
       .subscribe(
-        data =>this.systemLogsList = data,
+        data => this.systemLogsList = data,
         err => this.$Message.error(err)
       )
   }
@@ -152,12 +152,11 @@ export default class SystemLogDownload extends Page {
       clientIp: '',
       exeType: '',
       exeTime: '',
-      realName:''
+      realName: ''
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
 </style>

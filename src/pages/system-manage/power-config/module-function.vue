@@ -71,44 +71,44 @@
       </i-modal>
     </template>
 
-    <!--功能模块-->
-    <template>
-      <i-modal v-model="functionModuleModal" width="1200" title="功能模块">
-        <function-module></function-module>
-      </i-modal>
-    </template>
-    <template>
-      <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
-        <to-view ref="to-view"></to-view>
-      </i-modal>
-    </template>
-    <template>
-      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
-        <i-form :label-width="60" style="margin-top:20px;">
-          <i-form-item label="资源名称" prop="resoName">
-            <i-input v-model="modifyNameDataset.resourceName" :maxlength="20"></i-input>
-          </i-form-item>
-        </i-form>
-        <div style="text-align:right;" slot="footer">
-          <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
-          <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-    <template>
-      <i-modal class="modify-chart-resources to-view-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
-        <i-form class="chart-resources-itiem" :label-width="60">
-          <i-form-item label="资源图标" prop="resourceIcon">
-            <i-input v-model="modifyIconData.resourceIcon" :maxlength="15"></i-input>
-          </i-form-item>
-        </i-form>
-        <div class="pop-button" slot="footer">
-          <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
-          <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-  </section>
+        <!--功能模块-->
+        <template>
+            <i-modal v-model="functionModuleModal" width="1200" title="功能模块">
+                <function-module></function-module>
+            </i-modal>
+        </template>
+        <template>
+            <i-modal v-model="toViewModal" width="500" title="查看" class="check-module-modal-class">
+                <check-module ref="check-module"></check-module>
+            </i-modal>
+        </template>
+        <template>
+            <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="check-module-modal-class">
+                <i-form :label-width="60" style="margin-top:20px;">
+                    <i-form-item label="资源名称" prop="resoName">
+                        <i-input v-model="modifyNameDataset.resourceName" :maxlength="20"></i-input>
+                    </i-form-item>
+                </i-form>
+                <div style="text-align:right;" slot="footer">
+                    <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
+                    <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+        <template>
+            <i-modal class="modify-chart-resources check-module-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
+                <i-form class="chart-resources-itiem" :label-width="60">
+                    <i-form-item label="资源图标" prop="resourceIcon">
+                        <i-input v-model="modifyIconData.resourceIcon" :maxlength="15"></i-input>
+                    </i-form-item>
+                </i-form>
+                <div class="pop-button" slot="footer">
+                    <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
+                    <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+    </section>
 </template>
 
 <script lang="ts">
@@ -116,7 +116,7 @@ import DataBox from '~/components/common/data-box.vue'
 import Page from '~/core/page'
 import Component from 'vue-class-component'
 import FunctionModule from '~/components/system-manage/function-module.vue'
-import ToView from '~/components/system-manage/to-view.vue'
+import CheckModule from '~/components/system-manage/check-module.vue'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { SysModuleService } from '~/services/manage-service/sys-module.service'
@@ -127,7 +127,7 @@ import { PageService } from '~/utils/page.service'
   components: {
     DataBox,
     FunctionModule,
-    ToView
+    CheckModule
   }
 })
 export default class ModuleFunction extends Page {
@@ -218,7 +218,7 @@ export default class ModuleFunction extends Page {
                 },
                 on: {
                   click: () => {
-                    let _toview: any = this.$refs['to-view']
+                    let _toview: any = this.$refs['check-module']
                     _toview.getData(row)
                     this.toViewModal = true
                   }
@@ -272,10 +272,8 @@ export default class ModuleFunction extends Page {
    * 确定修改资源名称
    */
   confirmmodifyName() {
-    this.$Spin.show()
     this.sysModuleService.editResourceName(this.modifyNameDataset).subscribe(
       data => {
-        this.$Spin.hide()
         this.$Message.success('修改成功！')
         this.modifyNameModal = false
         this.roleReso()
@@ -295,10 +293,8 @@ export default class ModuleFunction extends Page {
    * 确定修改资源图标
    */
   confirmmodifyIcon() {
-    this.$Spin.show()
     this.sysModuleService.editResourceIcon(this.modifyIconData).subscribe(
       data => {
-        this.$Spin.hide()
         this.$Message.success('修改成功！')
         this.modifyIconModal = false
         this.roleReso()

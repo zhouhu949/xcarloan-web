@@ -24,16 +24,18 @@ export class SysDictService {
   updateDataDict(data) {
     return this.netService.send({
       server: manageService.sysDictController.updateDataDict,
-      data: data
+      data: data,
+      loading: true
     })
   }
   /**
    * 新增数据字典项
    */
-  createSysDataDict(data) {
+  createUserDataDict(data) {
     return this.netService.send({
-      server: manageService.sysDictController.createSysDataDict,
-      data: data
+      server: manageService.sysDictController.createUserDataDict,
+      data: data,
+      loading: true
     })
   }
    
@@ -45,7 +47,8 @@ export class SysDictService {
       server: manageService.sysDictController.deleteDataDict,
       data: {
         id: id
-      }
+      },
+      loading: true
     })
   }
   /**
@@ -113,7 +116,16 @@ export class SysDictService {
   createDataDictType(data) {
     return this.netService.send({
       server: manageService.sysDictController.createDataDictType,
-      data
+      data,
+      loading: true
+    })
+  }
+  /**
+   * 查询所有用户字典类型
+   */
+  getAllUserDictType() {
+    return this.netService.send({
+      server: manageService.sysDictController.getAllUserDictType
     })
   }
 }

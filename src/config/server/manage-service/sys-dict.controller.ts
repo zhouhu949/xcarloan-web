@@ -26,10 +26,10 @@ export default {
   /**
    * 新增数据字典项
    */
-  createSysDataDict: {
+  createUserDataDict: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'createSysDataDict',
+    action: 'createUserDataDict',
     type: requestType.Post
   },
   /**
@@ -109,8 +109,17 @@ export default {
    */
   createDataDictType: {
     service: SERVICE,
-      controller: CONTROLLER,
-      action: 'createDataDictType',
-      type: requestType.Post
+    controller: CONTROLLER,
+    action: 'createDataDictType',
+    type: requestType.Post
+  },
+  /**
+   * 查询所有用户字典类型
+   */
+  getAllUserDictType: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAllUserDictType',
+    type: requestType.Get
   }
 }

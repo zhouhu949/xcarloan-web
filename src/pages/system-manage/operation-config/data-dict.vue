@@ -1,33 +1,33 @@
 <!--数据字典-->
-<template> 
-    <section class="page data-dict">
-        <page-header title="系统字典" hiddenPrint hiddenExport></page-header>
-        <i-row class="data-form">
-            <i-row type="flex" align="top" justify="start">
-                <i-col :span="4">
-                    <div class="data-form-item">
-                        <div class="data-form-item-icon"></div>
-                        <span>数据类型</span>
-                    </div>
-                    <div class="data-form-list">
-                        <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.dictName" :class="{'dataTypeCss':checkId===item.id}" @click="checkDataType(item)">
-                            <span style="">{{item.dictName}}</span>
-                        </div>
-                    </div>
-                </i-col>
-                <i-col class="command" :span="20">
-                    <data-form hidden-date-search :model="dictAguments" @on-search="seach">
-                        <template slot="input">
-                            <i-form-item prop="dictItemName" label="数据名称">
-                                <i-input v-model="dictAguments.dictItemName"></i-input>
-                            </i-form-item>
-                        </template>
-                    </data-form>
-                    <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
-                </i-col>
-            </i-row>
-        </i-row>
-    </section>
+<template>
+  <section class="page data-dict">
+    <page-header title="系统字典" hiddenPrint hiddenExport></page-header>
+    <i-row class="data-form">
+      <i-row type="flex" align="top" justify="start">
+        <i-col :span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
+            <span>数据类型</span>
+          </div>
+          <div class="data-form-list">
+            <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.dictName" :class="{'dataTypeCss':checkId===item.id}" @click="checkDataType(item)">
+              <span style="">{{item.dictName}}</span>
+            </div>
+          </div>
+        </i-col>
+        <i-col class="command" :span="20">
+          <data-form hidden-date-search :model="dictAguments" @on-search="seach">
+            <template slot="input">
+              <i-form-item prop="dictItemName" label="数据名称">
+                <i-input v-model="dictAguments.dictItemName"></i-input>
+              </i-form-item>
+            </template>
+          </data-form>
+          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
+        </i-col>
+      </i-row>
+    </i-row>
+  </section>
 </template>
 
 <script lang="ts">
@@ -64,26 +64,20 @@ export default class SysDict extends Page {
   private warnStatus: any = null;
   private clickCount: number = 0;
   private dictCodes: any = 0;
-  private addDataType: any = {
-    dictName: "",
-    dictType: "10000"
-  };
   private checked: any = {};
   private addDataModel: any = {};
 
   created() {
     this.dataNames = [];
     this.item = {
-      dictCode: "0000",
-      id: "10000"
+      dictCode: "",
+      id: ""
     };
     this.dictAguments = {
-      // dictCode: '',
       dictItemName: "",
       id: ""
     };
     this.getAllDictType();
-    this.checkDataType(this.item);
     this.columns1 = [
       {
         title: "序号",
@@ -101,13 +95,9 @@ export default class SysDict extends Page {
     ];
   }
 
-  getOrderInfoByTime() {}
-
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }
-
-  exportMonthReport() {}
 
   /**
    * 查询所有数据字典类型
@@ -115,6 +105,9 @@ export default class SysDict extends Page {
   getAllDictType() {
     this.sysDictService.getAllSysDictType().subscribe(val => {
       this.dataType = val;
+      this.item.id = this.dataType[0].id
+      this.item.dictCode = this.dataType[0].dictCode
+      this.checkDataType(this.item)
     });
   }
 
@@ -144,7 +137,6 @@ export default class SysDict extends Page {
    * 重置搜索
    */
   resetSeach() {
-    alert(111);
     this.dictAguments = {
       // dictCode: '',
       dictItemName: "",
