@@ -38,14 +38,8 @@ export default class BasicExpenseManage extends Page {
   created() {
     this.expenseColumns = [
       {
-        type: "selection",
-        align: "center",
-        width: 40,
-        fixed: "left"
-      },
-      {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
+        width: 100,
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
@@ -95,13 +89,6 @@ export default class BasicExpenseManage extends Page {
       {
         align: "center",
         editable: true,
-        title: "费用项编码",
-        key: "expenseCode",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
         title: "费用项名称",
         key: "expenseName",
         minWidth: this.$common.getColumnWidth(5)
@@ -114,6 +101,12 @@ export default class BasicExpenseManage extends Page {
         minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) =>
           h("p", {}, this.$filter.dictConvert(row.isSystem))
+      },{
+        align: "center",
+        editable: true,
+        title: "费用项编码",
+        key: "expenseCode",
+        minWidth: this.$common.getColumnWidth(4)
       }
     ];
   }

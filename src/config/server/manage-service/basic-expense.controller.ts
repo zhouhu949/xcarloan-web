@@ -5,7 +5,7 @@ const CONTROLLER = 'basicExpenseController'
 
 export default {
   /**
-   * 分页查询费用项列表
+   * 查询费用项列表
    */
   findBasicExpenseByAuth: {
     service: SERVICE,

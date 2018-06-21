@@ -3,7 +3,7 @@
   <section class="component modify-basic-expense">
     <i-form ref="form" :model="model" :label-width="110" :rules="rules">
       <i-form-item label="费用项编码" prop="expenseCode">
-        <i-input v-model="model.expenseCode" :disabled='model.id> 0'></i-input>
+        <i-input v-model="model.expenseCode" :readonly="model.id"></i-input>
       </i-form-item>
       <i-form-item label="费用项名称" prop="expenseName">
         <i-input v-model="model.expenseName"></i-input>
