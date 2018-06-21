@@ -105,6 +105,4 @@ export default class ModifyOrg extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.component .modify-org {
-}
 </style>
