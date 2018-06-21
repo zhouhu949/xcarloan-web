@@ -1,5 +1,5 @@
 <template>
-  <section class="component purchase-manage">
+  <section class="page purchase-manage">
 
   </section>
 </template>

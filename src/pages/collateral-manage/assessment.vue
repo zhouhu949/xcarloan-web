@@ -1,5 +1,5 @@
 <template>
-  <section class="component assessment">
+  <section class="page assessment">
 
   </section>
 </template>

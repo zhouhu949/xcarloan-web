@@ -1,5 +1,5 @@
 <template>
-  <section class="component ahead-cost-recover">
+  <section class="page ahead-cost-recover">
 
   </section>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <section class="component repayment-query">
+  <section class="page repayment-query">
 
   </section>
 </template>

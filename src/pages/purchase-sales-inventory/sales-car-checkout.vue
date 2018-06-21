@@ -1,5 +1,5 @@
 <template>
-  <section class="component sales-car-checkout">
+  <section class="page sales-car-checkout">
 
   </section>
 </template>

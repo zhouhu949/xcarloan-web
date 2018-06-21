@@ -15,6 +15,7 @@ import basicExpenseController from './basic-expense.controller'
 import basicOffsetController from './basic-offset.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
 import basicSupplierController from "./basic-supplier-controller";
+import basicCustomerController from "./basic-customer-center.controller";
 
 export const manageService = {
   sysOrgController,
@@ -33,5 +34,6 @@ export const manageService = {
   basicExpenseController,
   basicOffsetController,
   basicCarManagecontroller,
-  basicSupplierController
+  basicSupplierController,
+  basicCustomerController
 }
