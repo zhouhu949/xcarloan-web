@@ -12,6 +12,7 @@ import userDeviceController from './user-device.controller'
 import backLogController from './back-log.controller'
 import SysParameterController from './sys-parameter.controller'
 import basicExpenseController from './basic-expense.controller'
+import basicOffsetController from './basic-offset.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
 import basicSupplierController from "./basic-supplier-controller";
 
@@ -30,6 +31,7 @@ export const manageService = {
   backLogController,
   SysParameterController,
   basicExpenseController,
+  basicOffsetController,
   basicCarManagecontroller,
   basicSupplierController
 }
