@@ -1,7 +1,7 @@
 <template>
   <section class="component data-tree-node">
     <div :style="getSubTreeStyle()">
-      <div @click="onSelect" :style="{backgroundColor:selected?'lightblue':''}">
+      <div @click="onSelect" class="node-title" :class="{selected:selected}">
         <span @click="onExpand" v-if="!isLeaf" :class="{expanded:expanded}">
           <Icon v-show="!this.expanded" type="arrow-right-b"></Icon>
           <Icon v-show="this.expanded" type="arrow-down-b"></Icon>
@@ -9,19 +9,19 @@
         <span v-if="showCheckbox">
           <i-checkbox :indeterminate="indeterminate" v-model="checked" @on-change="onChecked"></i-checkbox>
         </span>
-        <a>{{data[propsObject.title]}}</a>
+        <span>{{data[propsObject.title]}}</span>
         <small v-show="selected && showEdit" class="icon-box">
-          <a @click="editHandle" href="#" class="el-icon-edit">
+          <a @click="editHandle" href="#">
             <div style="display:inline-block">
               <Icon type="edit"></Icon>
             </div>
           </a>
-          <a @click="addItemHandle"  href="#" class="el-icon-plus">
+          <a @click="addItemHandle" href="#">
             <div style="display:inline-block">
               <Icon type="plus"></Icon>
             </div>
           </a>
-          <a @click="deleteHandle" href="#" class="el-icon-minus">
+          <a @click="deleteHandle" href="#">
             <div style="display:inline-block">
               <Icon type="minus"></Icon>
             </div>
@@ -68,26 +68,26 @@ export default class DataTreeNode extends Vue {
     return this.root.showCheckbox;
   }
 
-  get showEdit(){
+  get showEdit() {
     return this.root.showEdit;
   }
 
   /**
    * 调用树的编辑方法，向调用者发送edit事件
    */
-  private editHandle(){
+  private editHandle() {
     this.root.emitEdit(this.data);
   }
   /**
    * 点击树添加事件
    */
-  private addItemHandle(){
+  private addItemHandle() {
     this.root.addEdit(this.data);
   }
   /**
    * 点击树删除事件
    */
-  private deleteHandle(){
+  private deleteHandle() {
     this.root.deleteEdit(this.data)
   }
 
@@ -208,5 +208,20 @@ export default class DataTreeNode extends Vue {
 .component.data-tree-node {
   text-align: left;
   padding: 1px;
+
+  .node-title {
+    &:hover {
+      cursor: pointer;
+    }
+    &.selected {
+      background-color: #d5e8fc;
+    }
+  }
+  .icon-box {
+    padding-left: 10px;
+    > a {
+      margin: 0 2px;
+    }
+  }
 }
 </style>
