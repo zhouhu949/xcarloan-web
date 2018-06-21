@@ -1,4 +1,4 @@
-<template> 
+<template>
   <section class="component upload-voucher">
     <div class="row image-container">
       <div class="modal-item-upload" v-if="!hiddenUpload">
@@ -20,7 +20,7 @@
       <!--正常上传-->
       <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources" :key="i">
         <img class="modal-item-upload-img" :src="v.materialUrl">
-        <div class="blackFlag" >
+        <div class="blackFlag">
           <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
           <i-button type="text" icon="arrow-down-a" @click.native="download(v)" class="buttonFlag arrow"></i-button>
           <i-button type="text" icon="trash-a" @click.native="handleRemove(v)" class="buttonFlag outline" v-if="!hiddenDelete"></i-button>
@@ -58,15 +58,28 @@ export default class UploadVoucher extends Vue {
     type: Boolean,
     default: false
   })
+  @Prop({
+    type: Array,
+    default: () => []
+  })
+  pictureResource
+
+   @Prop() fileNumberLimit;
+
+  @Watch('pictureResource', { immediate: true })
+  onPictureResourceChange(val) {
+    this.financeUploadResources = val
+  }
+
   hiddenDelete: boolean;
 
   private openUpload: Boolean = false;
   private financeUploadResources: any = [];
-  private financeUploadVoucher:any = [];
+  private financeUploadVoucher: any = [];
   private previewModel: Boolean = false;
   private url: any = ''
 
-  showFileUpload(){
+  showFileUpload() {
     let fileUploadModel
     let dialog = this.$dialog.show({
       title: "上传文件",
@@ -78,7 +91,7 @@ export default class UploadVoucher extends Vue {
       render: h => {
         return h(FileUpload, {
           on: {
-            "on-success": ()=>{
+            "on-success": () => {
               this.$nextTick(() => {
                 this.financeUploadResources = this.financeUploadResources.concat(fileUploadModel.fileList.map(v => {
                   return {
@@ -130,7 +143,7 @@ export default class UploadVoucher extends Vue {
     }
   }
   // 补传返显
-  reverseType(data){
+  reverseType(data) {
     if (data) {
       this.financeUploadVoucher = data
     }
