@@ -70,30 +70,54 @@ export default class PotentialClients extends Page {
       {
         align: "center",
         editable: true,
-        title: "名称",
-        key: "supplierName",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "客户姓名",
+        key: "customerName",
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: "center",
         editable: true,
-        title: "电话",
-        key: "supplierPhone",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "证件类型",
+        key: "certificateType",
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.certificateType))
       },
       {
         align: "center",
         editable: true,
-        title: "地址",
-        key: "supplierAddress",
-        minWidth: this.$common.getColumnWidth(5)
-      },
-      {
-        align: "center",
-        editable: true,
-        title: "备注",
-        key: "remark",
+        title: "证件号码",
+        key: "certificateNumber",
         minWidth: this.$common.getColumnWidth(6)
+      },
+      {
+        title: '手机号码',
+        editable: true,
+        key: 'mobileMain',
+        minWidth: this.$common.getColumnWidth(3),
+        align: 'center'
+      },
+      {
+        title: '所属地区',
+        editable: true,
+        key: 'city',
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
+      },
+      {
+        title: '创建时间',
+        editable: true,
+        sortable: true,
+        key: 'createTime',
+        minWidth: this.$common.getColumnWidth(3),
+        align: 'center',
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
+      },
+      {
+        title: '归属业务员',
+        editable: true,
+        key: 'operator',
+        minWidth: this.$common.getColumnWidth(3),
+        align: 'center'
       }
     ];
   }
