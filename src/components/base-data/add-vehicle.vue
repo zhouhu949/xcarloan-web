@@ -59,6 +59,11 @@
             <i-input v-model="model.interiorColor" class="item-full"></i-input>
           </i-form-item>
         </i-col>
+         <i-col :span="24">
+          <i-form-item label="备注" prop="remark">
+            <i-input v-model="model.remark" class="item-full"></i-input>
+          </i-form-item>
+        </i-col>
         <i-col :span="24">
           <b class="item-span">**车身、内饰颜色参数中存在多个值,则需使用英文状态分号";"隔开。** 例如:</b> 红色;黑色
         </i-col>
@@ -91,7 +96,7 @@ export default class AddVehicle extends Vue {
 
   private model = {
     brandId: "",  // 品牌id
-    brandName: "",
+    brandName: "",  // 品牌名称
     carColour: "",  // 车身颜色
     carEmissions: "", // 车辆排量
     carSize: "",  //  长宽高
@@ -102,13 +107,16 @@ export default class AddVehicle extends Vue {
     interiorColor: "", // 内饰颜色
     modelName: "", // 车辆型号
     seriesId: "", // 系列号id
-    seriesName: "",
+    seriesName: "",  // 系列名称
+    referencePrice:"", // 参考价格
     vehicleId: 0
   };
 
   private rules = {
-    brandName: { trigger: "blur", message: "车辆品牌不得为空", required: true },
-    seriesName: { trigger: "blur", message: "车辆系列不得为空", required: true },
+    // brandName: { trigger: "blur", message: "车辆品牌不得为空", required: true },
+    // seriesName: { trigger: "blur", message: "车辆系列不得为空", required: true },
+    remark: { trigger: "blur", message: "请输入备注", required: true },
+    referencePrice: { trigger: "blur", message: "请输入参考价格", required: true },
     modelName: { trigger: "blur", message: "请输入车型名称", required: true },
     carColour: { trigger: "blur", message: "请输入车身颜色", required: true },
     carEmissions: { trigger: "blur", message: "请输入车辆排量", required: true },
@@ -131,7 +139,7 @@ export default class AddVehicle extends Vue {
     return new Promise((resolve, reject) => {
       this.form.validate(valid => {
         if (!valid) return reject()
-        this.basicCarManageService.addCarModel('123').subscribe(
+        this.basicCarManageService.addCarModel(this.model).subscribe(
           data => {
             this.$Message.success("新增车辆成功！");
             resolve()
@@ -145,54 +153,62 @@ export default class AddVehicle extends Vue {
     })
   }
 
-  // updateVehicle() {
-  //   return new Promise((resolve, reject) => {
-  //     this.form.validate(valid => {
-  //       if (!valid) return reject()
-  //       this.carService.updateCarBaseInfo(this.model).subscribe(
-  //         data => {
-  //           this.$Message.success("修改车辆成功！");
-  //           resolve()
-  //         },
-  //         ({ msg }) => {
-  //           this.$Message.error(msg);
-  //           reject()
-  //         }
-  //       );
-  //     });
-  //   })
-  // }
+  /**
+   * 修改车型
+   */
+  updateVehicle() {
+    return new Promise((resolve, reject) => {
+      this.form.validate(valid => {
+        if (!valid) return reject()
+        this.basicCarManageService.editCarModel(this.model).subscribe(
+          data => {
+            this.$Message.success("修改车辆成功！");
+            resolve()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+            reject()
+          }
+        );
+      });
+    })
+  }
 
   /**
    * 获取品牌信息
    */
-  // private getBrandInfo() {
-  //   this.carService
-  //     .getCarBrandBySeriesId(this.series.id)
-  //     .subscribe(
-  //       data => {
-  //         this.model.brandId = data.brandId;
-  //         this.model.brandName = data.brandName
-  //       },
-  //       ({ msg }) => {
-  //         this.$Message.error(msg);
-  //       }
-  //     );
-  // }
+  private getBrandInfo() {
+    this.basicCarManageService.getCarSeriesByCarName(this.series.id)
+      .subscribe(
+        data => {
+          console.log(data,'获取品牌信息')
+          // this.model.brandId = data.brandId;
+          this.model.brandName = data[0].brandName
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
 
   mounted() {
-    this.form = this.$refs['form']
+      this.getBrandInfo()
 
-    // if (this.series) {
-    //   this.model.seriesId = this.series.id
-    //   this.model.seriesName = this.series.name
-    //   this.getBrandInfo()
-    // }
+    this.form = this.$refs['form']
+  
+
+    if (this.series.id) {
+      this.model.seriesId = this.series.id  
+      this.model.seriesName = this.series.name
+      this.getBrandInfo()
+    }
+
     // if (this.carId) {
-    //   this.carService.getCarDetail(this.carId).subscribe(
+    //   this.basicCarManageService.getCarModelById(this.carId).subscribe(
     //     data => {
-    //       this.model = data
-    //       this.model.vehicleId = this.carId
+    //       console.log(data)
+    //       // this.model = data
+    //       // this.model.vehicleId = this.carId
     //     },
     //     err => this.$Message.error(err.msg)
     //   )

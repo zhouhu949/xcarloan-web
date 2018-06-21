@@ -97,12 +97,70 @@ export class BasicCarManageService {
    */
   addCarModel(data) {
     return this.netService.send({
-      data:data,
+      data:{
+        displacement: data.carEmissions,
+        diveway : data.drivingMode,
+        fulyway : data.fuel,
+        innerColor :data.interiorColor,
+        modelColors :data.carColour,
+        modelFuel : data.fuelConsumption,
+        modelName : data.modelName,
+        modelVolume :data.carSize,
+        remark :data.remark,
+        seriesId : data.seriesId,
+        structure :data.carStructure,
+      },
       server: manageService.basicCarManagecontroller.addCarModel,
     })
   }
-
-
+  /**
+   * 删除车型
+   */
+  deleteCarModel(id) {
+    return this.netService.send({
+      append:id,
+      server: manageService.basicCarManagecontroller.deleteCarModel,
+    })
+  }
+  /**
+   * 修改车型
+   */
+  editCarModel(data) {
+    return this.netService.send({
+      data:{
+        displacement: data.carEmissions,
+        diveway : data.drivingMode,
+        fulyway : data.fuel,
+        innerColor :data.interiorColor,
+        modelColors :data.carColour,
+        modelFuel : data.fuelConsumption,
+        modelName : data.modelName,
+        modelVolume :data.carSize,
+        remark :data.remark,
+        seriesId : data.seriesId,
+        structure :data.carStructure,
+      },
+      server: manageService.basicCarManagecontroller.editCarModel,
+    })
+  }
+  /**
+   * 查看车型
+   */
+  getCarModelById(id) {
+    return this.netService.send({
+      append:id,
+      server: manageService.basicCarManagecontroller.getCarModelById,
+    })
+  }
+  /**
+   * 根据车系id查找品牌
+   */
+  getCarSeriesByCarName(id) {
+    return this.netService.send({
+      append:id,
+      server: manageService.basicCarManagecontroller.getCarSeriesByCarName,
+    })
+  }
 
 
 

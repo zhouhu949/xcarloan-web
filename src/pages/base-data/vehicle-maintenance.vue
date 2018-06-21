@@ -34,6 +34,7 @@ import CarSeries from "~/components/base-data/car-series.vue";
 import AddVehicle from '~/components/base-data/add-vehicle.vue'
 import OrganizeTree from '~/components/common/organize-tree.vue'
 import DataTree from "~/components/common/data-tree.vue";
+import CarParams from "~/components/base-data/car-params.vue";
 
 enum carPropertyType {
   /**
@@ -184,7 +185,7 @@ export default class VehicleMaintenance extends Page {
   private onEdit(data) {
     switch (data.type) {
       case carPropertyType.brand:
-        console.log(data, '品牌')
+        // console.log(data, '品牌')
         this.$dialog.show({
           title: "修改品牌",
           footer: true,
@@ -205,7 +206,7 @@ export default class VehicleMaintenance extends Page {
         })
         break;
       case carPropertyType.series:
-        console.log(data, '系列')
+        // console.log(data, '系列')
         this.$dialog.show({
           title: "修改车系",
           footer: true,
@@ -230,7 +231,21 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case carPropertyType.model:
-        console.log(data, '车型')
+        console.log(data, '修改车型')
+        this.$dialog.show({
+          title: "修改车辆",
+          footer: true,
+          onOk: modify => {
+            let result = modify.updateVehicle().then(() => true).catch(v => false)
+            return result
+          },
+          onCancel: () => { },
+          render: h => h(AddVehicle, {
+            props: {
+              carId: data.id
+            }
+          })
+        })
 
         break;
 
@@ -278,7 +293,7 @@ export default class VehicleMaintenance extends Page {
           render: h => h(AddVehicle, {
             props: {
               series: {
-                id: data.seriesId,
+                id: data.id,
                 name: data.title
               }
             }
@@ -344,8 +359,15 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case carPropertyType.model:
+        // 删除车型
         console.log(data, '车型')
-
+        this.basicCarManageService.deleteCarModel(data.id)
+          .subscribe(data => {
+            this.$Message.success('删除成功')
+            this.getAllCarData()
+          }, err => {
+            this.$Message.error(err.msg)
+          })
         break;
 
       default:

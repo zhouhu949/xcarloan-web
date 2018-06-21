@@ -85,15 +85,50 @@ export default {
     action: 'editCarSeries',
     type: requestType.Post
   },
- /**
-  * 新增车型
-  */
- addCarModel: {
+  /**
+   * 新增车型
+   */
+  addCarModel: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'addCarModel',
     type: requestType.Post
+  },
+  /**
+   * 删除车型
+   */
+  deleteCarModel: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteCarModel',
+    type: requestType.Delete
+  },
+  /**
+   * 修改车型
+   */
+  editCarModel: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'editCarModel',
+    type: requestType.Post
+  },
+  /**
+   * 查看车型
+   */
+   getCarModelById: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarModelById',
+    type: requestType.Get
+  },
+  /**
+   * 根据车系id 查找品牌
+   */
+  getCarSeriesByCarName: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarSeriesByCarName',
+    type: requestType.Get
   }
-
 
 }
