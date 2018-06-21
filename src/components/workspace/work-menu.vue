@@ -1,6 +1,6 @@
 <template>
   <section class="component work-menu row">
-    <i-menu theme="light" @on-select="onSelectMenuItem" v-show="isExpand">
+    <i-menu theme="light" @on-select="onSelectMenuItem" accordion v-show="isExpand">
       <work-menu-item :level="1" v-for="node  in  menuList" :key="node.id" :data="node"></work-menu-item>
     </i-menu>
     <div class="expand row middle-span">

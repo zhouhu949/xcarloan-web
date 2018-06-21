@@ -13,6 +13,7 @@ import backLogController from './back-log.controller'
 import SysParameterController from './sys-parameter.controller'
 import basicExpenseController from './basic-expense.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
+import basicSupplierController from "./basic-supplier-controller";
 
 export const manageService = {
   sysOrgController,
@@ -29,5 +30,6 @@ export const manageService = {
   backLogController,
   SysParameterController,
   basicExpenseController,
-  basicCarManagecontroller
+  basicCarManagecontroller,
+  basicSupplierController
 }
