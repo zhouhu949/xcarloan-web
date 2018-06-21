@@ -15,4 +15,15 @@ export class SysLogsService {
       page: page
     })
   }
+  /**
+   * 导出系统日志
+   */
+  exportSysLogs({ sysLogsIds }) {
+    return this.netService.send({
+      server: manageService.SysLogsController.exportSysLogs,
+      data: {
+        sysLogsIds: sysLogsIds
+      }
+    })
+  }
 }
