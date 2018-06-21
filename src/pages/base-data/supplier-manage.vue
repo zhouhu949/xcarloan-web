@@ -182,6 +182,4 @@ export default class SupplierManage extends Page {
 </script>
 
 <style lang="less" scoped>
-.page.supplier-manage {
-}
 </style>
