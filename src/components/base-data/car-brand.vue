@@ -5,7 +5,7 @@
         <i-input v-model="model.name"></i-input>
       </i-form-item>
       <i-form-item label="品牌图标" prop="pictureList">
-        <upload-voucher v-model="model.pictureList" :transfer="true" ref="upload-voucher" :hiddenUpload="pictureResource.length >= limitNum" :fileNumberLimit="limitNum"></upload-voucher>
+        <upload-voucher v-model="model.pictureList" :transfer="true" ref="upload-voucher"  :fileNumberLimit="limitNum"></upload-voucher>
       </i-form-item>
     </i-form>
   </section>

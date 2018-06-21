@@ -174,12 +174,10 @@ export default class FileUpload extends Vue {
    * 上传成功回调
    */
   onSuccess(event, file, fileList) {
-    console.log(this.uploadList)
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
-      console.log('fin')
       this.fileList = fileList;
       this.success(this.fileList);
     }

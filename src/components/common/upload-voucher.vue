@@ -1,25 +1,16 @@
 <template>
   <section class="component upload-voucher">
     <div class="row image-container">
-      <div class="modal-item-upload" v-if="!hiddenUpload">
+      <div class="modal-item-upload" v-show="!hiddenUpload">
         <div class="modal-item-upload-div" @click="showFileUpload">
           <Icon type="plus-circled" class="modal-item-upload-icon" color="#265ea2" size="40"></Icon>
           <h2 class="modal-item-upload-add">点击添加附件</h2>
           <h3 class="modal-item-upload-text">支持jpg/png格式</h3>
-          <h3 class="modal-item-upload-text">建议大小不超过10M</h3>
+          <h3 class="modal-item-upload-text">建议大小不超过2M</h3>
         </div>
       </div>
-      <!--补传的没有删除-->
-      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadVoucher" :key="i">
-        <img class="modal-item-upload-img" :src="v.materialUrl">
-        <div class="blackFlag">
-          <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
-          <i-button type="text" icon="arrow-down-a" @click.native="download(v)" class="buttonFlag arrow"></i-button>
-        </div>
-      </div>
-      <!--正常上传-->
-      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources" :key="i">
-        <img class="modal-item-upload-img" :src="v.materialUrl">
+      <div class="modal-item-upload-col" v-for="(v,i) in pictureResource" :key="i">
+        <img class="modal-item-upload-img" :src="v.url" :alt="v.name">
         <div class="blackFlag">
           <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
           <i-button type="text" icon="arrow-down-a" @click.native="download(v)" class="buttonFlag arrow"></i-button>
@@ -27,11 +18,6 @@
         </div>
       </div>
     </div>
-    <template>
-      <i-modal title="预览" v-model="previewModel" :transfer="false">
-        <img :src="url" style="width: 100%">
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -39,7 +25,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import FileUpload from "~/components/common/file-upload.tsx.vue";
-import { CommonService } from "~/utils/common.service";
 import { Prop, Model, Emit, Watch } from "vue-property-decorator";
 @Component({
   components: {
@@ -47,37 +32,41 @@ import { Prop, Model, Emit, Watch } from "vue-property-decorator";
   }
 })
 export default class UploadVoucher extends Vue {
-  //隐藏上传
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  hiddenUpload: boolean;
+
+
   //隐藏删除
   @Prop({
     type: Boolean,
     default: false
   })
-  @Prop({
-    type: Array,
+  hiddenDelete: boolean;
+
+  @Model("on-resource-change", {
     default: () => []
   })
-  pictureResource
+  pictureResource: Array<any>
 
-   @Prop() fileNumberLimit;
+  @Emit('on-resource-change')
+  emitResourceChange(val) { }
 
-  @Watch('pictureResource', { immediate: true })
-  onPictureResourceChange(val) {
-    this.financeUploadResources = val
-  }
-
-  hiddenDelete: boolean;
+  /**
+   * 文件数量限制
+   */
+  @Prop() fileNumberLimit: Number;
 
   private openUpload: Boolean = false;
   private financeUploadResources: any = [];
   private financeUploadVoucher: any = [];
   private previewModel: Boolean = false;
-  private url: any = ''
+  private viewPic: any = {}
+
+  /**
+   * 计算是否显示上传按钮
+   */
+  get hiddenUpload() {
+    // 最大写死99个文件
+    return this.pictureResource.length >= (this.fileNumberLimit || 99)
+  }
 
   showFileUpload() {
     let fileUploadModel
@@ -90,19 +79,13 @@ export default class UploadVoucher extends Vue {
       },
       render: h => {
         return h(FileUpload, {
+          props: {
+            fileNumberLimit: this.fileNumberLimit
+          },
           on: {
             "on-success": (fileList) => {
-              console.log(fileList)
-              // this.$nextTick(() => {
-              //   this.financeUploadResources = this.financeUploadResources.concat(fileUploadModel.fileList.map(v => {
-              //     return {
-              //       materialUrl: v.response.url,
-              //       materialType: v.response.type,
-              //       originName: v.response.name
-              //     }
-              //   }))
-              //   this.$emit('financeUploadResources', this.financeUploadResources)
-              // });
+              let uploadPics = fileList.map(v => v.response)
+              this.emitResourceChange([...this.pictureResource, ...uploadPics])
             }
           }
         });
@@ -114,41 +97,43 @@ export default class UploadVoucher extends Vue {
    * 预览
    */
   preview(file) {
-    // if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
-    this.previewModel = true
-    this.url = file.materialUrl
-    // } else {
-    //   window.open(file.materialUrl)
-    // }
+    this.$dialog.show({
+      title: file.name,
+      render: h => h('div',
+        {
+          style: {
+            align: "center",
+          },
+        },
+        [h('img',
+          {
+            style: {
+              width: "100%"
+            },
+            attrs: {
+              src: file.url,
+              alt: file.name
+            }
+          })
+        ]
+      )
+    })
   }
   /**
    * 下载附件
    */
   download(file) {
-    CommonService.downloadFile(file.materialUrl, '');
+    this.$common.downloadFile(file.url, file.name);
   }
   /**
    *删除附件
    */
   handleRemove(file) {
-    this.financeUploadResources.splice(this.financeUploadResources.indexOf(file), 1);
-    this.$emit('financeUploadResources', this.financeUploadResources)
+    let deleteIndex = this.pictureResource.indexOf(file)
+    this.emitResourceChange([...this.pictureResource.slice(0, deleteIndex), ...this.pictureResource.slice(deleteIndex + 1)])
   }
-  reset() {
-    this.financeUploadResources = []
-  }
-  //正常返显
-  Reverse(data) {
-    if (data) {
-      this.financeUploadResources = data
-    }
-  }
-  // 补传返显
-  reverseType(data) {
-    if (data) {
-      this.financeUploadVoucher = data
-    }
-  }
+
+
 }
 </script>
 <style lang="less" scoped>
