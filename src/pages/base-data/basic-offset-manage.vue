@@ -71,21 +71,7 @@ export default class BasicOffsetManage extends Page {
   private basicOffsetItemColumns: any;
   private basicOffsetItemDataSet: any = [];
 
-  private ischeckedBasicOffset: Boolean = false;
   private checkedBasicOffsetId: number = 0;
-
-  private addBasicOffsetItemDataModel: any = {
-    expenseId: 0,
-    offsetId: 0
-  };
-  private addBasicOffsetDataModel: any = {
-    id: 0,
-    offsetName: "",
-    offsetType: 0,
-    orgId: 0,
-    remark: ""
-  };
-
 
   created() {
     //刷新数据
@@ -195,7 +181,7 @@ export default class BasicOffsetManage extends Page {
       footer: true,
       onOk: modifyBasicOffset => {
         return modifyBasicOffset.submit().then(v => {
-          if (v)  this.refreshBasicOffset();
+          if (v) this.refreshBasicOffset();
           return v;
         });
       },
@@ -210,24 +196,30 @@ export default class BasicOffsetManage extends Page {
 
   /**
    * 冲抵项维护
+   * @param offsetId 冲抵策略Id
+   * @param expense 费用项列表
    * @param val 需要维护的冲抵项数据
    */
-  private basicOffsetItemOperate(offsetId:number,expense:Array<Object>,val?: Object) {
+  private basicOffsetItemOperate(
+    offsetId: number,
+    expense: Array<Object>,
+    val?: Object
+  ) {
     this.$dialog.show({
       title: val ? "维护冲抵项" : "新增冲抵项",
       footer: true,
       onOk: modifyBasicOffsetItem => {
         return modifyBasicOffsetItem.submit().then(v => {
-          if (v)  this.getBasicOffsetItemList(this.checkedBasicOffsetId);
+          if (v) this.getBasicOffsetItemList(this.checkedBasicOffsetId);
           return v;
         });
       },
       render: h =>
         h(ModifyBasicOffsetItem, {
           props: {
-            offsetId:offsetId,
+            offsetId: offsetId,
             offsetItemData: val,
-            expenseData:expense
+            expenseData: expense
           }
         })
     });
@@ -235,14 +227,18 @@ export default class BasicOffsetManage extends Page {
 
   /**
    * 选冲冲抵策略触发事件
-  */
+   */
   onCheckedBasicOffset(item) {
     this.checkedBasicOffsetId = item.id;
 
-    //刷新列表数据
+    //刷新冲抵项列表数据
     this.getBasicOffsetItemList(item.id);
   }
 
+/**
+ * 删除冲抵策略事件
+ * @param basicOffset 冲抵策略
+ */
   onDeleteBasicOffset(basicOffset) {
     if (basicOffset) {
       this.$Modal.confirm({
@@ -363,9 +359,13 @@ export default class BasicOffsetManage extends Page {
     });
   }
 
+  /**
+   * 刷线列表
+   */
   refreshBasicOffset() {
     this.getBasicOffsetByAuth().then(val => {
       if (this.basicOffsetDataSet)
+        //触发冲抵策略点击事件
         document
           .getElementById("basicOffset" + this.basicOffsetDataSet[0].id)
           .click();
@@ -373,8 +373,6 @@ export default class BasicOffsetManage extends Page {
       return val;
     });
   }
-
-  mounted() {}
 }
 </script>
 <style lang="less" scoped>
