@@ -1,5 +1,5 @@
 <template>
-  <section class="component black-list-customer">
+  <section class="page black-list-customer">
 
   </section>
 </template>

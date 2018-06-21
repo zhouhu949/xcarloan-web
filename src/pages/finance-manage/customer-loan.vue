@@ -1,5 +1,5 @@
 <template>
-  <section class="component customer-loan">
+  <section class="page customer-loan">
 
   </section>
 </template>

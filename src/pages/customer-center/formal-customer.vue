@@ -1,5 +1,5 @@
 <template>
-  <section class="component formal-customer">
+  <section class="page formal-customer">
 
   </section>
 </template>

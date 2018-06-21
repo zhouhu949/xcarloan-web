@@ -1,5 +1,5 @@
 <template>
-  <section class="component proceeds-for-customer">
+  <section class="page proceeds-for-customer">
 
   </section>
 </template>

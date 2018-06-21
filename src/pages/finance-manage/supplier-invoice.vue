@@ -1,5 +1,5 @@
 <template>
-  <section class="component supplier-invoice">
+  <section class="page supplier-invoice">
 
   </section>
 </template>

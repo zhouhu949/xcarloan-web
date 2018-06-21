@@ -1,5 +1,5 @@
 <template>
-  <section class="component white-list-customer">
+  <section class="page white-list-customer">
 
   </section>
 </template>

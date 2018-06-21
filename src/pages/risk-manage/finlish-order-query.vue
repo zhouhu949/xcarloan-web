@@ -1,5 +1,5 @@
 <template>
-  <section class="component finlish-order-query">
+  <section class="page finlish-order-query">
 
   </section>
 </template>

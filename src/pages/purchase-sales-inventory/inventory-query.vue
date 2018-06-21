@@ -1,5 +1,5 @@
 <template>
-  <section class="component inventory-query">
+  <section class="page inventory-query">
 
   </section>
 </template>

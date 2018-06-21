@@ -1,5 +1,5 @@
 <template>
-  <section class="component history-customer">
+  <section class="page history-customer">
 
   </section>
 </template>

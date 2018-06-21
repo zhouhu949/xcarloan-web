@@ -1,5 +1,5 @@
 <template>
-  <section class="component sign-contract">
+  <section class="page sign-contract">
 
   </section>
 </template>
