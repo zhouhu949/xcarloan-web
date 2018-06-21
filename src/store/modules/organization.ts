@@ -26,6 +26,21 @@ export default {
       };
 
       return getParent(orgId).map(v => v.id);
+    },
+    /**
+     * 获取机构数据格式化后的数据
+     * 用于级联基础数据
+     * @param state 
+     */
+    getOrgFormatData(state) {
+      return state.orgData.map(v => {
+        return {
+          id: v.id,
+          pid: v.orgPid,
+          value: v.id,
+          label: v.orgName
+        }
+      })
     }
   },
   mutations: {
