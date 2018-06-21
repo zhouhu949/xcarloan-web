@@ -7,7 +7,7 @@
 <script lang="ts">
 import OrganizeNode from '~/components/common/organize-node.vue'
 import Vue from "vue";
-import { Prop, Watch } from "vue-property-decorator";
+import { Prop, Watch,Emit } from "vue-property-decorator";
 import Component from "vue-class-component";
 
 @Component({
@@ -65,7 +65,7 @@ export default class OrganizeTree extends Vue {
   private dataTree: Array<any> = [] // 数据树
   private selected: String = '' // 当前选择项
 
-
+ 
   created() {
 
   }

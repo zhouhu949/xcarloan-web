@@ -86,22 +86,23 @@ export default class UploadVoucher extends Vue {
       footer: true,
       onOk: fileUpload => {
         fileUploadModel = fileUpload
-        fileUpload.upload();
+        return fileUpload.upload();
       },
       render: h => {
         return h(FileUpload, {
           on: {
-            "on-success": () => {
-              this.$nextTick(() => {
-                this.financeUploadResources = this.financeUploadResources.concat(fileUploadModel.fileList.map(v => {
-                  return {
-                    materialUrl: v.response.url,
-                    materialType: v.response.type,
-                    originName: v.response.name
-                  }
-                }))
-                this.$emit('financeUploadResources', this.financeUploadResources)
-              });
+            "on-success": (fileList) => {
+              console.log(fileList)
+              // this.$nextTick(() => {
+              //   this.financeUploadResources = this.financeUploadResources.concat(fileUploadModel.fileList.map(v => {
+              //     return {
+              //       materialUrl: v.response.url,
+              //       materialType: v.response.type,
+              //       originName: v.response.name
+              //     }
+              //   }))
+              //   this.$emit('financeUploadResources', this.financeUploadResources)
+              // });
             }
           }
         });

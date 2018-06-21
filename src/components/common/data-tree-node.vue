@@ -10,6 +10,23 @@
           <i-checkbox :indeterminate="indeterminate" v-model="checked" @on-change="onChecked"></i-checkbox>
         </span>
         <a>{{data[propsObject.title]}}</a>
+        <small v-show="selected && showEdit" class="icon-box">
+          <a @click="editHandle" href="#" class="el-icon-edit">
+            <div style="display:inline-block">
+              <Icon type="edit"></Icon>
+            </div>
+          </a>
+          <a @click="addItemHandle"  href="#" class="el-icon-plus">
+            <div style="display:inline-block">
+              <Icon type="plus"></Icon>
+            </div>
+          </a>
+          <a @click="deleteHandle" href="#" class="el-icon-minus">
+            <div style="display:inline-block">
+              <Icon type="minus"></Icon>
+            </div>
+          </a>
+        </small>
       </div>
       <div v-show="expanded" class="sub-node" v-if="data.children">
         <data-tree-node ref="children-node" v-for="node in data.children" :key="node.id" :data="node"></data-tree-node>
@@ -49,6 +66,29 @@ export default class DataTreeNode extends Vue {
 
   get showCheckbox() {
     return this.root.showCheckbox;
+  }
+
+  get showEdit(){
+    return this.root.showEdit;
+  }
+
+  /**
+   * 调用树的编辑方法，向调用者发送edit事件
+   */
+  private editHandle(){
+    this.root.emitEdit(this.data);
+  }
+  /**
+   * 点击树添加事件
+   */
+  private addItemHandle(){
+    this.root.addEdit(this.data);
+  }
+  /**
+   * 点击树删除事件
+   */
+  private deleteHandle(){
+    this.root.deleteEdit(this.data)
   }
 
   created() {

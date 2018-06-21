@@ -1,5 +1,5 @@
 <!--新增车辆-->
-<template>
+<template> 
   <section class="component add-vehicle">
     <i-form :label-width="90" ref="form" :model="model" :rules="rules">
       <i-row :gutter="15">

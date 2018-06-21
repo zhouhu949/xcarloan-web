@@ -5,7 +5,7 @@
         <i-input v-model="model.name"></i-input>
       </i-form-item>
       <i-form-item label="品牌图标" prop="pictureList">
-        <upload-voucher @financeUploadResources="fileNumber" :pictureResource="pictureResource" :transfer="true" ref="upload-voucher" :hiddenUpload="pictureNumber" @deleteFile="deleteFile" :fileNumberLimit="1"></upload-voucher>
+        <upload-voucher v-model="model.pictureList" :transfer="true" ref="upload-voucher" :hiddenUpload="pictureResource.length >= limitNum" :fileNumberLimit="limitNum"></upload-voucher>
       </i-form-item>
     </i-form>
   </section>
@@ -28,16 +28,19 @@ export default class CarBrand extends Vue {
   @Dependencies(BasicCarManageService) private basicCarManageService: BasicCarManageService
 
   // 车辆品牌
-  @Prop() id: number;
-  @Prop() carMessage;
+  @Prop() id;
 
   private form: Form
-  private pictureList: any = []
 
   private model = {
     name: "",
     pictureList: []
   }
+
+  /**
+   * 限制图片数量
+   */
+  private limitNum: number = 1;
 
   private rules = {
     name: { required: true, message: '请输入车辆品牌', trigger: 'blur' },
@@ -45,21 +48,8 @@ export default class CarBrand extends Vue {
   }
 
   // 图片反显资源
-  private pictureResource: any = []
-  private pictureNumber: Boolean = false
+  private pictureResource: Array<any> = []
 
-  /**
-  * 上传的文件
-  */
-  fileNumber(item) {
-    if (item.length > 0) {
-      this.pictureNumber = true
-    }
-    this.model.pictureList = item
-  }
-  deleteFile() {
-    this.pictureNumber = false
-  }
 
   /**
   * 确定新增品牌
@@ -95,6 +85,7 @@ export default class CarBrand extends Vue {
           brandPhotoUrl: this.model.pictureList[0].materialUrl
         })
           .subscribe(data => {
+            console.log(this.id)
             this.$Message.success('修改成功')
             resolve()
           }, err => {
@@ -104,7 +95,7 @@ export default class CarBrand extends Vue {
       })
     })
   }
- 
+
 
   mounted() {
     this.form = this.$refs['form']
@@ -112,15 +103,12 @@ export default class CarBrand extends Vue {
     if (this.id) {
       this.basicCarManageService.getCarBrandById(this.id).subscribe(
         data => {
-          
           this.model.name = data.brandName
-          this.model.pictureList = data.brandPhotoUrl ? [{ materialUrl: data.brandPhotoUrl }] : []
-
-          let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
-          this.pictureResource = [{
-            materialUrl: data.brandPhotoUrl
-          }]
-
+          let picture = {
+            url: data.brandPhotoUrl,
+            name: data.brandName
+          }
+          this.model.pictureList = [picture]
         },
         err => this.$Message.error(err.msg)
       )

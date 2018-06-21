@@ -46,12 +46,22 @@ export default class FileUpload extends Vue {
   acceptFileType;
 
   @Emit("on-success")
-  success(filelist) {}
+  success(filelist) {
+    if (this.uploadReslove) {
+      this.uploadReslove(this.fileList)
+    }
+  }
 
   @Emit('on-error')
-  emitOnError(){}
+  emitOnError() {
+    if (this.uploadReslove) {
+      this.uploadReslove(this.fileList)
+    }
+  }
 
   @State token;
+
+  private uploadReslove
 
   private uploadList: Array<any> = [];
   private fileList: Array<any> = []; // 文件上传成功文件列表
@@ -149,7 +159,7 @@ export default class FileUpload extends Vue {
     target.percentage = file.percentage;
   }
 
-  private onExceededSize(file,fileList){
+  private onExceededSize(file, fileList) {
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "finish";
     if (this.uploadList.every(x => x.state === "finish")) {
@@ -164,10 +174,12 @@ export default class FileUpload extends Vue {
    * 上传成功回调
    */
   onSuccess(event, file, fileList) {
+    console.log(this.uploadList)
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
+      console.log('fin')
       this.fileList = fileList;
       this.success(this.fileList);
     }
@@ -184,13 +196,17 @@ export default class FileUpload extends Vue {
    * 上传操作
    */
   upload() {
-    if(this.uploadList.length === 0){
+    if (this.uploadList.length === 0) {
       return false
     }
     let upload = this.$refs["upload"] as Upload;
     this.uploadList.filter(x => x.state === "ready").forEach(({ file }) => {
       upload.post(file);
     });
+
+    return new Promise((reslove) => {
+      this.uploadReslove = reslove
+    })
   }
 
   reset() {
@@ -205,7 +221,7 @@ export default class FileUpload extends Vue {
     let fileName = fileList.name
     this.$Message.error(`文件 [${fileName}] 上传失败,已移除`)
     // 查找这个文件并且移除掉
-    let fileIndex = this.uploadList.findIndex( x => x.name === fileName && x.state !== 'ready')
+    let fileIndex = this.uploadList.findIndex(x => x.name === fileName && x.state !== 'ready')
     this.uploadList.splice(fileIndex, 1)
     this.emitOnError();
   }

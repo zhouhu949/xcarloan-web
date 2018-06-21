@@ -38,6 +38,12 @@ export default class DataTree extends Vue {
   })
   showCheckbox;
 
+  @Prop({
+    type:Boolean,
+    default:false
+  })
+  showEdit
+
   // 数据源变化监听
   @Watch("data")
   onDataChange(data) {
@@ -49,6 +55,15 @@ export default class DataTree extends Vue {
 
   @Emit("on-currentChecked-change")
   emitCurrentCheckedChange(id, value) { }
+
+  @Emit('on-edit')
+  emitEdit(data){}
+
+  @Emit('on-addEdit')
+  addEdit(data){}
+
+  @Emit('on-deleteEdit')
+  deleteEdit(data){}
 
   private nodeMap = new Map<DataTreeNode, any>();
 
