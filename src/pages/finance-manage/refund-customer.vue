@@ -1,5 +1,5 @@
 <template>
-  <section class="component refund-customer">
+  <section class="page refund-customer">
 
   </section>
 </template>

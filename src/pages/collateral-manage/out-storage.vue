@@ -1,5 +1,5 @@
 <template>
-  <section class="component out-storage">
+  <section class="page out-storage">
 
   </section>
 </template>

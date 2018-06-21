@@ -1,5 +1,5 @@
 <template>
-  <section class="component order-apply">
+  <section class="page order-apply">
 
   </section>
 </template>

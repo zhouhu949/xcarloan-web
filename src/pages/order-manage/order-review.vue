@@ -1,5 +1,5 @@
 <template>
-  <section class="component order-review">
+  <section class="page order-review">
 
   </section>
 </template>

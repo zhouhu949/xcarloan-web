@@ -1,5 +1,5 @@
 <template>
-  <section class="component early-settlement">
+  <section class="page early-settlement">
 
   </section>
 </template>

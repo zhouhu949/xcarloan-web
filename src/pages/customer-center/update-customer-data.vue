@@ -1,5 +1,5 @@
 <template>
-  <section class="component update-customer-data">
+  <section class="page update-customer-data">
 
   </section>
 </template>
