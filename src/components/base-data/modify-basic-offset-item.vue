@@ -30,7 +30,7 @@ export default class ModifyBasicExpense extends Vue {
   @Prop() offsetId;
 
   private model: any = {
-    expenseId: 0,
+    expenseId: "",
     offsetId: this.offsetId
   };
 

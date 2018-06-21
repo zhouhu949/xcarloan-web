@@ -34,7 +34,7 @@ export default class ModifyBasicOffset extends Vue {
   private model: any = {
     id: 0,
     offsetName: "",
-    offsetType: 0,
+    offsetType: "",
     orgId: 0,
     remark: ""
   };
@@ -67,7 +67,8 @@ export default class ModifyBasicOffset extends Vue {
     if (this.offsetData) {
       this.model.id = this.offsetData.id;
       this.model.offsetName = this.offsetData.offsetName;
-      this.model.offsetType = this.offsetData.offsetType;
+      this.model.offsetType =
+        this.offsetData.offsetType > 0 ? this.offsetData.offsetType : "";
       this.model.orgId = this.offsetData.orgId;
       this.model.remark = this.offsetData.remark;
     }
@@ -103,7 +104,7 @@ export default class ModifyBasicOffset extends Vue {
     return new Promise(resolve => {
       form.validate(v => {
         if (!v) return resolve(false);
-        
+
         let result = this.offsetData
           ? this.modifyBasicOffset()
           : this.addBasicOffset();
