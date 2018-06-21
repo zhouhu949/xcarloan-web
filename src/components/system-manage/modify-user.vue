@@ -72,7 +72,7 @@ import { SysUserService } from "~/services/manage-service/sys-user.service";
 import { State, namespace } from "vuex-class";
 import { Form } from "iview";
 
-const OrgMoudle = namespace("orgSpace")
+const OrgModule = namespace("orgSpace")
 
 @Component({
   components: {}
@@ -81,8 +81,9 @@ export default class ModifyUser extends Vue {
   @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Dependencies(SysOrgService) private sysOrgService: SysOrgService;
   // 机构数据
-  @OrgMoudle.State orgData;
-  @OrgMoudle.Getter getOwnerData;
+  @OrgModule.Getter getOwnerData;
+  @OrgModule.Getter getOrgFormatData;
+
   @Prop() userData;
   @Prop() orgId;
 
@@ -123,15 +124,7 @@ export default class ModifyUser extends Vue {
   mounted() {
     this.form = this.$refs["modify-user"] as Form
     // 组织机构树
-    let treeSource = this.orgData.map(v => {
-      return {
-        id: v.id,
-        pid: v.orgPid,
-        value: v.id,
-        label: v.orgName
-      }
-    })
-    this.orgTreeData = this.$common.generateTreeData(treeSource)
+    this.orgTreeData = this.$common.generateTreeData(this.getOrgFormatData)
     // 判断属性是否传了orgId
     if (this.orgId) {
       this.model.orgId = this.orgId

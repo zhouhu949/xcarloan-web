@@ -48,7 +48,7 @@ enum operateType {
 export default class OrgPower extends Vue {
   @Dependencies(SysRoleService) private sysRoleService: SysRoleService;
   @Prop() roleId
-  @OrgModule.State orgData
+  @OrgModule.Getter getOrgFormatData;
 
   private model = {
     deptNames1: [],
@@ -211,17 +211,8 @@ export default class OrgPower extends Vue {
   }
 
   mounted() {
-    // 资源树转换
-    let treeSource = this.orgData.map(v => {
-      return {
-        id: v.id,
-        pid: v.orgPid,
-        value: v.id,
-        label: v.orgName
-      }
-    })
     // 生成机构级联数据
-    this.orgTreeData = this.$common.generateTreeData(treeSource)
+    this.orgTreeData = this.$common.generateTreeData(this.getOrgFormatData)
     this.getOwnerOrg()
     this.getExcludeOrg()
   }

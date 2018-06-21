@@ -29,7 +29,7 @@ import { SysRoleService } from "~/services/manage-service/sys-role.service";
 import { Form } from 'iview';
 import { State, Getter, namespace } from "vuex-class";
 
-const OrgMoudle = namespace("orgSpace")
+const OrgModule = namespace("orgSpace")
 
 @Component({})
 export default class ModifyRole extends Vue {
@@ -37,8 +37,8 @@ export default class ModifyRole extends Vue {
   @Prop() roleData
 
   // 机构数据
-  @OrgMoudle.State orgData;
-  @OrgMoudle.Getter getOwnerData;
+  @OrgModule.Getter getOwnerData;
+  @OrgModule.Getter getOrgFormatData;
 
   private orgTreeData: any = [];
 
@@ -62,15 +62,7 @@ export default class ModifyRole extends Vue {
 
   mounted() {
     // 组织机构树
-    let treeSource = this.orgData.map(v => {
-      return {
-        id: v.id,
-        pid: v.orgPid,
-        value: v.id,
-        label: v.orgName
-      }
-    })
-    this.orgTreeData = this.$common.generateTreeData(treeSource)
+    this.orgTreeData = this.$common.generateTreeData(this.getOrgFormatData)
 
     if (this.roleData) {
       this.model.id = this.roleData.id
