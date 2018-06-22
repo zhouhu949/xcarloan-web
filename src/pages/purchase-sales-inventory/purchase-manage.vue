@@ -13,8 +13,7 @@
         </i-form-item>
         <i-form-item prop="roleStatus" label="状态：">
           <i-select v-model="queryParamsModel.roleStatus" clearable>
-            <i-option label="启用" :value="0" :key="0"></i-option>
-            <i-option label="停用" :value="1" :key="1"></i-option>
+          <i-option v-for="{value,label} in $dict.getDictData(10014)" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
       </template>
