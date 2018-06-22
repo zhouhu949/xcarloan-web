@@ -9,9 +9,9 @@ export class BasicSupplierService {
    * 搜索供应商
    */
   @Debounce()
-  getBasicSupplierList(data, page) {
+  queryBasicSupplierList(data, page) {
     return this.netService.send({
-      server: manageService.basicSupplierController.getBasicSupplierList,
+      server: manageService.basicSupplierController.queryBasicSupplierList,
       data: {
         supplierName: data.name
       },
@@ -80,5 +80,14 @@ export class BasicSupplierService {
       loading: true
     })
   }
-
+  /**
+   * 查询供应商列表
+   */
+  @Debounce()
+  getBasicSupplierList(){
+    return this.netService.send({
+      server: manageService.basicSupplierController.getBasicSupplierList,
+      loading: true
+    })
+  }
 }

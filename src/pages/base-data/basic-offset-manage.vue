@@ -1,12 +1,12 @@
 <!--冲抵项管理-->
 <template>
-  <section class="page data-dict">
+  <section class="page basic-offset">
     <page-header title="冲抵项管理" hiddenPrint hiddenExport>
       <command-button class="command-add" label="新增数据" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row class="data-form">
       <i-row type="flex" align="top" justify="start">
-        <i-col :span="4">
+        <i-col :span="4" style="padding-top:10px;">
           <div class="data-form-item">
             <div class="data-form-item-icon"></div>
             <span>冲抵策略</span>
@@ -33,7 +33,7 @@
           </div>
         </i-col>
         <i-col class="command" :span="20">
-          <data-box :columns="basicOffsetItemColumns" :data="basicOffsetItemDataSet" ref="databox" :noDefaultRow="true"></data-box>
+          <data-box :columns="basicOffsetItemColumns" :data="basicOffsetItemDataSet"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -50,7 +50,6 @@ import { Form } from "iview";
 import { Dependencies } from "~/core/decorator";
 import { BasicExpenseService } from "~/services/manage-service/basic-expense.service";
 import { BasicOffsetService } from "~/services/base-service/basic-offset.service";
-import { BackLogService } from "~/services/manage-service/back-log.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
 
@@ -235,10 +234,10 @@ export default class BasicOffsetManage extends Page {
     this.getBasicOffsetItemList(item.id);
   }
 
-/**
- * 删除冲抵策略事件
- * @param basicOffset 冲抵策略
- */
+  /**
+   * 删除冲抵策略事件
+   * @param basicOffset 冲抵策略
+   */
   onDeleteBasicOffset(basicOffset) {
     if (basicOffset) {
       this.$Modal.confirm({
@@ -376,7 +375,7 @@ export default class BasicOffsetManage extends Page {
 }
 </script>
 <style lang="less" scoped>
-.page.data-dict {
+.page.basic-offset {
   .data-form {
     margin-top: 10px;
     .data-form-item {
@@ -435,7 +434,7 @@ export default class BasicOffsetManage extends Page {
 }
 </style>
 <style lang="less">
-.page.data-dict {
+.page.basic-offset {
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;

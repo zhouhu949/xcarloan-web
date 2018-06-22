@@ -7,10 +7,10 @@ export default {
   /**
    * 查询供应商列表
    */
-  getBasicSupplierList: {
+  queryBasicSupplierList: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getBasicSupplierList',
+    action: 'queryBasicSupplierList',
     type: requestType.Get
   },
   /**
@@ -47,6 +47,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getBasicSupplierById',
+    type: requestType.Get
+  },
+  /**
+   * 查询供应商列表
+   */
+  getBasicSupplierList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getBasicSupplierList',
     type: requestType.Get
   }
 }
