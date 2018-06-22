@@ -17,7 +17,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="征信保护天数" prop="creditDays">
-            <i-input-number v-model="model.creditDays"></i-input-number>
+            <i-input-number v-model="model.creditDays" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -29,7 +29,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="逾期保护天数" prop="overdueDays">
-            <i-input-number v-model="model.overdueDays"></i-input-number>
+            <i-input-number v-model="model.overdueDays" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -41,7 +41,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="期数" prop="periods">
-            <i-input-number v-model="model.periods"></i-input-number>
+            <i-input-number v-model="model.periods" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -53,7 +53,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="融资最小金额" prop="moneyMin">
-            <i-input-number v-model="model.moneyMin"></i-input-number>
+            <i-input-number v-model="model.moneyMin" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -65,7 +65,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="融资最大金额" prop="moneyMax">
-            <i-input-number v-model="model.moneyMax"></i-input-number>
+            <i-input-number v-model="model.moneyMax" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -77,13 +77,13 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="利率" prop="interestRate">
-            <i-input-number v-model="model.interestRate"></i-input-number>
+            <i-input-number v-model="model.interestRate" :min="0" :max="100" :formatter="$filter.percentFormat"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="冲抵策略" prop="offsetId">
             <i-select v-model="model.offsetId">
-              <i-option v-for="{value,label} in $dict.getDictData(10025)" :key="value" :label="label" :value="value"></i-option>
+              <i-option v-for="item in offsetArr" :key="item.id" :label="item.offsetName" :value="item.id"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -101,8 +101,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from '~/core/decorator';
-import { BasicCarManageService } from '~/services/manage-service/basic-car-manage.service';
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
+import { BasicOffsetService } from '~/services/base-service/basic-offset.service'
 import { Form } from "iview";
 
 @Component({
@@ -110,10 +110,13 @@ import { Form } from "iview";
 })
 export default class AddModifyScheme extends Vue {
   @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
+  @Dependencies(BasicOffsetService) private basicOffsetService: BasicOffsetService
   @Prop() data
+  @Prop() id
 
   private form: Form
   private accountDay: Array<Number> = []
+  private offsetArr: Array<any> = [];
 
   private model:any = {
     schemeType: '', // 方案类型
@@ -154,8 +157,27 @@ export default class AddModifyScheme extends Vue {
     for(let i = 1;i <= 31;i++){
       this.accountDay.push(i)
     }
+    this.basicOffsetService.findBasicOffsetByOrg().subscribe(val => {
+      this.offsetArr = val
+    })
+    if(this.id) {
+      this.model.id = this.id
+    }
     if(Object.keys(this.data).length != 0){
-      this.model = this.data
+      this.model.schemeType = this.data.schemeType
+      this.model.schemeName = this.data.schemeName
+      this.model.repayType = this.data.repayType
+      this.model.mortgageType = this.data.mortgageType
+      this.model.creditDays = this.data.creditDays
+      this.model.overdueDays = this.data.overdueDays
+      this.model.periods = this.data.periods
+      this.model.interestRate = this.data.interestRate * 100
+      this.model.cycleType = this.data.cycleType
+      this.model.moneyMin = this.data.moneyMin
+      this.model.moneyMax = this.data.moneyMax
+      this.model.accountPeriodType = this.data.accountPeriodType
+      this.model.accountDay = this.data.accountDay
+      this.model.offsetId = this.data.offsetId
     }
   }
   mounted () {

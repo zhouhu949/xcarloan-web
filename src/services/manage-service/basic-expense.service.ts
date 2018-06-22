@@ -74,5 +74,13 @@ export class BasicExpenseService {
       loading: true
     })
   }
-
+  /**
+   * 获取当前用户所属机构下的费用项(下拉选用)
+   */
+  findBasicExpenseByOrg() {
+    return this.netService.send({
+      server: manageService.basicExpenseController.findBasicExpenseByOrg,
+      loading: true
+    })
+  }
 }

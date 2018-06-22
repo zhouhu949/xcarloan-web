@@ -5,7 +5,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="收取总额比例" prop="repayProportion">
-            <i-input-number v-model="model.repayProportion"></i-input-number>
+            <i-input-number v-model="model.repayProportion" :min="0" :max="100" :formatter="$filter.percentFormat"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -17,7 +17,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="固定费用" prop="fixedCost">
-            <i-input-number v-model="model.fixedCost"></i-input-number>
+            <i-input-number v-model="model.fixedCost" :min="0"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -41,6 +41,13 @@
             </i-select>
           </i-form-item>
         </i-col>
+        <i-col :span="12">
+          <i-form-item label="费用项" prop="expenseId">
+            <i-select v-model="model.expenseId">
+              <i-option v-for="item in expenseArr" :key="item.id" :label="item.expenseName" :value="item.id"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="remark">
             <i-input type="textarea" v-model="model.remark"></i-input>
@@ -57,6 +64,7 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from '~/core/decorator';
 import { BasicCarManageService } from '~/services/manage-service/basic-car-manage.service';
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
+import { BasicExpenseService } from '~/services/manage-service/basic-expense.service.ts';
 import { Form } from "iview";
 
 @Component({
@@ -64,10 +72,13 @@ import { Form } from "iview";
 })
 export default class AddModifySchemeDetail extends Vue {
   @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
+  @Dependencies(BasicExpenseService) private basicExpenseService: BasicExpenseService
   @Prop() data
+  @Prop() schemeId
 
   private form: Form
   private accountDay: Array<Number> = []
+  private expenseArr: Array<Number> = []
 
   private model:any = {
     isFirst: '', // 是否首付款
@@ -76,7 +87,8 @@ export default class AddModifySchemeDetail extends Vue {
     repayType: '', // 还款方式
     isLast: '', // 是否尾款
     isRefund: '', //是否退款
-    expenseId: 65 // 费用项id
+    expenseId: '', // 费用项id
+    remark: '' // 备注
   }
 
   private rules = {
@@ -84,11 +96,28 @@ export default class AddModifySchemeDetail extends Vue {
     repayType: { required: true, message: '请选择还款方式', trigger: 'blur',type: 'number' },
     isLast: { required: true, message: '请选择是否尾款', trigger: 'blur',type: 'number' },
     isRefund: { required: true, message: '请选择是否退款', trigger: 'blur',type: 'number' },
+    expenseId: { required: true, message: '请选择费用项', trigger: 'blur',type: 'number' }
   }
 
   created () {
+    console.log(this.schemeId)
+    this.model.schemeId = this.schemeId
+    this.basicExpenseService.findBasicExpenseByOrg().subscribe(val => {
+      this.expenseArr = val
+    })
+    if(this.data.id) {
+      console.log(this.data.id)
+      this.model.id = this.data.id
+    }
     if(Object.keys(this.data).length != 0){
-      this.model = this.data
+      this.model.isFirst = this.data.isFirst
+      this.model.repayProportion = this.data.repayProportion * 100
+      this.model.fixedCost = this.data.fixedCost
+      this.model.repayType = this.data.repayType
+      this.model.isLast = this.data.isLast
+      this.model.isRefund = this.data.isRefund
+      this.model.expenseId = this.data.expenseId
+      this.model.remark = this.data.remark
     }
   }
   mounted () {

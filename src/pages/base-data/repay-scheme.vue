@@ -47,7 +47,7 @@
               <data-grid-item label="征信保护天数" :label-width="150" :span="12">{{repaySchemeModel.creditDays}}</data-grid-item>
               <data-grid-item label="逾期保护天数" :label-width="150" :span="12">{{repaySchemeModel.overdueDays}}</data-grid-item>
               <data-grid-item label="期数" :label-width="150" :span="12">{{repaySchemeModel.periods}}</data-grid-item>
-              <data-grid-item label="利率" :label-width="150" :span="12">{{repaySchemeModel.interestRate}}</data-grid-item>
+              <data-grid-item label="利率" :label-width="150" :span="12">{{repaySchemeModel.interestRate * 100 + '%'}}</data-grid-item>
               <data-grid-item label="周期类型" :label-width="150" :span="12">{{this.$dict.getDictName(repaySchemeModel.cycleType)}}</data-grid-item>
               <data-grid-item label="融资最小金额" :label-width="150" :span="12">{{repaySchemeModel.moneyMin}}</data-grid-item>
               <data-grid-item label="融资最大金额" :label-width="150" :span="12">{{repaySchemeModel.moneyMax}}</data-grid-item>
@@ -135,7 +135,10 @@ export default class RepayScheme extends Page {
       {
         title: "收取总额比例",
         align: "center",
-        key: "repayProportion"
+        key: "repayProportion",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, `${row.repayProportion * 100}%`);
+        }
       },
       {
         title: "固定费用",
@@ -164,6 +167,14 @@ export default class RepayScheme extends Page {
         key: "isRefund",
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.isRefund));
+        }
+      },
+      {
+        title: "费用项",
+        align: "center",
+        key: "expenseId",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, row.expenseName);
         }
       },
       {
@@ -254,7 +265,8 @@ export default class RepayScheme extends Page {
       },
       render: h => h(addOrModifyScheme, {
         props: {
-          data: {}
+          data: {},
+          id: ''
         }
       })
     })
@@ -276,7 +288,8 @@ export default class RepayScheme extends Page {
       },
       render: h => h(addOrModifyScheme, {
         props: {
-          data: this.repaySchemeModel
+          data: this.repaySchemeModel,
+          id: this.checkId
         }
       })
     })
@@ -334,8 +347,7 @@ export default class RepayScheme extends Page {
       onOk: () => {
         this.repaySchemeService.deleteRepaySchemeExpense(id).subscribe(val => {
           this.$Message.success('删除成功！')
-          this.getAllRepayScheme()
-          this.getSchemeDetail(this.checkId)
+          this.refreshRepayScheme()
         },
         err => {
           this.$Message.error(err.msg)
@@ -378,7 +390,8 @@ export default class RepayScheme extends Page {
       },
       render: h => h(addOrModifySchemeDetail, {
         props: {
-          data: {}
+          data: {},
+          schemeId: this.checkId
         }
       })
     })
@@ -387,7 +400,6 @@ export default class RepayScheme extends Page {
    * 编辑还款方案比例详情
    */
   editRepaySchemeDetail(data) {
-    console.log(data)
     this.$dialog.show({
       title: "编辑还款方案比例详情",
       footer: true,
@@ -401,7 +413,8 @@ export default class RepayScheme extends Page {
       },
       render: h => h(addOrModifySchemeDetail, {
         props: {
-          data: data
+          data: data,
+          schemeId: this.checkId
         }
       })
     })
