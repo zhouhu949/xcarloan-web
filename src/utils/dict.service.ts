@@ -26,7 +26,7 @@ export class DictService {
     static getDictName(value) {
         let data = store.state.dictData.find(x => value === x.id)
         if (data) {
-            return data.name
+            return data.dictItemName
         } else {
             return value
         }

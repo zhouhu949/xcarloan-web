@@ -2,7 +2,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'SysLogsController'
+const CONTROLLER = 'sysLogsController'
 
 export default {
   /**

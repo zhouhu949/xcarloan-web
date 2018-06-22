@@ -11,7 +11,7 @@ export class SysParameterService {
    */
   querySysParameterPage(data, page) {
     return this.netService.send({
-      server: manageService.SysParameterController.querySysParameterPage,
+      server: manageService.sysParameterController.querySysParameterPage,
       data: data,
       page: page
     })
@@ -22,7 +22,7 @@ export class SysParameterService {
    */
   createSystemParameter(data) {
     return this.netService.send({
-      server: manageService.SysParameterController.createSystemParameter,
+      server: manageService.sysParameterController.createSystemParameter,
       data: data
     })
   }
@@ -32,7 +32,7 @@ export class SysParameterService {
   */
  updateSysParameter(data) {
     return this.netService.send({
-      server: manageService.SysParameterController.updateSysParameter,
+      server: manageService.sysParameterController.updateSysParameter,
       data: data,
       loading: true
     })

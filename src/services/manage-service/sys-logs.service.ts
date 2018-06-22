@@ -10,7 +10,7 @@ export class SysLogsService {
    */
   querySysLogsPage(data, page) {
     return this.netService.send({
-      server: manageService.SysLogsController.querySysLogsPage,
+      server: manageService.sysLogsController.querySysLogsPage,
       data: data,
       page: page
     })
@@ -20,7 +20,7 @@ export class SysLogsService {
    */
   exportSysLogs({ sysLogsIds }) {
     return this.netService.send({
-      server: manageService.SysLogsController.exportSysLogs,
+      server: manageService.sysLogsController.exportSysLogs,
       data: {
         sysLogsIds: sysLogsIds
       }
