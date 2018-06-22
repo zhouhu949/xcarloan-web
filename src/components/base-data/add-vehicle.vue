@@ -182,7 +182,7 @@ export default class AddVehicle extends Vue {
    * 获取品牌信息
    */
   private getBrandInfo() {
-    this.basicCarManageService.getCarSeriesByCarName(this.carSeriesId)
+    this.basicCarManageService.getCarSeriesByCarName(this.series.id)
       .subscribe(
         data => {
           this.model.brandName = data.brandName
@@ -193,19 +193,38 @@ export default class AddVehicle extends Vue {
       );
   }
 
+  
+  /**
+   * 根据车辆id 查询品牌 车系
+   */
+   private getBrandInfoTwo() {
+    this.basicCarManageService.getCarParams(this.carId)
+      .subscribe(
+        data => {
+          this.model.brandName = data.brandName
+          this.model.seriesName = data.seriesName
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
+
+
   mounted() {
     // 新增车辆
     this.form = this.$refs['form']
-    this.carSeriesId = this.carId ? this.carId : this.series.id
+  
     if (this.series) {
       this.model.seriesName = this.series.name
       this.model.seriesId = this.series.id
+      this.getBrandInfo()
     }
-    this.getBrandInfo()
-    console.log(this.name)
-    // 修改车辆
+    
     if (this.carId) {
-         this.model.seriesName = this.name
+      this.getBrandInfoTwo()
+        // this.model.seriesId = this.carId
       this.basicCarManageService.getCarModelById(this.carId).subscribe(
         data => {
           this.model.carEmissions = data.displacement
@@ -217,7 +236,7 @@ export default class AddVehicle extends Vue {
           this.model.modelName = data.modelName
           this.model.carSize = data.modelVolume
           this.model.remark = data.remark
-          this.model.seriesId = data.seriesId
+          this.model.seriesId = data.id
           this.model.carStructure = data.structure
         },
         err => this.$Message.error(err.msg)

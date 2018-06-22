@@ -5,12 +5,21 @@ const CONTROLLER = 'basicSupplierController'
 
 export default {
   /**
-   * 查询供应商列表
+   * 查询供应商数据
    */
-  getBasicSupplierList: {
+  queryBasicSupplier:{
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getBasicSupplierList',
+    action: 'queryBasicSupplier',
+    type: requestType.Get
+  },
+  /**
+   * 获取供应商列表
+   */
+  queryBasicSupplierList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryBasicSupplierList',
     type: requestType.Get
   },
   /**
@@ -47,6 +56,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getBasicSupplierById',
+    type: requestType.Get
+  },
+  /**
+   * 查询供应商列表
+   */
+  getBasicSupplierList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getBasicSupplierList',
     type: requestType.Get
   }
 }

@@ -14,7 +14,6 @@ import Component from "vue-class-component";
 import ModifyBasicExpense from "~/components/base-data/modify-basic-expense.vue";
 import { Dependencies } from "~/core/decorator";
 import { BasicExpenseService } from "~/services/manage-service/basic-expense.service";
-import { BackLogService } from "~/services/manage-service/back-log.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
 
@@ -101,7 +100,8 @@ export default class BasicExpenseManage extends Page {
         minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) =>
           h("p", {}, this.$filter.dictConvert(row.isSystem))
-      },{
+      },
+      {
         align: "center",
         editable: true,
         title: "费用项编码",
@@ -121,7 +121,7 @@ export default class BasicExpenseManage extends Page {
       footer: true,
       onOk: modifyBasicExpense => {
         return modifyBasicExpense.submit().then(v => {
-          if (v)  this.refreshData();
+          if (v) this.refreshData();
           return v;
         });
       },
@@ -161,7 +161,7 @@ export default class BasicExpenseManage extends Page {
         this.basicExpenseService.deleteBasicExpense(row.id).subscribe(
           val => {
             this.$Message.success("删除成功！");
-            
+
             this.refreshData();
           },
           ({ msg }) => {

@@ -1,7 +1,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'BasicCustomerController'
+const CONTROLLER = 'BasicCustomerCenterController'
 
 export default {
   /**
@@ -58,6 +58,4 @@ export default {
     action: 'findFormalCustomerList',
     type: requestType.Get
   }
-
-
 }

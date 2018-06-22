@@ -29,7 +29,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'editCarBrand',
-    type: requestType.Post
+    type: requestType.Put
   },
   /**
    * 查看车辆品牌
@@ -83,7 +83,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'editCarSeries',
-    type: requestType.Post
+    type: requestType.Put
   },
   /**
    * 新增车型
@@ -110,7 +110,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'editCarModel',
-    type: requestType.Post
+    type: requestType.Put
   },
   /**
    * 查看车型
@@ -156,9 +156,62 @@ export default {
     controller: CONTROLLER,
     action: 'addCarIntenduceInfo',
     type: requestType.Post
-  }
+  },
+  /**
+   * 查看车型介绍
+   */
+  findCarIntroduceList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCarIntroduceList',
+    type: requestType.Get
+  },
+  /**
+   * 删除车型介绍
+   */
+  deleteCarIntenduceInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteCarIntenduceInfo',
+    type: requestType.Delete
+  },
 
-  
+  /**
+   * 添加车辆主图
+   */
+  addCarModelPhoto: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addCarModelPhoto',
+    type: requestType.Post
+  }, 
+  /**
+   * 查看车辆基本参数
+   */
+  getCarParams: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarParams',
+    type: requestType.Get
+  },
+  /**
+   * 删除配置参数
+   */
+  deleteCarConfigParam: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteCarConfigParam',
+    type: requestType.Delete
+  },
+  /**
+   * 查看车辆主图
+   */
+  getCarModelPhotoList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarModelPhotoList',
+    type: requestType.Get
+  },
 
 
 }
