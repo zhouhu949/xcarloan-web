@@ -6,17 +6,25 @@ export class BasicSupplierService {
   private netService: NetService
 
   /**
-   * 搜索供应商
+   * 查询供应商数据
    */
   @Debounce()
-  getBasicSupplierList(data, page) {
+  queryBasicSupplier(data, page) {
     return this.netService.send({
-      server: manageService.basicSupplierController.getBasicSupplierList,
+      server: manageService.basicSupplierController.queryBasicSupplier,
       data: {
         supplierName: data.name
       },
-      page,
-      loading: true
+      page
+    })
+  }
+  /**
+   * 获取供应商列表
+   */
+  @Debounce()
+  getBasicSupplierList() {
+    return this.netService.send({
+      server: manageService.basicSupplierController.getBasicSupplierList
     })
   }
 

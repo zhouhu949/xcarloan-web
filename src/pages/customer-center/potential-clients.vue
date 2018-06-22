@@ -9,7 +9,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -19,6 +19,7 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
+import CustomerInfo from "~/components/customer-center/customer-info.vue";
 
 @Layout('workspace')
 @Component({
@@ -58,9 +59,7 @@ export default class PotentialClients extends Page {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => {
-                    // this.modifySupplier(row);
-                  }
+                  click: () => this.viewCustomerInfo(row.id)
                 }
               },
               "查看")
@@ -69,59 +68,68 @@ export default class PotentialClients extends Page {
       },
       {
         align: "center",
-        editable: true,
         title: "客户姓名",
         key: "customerName",
         minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: "center",
-        editable: true,
-        title: "证件类型",
-        key: "certificateType",
+        title: '性别',
+        key: 'customerSex',
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.certificateType))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
       },
       {
         align: "center",
-        editable: true,
         title: "证件号码",
-        key: "certificateNumber",
+        key: "idCard",
         minWidth: this.$common.getColumnWidth(6)
       },
       {
+        align: "center",
         title: '手机号码',
         editable: true,
         key: 'mobileMain',
         minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
       },
       {
+        align: "center",
         title: '所属地区',
-        editable: true,
         key: 'city',
         minWidth: this.$common.getColumnWidth(3),
         render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
       },
       {
+        align: "center",
         title: '创建时间',
-        editable: true,
         sortable: true,
         key: 'createTime',
         minWidth: this.$common.getColumnWidth(3),
-        align: 'center',
         render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
       },
       {
+        align: "center",
         title: '归属业务员',
-        editable: true,
         key: 'operator',
         minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
       }
     ];
   }
 
+  /**
+   * 查看客户详情
+   */
+  private viewCustomerInfo(id) {
+    this.$dialog.show({
+      title: "客户详情查看",
+      width: 1050,
+      render: h => h(CustomerInfo, {
+        props: {
+          customerId: id
+        }
+      })
+    })
+  }
 
   /**
    * 获取意向客户列表

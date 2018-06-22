@@ -5,7 +5,16 @@ const CONTROLLER = 'basicSupplierController'
 
 export default {
   /**
-   * 查询供应商列表
+   * 查询供应商数据
+   */
+  queryBasicSupplier:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryBasicSupplier',
+    type: requestType.Get
+  },
+  /**
+   * 获取供应商列表
    */
   getBasicSupplierList: {
     service: SERVICE,

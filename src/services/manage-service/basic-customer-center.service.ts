@@ -12,7 +12,7 @@ export class BasicCustomerCenterService {
   @Debounce()
   findPotentialCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findPotentialCustomerList,
+      server: manageService.basicCustomerCenterController.findPotentialCustomerList,
       data: {
         customerName: data.name
       },
@@ -25,7 +25,7 @@ export class BasicCustomerCenterService {
   @Debounce()
   findHistoryCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findHistoryCustomerList,
+      server: manageService.basicCustomerCenterController.findHistoryCustomerList,
       data: {
         customerName: data.name
       },
@@ -38,7 +38,7 @@ export class BasicCustomerCenterService {
   @Debounce()
   findWhiteCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findWhiteCustomerList,
+      server: manageService.basicCustomerCenterController.findWhiteCustomerList,
       data: {
         customerName: data.name
       },
@@ -51,7 +51,7 @@ export class BasicCustomerCenterService {
   @Debounce()
   findGrayCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findGrayCustomerList,
+      server: manageService.basicCustomerCenterController.findGrayCustomerList,
       data: {
         customerName: data.name
       },
@@ -63,7 +63,7 @@ export class BasicCustomerCenterService {
    */
   findBlackCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findBlackCustomerList,
+      server: manageService.basicCustomerCenterController.findBlackCustomerList,
       data: {
         customerName: data.name
       },
@@ -75,11 +75,12 @@ export class BasicCustomerCenterService {
    */
   findFormalCustomerList(data, page) {
     return this.netService.send({
-      server: manageService.basicCustomerController.findFormalCustomerList,
+      server: manageService.basicCustomerCenterController.findFormalCustomerList,
       data: {
         customerName: data.name
       },
       page
     })
   }
+
 }

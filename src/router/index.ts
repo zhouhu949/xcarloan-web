@@ -51,7 +51,6 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
-
   if (store.state.tokenExpire && path !== "/") {
     // 重置用户过期状态
     store.commit('updateTokenExpire', false)
