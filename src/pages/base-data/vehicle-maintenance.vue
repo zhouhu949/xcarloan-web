@@ -8,13 +8,14 @@
           <span>车辆品牌</span>
         </i-row>
         <div class="data-form-tree">
-          <data-tree ref="data-tree" showEdit :data="carDataTree" @on-clickNode="onClickNode" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-clickNode="onClickNode" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
-        <car-params v-if="carId" :carId="vehicleDetails"></car-params>
+        <car-params v-if="carId" :carId="carId"></car-params>
         <div v-else class="empty-text">空空如也，请选择车辆^_^</div>
       </i-col>
+
     </i-row>
 
   </section>
@@ -58,8 +59,7 @@ export default class VehicleMaintenance extends Page {
   private selectedNodeKey = ""  // 当前选中树的节点的Key
   private carId: Number = 0
   private addVehicleModal: Boolean = false // 添加车辆
-  private vehicleDetails: any  // 车辆详情
-  private carDataTree = [];
+
 
   // 添加车辆系列
   addSeries(data) {
@@ -156,7 +156,9 @@ export default class VehicleMaintenance extends Page {
           title: "修改车辆",
           footer: true,
           onOk: modify => {
-            let result = modify.updateVehicle().then(() => true).catch(v => false)
+            let result = modify.updateVehicle().then(() => {
+              this.getAllCar()
+            }).catch(v => false)
             return result
           },
           onCancel: () => { },
@@ -223,7 +225,7 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case CarPropertyType.model:
-        console.log(data,)
+        console.log(data, )
 
         break;
 
@@ -297,13 +299,11 @@ export default class VehicleMaintenance extends Page {
 
   // 点击树当前节点 
   private onClickNode(data) {
-    this.carId = data.operator
-    this.vehicleDetails = data
-    console.log(data)
-  }
-
-  mounted() {
-    this.getAllCar()
+    if (data.type === CarPropertyType.model) {
+      this.carId = data.id
+    } else {
+      this.carId = 0
+    }
   }
 
 

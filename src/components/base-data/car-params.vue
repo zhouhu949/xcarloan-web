@@ -1,4 +1,4 @@
-<template> 
+<template>
   <section class="component car-params">
     <i-card title="车型信息">
       <a slot="extra" @click="getCarBaseInfo" v-show="!isView">
@@ -6,30 +6,30 @@
         刷新
       </a>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="车辆品牌" :span="4">{{carId.name}}</data-grid-item>
+        <data-grid-item label="车辆品牌" :span="4">{{carBaseInfo.brandName}}</data-grid-item>
         <data-grid-item label="车辆系列" :span="4">{{carBaseInfo.seriesName}}</data-grid-item>
         <data-grid-item label="车型名称" :span="4">{{carBaseInfo.modelName}}</data-grid-item>
       </data-grid>
     </i-card>
     <i-card title="基本参数">
-      <!--<a slot="extra" @click="onAddParamClick" v-show="!isView">-->
-        <!--<i-icon type="plus-round"></i-icon>-->
-        <!--添加参数-->
-      <!--</a>-->
+      <a slot="extra" @click="onAddParamClick" v-show="!isView">
+        <i-icon type="plus-round"></i-icon>
+        添加参数
+      </a>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="长宽高" :span="6">{{carBaseInfo.carSize}}</data-grid-item>
-        <data-grid-item label="车身结构" :span="6">{{carBaseInfo.carStructure}}</data-grid-item>
-        <data-grid-item label="驱动方式" :span="6">{{carBaseInfo.drivingMode}}</data-grid-item>
-        <data-grid-item label="燃料形式" :span="6">{{carBaseInfo.fuel}}</data-grid-item>
-        <data-grid-item label="综合油耗" :span="6">{{carBaseInfo.fuelConsumption}}</data-grid-item>
-        <data-grid-item label="车辆排量" :span="6">{{carBaseInfo.carEmissions}}</data-grid-item>
-        <data-grid-item label="车身颜色" :span="6">{{carBaseInfo.carColour}}</data-grid-item>
-        <data-grid-item label="内饰颜色" :span="6">{{carBaseInfo.interiorColor}}</data-grid-item>
+        <data-grid-item label="长宽高" :span="6">{{carBaseInfo.modelVolume}}</data-grid-item>
+        <data-grid-item label="车身结构" :span="6">{{carBaseInfo.structure}}</data-grid-item>
+        <data-grid-item label="驱动方式" :span="6">{{carBaseInfo.diveway}}</data-grid-item>
+        <data-grid-item label="燃料形式" :span="6">{{carBaseInfo.fulyway}}</data-grid-item>
+        <data-grid-item label="综合油耗" :span="6">{{carBaseInfo.modelFuel}}</data-grid-item>
+        <data-grid-item label="车辆排量" :span="6">{{carBaseInfo.displacement}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="6">{{carBaseInfo.modelColors}}</data-grid-item>
+        <data-grid-item label="内饰颜色" :span="6">{{carBaseInfo.innerColor}}</data-grid-item>
       </data-grid>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item v-for="(item,index) of carParamList" :key="index" :span="4" :label="item.name">
+        <data-grid-item v-for="(item,index) of carParamList" :key="index" :span="4" :label="item.carParamName">
           <div class="prams-item">
-            <span>{{item.value}}</span>
+            <span>{{item.carParamValue}}</span>
             <a @click="onDeleteParamClick(item)" v-show="!isView">
               <i-icon type="close-circled" size="24" color="#ed3f14"></i-icon>
             </a>
@@ -42,7 +42,8 @@
         <i-icon type="ios-cloud-upload"></i-icon>
         应用主图
       </a>
-      <upload-voucher :hiddenUpload="isView" :hiddenDelete="!isView" @financeUploadResources="list => carMainPhotos = list" :pictureResource="carMainPhotos" ref="main-pic"></upload-voucher>
+      <upload-voucher v-model="carMainPhotos" :transfer="true" ref="upload-voucher"></upload-voucher>
+      <!-- <upload-voucher :hiddenUpload="isView" :hiddenDelete="!isView" @financeUploadResources="list => carMainPhotos = list" :pictureResource="carMainPhotos" ref="main-pic"></upload-voucher> -->
     </i-card>
     <i-card title="车型介绍">
       <a slot="extra" @click="onAddRecommendClick" v-show="!isView">
@@ -59,7 +60,9 @@
           </div>
         </data-grid-item>
         <data-grid-item label="栏目图片" :span="12">
-          <upload-voucher hiddenUpload  :hiddenDelete="!isView" :pictureResource="item.pictureList"></upload-voucher>
+          <div class="columnImg">
+            <img height="100%" v-for="(itemTwo,index) in item.pictureList" :key="index" :src="itemTwo" alt="">
+          </div>
         </data-grid-item>
         <data-grid-item label="栏目介绍" :span="12">{{item.comment}}</data-grid-item>
       </data-grid>
@@ -96,11 +99,11 @@ export default class CarParams extends Vue {
   @Watch('carId', { immediate: true })
   onCarIdChange() {
     if (this.carId) {
-      this.carMainPhotos = []
-      this.getCarBaseInfo()
-      // this.getCarParams()
-      // this.getCarRecommendList()
-      // this.getCarPictureList()
+      // this.carMainPhotos = [] 
+      this.getCarBaseInfo()    // 车辆基本信息
+      this.getCarParams()      // 查看添加的参数
+      this.getCarRecommendList()  // 车型介绍
+      this.getCarPictureList()   // 查看车辆主图
     }
   }
 
@@ -115,32 +118,54 @@ export default class CarParams extends Vue {
 
 
 
+
+
   /**
    * 获取车辆主图
    */
   private getCarPictureList() {
-    // this.carService.getCarPictureList(this.carId).subscribe(
-    //   data => {
-    //     let pics = data.map(v => {
-    //       return {
-    //         originName: v.introduce,
-    //         materialUrl: v.url
-    //       }
-    //     })
-    //     this.carMainPhotos = pics
-    //   },
-    //   err => this.$Message.error(err.msg)
-    // )
+    this.basicCarManageService.getCarModelPhotoList(this.carId).subscribe(
+      data => {
+        let imgAll = []
+        let picture = []    
+        imgAll = data.map(v => {
+          return Object.assign({ img: v.photoUrl.split(',') }, v)
+        })
+        for (let i = 0; i < imgAll.length; i++) {
+          for (let s = 0; s < imgAll[i].img.length; s++) {
+            picture.push({
+              url: imgAll[i].img[s],
+              name:imgAll[i].remark
+            })
+          }
+        }
+        this.carMainPhotos = picture
+      },
+      err => this.$Message.error(err.msg)
+    )
   }
 
   /**
    * 保存主视图
    */
   private onSaveMainPicClick() {
-    // this.carService.createCarPictureList(this.carId, this.carMainPhotos).subscribe(
-    //   data => this.$Message.success('应用成功'),
-    //   err => this.$Message.error(err.msg)
-    // )
+    let carMasterMap = []
+    this.carMainPhotos.forEach(element => {
+      carMasterMap.push(element.url)
+    });
+
+    let vehicleImages = {
+      photoUrl: carMasterMap,
+      modelId: this.carId,
+    }
+    this.basicCarManageService.addCarModelPhoto(vehicleImages).subscribe(
+      data => {
+        this.$Message.success('应用成功')
+      },
+      err => {
+        this.$Message.error(err.msg)
+      }
+    )
   }
 
 
@@ -149,7 +174,7 @@ export default class CarParams extends Vue {
    * 外部有使用
    */
   getCarBaseInfo() {
-    this.basicCarManageService.findCarConfigParamList(this.carId.id).subscribe(
+    this.basicCarManageService.getCarParams(this.carId).subscribe(
       data => this.carBaseInfo = data,
       err => this.$Message.error(err.msg)
     )
@@ -158,57 +183,63 @@ export default class CarParams extends Vue {
   /**
    * 获取车辆可配置参数
    */
-  // private getCarParams() {
-  //   this.basicCarManageService.findCarConfigParamList(this.carId.id).subscribe(
-  //     data => this.carParamList = data,
-  //     err => this.$Message.error(err.msg)
-  //   )
-  // }
+  private getCarParams() {
+    this.basicCarManageService.findCarConfigParamList(this.carId).subscribe(
+      data => this.carParamList = data,
+      err => this.$Message.error(err.msg)
+    )
+  }
 
   /**
-   * 获取车辆栏目介绍列表
+   * 查看车辆栏目介绍列表
    */
   private getCarRecommendList() {
-    // this.carService.getCarRecommendsList(this.carId).subscribe(
-    //   data => {
-    //     this.carRecommends = data.columnList.map(v => {
-    //       return {
-    //         id: v.id,
-    //         name: v.name,
-    //         comment: v.introduce,
-    //         pictureList: v.materialList.map(p => {
-    //           return {
-    //             materialUrl: p.url
-    //           }
-    //         })
-    //       }
-    //     })
-    //   },
-    //   err => this.$Message.error(err.msg)
-    // )
+    this.basicCarManageService.findCarIntroduceList(this.carId).subscribe(
+      data => {
+        this.carRecommends = data.map(v => {
+          return {
+            id: v.id,
+            name: v.introduceName,
+            comment: v.remark,
+            pictureList: v.introduceUrl.split(',')
+            // pictureList: v.introduceUrl.map(p => {
+            //   return {
+            //     materialUrl: p.url
+            //   }
+            // })
+          }
+
+
+        })
+      },
+      err => this.$Message.error(err.msg)
+    )
   }
 
-
+  /**
+   * 添加基本参数
+   */
   private onAddParamClick() {
-    // this.$dialog.show({
-    //   title: '添加参数',
-    //   footer: true,
-    //   onOk: addParam => {
-    //     let result = addParam.submit().then(() => {
-    //       this.getCarParams()
-    //     }).catch(v => false)
-    //     return result
-    //   },
-    //   onCalcel: () => { },
-    //   render: h => {
-    //     return h(CarParmsBase, {
-    //       props: {
-    //         carId: this.carId
-    //       }
-    //     })
-    //   }
-    // })
+    this.$dialog.show({
+      title: '添加参数',
+      footer: true,
+      onOk: addParam => {
+        let result = addParam.submit().then(() => {
+          this.getCarParams()
+        }).catch(v => false)
+        return result
+      },
+      onCalcel: () => { },
+      render: h => {
+        return h(CarParmsBase, {
+          props: {
+            carId: this.carId
+          }
+        })
+      }
+    })
   }
+
 
   // 新增栏目
   private onAddRecommendClick() {
@@ -231,41 +262,51 @@ export default class CarParams extends Vue {
       }
     })
   }
-
+  /**
+   * 删除配置的参数
+   */
   private onDeleteParamClick(item) {
-    // this.$Modal.confirm({
-    //   content: `是否删除参数: <b>${item.name}</b>`,
-    //   onOk: () => {
-    //     this.carService.deleteCarParamBase(item.id).subscribe(
-    //       data => {
-    //         this.$Message.success(`已删除参数: <b>${item.name}</b>`)
-    //         this.getCarParams()
-    //       },
-    //       err => this.$Message.error(err.msg)
-    //     )
-    //   }
-    // })
+    this.$Modal.confirm({
+      content: `是否删除参数: <b>${item.carParamName}</b>`,
+      onOk: () => {
+        this.basicCarManageService.deleteCarConfigParam(item.id).subscribe(
+          data => {
+            this.$Message.success(`已删除参数: <b>${item.carParamName}</b>`)
+            this.getCarParams()
+          },
+          err => this.$Message.error(err.msg)
+        )
+      }
+    })
+  }
+  /**
+   * 删除车辆栏目
+   */
+  private onDeleteRecommendClick(item) {
+    console.log(item, '删除车辆栏目')
+    this.$Modal.confirm({
+      content: `是否删除栏目: <b>${item.name}</b>`,
+      onOk: () => {
+        this.basicCarManageService.deleteCarIntenduceInfo(item.id).subscribe(
+          data => {
+            this.$Message.success(`已删除栏目: <b>${item.name}</b>`)
+            this.getCarRecommendList()
+          },
+          err => this.$Message.error(err.msg)
+        )
+      }
+    })
   }
 
-  private onDeleteRecommendClick(item) {
-    // this.$Modal.confirm({
-    //   content: `是否删除栏目: <b>${item.name}</b>`,
-    //   onOk: () => {
-    //     this.carService.deleteCarRecommed(item.id).subscribe(
-    //       data => {
-    //         this.$Message.success(`已删除栏目: <b>${item.name}</b>`)
-    //         this.getCarRecommendList()
-    //       },
-    //       err => this.$Message.error(err.msg)
-    //     )
-    //   }
-    // })
-  }
+
 }
 </script>
 
 <style lang="less" scoped>
 .component .car-params {
+  .columnImg {
+    height: 150px;
+  }
   .prams-item {
     display: flex;
     justify-content: space-between;

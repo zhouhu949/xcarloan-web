@@ -44,6 +44,7 @@ export class BasicCarManageService {
   getCarBrandById(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.getCarBrandById,
     })
   }
@@ -62,6 +63,7 @@ export class BasicCarManageService {
   addCarSeries(data) {
     return this.netService.send({
       data:data,
+      loading:true,
       server: manageService.basicCarManagecontroller.addCarSeries,
     })
   }
@@ -71,6 +73,7 @@ export class BasicCarManageService {
   deleteCarSeries(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.deleteCarSeries,
     })
   }
@@ -89,6 +92,7 @@ export class BasicCarManageService {
   editCarSeries(data) {
     return this.netService.send({
       data:data,
+      loading:true,
       server: manageService.basicCarManagecontroller.editCarSeries,
     })
   }
@@ -110,6 +114,7 @@ export class BasicCarManageService {
         seriesId : data.seriesId,
         structure :data.carStructure,
       },
+      loading:true,
       server: manageService.basicCarManagecontroller.addCarModel,
     })
   }
@@ -119,6 +124,7 @@ export class BasicCarManageService {
   deleteCarModel(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.deleteCarModel,
     })
   }
@@ -137,9 +143,10 @@ export class BasicCarManageService {
         modelName : data.modelName,
         modelVolume :data.carSize,
         remark :data.remark,
-        seriesId : data.seriesId,
+        id : data.seriesId,
         structure :data.carStructure,
       },
+      loading:true,
       server: manageService.basicCarManagecontroller.editCarModel,
     })
   }
@@ -149,6 +156,7 @@ export class BasicCarManageService {
   getCarModelById(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.getCarModelById,
     })
   }
@@ -158,6 +166,7 @@ export class BasicCarManageService {
   getCarSeriesByCarName(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.getCarSeriesByCarName,
     })
   }
@@ -167,6 +176,7 @@ export class BasicCarManageService {
   findCarConfigParamList(id) {
     return this.netService.send({
       append:id,
+      loading:true,
       server: manageService.basicCarManagecontroller.findCarConfigParamList,
     })
   }
@@ -175,7 +185,12 @@ export class BasicCarManageService {
    */
   addCarConfigParamInfo(data) {
     return this.netService.send({
-      append:data,
+      data:{
+        carParamName:data.name,
+        carParamValue :data.comment,
+        modelId:data.id, 
+      },
+      loading:true,
       server: manageService.basicCarManagecontroller.addCarConfigParamInfo,
     })
   }
@@ -184,10 +199,75 @@ export class BasicCarManageService {
    */
   addCarIntenduceInfo(data) {
     return this.netService.send({
-      append:data,
+      data:{
+        introduceName:data.name,
+        introduceUrl: data.imgall,
+        remark:data.comment,
+        modelId :data.id 
+      },
+      loading:true,
       server: manageService.basicCarManagecontroller.addCarIntenduceInfo,
     })
   }
-
+   /**
+   *  查看车型介绍
+   */
+  findCarIntroduceList(id) {
+    return this.netService.send({
+      append:id,
+      loading:true,
+      server: manageService.basicCarManagecontroller.findCarIntroduceList,
+    })
+  }
+  /**
+   * 删除车型介绍
+   */
+  deleteCarIntenduceInfo(id) {
+    return this.netService.send({
+      append:id,
+      loading:true,
+      server: manageService.basicCarManagecontroller.deleteCarIntenduceInfo,
+    })
+  }
+   /**
+   *  添加车辆主图
+   */ 
+  addCarModelPhoto(data) {
+    return this.netService.send({
+      data:data,
+      loading:true,
+      server: manageService.basicCarManagecontroller.addCarModelPhoto,
+    })
+  }
+  /**
+   * 查看车辆基本参数
+   */
+  getCarParams(id) {
+    return this.netService.send({
+      append:id,
+      loading:true,
+      server: manageService.basicCarManagecontroller.getCarParams,
+    })
+  }
+   /**
+   * 删除配置参数
+   */
+  deleteCarConfigParam(id) {
+    return this.netService.send({
+      append:id,
+      loading:true,
+      server: manageService.basicCarManagecontroller.deleteCarConfigParam,
+    })
+  }
+  /**
+   * 查看车辆主图
+   */
+  getCarModelPhotoList(id) {
+    return this.netService.send({
+      append:id,
+      loading:true,
+      server: manageService.basicCarManagecontroller.getCarModelPhotoList,
+    })
+  }
 
 }
