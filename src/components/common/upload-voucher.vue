@@ -129,8 +129,8 @@ export default class UploadVoucher extends Vue {
    *删除附件
    */
   handleRemove(file) {
-    let deleteIndex = this.pictureResource.indexOf(file)
-    this.emitResourceChange([...this.pictureResource.slice(0, deleteIndex), ...this.pictureResource.slice(deleteIndex + 1)])
+    let result = this.pictureResource.filter( x => x.url !== file.url)
+    this.emitResourceChange([...result])
   }
 
 
