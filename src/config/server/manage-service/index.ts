@@ -15,16 +15,12 @@ import basicExpenseController from './basic-expense.controller'
 import basicOffsetController from './basic-offset.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
 import basicSupplierController from "./basic-supplier-controller";
-<<<<<<< HEAD
 import basicCustomerController from "./basic-customer-center.controller";
 import basicStockCarManageController from './basic-stock-car.controller'
-=======
 import basicCustomerCenterController from "./basic-customer-center.controller";
 import basicProductController from "./basic-product.controller";
-import basicCustomerController from "./basic-customer.controller";
 import basicCustomerAssessmentCarController from "./basic-customer-assessment-car.controller";
 import basicCustomHouseController from "./basic-custom-house.controller";
->>>>>>> huangrui
 
 export const manageService = {
   sysOrgController,
@@ -44,14 +40,10 @@ export const manageService = {
   basicOffsetController,
   basicCarManagecontroller,
   basicSupplierController,
-<<<<<<< HEAD
   basicCustomerController,
-  basicStockCarManageController
-=======
+  basicStockCarManageController,
   basicCustomerCenterController,
   basicProductController,
-  basicCustomerController,
   basicCustomerAssessmentCarController,
   basicCustomHouseController
->>>>>>> huangrui
 }

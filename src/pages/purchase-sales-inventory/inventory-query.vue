@@ -68,7 +68,7 @@ export default class InventoryQuery extends Page {
   // 查询参数实体
   private queryParamsModel = {
     modelId: 0,
-    supplierId: 0
+    supplierId: ''
   };
 
   created() {
