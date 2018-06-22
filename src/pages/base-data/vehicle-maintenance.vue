@@ -173,7 +173,7 @@ export default class VehicleMaintenance extends Page {
         break;
 
       default:
-        console.error('所有车辆不可编辑')
+        this.$Message.error('当前节点不允许操作')
         break;
     }
   }
@@ -225,8 +225,7 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case CarPropertyType.model:
-        console.log(data, )
-
+         this.$Message.error('当前节点不允许操作')
         break;
 
       default:
@@ -292,7 +291,7 @@ export default class VehicleMaintenance extends Page {
         break;
 
       default:
-        console.error('所有车辆不可编辑')
+       this.$Message.error('当前节点不允许操作')
         break;
     }
   }
