@@ -64,7 +64,7 @@ export default {
      */
     getAllCar({ commit }) {
       let basicCarManageService = new BasicCarManageService()
-      basicCarManageService.findAllCarTreeList().subscribe(
+      basicCarManageService.getAllCarTreeList().subscribe(
         data => commit("updateCarData", data),
         err => console.error(err.msg)
       )
