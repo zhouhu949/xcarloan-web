@@ -1,7 +1,7 @@
 // 库存管理
 import { requestType } from '~/config/enum.config'
 
-const SERVICE="manage-service";
+const SERVICE ="service-manage";
 const CONTROLLER ="basicStockCarManageController";
 
 export default{

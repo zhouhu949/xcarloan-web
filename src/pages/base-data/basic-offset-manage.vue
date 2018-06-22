@@ -4,17 +4,17 @@
     <page-header title="冲抵项管理" hiddenPrint hiddenExport>
       <command-button class="command-add" label="新增数据" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
-    <i-row class="data-form">
-      <i-row type="flex" align="top" justify="start">
-        <i-col :span="4" style="padding-top:10px;">
+    <i-row type="flex" class="data-form">
+      <i-row type="flex" style="flex:1;" >
+        <i-col :span="4" style="padding:10px 0 10px 0;display:flex;flex-direction: column;">
           <div class="data-form-item">
             <div class="data-form-item-icon"></div>
             <span>冲抵策略</span>
-            <span @click="basicOffsetOperate()" class="data-form-item-add">
+            <span  @click="basicOffsetOperate()" class="data-form-item-add">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </span>
           </div>
-          <div class="data-form-list">
+          <div class="data-form-list" style="flex:1;">
             <div class="data-form-basicoffsetlist" v-for="item in basicOffsetDataSet" :key="item.id" :value="item.offsetName" :id="'basicOffset'+item.id" @click="onCheckedBasicOffset(item)">
               <span style="">{{item.offsetName}}</span>
               <small class="icon-box" :hidden="item.id !== checkedBasicOffsetId">
@@ -376,8 +376,11 @@ export default class BasicOffsetManage extends Page {
 </script>
 <style lang="less" scoped>
 .page.basic-offset {
+  display:flex;
+  flex-direction: column;
   .data-form {
     margin-top: 10px;
+    flex:1;
     .data-form-item {
       width: 100%;
       height: 30px;

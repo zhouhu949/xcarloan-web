@@ -5,6 +5,12 @@
     </page-header>
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshPurchase">
       <template slot="input">
+        <i-form-item prop="roleName" label="订单号：">
+          <i-input placeholder="请输入订单号" v-model="queryParamsModel.roleName"></i-input>
+        </i-form-item>
+        <i-form-item prop="roleName" label="客户号：">
+          <i-input placeholder="请输入客户号" v-model="queryParamsModel.roleName"></i-input>
+        </i-form-item>
         <i-form-item prop="roleStatus" label="状态：">
           <i-select v-model="queryParamsModel.roleStatus" clearable>
             <i-option label="启用" :value="0" :key="0"></i-option>
@@ -57,7 +63,7 @@ export default class PurchaseManage extends Page {
                 },
                 on: {
                   click: () => {
-                    //this.onStockCarOperate(row);
+                    this.onPurchase(row);
                   }
                 }
               },
@@ -74,7 +80,7 @@ export default class PurchaseManage extends Page {
                 },
                 on: {
                   click: () => {
-                    //this.onStockCarOperate(row);
+                    this.onVehiclePreparation(row);
                   }
                 }
               },
@@ -124,7 +130,21 @@ export default class PurchaseManage extends Page {
     ];
   }
 
+  /**
+   * 刷新列表
+   */
   refreshPurchase() {}
+
+  /**
+   * 采购
+   *
+   */
+  onPurchase(data) {}
+
+  /**
+   * 车辆整备
+   */
+  onVehiclePreparation(data) {}
 }
 </script>
 

@@ -78,34 +78,13 @@ export default class InventoryQuery extends Page {
     this.dataTree = this.$refs["data-tree"] as DataTree;
     //
     this.inventoryColumns = [
-      {
-        title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 80,
+       {
         align: "center",
-        render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.onStockCarOperate(row);
-                  }
-                }
-              },
-              "修改"
-            )
-          ]);
-        }
+        editable: true,
+        title: "供应商名称",
+        key: "supplierName",
+        minWidth: this.$common.getColumnWidth(4)
       },
-
       {
         align: "center",
         editable: true,
@@ -140,7 +119,8 @@ export default class InventoryQuery extends Page {
         editable: true,
         title: "是否供应商放款",
         key: "hasSupplierLoan",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) => h('p', {}, this.$filter.dictConvert(row.hasSupplierLoan))
       }
     ];
   }

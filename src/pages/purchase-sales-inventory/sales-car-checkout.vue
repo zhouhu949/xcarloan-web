@@ -63,11 +63,28 @@ export default class SalesCarCheckout extends Page {
                 },
                 on: {
                   click: () => {
-                    //this.onStockCarOperate(row);
+                    this.onVehicleInfo(row);
                   }
                 }
               },
               "车辆信息"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.onPickUp(row);
+                  }
+                }
+              },
+              "提车"
             )
           ]);
         }
@@ -100,7 +117,8 @@ export default class SalesCarCheckout extends Page {
         title: "状态",
         key: "stockStatus",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, columns, index }) => h('p', {}, this.$filter.dictConvert(row.stockStatus))
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.stockStatus))
       },
       {
         align: "center",
@@ -113,6 +131,16 @@ export default class SalesCarCheckout extends Page {
   }
 
   refreshSalesCarCheckout() {}
+
+  /**
+   *
+   */
+  onPickUp(row) {}
+
+  /**
+   *
+   */
+  onVehicleInfo(row) {}
 }
 </script>
 
