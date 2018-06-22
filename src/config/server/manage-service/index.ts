@@ -15,7 +15,7 @@ import basicExpenseController from './basic-expense.controller'
 import basicOffsetController from './basic-offset.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
 import basicSupplierController from "./basic-supplier-controller";
-import basicCustomerController from "./basic-customer-center.controller";
+import basicCustomerController from "./basic-customer.controller";
 import basicStockCarManageController from './basic-stock-car.controller'
 import basicCustomerCenterController from "./basic-customer-center.controller";
 import basicProductController from "./basic-product.controller";
