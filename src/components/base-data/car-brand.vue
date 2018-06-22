@@ -48,7 +48,7 @@ export default class CarBrand extends Vue {
   }
 
   // 图片反显资源
-  private pictureResource: Array<any> = []
+  // private pictureResource: Array<any> = []
 
 
   /**
@@ -58,7 +58,7 @@ export default class CarBrand extends Vue {
     return new Promise((resolve, reject) => {
       this.form.validate(r => {
         if (!r) return reject()
-        this.basicCarManageService.addCarBrand(this.model.name, this.model.pictureList[0].materialUrl)
+        this.basicCarManageService.addCarBrand(this.model.name, this.model.pictureList[0].url)
           .subscribe(
             data => {
               this.$Message.success('新增品牌成功！')
@@ -82,7 +82,7 @@ export default class CarBrand extends Vue {
         this.basicCarManageService.editCarBrand({
           id: this.id,
           brandName: this.model.name,
-          brandPhotoUrl: this.model.pictureList[0].materialUrl
+          brandPhotoUrl: this.model.pictureList[0].url
         })
           .subscribe(data => {
             console.log(this.id)

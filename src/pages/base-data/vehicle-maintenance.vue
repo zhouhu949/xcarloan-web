@@ -1,6 +1,6 @@
 <template>
   <section class="page vehicle-maintenance">
-    <page-header title="车辆配置" hiddenPrint hiddenExport></page-header>
+    <page-header title="车辆维护" hiddenPrint hiddenExport></page-header>
     <i-row class="form" :gutter="16">
       <i-col class="data-form" :span="6">
         <i-row class="data-form-item">
@@ -8,13 +8,11 @@
           <span>车辆品牌</span>
         </i-row>
         <div class="data-form-tree">
-          <!-- <organize-tree :dataList="orgData" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree> -->
-          <!-- <i-tree :data="carDataTree"></i-tree> -->
-          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carDataTree" @on-clickNode="onClickNode"   @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
-        <car-params v-if="carId" :carId="carId"></car-params>
+        <car-params v-if="carId" :carId="vehicleDetails"></car-params>
         <div v-else class="empty-text">空空如也，请选择车辆^_^</div>
       </i-col>
     </i-row>
@@ -43,7 +41,8 @@ const CarModule = namespace("carSpace")
 @Component({
   components: {
     OrganizeTree,
-    DataTree
+    DataTree,
+    CarParams
   }
 })
 export default class VehicleMaintenance extends Page {
@@ -59,7 +58,7 @@ export default class VehicleMaintenance extends Page {
   private selectedNodeKey = ""  // 当前选中树的节点的Key
   private carId: Number = 0
   private addVehicleModal: Boolean = false // 添加车辆
-
+  private vehicleDetails:any  // 车辆详情
   private carDataTree = [];
 
   // 添加车辆系列
@@ -101,7 +100,7 @@ export default class VehicleMaintenance extends Page {
       render: h => h(AddVehicle, {
         props: {
           series: {
-            id: data.seriesId,
+            id: data.id,
             name: data.title
           }
         }
@@ -179,7 +178,8 @@ export default class VehicleMaintenance extends Page {
           onCancel: () => { },
           render: h => h(AddVehicle, {
             props: {
-              carId: data.id
+              carId: data.id,
+              name:data.title
             }
           })
         })
@@ -313,6 +313,12 @@ export default class VehicleMaintenance extends Page {
     }
   }
 
+  // 点击树当前节点 
+  private onClickNode(data){
+     this.carId = data.operator
+    this.vehicleDetails = data
+    console.log(data)
+  }
 
   mounted() {
     this.getAllCar()

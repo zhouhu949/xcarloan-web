@@ -7,11 +7,11 @@ export default {
   /**
    * 车辆维护树
    */
-  findAllCarTreeList: {
+  getAllCarTreeList: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'findAllCarTreeList',
-    type: requestType.Post
+    action: 'getAllCarTreeList',
+    type: requestType.Get
   },
   /**
    * 增加车辆品牌
@@ -129,6 +129,36 @@ export default {
     controller: CONTROLLER,
     action: 'getCarSeriesByCarName',
     type: requestType.Get
+  },
+  /**
+   * 查找车辆配置参数列表
+   */
+  findCarConfigParamList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCarConfigParamList',
+    type: requestType.Get
+  },
+  /**
+   * 添加车辆配置参数
+   */
+  addCarConfigParamInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addCarConfigParamInfo',
+    type: requestType.Post
+  },
+  /**
+   * 新增车型介绍
+   */
+  addCarIntenduceInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addCarIntenduceInfo',
+    type: requestType.Post
   }
+
+  
+
 
 }

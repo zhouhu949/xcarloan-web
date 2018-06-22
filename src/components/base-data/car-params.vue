@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="component car-params">
     <i-card title="车型信息">
       <a slot="extra" @click="getCarBaseInfo" v-show="!isView">
@@ -6,16 +6,16 @@
         刷新
       </a>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="车辆品牌" :span="4">{{carBaseInfo.brandName}}</data-grid-item>
+        <data-grid-item label="车辆品牌" :span="4">{{carId.name}}</data-grid-item>
         <data-grid-item label="车辆系列" :span="4">{{carBaseInfo.seriesName}}</data-grid-item>
         <data-grid-item label="车型名称" :span="4">{{carBaseInfo.modelName}}</data-grid-item>
       </data-grid>
     </i-card>
     <i-card title="基本参数">
-      <a slot="extra" @click="onAddParamClick" v-show="!isView">
-        <i-icon type="plus-round"></i-icon>
-        添加参数
-      </a>
+      <!--<a slot="extra" @click="onAddParamClick" v-show="!isView">-->
+        <!--<i-icon type="plus-round"></i-icon>-->
+        <!--添加参数-->
+      <!--</a>-->
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
         <data-grid-item label="长宽高" :span="6">{{carBaseInfo.carSize}}</data-grid-item>
         <data-grid-item label="车身结构" :span="6">{{carBaseInfo.carStructure}}</data-grid-item>
@@ -97,7 +97,7 @@ export default class CarParams extends Vue {
   onCarIdChange() {
     if (this.carId) {
       this.carMainPhotos = []
-      // this.getCarBaseInfo()
+      this.getCarBaseInfo()
       // this.getCarParams()
       // this.getCarRecommendList()
       // this.getCarPictureList()
@@ -118,48 +118,48 @@ export default class CarParams extends Vue {
   /**
    * 获取车辆主图
    */
-  // private getCarPictureList() {
-  //   this.carService.getCarPictureList(this.carId).subscribe(
-  //     data => {
-  //       let pics = data.map(v => {
-  //         return {
-  //           originName: v.introduce,
-  //           materialUrl: v.url
-  //         }
-  //       })
-  //       this.carMainPhotos = pics
-  //     },
-  //     err => this.$Message.error(err.msg)
-  //   )
-  // }
+  private getCarPictureList() {
+    // this.carService.getCarPictureList(this.carId).subscribe(
+    //   data => {
+    //     let pics = data.map(v => {
+    //       return {
+    //         originName: v.introduce,
+    //         materialUrl: v.url
+    //       }
+    //     })
+    //     this.carMainPhotos = pics
+    //   },
+    //   err => this.$Message.error(err.msg)
+    // )
+  }
 
   /**
    * 保存主视图
    */
-  // private onSaveMainPicClick() {
-  //   this.carService.createCarPictureList(this.carId, this.carMainPhotos).subscribe(
-  //     data => this.$Message.success('应用成功'),
-  //     err => this.$Message.error(err.msg)
-  //   )
-  // }
+  private onSaveMainPicClick() {
+    // this.carService.createCarPictureList(this.carId, this.carMainPhotos).subscribe(
+    //   data => this.$Message.success('应用成功'),
+    //   err => this.$Message.error(err.msg)
+    // )
+  }
 
 
   /**
    * 获取车辆基本信息
    * 外部有使用
    */
-  // getCarBaseInfo() {
-  //   this.carService.getCarDetail(this.carId).subscribe(
-  //     data => this.carBaseInfo = data,
-  //     err => this.$Message.error(err.msg)
-  //   )
-  // }
+  getCarBaseInfo() {
+    this.basicCarManageService.findCarConfigParamList(this.carId.id).subscribe(
+      data => this.carBaseInfo = data,
+      err => this.$Message.error(err.msg)
+    )
+  }
 
   /**
    * 获取车辆可配置参数
    */
   // private getCarParams() {
-  //   this.carService.getCarParamList(this.carId).subscribe(
+  //   this.basicCarManageService.findCarConfigParamList(this.carId.id).subscribe(
   //     data => this.carParamList = data,
   //     err => this.$Message.error(err.msg)
   //   )
@@ -168,98 +168,99 @@ export default class CarParams extends Vue {
   /**
    * 获取车辆栏目介绍列表
    */
-  // private getCarRecommendList() {
-  //   this.carService.getCarRecommendsList(this.carId).subscribe(
-  //     data => {
-  //       this.carRecommends = data.columnList.map(v => {
-  //         return {
-  //           id: v.id,
-  //           name: v.name,
-  //           comment: v.introduce,
-  //           pictureList: v.materialList.map(p => {
-  //             return {
-  //               materialUrl: p.url
-  //             }
-  //           })
-  //         }
-  //       })
-  //     },
-  //     err => this.$Message.error(err.msg)
-  //   )
-  // }
+  private getCarRecommendList() {
+    // this.carService.getCarRecommendsList(this.carId).subscribe(
+    //   data => {
+    //     this.carRecommends = data.columnList.map(v => {
+    //       return {
+    //         id: v.id,
+    //         name: v.name,
+    //         comment: v.introduce,
+    //         pictureList: v.materialList.map(p => {
+    //           return {
+    //             materialUrl: p.url
+    //           }
+    //         })
+    //       }
+    //     })
+    //   },
+    //   err => this.$Message.error(err.msg)
+    // )
+  }
 
 
-  // private onAddParamClick() {
-  //   this.$dialog.show({
-  //     title: '添加参数',
-  //     footer: true,
-  //     onOk: addParam => {
-  //       let result = addParam.submit().then(() => {
-  //         this.getCarParams()
-  //       }).catch(v => false)
-  //       return result
-  //     },
-  //     onCalcel: () => { },
-  //     render: h => {
-  //       return h(CarParmsBase, {
-  //         props: {
-  //           carId: this.carId
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
+  private onAddParamClick() {
+    // this.$dialog.show({
+    //   title: '添加参数',
+    //   footer: true,
+    //   onOk: addParam => {
+    //     let result = addParam.submit().then(() => {
+    //       this.getCarParams()
+    //     }).catch(v => false)
+    //     return result
+    //   },
+    //   onCalcel: () => { },
+    //   render: h => {
+    //     return h(CarParmsBase, {
+    //       props: {
+    //         carId: this.carId
+    //       }
+    //     })
+    //   }
+    // })
+  }
 
-  // private onAddRecommendClick() {
-  //   this.$dialog.show({
-  //     title: '添加栏目',
-  //     footer: true,
-  //     onOk: addRecommend => {
-  //       let result = addRecommend.submit().then(() => {
-  //         this.getCarRecommendList()
-  //       }).catch(v => false)
-  //       return result
-  //     },
-  //     onCalcel: () => { },
-  //     render: h => {
-  //       return h(CarRecommend, {
-  //         props: {
-  //           carId: this.carId
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
+  // 新增栏目
+  private onAddRecommendClick() {
+    this.$dialog.show({
+      title: '添加栏目',
+      footer: true,
+      onOk: addRecommend => {
+        let result = addRecommend.submit().then(() => {
+          this.getCarRecommendList()
+        }).catch(v => false)
+        return result
+      },
+      onCalcel: () => { },
+      render: h => {
+        return h(CarRecommend, {
+          props: {
+            carId: this.carId
+          }
+        })
+      }
+    })
+  }
 
-  // private onDeleteParamClick(item) {
-  //   this.$Modal.confirm({
-  //     content: `是否删除参数: <b>${item.name}</b>`,
-  //     onOk: () => {
-  //       this.carService.deleteCarParamBase(item.id).subscribe(
-  //         data => {
-  //           this.$Message.success(`已删除参数: <b>${item.name}</b>`)
-  //           this.getCarParams()
-  //         },
-  //         err => this.$Message.error(err.msg)
-  //       )
-  //     }
-  //   })
-  // }
+  private onDeleteParamClick(item) {
+    // this.$Modal.confirm({
+    //   content: `是否删除参数: <b>${item.name}</b>`,
+    //   onOk: () => {
+    //     this.carService.deleteCarParamBase(item.id).subscribe(
+    //       data => {
+    //         this.$Message.success(`已删除参数: <b>${item.name}</b>`)
+    //         this.getCarParams()
+    //       },
+    //       err => this.$Message.error(err.msg)
+    //     )
+    //   }
+    // })
+  }
 
-  // private onDeleteRecommendClick(item) {
-  //   this.$Modal.confirm({
-  //     content: `是否删除栏目: <b>${item.name}</b>`,
-  //     onOk: () => {
-  //       this.carService.deleteCarRecommed(item.id).subscribe(
-  //         data => {
-  //           this.$Message.success(`已删除栏目: <b>${item.name}</b>`)
-  //           this.getCarRecommendList()
-  //         },
-  //         err => this.$Message.error(err.msg)
-  //       )
-  //     }
-  //   })
-  // }
+  private onDeleteRecommendClick(item) {
+    // this.$Modal.confirm({
+    //   content: `是否删除栏目: <b>${item.name}</b>`,
+    //   onOk: () => {
+    //     this.carService.deleteCarRecommed(item.id).subscribe(
+    //       data => {
+    //         this.$Message.success(`已删除栏目: <b>${item.name}</b>`)
+    //         this.getCarRecommendList()
+    //       },
+    //       err => this.$Message.error(err.msg)
+    //     )
+    //   }
+    // })
+  }
 }
 </script>
 

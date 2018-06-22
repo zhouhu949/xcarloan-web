@@ -1,5 +1,5 @@
 <!--新增车辆-->
-<template> 
+<template>
   <section class="component add-vehicle">
     <i-form :label-width="90" ref="form" :model="model" :rules="rules">
       <i-row :gutter="15">
@@ -59,7 +59,7 @@
             <i-input v-model="model.interiorColor" class="item-full"></i-input>
           </i-form-item>
         </i-col>
-         <i-col :span="24">
+        <i-col :span="24">
           <i-form-item label="备注" prop="remark">
             <i-input v-model="model.remark" class="item-full"></i-input>
           </i-form-item>
@@ -93,7 +93,9 @@ export default class AddVehicle extends Vue {
   }) series
 
   @Prop() carId: number;
+  @Prop() name;
 
+  private carSeriesId: any
   private model = {
     brandId: "",  // 品牌id
     brandName: "",  // 品牌名称
@@ -108,8 +110,10 @@ export default class AddVehicle extends Vue {
     modelName: "", // 车辆型号
     seriesId: "", // 系列号id
     seriesName: "",  // 系列名称
-    referencePrice:"", // 参考价格
-    vehicleId: 0
+    referencePrice: "", // 参考价格
+    vehicleId: 0,
+    remark: ''   // 备注
+
   };
 
   private rules = {
@@ -132,9 +136,9 @@ export default class AddVehicle extends Vue {
 
 
 
-/**
- * 新增车辆
- */
+  /**
+   * 新增车辆
+   */
   addVehicle() {
     return new Promise((resolve, reject) => {
       this.form.validate(valid => {
@@ -178,12 +182,10 @@ export default class AddVehicle extends Vue {
    * 获取品牌信息
    */
   private getBrandInfo() {
-    this.basicCarManageService.getCarSeriesByCarName(this.series.id)
+    this.basicCarManageService.getCarSeriesByCarName(this.carSeriesId)
       .subscribe(
         data => {
-          console.log(data,'获取品牌信息')
-          // this.model.brandId = data.brandId;
-          this.model.brandName = data[0].brandName
+          this.model.brandName = data.brandName
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -192,27 +194,35 @@ export default class AddVehicle extends Vue {
   }
 
   mounted() {
-      this.getBrandInfo()
-
+    // 新增车辆
     this.form = this.$refs['form']
-  
-
-    if (this.series.id) {
-      this.model.seriesId = this.series.id  
+    this.carSeriesId = this.carId ? this.carId : this.series.id
+    if (this.series) {
       this.model.seriesName = this.series.name
-      this.getBrandInfo()
+      this.model.seriesId = this.series.id
     }
-
-    // if (this.carId) {
-    //   this.basicCarManageService.getCarModelById(this.carId).subscribe(
-    //     data => {
-    //       console.log(data)
-    //       // this.model = data
-    //       // this.model.vehicleId = this.carId
-    //     },
-    //     err => this.$Message.error(err.msg)
-    //   )
-    // }
+    this.getBrandInfo()
+    console.log(this.name)
+    // 修改车辆
+    if (this.carId) {
+         this.model.seriesName = this.name
+      this.basicCarManageService.getCarModelById(this.carId).subscribe(
+        data => {
+          this.model.carEmissions = data.displacement
+          this.model.drivingMode = data.diveway
+          this.model.fuel = data.fulyway
+          this.model.interiorColor = data.innerColor
+          this.model.carColour = data.modelColors
+          this.model.fuelConsumption = data.modelFuel
+          this.model.modelName = data.modelName
+          this.model.carSize = data.modelVolume
+          this.model.remark = data.remark
+          this.model.seriesId = data.seriesId
+          this.model.carStructure = data.structure
+        },
+        err => this.$Message.error(err.msg)
+      )
+    }
   }
 }
 </script>
