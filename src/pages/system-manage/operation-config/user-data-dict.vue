@@ -10,9 +10,9 @@
           <div class="data-form-item">
             <div class="data-form-item-icon"></div>
             <span>数据类型</span>
-            <span @click="createDictType" class="data-form-item-add">
+            <!-- <span @click="createDictType" class="data-form-item-add">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
-            </span>
+            </span> -->
           </div>
           <div class="data-form-list">
             <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.dictName" :class="{'dataTypeCss':checkId===item.id}" @click="checkDataType(item)">

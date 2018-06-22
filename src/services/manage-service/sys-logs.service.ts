@@ -10,9 +10,20 @@ export class SysLogsService {
    */
   querySysLogsPage(data, page) {
     return this.netService.send({
-      server: manageService.SysLogsController.querySysLogsPage,
+      server: manageService.sysLogsController.querySysLogsPage,
       data: data,
       page: page
+    })
+  }
+  /**
+   * 导出系统日志
+   */
+  exportSysLogs({ sysLogsIds }) {
+    return this.netService.send({
+      server: manageService.sysLogsController.exportSysLogs,
+      data: {
+        sysLogsIds: sysLogsIds
+      }
     })
   }
 }

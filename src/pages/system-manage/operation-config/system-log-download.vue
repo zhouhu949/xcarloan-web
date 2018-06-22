@@ -1,7 +1,7 @@
 <!--系统日志下载-->
 <template>
   <section class="page system-log-download">
-    <page-header title="系统日志下载" hiddenPrint hiddenExport></page-header>
+    <page-header title="系统日志下载" hiddenPrint @on-export="exportLogs"></page-header>
     <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
       <template slot="input">
         <i-form-item prop="operator" label="操作人：">
@@ -14,7 +14,6 @@
           <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
-
     </data-form>
 
     <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
@@ -153,6 +152,30 @@ export default class SystemLogDownload extends Page {
       exeType: '',
       exeTime: '',
       realName: ''
+    }
+  }
+   /**
+   * 导出系统日志列表
+   */
+  exportLogs() {
+    let databox = this.$refs['databox'] as DataBox
+    let multipleSelection = databox.getCurrentSelection()
+    if (multipleSelection && multipleSelection.length) {
+      let sysLogsIds = multipleSelection.map(v => v.id)
+      this.sysLogsService
+        .exportSysLogs({
+          sysLogsIds: sysLogsIds
+        })
+        .subscribe(
+          data => {
+            CommonService.downloadFile(data.url, '系统日志下载')
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
+        )
+    } else {
+      this.$Message.info('请先选择日志再导出！')
     }
   }
 }

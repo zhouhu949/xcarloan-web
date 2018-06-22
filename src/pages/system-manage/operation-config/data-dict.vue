@@ -110,7 +110,6 @@ export default class SysDict extends Page {
       this.checkDataType(this.item)
     });
   }
-
   /**
    * 根据数字字典查询对应的数据字典
    */

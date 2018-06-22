@@ -1,7 +1,7 @@
 import sysOrgController from './sys-org.controller'
 import sysRoleController from './sys-role.controller'
 import sysUserController from './sys-user.controller'
-import SysLogsController from './sys-logs.controller'
+import sysLogsController from './sys-logs.controller'
 import systemBackupController from './system-backup.controller'
 import companyController from './company.controller'
 import sysDictController from './sys-dict.controller'
@@ -10,18 +10,19 @@ import loginController from './login.controller'
 import fileUploadController from './file-upload-controller.controller'
 import userDeviceController from './user-device.controller'
 import backLogController from './back-log.controller'
-import SysParameterController from './sys-parameter.controller'
+import sysParameterController from './sys-parameter.controller'
 import basicExpenseController from './basic-expense.controller'
 import basicOffsetController from './basic-offset.controller'
 import basicCarManagecontroller from './basic-car-manage.controller'
 import basicSupplierController from "./basic-supplier-controller";
 import basicCustomerController from "./basic-customer-center.controller";
+import basicRepaySchemeController from './basic-repay-scheme.controller'
 
 export const manageService = {
   sysOrgController,
   sysRoleController,
   sysUserController,
-  SysLogsController,
+  sysLogsController,
   systemBackupController,
   companyController,
   sysDictController,
@@ -30,10 +31,11 @@ export const manageService = {
   fileUploadController,
   userDeviceController,
   backLogController,
-  SysParameterController,
+  sysParameterController,
   basicExpenseController,
   basicOffsetController,
   basicCarManagecontroller,
   basicSupplierController,
-  basicCustomerController
+  basicCustomerController,
+  basicRepaySchemeController
 }
