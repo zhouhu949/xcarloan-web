@@ -1,5 +1,5 @@
 <template>
-  <section class="component data-tree-node">
+  <section class="component data-tree-node"> 
     <div :style="getSubTreeStyle()">
       <div @click="onSelect" class="node-title" :class="{selected:selected}">
         <span @click="onExpand" v-if="!isLeaf" :class="{expanded:expanded}">
@@ -9,7 +9,7 @@
         <span v-if="showCheckbox">
           <i-checkbox :indeterminate="indeterminate" v-model="checked" @on-change="onChecked"></i-checkbox>
         </span>
-        <span>{{data[propsObject.title]}}</span>
+        <span  @click="currentNode">{{data[propsObject.title]}}</span>
         <small v-show="selected && showEdit" class="icon-box">
           <a @click="editHandle" href="#">
             <div style="display:inline-block">
@@ -89,6 +89,12 @@ export default class DataTreeNode extends Vue {
    */
   private deleteHandle() {
     this.root.deleteEdit(this.data)
+  }
+  /**
+   * 点击当前节点
+   */
+  private currentNode(){
+    this.root.clickNode(this.data)
   }
 
   created() {

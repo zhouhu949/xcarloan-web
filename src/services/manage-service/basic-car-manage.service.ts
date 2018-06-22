@@ -3,16 +3,16 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
-export class BasicCarManageService {
+export class BasicCarManageService { 
   @Inject(NetService)
   private netService: NetService
 
   /**
    * 车辆维护树
    */
-  findAllCarTreeList() {
+  getAllCarTreeList() {
     return this.netService.send({
-      server: manageService.basicCarManagecontroller.findAllCarTreeList,
+      server: manageService.basicCarManagecontroller.getAllCarTreeList,
     })
   }
   /**
@@ -161,7 +161,33 @@ export class BasicCarManageService {
       server: manageService.basicCarManagecontroller.getCarSeriesByCarName,
     })
   }
-
+  /**
+   * 查找车辆配置参数列表
+   */
+  findCarConfigParamList(id) {
+    return this.netService.send({
+      append:id,
+      server: manageService.basicCarManagecontroller.findCarConfigParamList,
+    })
+  }
+  /**
+   * 添加车辆配置参数
+   */
+  addCarConfigParamInfo(data) {
+    return this.netService.send({
+      append:data,
+      server: manageService.basicCarManagecontroller.addCarConfigParamInfo,
+    })
+  }
+  /**
+   * 新增 车型介绍
+   */
+  addCarIntenduceInfo(data) {
+    return this.netService.send({
+      append:data,
+      server: manageService.basicCarManagecontroller.addCarIntenduceInfo,
+    })
+  }
 
 
 }

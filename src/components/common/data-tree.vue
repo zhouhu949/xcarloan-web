@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div class="component organize-tree">
     <template v-for="node of data">
       <data-tree-node :props="props||{}" v-if="node" :key="node.id" :data="node"></data-tree-node>
@@ -64,6 +64,9 @@ export default class DataTree extends Vue {
 
   @Emit('on-deleteEdit')
   deleteEdit(data){}
+
+  @Emit('on-clickNode')
+  clickNode(data){}
 
   private nodeMap = new Map<DataTreeNode, any>();
 
