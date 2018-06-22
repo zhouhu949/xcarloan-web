@@ -10,7 +10,7 @@
         <div class="data-form-tree">
           <!-- <organize-tree :dataList="orgData" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree> -->
           <!-- <i-tree :data="carDataTree"></i-tree> -->
-          <data-tree ref="data-tree" showEdit :data="carDataTree" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
@@ -28,28 +28,16 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { BasicCarManageService } from '~/services/manage-service/basic-car-manage.service'
-import { State, Mutation, Action } from "vuex-class";
+import { Action, Getter, namespace } from "vuex-class";
 import CarBrand from "~/components/base-data/car-brand.vue";
 import CarSeries from "~/components/base-data/car-series.vue";
 import AddVehicle from '~/components/base-data/add-vehicle.vue'
 import OrganizeTree from '~/components/common/organize-tree.vue'
 import DataTree from "~/components/common/data-tree.vue";
 import CarParams from "~/components/base-data/car-params.vue";
+import { CarPropertyType } from "~/config/enum.config";
 
-enum carPropertyType {
-  /**
-   * 品牌
-   */
-  brand,
-  /**
-   * 系列
-   */
-  series,
-  /**
-   * 车型
-   */
-  model
-}
+const CarModule = namespace("carSpace")
 
 @Layout('workspace')
 @Component({
@@ -61,6 +49,8 @@ enum carPropertyType {
 export default class VehicleMaintenance extends Page {
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(BasicCarManageService) private basicCarManageService: BasicCarManageService
+  @CarModule.Action getAllCar;
+  @CarModule.Getter carTreeData;
 
   // @State("userToken") userToken;
   private dataList: Array<any> = []  // 首页树获取后台数据
@@ -72,59 +62,6 @@ export default class VehicleMaintenance extends Page {
 
   private carDataTree = [];
 
-  /**
-  * 获取所有车辆系列
-  */
-  getAllCarData() {
-    this.basicCarManageService.findAllCarTreeList().subscribe(
-      data => {
-        // this.dataList = data
-        // this.getTreeDate()
-        // let treeData = this.$common.generateTreeData(data)
-        console.log(data, 'carData')
-
-        let treeData = data.map(brand => {
-          return {
-            id: brand.id,
-            title: brand.brandName,
-            type: carPropertyType.brand,
-            children: brand.carBrandSeries.map(series => {
-              return {
-                id: series.id,
-                name: series.seriesName,
-                title: series.seriesName,
-                type: carPropertyType.series,
-                children: series.carModel.map(model => {
-                  return {
-                    id: model.id,
-                    name: model.modelName,
-                    type: carPropertyType.model,
-                    title: model.modelName
-                  }
-                })
-              }
-            })
-          }
-        })
-
-        this.carDataTree = [
-          {
-            id: 0,
-            title: "所有车辆",
-            children: treeData
-          }
-        ]
-
-        console.log(this.carDataTree)
-
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-    )
-  }
-
-
   // 添加车辆系列
   addSeries(data) {
     this.$dialog.show({
@@ -132,7 +69,7 @@ export default class VehicleMaintenance extends Page {
       footer: true,
       onOk: addSeries => {
         let result = addSeries.confirmAddSeries().then(() => {
-          this.getAllCarData()
+          this.getAllCar()
         }).catch(v => false)
         return result
       },
@@ -157,7 +94,7 @@ export default class VehicleMaintenance extends Page {
       footer: true,
       onOk: addCar => {
         return addCar.addVehicle().then(() => {
-          this.getAllCarData()
+          this.getAllCar()
         }).catch(v => false)
       },
       onCancel: () => { },
@@ -184,14 +121,14 @@ export default class VehicleMaintenance extends Page {
   // 树点击修改事件
   private onEdit(data) {
     switch (data.type) {
-      case carPropertyType.brand:
+      case CarPropertyType.brand:
         // console.log(data, '品牌')
         this.$dialog.show({
           title: "修改品牌",
           footer: true,
           onOk: editBrand => {
             let result = editBrand.confirmRepair().then(() => {
-              this.getAllCarData()
+              this.getAllCar()
             }).catch(v => false)
             return result
           },
@@ -205,14 +142,14 @@ export default class VehicleMaintenance extends Page {
           }
         })
         break;
-      case carPropertyType.series:
+      case CarPropertyType.series:
         // console.log(data, '系列')
         this.$dialog.show({
           title: "修改车系",
           footer: true,
           onOk: editSeries => {
             let result = editSeries.confirmSeriesRepair().then(() => {
-              this.getAllCarData()
+              this.getAllCar()
             }).catch(v => false)
             return result
           },
@@ -230,7 +167,7 @@ export default class VehicleMaintenance extends Page {
         })
 
         break;
-      case carPropertyType.model:
+      case CarPropertyType.model:
         console.log(data, '修改车型')
         this.$dialog.show({
           title: "修改车辆",
@@ -257,14 +194,14 @@ export default class VehicleMaintenance extends Page {
   // 树点击新增事件
   private onAddEdit(data) {
     switch (data.type) {
-      case carPropertyType.brand:
+      case CarPropertyType.brand:
         console.log(data, '车系')
         this.$dialog.show({
           title: "新增车系",
           footer: true,
           onOk: addSeries => {
             let result = addSeries.confirmAddSeries().then(() => {
-              this.getAllCarData()
+              this.getAllCar()
             }).catch(v => false)
             return result
           },
@@ -279,14 +216,14 @@ export default class VehicleMaintenance extends Page {
         })
 
         break;
-      case carPropertyType.series:
+      case CarPropertyType.series:
         console.log(data, '车型')
         this.$dialog.show({
           title: "添加车辆",
           footer: true,
           onOk: addCar => {
             return addCar.addVehicle().then(() => {
-              this.getAllCarData()
+              this.getAllCar()
             }).catch(v => false)
           },
           onCancel: () => { },
@@ -302,7 +239,7 @@ export default class VehicleMaintenance extends Page {
 
 
         break;
-      case carPropertyType.model:
+      case CarPropertyType.model:
         console.log(data, '- - ')
 
         break;
@@ -313,7 +250,7 @@ export default class VehicleMaintenance extends Page {
           footer: true,
           onOk: addBrand => {
             let result = addBrand.confirmAddBrand().then(() => {
-              this.getAllCarData()
+              this.getAllCar()
             }).catch(v => false)
             return result
           },
@@ -328,7 +265,7 @@ export default class VehicleMaintenance extends Page {
   // 树点击删除事件
   private ondeleteEdit(data) {
     switch (data.type) {
-      case carPropertyType.brand:
+      case CarPropertyType.brand:
         // 删除品牌
         if (data.children.length !== 0) {
           this.$Message.error('当前不允许删除')
@@ -337,13 +274,13 @@ export default class VehicleMaintenance extends Page {
         this.basicCarManageService.deleteCarBrand(data.id)
           .subscribe(data => {
             this.$Message.success('删除成功')
-            this.getAllCarData()
+            this.getAllCar()
           }, err => {
             this.$Message.error(err.msg)
           })
 
         break;
-      case carPropertyType.series:
+      case CarPropertyType.series:
         // 删除车系
         if (data.children.length !== 0) {
           this.$Message.error('当前不允许删除')
@@ -352,19 +289,19 @@ export default class VehicleMaintenance extends Page {
         this.basicCarManageService.deleteCarSeries(data.id)
           .subscribe(data => {
             this.$Message.success('删除成功')
-            this.getAllCarData()
+            this.getAllCar()
           }, err => {
             this.$Message.error(err.msg)
           })
 
         break;
-      case carPropertyType.model:
+      case CarPropertyType.model:
         // 删除车型
         console.log(data, '车型')
         this.basicCarManageService.deleteCarModel(data.id)
           .subscribe(data => {
             this.$Message.success('删除成功')
-            this.getAllCarData()
+            this.getAllCar()
           }, err => {
             this.$Message.error(err.msg)
           })
@@ -378,7 +315,7 @@ export default class VehicleMaintenance extends Page {
 
 
   mounted() {
-    this.getAllCarData()
+    this.getAllCar()
   }
 
 

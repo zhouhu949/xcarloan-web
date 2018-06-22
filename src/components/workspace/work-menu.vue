@@ -1,6 +1,6 @@
 <template>
   <section class="component work-menu row">
-    <i-menu theme="light" @on-select="onSelectMenuItem" accordion v-show="isExpand">
+    <i-menu ref="menu" theme="light" @on-select="onSelectMenuItem" accordion v-show="isExpand" @on-open-change="onOpenChange">
       <work-menu-item :level="1" v-for="node  in  menuList" :key="node.id" :data="node"></work-menu-item>
     </i-menu>
     <div class="expand row middle-span">
@@ -77,6 +77,17 @@ export default class WorkMenu extends Vue {
     // 打开页面
     if (path) {
       this.openPage(path);
+    }
+  }
+  
+  /**
+   * 菜单打开状态变化监听
+   */
+  onOpenChange(names) {
+    if (names.length > 1) {
+      let menu = this.$refs['menu'] as any
+      menu.openedNames = names.slice(-1)
+      menu.updateOpened()
     }
   }
 }

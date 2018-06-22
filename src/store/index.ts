@@ -10,6 +10,7 @@ import workspace from './modules/workspace'
 import purchase from './modules/purchase'
 import mortgage from './modules/mortgage'
 import organization from "./modules/organization";
+import cars from "./modules/cars";
 
 import injector from 'vue-inject';
 import createPersistedState from 'vuex-persistedstate'
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
     workspace: workspace,
     purchase: purchase,
     mortgage: mortgage,
-    orgSpace: organization
+    orgSpace: organization,
+    carSpace: cars
   },
   state,
   getters,
