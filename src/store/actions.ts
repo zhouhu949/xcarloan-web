@@ -33,6 +33,7 @@ export default {
       operateTime: user.operateTime
     });
     dispatch("orgSpace/getOrgData")
+    dispatch("carSpace/getAllCar")
     commit("updateTokenExpire", false)
   },
   /**
@@ -53,6 +54,8 @@ export default {
     commit('closeAllPage')
     // 清空机构资源
     commit("orgSpace/updateOrgData", [])
+    // 清空车辆数据
+    commit("carSpace/updateCarData", [])
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')
