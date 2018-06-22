@@ -8,7 +8,7 @@
           <span>车辆品牌</span>
         </i-row>
         <div class="data-form-tree">
-          <data-tree ref="data-tree" showEdit :data="carDataTree" @on-clickNode="onClickNode"   @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carDataTree" @on-clickNode="onClickNode" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
@@ -58,7 +58,7 @@ export default class VehicleMaintenance extends Page {
   private selectedNodeKey = ""  // 当前选中树的节点的Key
   private carId: Number = 0
   private addVehicleModal: Boolean = false // 添加车辆
-  private vehicleDetails:any  // 车辆详情
+  private vehicleDetails: any  // 车辆详情
   private carDataTree = [];
 
   // 添加车辆系列
@@ -82,10 +82,6 @@ export default class VehicleMaintenance extends Page {
       }
     })
   }
-  // 修改品牌 
-  repairCarBrand(data) {
-
-  }
   // 添加车辆
   addVehicle(data) {
     this.$dialog.show({
@@ -108,20 +104,10 @@ export default class VehicleMaintenance extends Page {
     })
   }
 
-
-
-
-
-
-
-
-
-
   // 树点击修改事件
   private onEdit(data) {
     switch (data.type) {
       case CarPropertyType.brand:
-        // console.log(data, '品牌')
         this.$dialog.show({
           title: "修改品牌",
           footer: true,
@@ -142,7 +128,6 @@ export default class VehicleMaintenance extends Page {
         })
         break;
       case CarPropertyType.series:
-        // console.log(data, '系列')
         this.$dialog.show({
           title: "修改车系",
           footer: true,
@@ -167,7 +152,6 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case CarPropertyType.model:
-        console.log(data, '修改车型')
         this.$dialog.show({
           title: "修改车辆",
           footer: true,
@@ -179,7 +163,7 @@ export default class VehicleMaintenance extends Page {
           render: h => h(AddVehicle, {
             props: {
               carId: data.id,
-              name:data.title
+              name: data.title
             }
           })
         })
@@ -217,7 +201,6 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case CarPropertyType.series:
-        console.log(data, '车型')
         this.$dialog.show({
           title: "添加车辆",
           footer: true,
@@ -240,7 +223,7 @@ export default class VehicleMaintenance extends Page {
 
         break;
       case CarPropertyType.model:
-        console.log(data, '- - ')
+        console.log(data,)
 
         break;
 
@@ -297,7 +280,6 @@ export default class VehicleMaintenance extends Page {
         break;
       case CarPropertyType.model:
         // 删除车型
-        console.log(data, '车型')
         this.basicCarManageService.deleteCarModel(data.id)
           .subscribe(data => {
             this.$Message.success('删除成功')
@@ -314,8 +296,8 @@ export default class VehicleMaintenance extends Page {
   }
 
   // 点击树当前节点 
-  private onClickNode(data){
-     this.carId = data.operator
+  private onClickNode(data) {
+    this.carId = data.operator
     this.vehicleDetails = data
     console.log(data)
   }
