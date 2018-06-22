@@ -10,7 +10,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="20" :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :id="20" :columns="columns" :page="pageService" :data="dataSet" ref="databox"></data-box>
   </section>
 </template>
 <script lang="ts">
@@ -168,10 +168,14 @@ export default class SupplierManage extends Page {
   }
 
   /**
-   * 获取供应商数据
+   * 查询供应商数据
    */
   private refreshData() {
+<<<<<<< HEAD
     this.basicSupplierService.queryBasicSupplierList(this.model, this.pageService)
+=======
+    this.basicSupplierService.queryBasicSupplier(this.model, this.pageService)
+>>>>>>> huangrui
       .subscribe(
         data => (this.dataSet = data),
         err => this.$Message.error(err.msg)
