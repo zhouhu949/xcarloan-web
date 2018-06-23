@@ -171,7 +171,7 @@ export default class SupplierManage extends Page {
    * 查询供应商数据
    */
   private refreshData() {
-    this.basicSupplierService.queryBasicSupplier(this.model, this.pageService)
+    this.basicSupplierService.queryBasicSupplierPage(this.model, this.pageService)
       .subscribe(
         data => (this.dataSet = data),
         err => this.$Message.error(err.msg)

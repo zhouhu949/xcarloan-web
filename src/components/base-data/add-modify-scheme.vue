@@ -77,7 +77,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="利率" prop="interestRate">
-            <i-input-number v-model="model.interestRate" :min="0" :max="100" :formatter="$filter.percentFormat"></i-input-number>
+            <i-input-number v-model="model.interestRate" :min="0" :max="100" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -89,7 +89,7 @@
         </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="remark">
-            <i-input type="textarea" v-model="model.remark"></i-input>
+            <i-input type="textarea" v-model="model.remark" style="width: 100%;padding-right: 34px;"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -123,13 +123,13 @@ export default class AddModifyScheme extends Vue {
     schemeName: '', // 方案名称
     repayType: '', // 还款方式
     mortgageType: '', // 抵押方式
-    creditDays: 0, // 征信保护天数
-    overdueDays: 0, // 逾期保护天数
-    periods: 0, // 期数
-    interestRate: 0, // 利率
+    creditDays: null, // 征信保护天数
+    overdueDays: null, // 逾期保护天数
+    periods: null, // 期数
+    interestRate: null, // 利率
     cycleType: '', // 周期类型
-    moneyMin: 0, // 融资最小金额
-    moneyMax: 0, // 融资最大金额
+    moneyMin: null, // 融资最小金额
+    moneyMax: null, // 融资最大金额
     accountPeriodType: '', // 账期类型
     accountDay: '', // 还款日
     offsetId: '', // 冲抵策略

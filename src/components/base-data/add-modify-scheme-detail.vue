@@ -5,39 +5,39 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="收取总额比例" prop="repayProportion">
-            <i-input-number v-model="model.repayProportion" :min="0" :max="100" :formatter="$filter.percentFormat"></i-input-number>
+            <i-input-number v-model="model.repayProportion" :min="0" :max="100" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')" :disabled="model.fixedCost !== null"></i-input-number>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="固定费用" prop="fixedCost">
+            <i-input-number v-model="model.fixedCost" :min="0" :disabled="model.repayProportion !== null"></i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="是否首付款" prop="isFirst">
-            <i-select v-model="model.isFirst">
+            <i-select v-model="model.isFirst" @on-change="selectIsFirst" :disabled="isLast">
               <i-option v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="固定费用" prop="fixedCost">
-            <i-input-number v-model="model.fixedCost" :min="0"></i-input-number>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="还款方式" prop="repayType">
-            <i-select v-model="model.repayType">
-              <i-option v-for="{value,label} in $dict.getDictData(10022)" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
           <i-form-item label="是否尾款" prop="isLast">
-            <i-select v-model="model.isLast">
+            <i-select v-model="model.isLast" @on-change="selectIsLast" :disabled="isFirst">
               <i-option v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="是否退款" prop="isRefund">
-            <i-select v-model="model.isRefund">
+            <i-select v-model="model.isRefund" :disabled="isLast">
               <i-option v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="还款方式" prop="repayType">
+            <i-select v-model="model.repayType" @on-change="selectRepayType" :disabled="isFirst || isLast">
+              <i-option v-for="{value,label} in $dict.getDictData(10022)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -50,7 +50,7 @@
         </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="remark">
-            <i-input type="textarea" v-model="model.remark"></i-input>
+            <i-input type="textarea" v-model="model.remark" style="width: 100%;padding-right: 34px;"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -79,11 +79,14 @@ export default class AddModifySchemeDetail extends Vue {
   private form: Form
   private accountDay: Array<Number> = []
   private expenseArr: Array<Number> = []
+  private isFirstStatus: Boolean = false
+  private isLastStatus: Boolean = false
+  private isOnceStatus: Boolean = false
 
   private model:any = {
     isFirst: '', // 是否首付款
-    repayProportion: 0, // 收取总额比例
-    fixedCost: 0, // 固定费用
+    repayProportion: null, // 收取总额比例
+    fixedCost: null, // 固定费用
     repayType: '', // 还款方式
     isLast: '', // 是否尾款
     isRefund: '', //是否退款
@@ -100,18 +103,18 @@ export default class AddModifySchemeDetail extends Vue {
   }
 
   created () {
-    console.log(this.schemeId)
     this.model.schemeId = this.schemeId
     this.basicExpenseService.findBasicExpenseByOrg().subscribe(val => {
       this.expenseArr = val
     })
     if(this.data.id) {
-      console.log(this.data.id)
       this.model.id = this.data.id
     }
     if(Object.keys(this.data).length != 0){
+      if(this.data.repayProportion !== null) {
+        this.model.repayProportion = this.data.repayProportion * 100
+      }
       this.model.isFirst = this.data.isFirst
-      this.model.repayProportion = this.data.repayProportion * 100
       this.model.fixedCost = this.data.fixedCost
       this.model.repayType = this.data.repayType
       this.model.isLast = this.data.isLast
@@ -122,6 +125,45 @@ export default class AddModifySchemeDetail extends Vue {
   }
   mounted () {
     this.form = this.$refs['repay-scheme-detail-form']
+  }
+
+  get isFirst() {
+    return this.isFirstStatus = this.model.isFirst === 10002 ? true : false
+  }
+  get isLast() {
+    return this.isLastStatus = this.model.isLast === 10002 ? true : false
+  }
+  get isOnce() {
+    return this.isOnceStatus = this.model.repayType === 10063 ? true : false
+  }
+  /**
+   * 选择是否首付款
+   */
+  selectIsFirst() {
+    if(this.isFirst) {
+      this.$Message.warning('是首付款不可是尾款,且必须一次性收取')
+      this.model.repayType = 10063
+      this.model.isLast = 10003
+    }
+  }
+  /**
+   * 选择是否尾款
+   */
+  selectIsLast() {
+    if(this.isLast) {
+      this.$Message.warning('是尾款不可是首付款,且必须一次性收取,不可退款')
+      this.model.repayType = 10063
+      this.model.isRefund = 10003
+      this.model.isFirst = 10003
+    }
+  }
+  /**
+   * 选择还款方式
+   */
+  selectRepayType() {
+    if(this.isOnce && !this.isFirst && !this.isLast){
+      this.$Message.warning('是一次性收取,必须是首付款或是尾款')
+    }
   }
   /**
     * 确定新增还款方案详情

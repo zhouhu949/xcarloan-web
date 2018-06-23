@@ -7,10 +7,10 @@ export default {
   /**
    * 查询供应商数据
    */
-  queryBasicSupplier:{
+  queryBasicSupplierPage:{
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'queryBasicSupplier',
+    action: 'queryBasicSupplierPage',
     type: requestType.Get
   },
   /**

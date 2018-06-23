@@ -12,7 +12,8 @@ export class RepaySchemeService {
    */
   findAllBasicSchemeByAuth() {
     return this.netService.send({
-      server: manageService.basicRepaySchemeController.findAllBasicSchemeByAuth
+      server: manageService.basicRepaySchemeController.findAllBasicSchemeByAuth,
+      loading: true
     })
   }
   /**
@@ -31,7 +32,8 @@ export class RepaySchemeService {
   findSchemeExpenseBySchemeId(id) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.findSchemeExpenseBySchemeId,
-      append: id
+      append: id,
+      loading: true
     })
   }
   /**
@@ -40,7 +42,8 @@ export class RepaySchemeService {
   repayScheme(data) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.repayScheme,
-      data: data
+      data: data,
+      loading: true
     }) 
   }
   /**
@@ -49,7 +52,8 @@ export class RepaySchemeService {
   deleteRepayScheme(id) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.deleteRepayScheme,
-      append: id
+      append: id,
+      loading: true
     }) 
   }
    /**
@@ -58,7 +62,8 @@ export class RepaySchemeService {
   releaseRepayScheme(data) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.releaseRepayScheme,
-      data: data
+      data: data,
+      loading: true
     }) 
   }
   /**
@@ -67,7 +72,8 @@ export class RepaySchemeService {
   addBasicSchemeExpense(data) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.addBasicSchemeExpense,
-      data: data
+      data: data,
+      loading: true
     }) 
   }
   /**
@@ -76,7 +82,8 @@ export class RepaySchemeService {
   deleteRepaySchemeExpense(id) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.deleteRepaySchemeExpense,
-      append: id
+      append: id,
+      loading: true
     }) 
   }
 }

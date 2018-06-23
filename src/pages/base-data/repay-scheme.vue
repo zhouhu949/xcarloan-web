@@ -53,6 +53,8 @@
               <data-grid-item label="融资最大金额" :label-width="150" :span="12">{{repaySchemeModel.moneyMax}}</data-grid-item>
               <data-grid-item label="账期类型" :label-width="150" :span="12">{{this.$dict.getDictName(repaySchemeModel.accountPeriodType)}}</data-grid-item>
               <data-grid-item label="还款日" :label-width="150" :span="12">{{repaySchemeModel.accountDay}}</data-grid-item>
+              <data-grid-item label="冲抵策略" :label-width="150" :span="12">{{repaySchemeModel.offsetName}}</data-grid-item>
+              <data-grid-item label="" :label-width="150" :span="12"></data-grid-item>
               <data-grid-item label="备注" :label-width="150" :span="24" contentAlign="left">{{repaySchemeModel.remark}}</data-grid-item>
             </data-grid>
           </i-row>
@@ -111,7 +113,8 @@ export default class RepayScheme extends Page {
     moneyMax: 0, // 融资最大金额
     accountPeriodType: 0, // 账期类型
     accountDay: 0, // 还款日
-    offsetId: 0, // 冲抵策略
+    offsetId: 0, // 冲抵策略id
+    offsetName: '', // 冲抵策略
     remark: '' // 备注
   }
 
@@ -137,7 +140,7 @@ export default class RepayScheme extends Page {
         align: "center",
         key: "repayProportion",
         render: (h, { row, column, index }) => {
-          return h("span", {}, `${row.repayProportion * 100}%`);
+          return h("span", {}, row.repayProportion !== null ? `${row.repayProportion * 100}%` : null);
         }
       },
       {
@@ -255,6 +258,7 @@ export default class RepayScheme extends Page {
     this.$dialog.show({
       title: "新增还款方案",
       footer: true,
+      width: 700,
       onOk: addOrModify => {
         return addOrModify.addOrModifyScheme().then(v => {
           if(v) {
@@ -278,6 +282,7 @@ export default class RepayScheme extends Page {
     this.$dialog.show({
       title: "编辑还款方案",
       footer: true,
+      width: 700,
       onOk: addOrModify => {
         return addOrModify.addOrModifyScheme().then(v => {
           if(v) {
@@ -366,6 +371,7 @@ export default class RepayScheme extends Page {
         schemeStatus = schemeStatus === 10056 ? 10057 : 10056
         this.repaySchemeService.releaseRepayScheme({ id, schemeStatus }).subscribe(val => {
           this.$Message.success(`${this.releaseStatus ? '取消发布' : '发布'}成功！`)
+          this.refreshRepayScheme()
         },
         err => {
           this.$Message.error(err.msg)
@@ -380,6 +386,7 @@ export default class RepayScheme extends Page {
     this.$dialog.show({
       title: "新增还款方案比例详情",
       footer: true,
+      width: 700,
       onOk: addOrModify => {
         return addOrModify.addOrModifySchemeDetail().then(v => {
           if(v) {
@@ -403,6 +410,7 @@ export default class RepayScheme extends Page {
     this.$dialog.show({
       title: "编辑还款方案比例详情",
       footer: true,
+      width: 700,
       onOk: addOrModify => {
         return addOrModify.addOrModifySchemeDetail().then(v => {
           if(v) {
@@ -493,7 +501,8 @@ export default class RepayScheme extends Page {
         .i-table.ivu-table-wrapper{
           height: 400px !important;
           .ivu-table-body{
-            height: 400px !important;
+            height: calc(~"100% - 33px") !important;
+            height: -webkit-calc(~"100% - 33px") !important;
             overflow-y: auto;
           }
         }
