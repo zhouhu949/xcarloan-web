@@ -83,4 +83,28 @@ export class BasicCustomerCenterService {
     })
   }
 
+  /**
+   * 获取黑白灰名单记录
+   */
+  findCustomerBlackListRecord(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.findCustomerBlackListRecord,
+      data: {
+        customerId: customerId
+      }
+    })
+  }
+
+  /**
+   * 订单记录
+   */
+  findBasicCustomerOrderList(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.findBasicCustomerOrderList,
+      data: {
+        customerId: customerId
+      }
+    })
+  }
+
 }

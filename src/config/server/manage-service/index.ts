@@ -21,7 +21,10 @@ import basicStockCarManageController from './basic-stock-car.controller'
 import basicCustomerCenterController from "./basic-customer-center.controller";
 import basicProductController from "./basic-product.controller";
 import basicCustomerAssessmentCarController from "./basic-customer-assessment-car.controller";
-import basicCustomHouseController from "./basic-custom-house.controller";
+import basicCustomHouseController from "./basic-customer-house.controller";
+import basicPersonalJobController from "./basic-customer-job.controller";
+import basicCustomContactController from "./basic-customer-contact.controller";
+import basicCustomerDataController from "./basic-customer-data.controller";
 
 export const manageService = {
   sysOrgController,
@@ -47,5 +50,8 @@ export const manageService = {
   basicCustomerCenterController,
   basicProductController,
   basicCustomerAssessmentCarController,
-  basicCustomHouseController
+  basicCustomHouseController,
+  basicPersonalJobController,
+  basicCustomContactController,
+  basicCustomerDataController
 }
