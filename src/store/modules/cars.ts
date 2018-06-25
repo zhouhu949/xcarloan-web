@@ -18,18 +18,18 @@ export default {
         return {
           id: brand.id,
           title: brand.brandName,
-          type: CarPropertyType.brand,
+          type: CarPropertyType.BRAND,
           children: brand.carBrandSeries.map(series => {
             return {
               id: series.id,
               name: series.seriesName,
               title: series.seriesName,
-              type: CarPropertyType.series,
+              type: CarPropertyType.SERIES,
               children: series.carModel.map(model => {
                 return {
                   id: model.id,
                   name: model.modelName,
-                  type: CarPropertyType.model,
+                  type: CarPropertyType.MODEL,
                   title: model.modelName
                 }
               })

@@ -127,7 +127,7 @@ export default class ProductManage extends Page {
    * 车辆树节点发生改变时
    */
   private onTreeNodeSelectChange(data) {
-    if (data.type !== CarPropertyType.model) return
+    if (data.type !== CarPropertyType.MODEL) return
     let carId = data.id
     this.basicProductService.findBasicProductList(carId, this.pageService).subscribe(
       data => this.dataSet = data,

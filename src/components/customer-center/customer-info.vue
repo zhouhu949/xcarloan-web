@@ -20,6 +20,22 @@ import { Getter } from "vuex-class";
 // 页面基础组件
 import BaseComponents from "./customer-info-base/index";
 
+const CUSTOMER_BASE_COMPONENT = [
+  // 一级目录
+  { id: 1, pid: 0, title: "基本资料", component: "CustomerInfoBasedata", default: true },
+  { id: 2, pid: 0, title: "资产信息" },
+  { id: 3, pid: 0, title: "职业信息", component: "CustomerInfoJob" },
+  { id: 4, pid: 0, title: "联系人信息", component: "CustomerInfoContacts" },
+  { id: 5, pid: 0, title: "银行卡信息", component: "CustomerInfoBank" },
+  { id: 6, pid: 0, title: "附件资料", component: "CustomerInfoMaterials" },
+  { id: 7, pid: 0, title: "黑白灰名单记录", component: "CustomerInfoBadRecord" },
+  { id: 8, pid: 0, title: "订单记录", component: "CustomerInfoOrderRecord" },
+  // 二级目录
+  { id: 1021, pid: 2, title: "车产信息", component: "CustomerInfoCar" },
+  { id: 1022, pid: 2, title: "房产信息", component: "CustomerInfoHouse" },
+]
+
+
 @Component({
   components: {
     DataTree,
@@ -35,16 +51,18 @@ export default class CustomerInfo extends Vue {
     type: Number
   }) customerId
 
-  @Getter customerGroupTreeData;
+  /**
+   * 生成树数据
+   */
+  get customerGroupTreeData() {
+    return this.$common.generateTreeData(CUSTOMER_BASE_COMPONENT)
+  }
 
   private currentNode: any = {}
 
   mounted() {
     // 设置默认显示基本信息
-    this.currentNode = {
-      component: "CustomerInfoBasedata",
-      title: "基本资料"
-    }
+    this.currentNode = CUSTOMER_BASE_COMPONENT.find(x => x.default)
   }
 }
 </script>

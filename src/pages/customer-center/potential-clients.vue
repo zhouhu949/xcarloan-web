@@ -19,7 +19,10 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-import CustomerInfo from "~/components/customer-center/customer-info.vue";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Layout('workspace')
 @Component({
@@ -28,6 +31,8 @@ import CustomerInfo from "~/components/customer-center/customer-info.vue";
 export default class PotentialClients extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @CustomerOrderModule.Action showCustomerInfo;
+
 
   private columns: any;
   private dataSet: any = [];
@@ -120,14 +125,10 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
+    this.showCustomerInfo(id)
     this.$dialog.show({
-      title: "客户详情查看",
       width: 1050,
-      render: h => h(CustomerInfo, {
-        props: {
-          customerId: id
-        }
-      })
+      render: h => h(OrderCustomerInfo)
     })
   }
 

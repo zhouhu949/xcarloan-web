@@ -161,7 +161,7 @@ export default class InventoryQuery extends Page {
    */
   onStockCarSelectChange(data) {
     //判断选中节点是否为叶子节点
-    if (data.type === CarPropertyType.model) {
+    if (data.type === CarPropertyType.MODEL) {
       //
       this.modelId = data.id;
       //

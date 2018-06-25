@@ -15,20 +15,20 @@ import Vue from 'vue';
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { BasicCustomHouseService } from "~/services/manage-service/basic-custom-house.service";
+import { BasicCustomerHouseService } from "~/services/manage-service/basic-customer-house.service";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 
 @Component({
   components: { DataGrid, DataGridItem }
 })
 export default class CustomerInfoHouse extends Vue {
-  @Dependencies(BasicCustomHouseService) private basicCustomHouseService: BasicCustomHouseService;
+  @Dependencies(BasicCustomerHouseService) private basicCustomerHouseService: BasicCustomerHouseService;
   @Prop() id: Number
 
   private dataSet: Array<any> = []
 
   mounted() {
-    this.basicCustomHouseService.findCustomerHouseList(this.id).subscribe(
+    this.basicCustomerHouseService.findCustomerHouseList(this.id).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )

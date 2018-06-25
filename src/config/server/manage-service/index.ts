@@ -21,9 +21,13 @@ import basicStockCarManageController from './basic-stock-car.controller'
 import basicCustomerCenterController from "./basic-customer-center.controller";
 import basicProductController from "./basic-product.controller";
 import basicCustomerAssessmentCarController from "./basic-customer-assessment-car.controller";
-import basicCustomHouseController from "./basic-custom-house.controller";
 import basicEnterShellSaveController from './basic-enter-shell-save.controller'
 import basicCustomerAccountController from './basic-customer-account.controller'
+import basicCustomHouseController from "./basic-customer-house.controller";
+import basicPersonalJobController from "./basic-customer-job.controller";
+import basicCustomContactController from "./basic-customer-contact.controller";
+import basicCustomerDataController from "./basic-customer-data.controller";
+import basicCustomerOrderController from "./basic-customer-order.controller";
 
 export const manageService = {
   sysOrgController,
@@ -51,5 +55,9 @@ export const manageService = {
   basicCustomerAssessmentCarController,
   basicCustomHouseController,
   basicEnterShellSaveController,
-  basicCustomerAccountController
+  basicCustomerAccountController,
+  basicPersonalJobController,
+  basicCustomContactController,
+  basicCustomerDataController,
+  basicCustomerOrderController
 }

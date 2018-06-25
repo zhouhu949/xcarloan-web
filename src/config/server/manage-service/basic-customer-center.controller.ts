@@ -57,5 +57,23 @@ export default {
     controller: CONTROLLER,
     action: 'findFormalCustomerList',
     type: requestType.Get
+  },
+  /**
+   * 获取黑白灰名单记录
+   */
+  findCustomerBlackListRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerBlackListRecord',
+    type: requestType.Get
+  },
+  /**
+   * 订单记录
+   */
+  findBasicCustomerOrderList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findBasicCustomerOrderList',
+    type: requestType.Get
   }
 }

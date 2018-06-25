@@ -1,6 +1,6 @@
-<!--黑白灰名单-->
+<!--订单操作记录-->
 <template>
-  <section class="component customer-info-bad-record">
+  <section class="component order-info-record">
     <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
@@ -13,7 +13,7 @@ import { Dependencies } from "~/core/decorator";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 
 @Component({})
-export default class CustomerInfoBadRecord extends Vue {
+export default class OrderInfoRecord extends Vue {
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
 
   @Prop() id: Number
@@ -53,10 +53,10 @@ export default class CustomerInfoBadRecord extends Vue {
   }
 
   mounted() {
-    this.basicCustomerCenterService.findCustomerBlackListRecord(this.id).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    // this.basicCustomerCenterService.findCustomerBlackListRecord(this.id).subscribe(
+    //   data => this.dataSet = data,
+    //   err => this.$Message.error(err.msg)
+    // )
   }
 
 }

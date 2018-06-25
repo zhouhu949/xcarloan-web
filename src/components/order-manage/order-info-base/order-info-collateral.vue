@@ -1,7 +1,7 @@
-<!--职业信息-->
+<!--订单押品-->
 <template>
-  <section class="component customer-info-job">
-    <data-grid class="job-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
+  <section class="component order-info-collateral">
+    <data-grid class="collateral-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
       <data-grid-item label="单位名称 " :span="4">{{item.companyName }}</data-grid-item>
       <data-grid-item label="单位性质" :span="4">{{item.companyNature | dictConvert}}</data-grid-item>
       <data-grid-item label="所属行业" :span="4">{{item.industry | dictConvert}}</data-grid-item>
@@ -36,24 +36,24 @@ import { DataGrid, DataGridItem } from "@zct1989/vue-component";
     DataGrid, DataGridItem
   }
 })
-export default class CustomerInfoJob extends Vue {
+export default class OrderInfoCollateral extends Vue {
   @Dependencies(BasicCustomerJobService) private basicCustomerJobService: BasicCustomerJobService;
   @Prop() id: Number
 
   private dataSet: Array<any> = [];
 
   mounted() {
-    this.basicCustomerJobService.findCustomPersonalJob(this.id).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    // this.basicCustomerJobService.findCustomPersonalJob(this.id).subscribe(
+    //   data => this.dataSet = data,
+    //   err => this.$Message.error(err.msg)
+    // )
   }
 
 }
 </script>
 <style lang="less" scoped>
-.component.customer-info-job {
-  .job-info {
+.component.order-info-collateral {
+  .collateral-info {
     margin: 10px;
   }
 }

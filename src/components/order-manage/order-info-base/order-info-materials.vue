@@ -1,6 +1,6 @@
 <!--附件资料-->
 <template>
-  <section class="component customer-info-materials">
+  <section class="component order-info-materials">
     <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
@@ -13,7 +13,7 @@ import { Dependencies } from "~/core/decorator";
 import { BasicCustomerDataService } from "~/services/manage-service/basic-customer-data.service";
 
 @Component({})
-export default class CustomerInfoMaterials extends Vue {
+export default class OrderInfoMaterials extends Vue {
   @Dependencies(BasicCustomerDataService) private basicCustomerDataService: BasicCustomerDataService;
   @Prop() id: Number
 
@@ -70,10 +70,10 @@ export default class CustomerInfoMaterials extends Vue {
   }
 
   mounted() {
-    this.basicCustomerDataService.getCustomerData(this.id).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    // this.basicCustomerDataService.getCustomerData(this.id).subscribe(
+    //   data => this.dataSet = data,
+    //   err => this.$Message.error(err.msg)
+    // )
   }
 
 }

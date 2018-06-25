@@ -1,6 +1,6 @@
-<!--订单记录-->
+<!--还款计划-->
 <template>
-  <section class="component customer-info-order-record">
+  <section class="component order-info-repay-plan">
     <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
@@ -11,15 +11,11 @@ import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-import { namespace } from "vuex-class";
-
-const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Component({})
-export default class CustomerInfoOrderRecord extends Vue {
+export default class OrderInfoRepayPlan extends Vue {
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
-  @Prop() id: Number;
-  @CustomerOrderModule.Action showOrderInfo;
+  @Prop() id: Number
 
   private dataSet: Array<any> = [];
   private columns: Array<any> = []
@@ -42,7 +38,7 @@ export default class CustomerInfoOrderRecord extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => this.showOrderInfo(row.orderId)
+                  // click: () => this.$common.downloadFile(row.fileUrl.row.fileName)
                 }
               },
               "查看详情")
@@ -86,10 +82,10 @@ export default class CustomerInfoOrderRecord extends Vue {
   }
 
   mounted() {
-    this.basicCustomerCenterService.findBasicCustomerOrderList(this.id).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    // this.basicCustomerCenterService.findBasicCustomerOrderList(this.id).subscribe(
+    //   data => this.dataSet = data,
+    //   err => this.$Message.error(err.msg)
+    // )
   }
 
 

@@ -107,7 +107,7 @@ export default class VehicleMaintenance extends Page {
   // 树点击修改事件
   private onEdit(data) {
     switch (data.type) {
-      case CarPropertyType.brand:
+      case CarPropertyType.BRAND:
         this.$dialog.show({
           title: "修改品牌",
           footer: true,
@@ -127,7 +127,7 @@ export default class VehicleMaintenance extends Page {
           }
         })
         break;
-      case CarPropertyType.series:
+      case CarPropertyType.SERIES:
         this.$dialog.show({
           title: "修改车系",
           footer: true,
@@ -151,7 +151,7 @@ export default class VehicleMaintenance extends Page {
         })
 
         break;
-      case CarPropertyType.model:
+      case CarPropertyType.MODEL:
         this.$dialog.show({
           title: "修改车辆",
           footer: true,
@@ -180,7 +180,7 @@ export default class VehicleMaintenance extends Page {
   // 树点击新增事件
   private onAddEdit(data) {
     switch (data.type) {
-      case CarPropertyType.brand:
+      case CarPropertyType.BRAND:
         console.log(data, '车系')
         this.$dialog.show({
           title: "新增车系",
@@ -202,7 +202,7 @@ export default class VehicleMaintenance extends Page {
         })
 
         break;
-      case CarPropertyType.series:
+      case CarPropertyType.SERIES:
         this.$dialog.show({
           title: "添加车辆",
           footer: true,
@@ -224,8 +224,8 @@ export default class VehicleMaintenance extends Page {
 
 
         break;
-      case CarPropertyType.model:
-         this.$Message.error('当前节点不允许操作')
+      case CarPropertyType.MODEL:
+        this.$Message.error('当前节点不允许操作')
         break;
 
       default:
@@ -249,7 +249,7 @@ export default class VehicleMaintenance extends Page {
   // 树点击删除事件
   private ondeleteEdit(data) {
     switch (data.type) {
-      case CarPropertyType.brand:
+      case CarPropertyType.BRAND:
         // 删除品牌
         if (data.children.length !== 0) {
           this.$Message.error('当前不允许删除')
@@ -264,7 +264,7 @@ export default class VehicleMaintenance extends Page {
           })
 
         break;
-      case CarPropertyType.series:
+      case CarPropertyType.SERIES:
         // 删除车系
         if (data.children.length !== 0) {
           this.$Message.error('当前不允许删除')
@@ -279,7 +279,7 @@ export default class VehicleMaintenance extends Page {
           })
 
         break;
-      case CarPropertyType.model:
+      case CarPropertyType.MODEL:
         // 删除车型
         this.basicCarManageService.deleteCarModel(data.id)
           .subscribe(data => {
@@ -291,14 +291,14 @@ export default class VehicleMaintenance extends Page {
         break;
 
       default:
-       this.$Message.error('当前节点不允许操作')
+        this.$Message.error('当前节点不允许操作')
         break;
     }
   }
 
   // 点击树当前节点 
   private onClickNode(data) {
-    if (data.type === CarPropertyType.model) {
+    if (data.type === CarPropertyType.MODEL) {
       this.carId = data.id
     } else {
       this.carId = 0
