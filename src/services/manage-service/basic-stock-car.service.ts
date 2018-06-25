@@ -7,22 +7,9 @@ export class BasicStockCarService {
   private netService: NetService;
 
   /**
-   * 根据车型ID查找库存分页列表
-   * @param modelId 
-   */
-  @Debounce()
-  findBasicStockByModelId(modelId) {
-    return this.netService.send({
-      server: manageService.basicStockCarManageController.findBasicStockByModelId,
-      append: modelId,
-      loading: true
-    })
-  }
-
-  /**
-   * 
-   * @param model 
-   * @param page 
+   * 车辆库存列表
+   * @param model 查询参数实体
+   * @param page 分页参数实体
    */
   @Debounce()
   findAllStockCarList(model, page) {
@@ -52,6 +39,22 @@ export class BasicStockCarService {
         stockCarNo: data.stockCarNo,
         stockEngineNo: data.stockEngineNo,
         supplierId: data.supplierId,
+      },
+      loading: true
+    })
+  }
+
+  /**
+   * 修改库存状态
+   * @param data 
+   */
+  @Debounce()
+  editCsrStockStatus(data) {
+    return this.netService.send({
+      server: manageService.basicStockCarManageController.editCsrStockStatus,
+      data: {
+        id: data.id,
+        stockStatus: data.stockStatus
       },
       loading: true
     })

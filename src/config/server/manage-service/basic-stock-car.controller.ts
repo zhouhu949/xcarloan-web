@@ -49,14 +49,5 @@ export default{
     controller: CONTROLLER,
     action: "findBasicStockById",
     type: requestType.Get
-  },
-  /**
-   * 根据车型ID查找库存
-   */
-  findBasicStockByModelId:{
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: "findBasicStockByModelId",
-    type: requestType.Get
   }
 }

@@ -42,7 +42,7 @@
         <i-icon type="ios-cloud-upload"></i-icon>
         应用主图
       </a>
-      <upload-voucher v-model="carMainPhotos" :transfer="true" ref="upload-voucher"></upload-voucher>
+      <upload-voucher v-model="carMainPhotos" :transfer="true" ref="upload-voucher" :isShowUpload="!isView" :hiddenDelete="isView"></upload-voucher>
       <!-- <upload-voucher :hiddenUpload="isView" :hiddenDelete="!isView" @financeUploadResources="list => carMainPhotos = list" :pictureResource="carMainPhotos" ref="main-pic"></upload-voucher> -->
     </i-card>
     <i-card title="车型介绍">

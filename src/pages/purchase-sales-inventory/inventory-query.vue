@@ -32,11 +32,12 @@
 <script lang="ts">
 import Page from "~/core/page";
 import Component from "vue-class-component";
+import DataTree from "~/components/common/data-tree.vue";
+import CarParams from "~/components/base-data/car-params.vue";
+import ModifyBasicStockCar from "~/components/purchase-sales-inventory/modify-basic-stock-car.vue";
 import { Layout } from "~/core/decorator";
 import { Action, Getter, namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-import ModifyBasicStockCar from "~/components/purchase-sales-inventory/modify-basic-stock-car.vue";
-import DataTree from "~/components/common/data-tree.vue";
 import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
 import { BasicStockCarService } from "~/services/manage-service/basic-stock-car.service";
 import { PageService } from "~/utils/page.service";
@@ -68,7 +69,7 @@ export default class InventoryQuery extends Page {
   // 查询参数实体
   private queryParamsModel = {
     modelId: 0,
-    supplierId: ''
+    supplierId: ""
   };
 
   created() {
@@ -78,7 +79,35 @@ export default class InventoryQuery extends Page {
     this.dataTree = this.$refs["data-tree"] as DataTree;
     //
     this.inventoryColumns = [
-       {
+      {
+        title: "操作",
+        minWidth: this.$common.getColumnWidth(5),
+        width: 160,
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("div", [
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.onGetCarParams(row);
+                  }
+                }
+              },
+              "查看"
+            )
+          ]);
+        }
+      },
+
+      {
         align: "center",
         editable: true,
         title: "供应商名称",
@@ -112,7 +141,8 @@ export default class InventoryQuery extends Page {
         title: "库存状态",
         key: "stockStatus",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) => h('p', {}, this.$filter.dictConvert(row.stockStatus))
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.stockStatus))
       },
       {
         align: "center",
@@ -120,7 +150,8 @@ export default class InventoryQuery extends Page {
         title: "是否供应商放款",
         key: "hasSupplierLoan",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) => h('p', {}, this.$filter.dictConvert(row.hasSupplierLoan))
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.hasSupplierLoan))
       }
     ];
   }
@@ -141,12 +172,12 @@ export default class InventoryQuery extends Page {
   }
 
   /**
-   *
+   * 库存操作
    * @param val
    */
   onStockCarOperate(val?: Object) {
     this.$dialog.show({
-      title: val ? "维护库存车辆":"新增库存车辆",
+      title: val ? "维护库存" : "新增库存",
       footer: true,
       onOk: modifyBasicStockCar => {
         return modifyBasicStockCar.submit().then(v => {
@@ -159,6 +190,23 @@ export default class InventoryQuery extends Page {
           props: {
             modelId: this.modelId,
             stockCarData: val
+          }
+        })
+    });
+  }
+
+  /**
+   * 获取车型信息
+   */
+  onGetCarParams(val:Object) {
+    this.$dialog.show({
+      title: "查看车型信息",
+      footer: true,
+      render: h =>
+        h(CarParams, {
+          props: {
+            carId: this.modelId,
+            isView: true
           }
         })
     });

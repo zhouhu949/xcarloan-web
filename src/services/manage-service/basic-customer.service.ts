@@ -9,6 +9,7 @@ export class BasicCustomerService {
   /**
    * 根据ID查找客户
    */
+  @Debounce()
   findCustomerById(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.findCustomerById,
@@ -18,12 +19,29 @@ export class BasicCustomerService {
   /**
    * 客户银行卡信息
    */
+  @Debounce()
   findCustomerBankInfo(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerBankInfo,
       data: {
         customerId: customerId
       }
+    })
+  }
+  /**
+   * 查询客户列表
+   * @param model 查询参数实体
+   * @param page 分页实体
+   */
+  @Debounce()
+  findAllCustomerList(model,page) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findAllCustomerList,
+      data: {
+        customerName: model.customerName
+      },
+      page:page,
+      loading:true,
     })
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <section class="component upload-voucher">
     <div class="row image-container">
-      <div class="modal-item-upload" v-show="!hiddenUpload">
+      <div class="modal-item-upload" v-show="!hiddenUpload && isShowUpload">
         <div class="modal-item-upload-div" @click="showFileUpload">
           <Icon type="plus-circled" class="modal-item-upload-icon" color="#265ea2" size="40"></Icon>
           <h2 class="modal-item-upload-add">点击添加附件</h2>
@@ -40,6 +40,12 @@ export default class UploadVoucher extends Vue {
     default: false
   })
   hiddenDelete: boolean;
+
+  @Prop({
+    type: Boolean,
+    default: true
+  })
+  isShowUpload: boolean;
 
   @Model("on-resource-change", {
     default: () => []

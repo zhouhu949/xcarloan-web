@@ -21,7 +21,14 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerBankInfo',
     type: requestType.Get
+  },
+  /**
+   * 客户列表
+   */
+  findAllCustomerList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findAllCustomerList',
+    type: requestType.Get
   }
- 
-
 }
