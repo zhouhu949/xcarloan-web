@@ -6,7 +6,7 @@
     </div>
     <div class="right">
       <div class="component-title" v-show="currentNode.component">{{currentNode.title}}</div>
-      <component :is="currentNode.component" :id="customerId"></component>
+      <component :is="currentNode.component" :id="orderId"></component>
     </div>
   </section>
 </template>
@@ -29,7 +29,7 @@ const ORDER_BASE_COMPONENT = [
   { id: 5, pid: 0, title: "还款计划", component: "OrderInfoRepayPlan" },
   { id: 6, pid: 0, title: "操作记录", component: "OrderInfoRecord" },
   { id: 7, pid: 0, title: "财务情况" },
-  { id: 8, pid: 0, title: "客户信息" },
+  { id: 8, pid: 0, title: "客户资料", component: "OrderInfoCustomerList" },
   // 二级目录
   { id: 1071, pid: 7, title: "收款记录", component: "OrderInfoBaseFinanceReceipt" },
   { id: 1072, pid: 7, title: "放款记录", component: "OrderInfoBaseFinanceLoan" },

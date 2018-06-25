@@ -12,13 +12,27 @@ export enum CarPropertyType {
   /**
    * 品牌
    */
-  brand,
+  BRAND,
   /**
    * 系列
    */
-  series,
+  SERIES,
   /**
    * 车型
    */
-  model
+  MODEL
+}
+
+/**
+ * 客户详情 | 订单详情
+ */
+export enum InfoCompontentType {
+  /**
+   * 客户详情
+   */
+  CUSTOMER,
+  /**
+   * 订单详情
+   */
+  ORDER
 }

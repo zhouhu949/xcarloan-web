@@ -1,4 +1,4 @@
-<!--黑白灰名单-->
+<!--订单记录-->
 <template>
   <section class="component customer-info-order-record">
     <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
@@ -11,11 +11,15 @@ import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
+import { namespace } from "vuex-class";
+
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Component({})
 export default class CustomerInfoOrderRecord extends Vue {
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
-  @Prop() id: Number
+  @Prop() id: Number;
+  @CustomerOrderModule.Action showOrderInfo;
 
   private dataSet: Array<any> = [];
   private columns: Array<any> = []
@@ -38,7 +42,7 @@ export default class CustomerInfoOrderRecord extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  // click: () => this.$common.downloadFile(row.fileUrl.row.fileName)
+                  click: () => this.showOrderInfo(row.orderId)
                 }
               },
               "查看详情")

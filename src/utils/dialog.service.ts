@@ -1,8 +1,11 @@
 import validator from 'async-validator'
 import DialogBox from '~/components/common/dialog-box.vue'
 import Vue from 'vue'
+import Dialog from '~/core/dialog';
+
 
 export class DialogService {
+  private static instances = []
   /**
    * 显示弹出框
    * @param type 
@@ -73,14 +76,26 @@ export class DialogService {
     const modal: any = Instance.$children[0];
 
     modal.remove = () => {
+      let index = DialogService.instances.indexOf(x => x === modal)
+      DialogService.instances.splice(index, 1)
       modal.$parent.remove()
     }
+
+    DialogService.instances.push(modal)
 
     return modal
   }
 
   remove(modal) {
+    let index = DialogService.instances.indexOf(x => x === modal)
+    DialogService.instances.splice(index, 1)
     modal.visible = false;
     modal.$parent.remove();
+  }
+
+  public static clear() {
+    DialogService.instances.forEach(modal => {
+      modal.remove()
+    })
   }
 }

@@ -25,6 +25,7 @@ import basicCustomHouseController from "./basic-customer-house.controller";
 import basicPersonalJobController from "./basic-customer-job.controller";
 import basicCustomContactController from "./basic-customer-contact.controller";
 import basicCustomerDataController from "./basic-customer-data.controller";
+import basicCustomerOrderController from "./basic-customer-order.controller";
 
 export const manageService = {
   sysOrgController,
@@ -53,5 +54,6 @@ export const manageService = {
   basicCustomHouseController,
   basicPersonalJobController,
   basicCustomContactController,
-  basicCustomerDataController
+  basicCustomerDataController,
+  basicCustomerOrderController
 }
