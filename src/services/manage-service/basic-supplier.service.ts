@@ -9,9 +9,9 @@ export class BasicSupplierService {
    * 查询供应商数据
    */
   @Debounce()
-  queryBasicSupplier(data, page) {
+  queryBasicSupplierPage(data, page) {
     return this.netService.send({
-      server: manageService.basicSupplierController.queryBasicSupplier,
+      server: manageService.basicSupplierController.queryBasicSupplierPage,
       data: {
         supplierName: data.name
       },

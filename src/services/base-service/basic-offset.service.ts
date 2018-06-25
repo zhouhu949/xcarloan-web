@@ -100,10 +100,9 @@ export class BasicOffsetService {
    * @param orgId 机构id
    */
   @Debounce()
-  findBasicOffsetByOrg(orgId) {
+  findBasicOffsetByOrg() {
     return this.netService.send({
       server: manageService.basicOffsetController.findBasicOffsetByOrg,
-      append: orgId,
       loading: true
     })
   }
