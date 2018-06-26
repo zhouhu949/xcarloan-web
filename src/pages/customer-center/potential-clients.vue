@@ -1,6 +1,7 @@
 <template>
   <section class="page potential-clients">
     <page-header title="意向客户" hidden-print hidden-export>
+      <command-button label="添加意向客户" @click="onCreatePotentialClick"></command-button>
     </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
@@ -20,6 +21,7 @@ import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import CustomerInfo from "~/components/customer-center/customer-info.vue";
 import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -141,6 +143,18 @@ export default class PotentialClients extends Page {
         data => (this.dataSet = data),
         err => this.$Message.error(err.msg)
       );
+  }
+
+  private onCreatePotentialClick() {
+    this.$dialog.show({
+      title: "新增意向客户",
+      width: 1050,
+      render: h => h(CustomerInfo, {
+        props: {
+          edit: true
+        }
+      })
+    })
   }
 
 }

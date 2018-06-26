@@ -6,7 +6,7 @@
     </div>
     <div class="right">
       <div class="component-title" v-show="currentNode.component">{{currentNode.title}}</div>
-      <component :is="currentNode.component" :id="customerId"></component>
+      <component :is="currentNode.component" :edit="edit" :id="customerId"></component>
     </div>
   </section>
 </template>
@@ -46,10 +46,9 @@ export default class CustomerInfo extends Vue {
   /**
    * 客户ID
    */
-  @Prop({
-    required: true,
-    type: Number
-  }) customerId
+  @Prop() customerId: Number
+
+  @Prop() edit: Boolean
 
   /**
    * 生成树数据

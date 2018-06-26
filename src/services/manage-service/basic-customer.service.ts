@@ -1,6 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { manageService } from '~/config/server/manage-service'
+import { FilterService } from '~/utils/filter.service';
 
 export class BasicCustomerService {
   @Inject(NetService)
@@ -34,14 +35,31 @@ export class BasicCustomerService {
    * @param page 分页实体
    */
   @Debounce()
-  findAllCustomerList(model,page) {
+  findAllCustomerList(model, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.findAllCustomerList,
       data: {
         customerName: model.customerName
       },
-      page:page,
-      loading:true,
+      page: page,
+      loading: true,
+    })
+  }
+
+  /**
+   * 新增客户
+   */
+  @Debounce()
+  addBasicCustomer(data) {
+    let result = Object.assign({}, data)
+    console.log(result,'123')
+    result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicCustomer,
+      data: {
+        customerName: result
+      },
+      loading: true,
     })
   }
 }

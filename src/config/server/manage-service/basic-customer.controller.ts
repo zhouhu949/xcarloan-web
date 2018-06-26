@@ -16,7 +16,7 @@ export default {
   /**
    * 客户银行卡信息
    */
-  getCustomerBankInfo:{
+  getCustomerBankInfo: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getCustomerBankInfo',
@@ -30,5 +30,14 @@ export default {
     controller: CONTROLLER,
     action: 'findAllCustomerList',
     type: requestType.Get
+  },
+  /**
+   * 新增客户
+   */
+  addBasicCustomer: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicCustomer',
+    type: requestType.Post
   }
 }
