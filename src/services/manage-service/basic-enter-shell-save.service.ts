@@ -24,4 +24,17 @@ export class BasicEnterShellSaveService {
       loading: true
     })
   }
+
+  /**
+   * 查询订单车辆详情
+   * @param orderId 订单ID
+   */
+  @Debounce()
+  getOrderCarById(orderId) {
+    return this.netService.send({
+      server: manageService.basicEnterShellSaveController.getOrderCarById,
+      append: orderId,
+      loading: true
+    })
+  }
 }

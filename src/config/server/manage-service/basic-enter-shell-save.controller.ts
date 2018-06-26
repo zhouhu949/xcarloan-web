@@ -12,5 +12,14 @@ export default {
     controller: CONTROLLER,
     action: "queryOutSideList",
     type: requestType.Get
+  },
+  /**
+   * 获取订单车辆详情
+   */
+  getOrderCarById: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: "getOrderCarById",
+    type: requestType.Get
   }
 }

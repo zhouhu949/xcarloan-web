@@ -27,6 +27,7 @@
 import Page from "~/core/page";
 import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
+import OrderCarDetails from "~/components/purchase-sales-inventory/order-car-details.vue";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { BasicEnterShellSaveService } from "~/services/manage-service/basic-enter-shell-save.service";
@@ -216,7 +217,18 @@ export default class SalesCarCheckout extends Page {
   /**
    *获取车辆信息
    */
-  onGetVehicleInfo(row) {}
+  onGetVehicleInfo(row) {
+    this.$dialog.show({
+      title: "详情",
+      footer: true,
+      render: h =>
+        h(OrderCarDetails, {
+          props: {
+            orderId: row.orderId,
+          }
+        })
+    });
+  }
 }
 </script>
 

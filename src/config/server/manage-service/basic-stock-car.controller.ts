@@ -1,23 +1,23 @@
 // 库存管理
 import { requestType } from '~/config/enum.config'
 
-const SERVICE ="service-manage";
-const CONTROLLER ="basicStockCarManageController";
+const SERVICE = "service-manage";
+const CONTROLLER = "basicStockCarManageController";
 
-export default{
+export default {
   /**
    * 车辆库存列表
    */
-  findAllStockCarList:{
-    service:SERVICE,
-    controller:CONTROLLER,
-    action:"findAllStockCarList",
+  findAllStockCarList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: "findAllStockCarList",
     type: requestType.Get
   },
   /**
    * 新增库存
    */
-  addBasicStock:{
+  addBasicStock: {
     service: SERVICE,
     controller: CONTROLLER,
     action: "addBasicStock",
@@ -26,7 +26,7 @@ export default{
   /**
    * 修改库存状态
    */
-  editCsrStockStatus:{
+  editCsrStockStatus: {
     service: SERVICE,
     controller: CONTROLLER,
     action: "editCsrStockStatus",
@@ -35,7 +35,7 @@ export default{
   /**
    * 修改供应商是否放款
    */
-  editCsrSupplierLoan:{
+  editCsrSupplierLoan: {
     service: SERVICE,
     controller: CONTROLLER,
     action: "editCsrSupplierLoan",
@@ -44,10 +44,19 @@ export default{
   /**
    * 根据库存ID查找库存
    */
-  findBasicStockById:{
+  findBasicStockById: {
     service: SERVICE,
     controller: CONTROLLER,
     action: "findBasicStockById",
+    type: requestType.Get
+  },
+  /**
+   * 修改库存状态为已提车
+   */
+  editCarStockStatusYtc: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: "editCarStockStatusYtc",
     type: requestType.Get
   }
 }
