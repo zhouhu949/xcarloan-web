@@ -28,6 +28,7 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
 import { BasicStockCarService } from "~/services/manage-service/basic-stock-car.service";
+import { BasicEnterShellSaveService } from "~/services/manage-service/basic-enter-shell-save.service";
 import { Form } from "iview";
 import { State, Getter, namespace } from "vuex-class";
 
@@ -37,6 +38,8 @@ export default class ModifyBasicStockCar extends Vue {
   private basicStockCarService: BasicStockCarService;
   @Dependencies(BasicSupplierService)
   private basicSupplierService: BasicSupplierService;
+  @Dependencies(BasicEnterShellSaveService)
+  private basicEnterShellSaveService: BasicEnterShellSaveService;
 
   @Prop() stockCarData;
   @Prop({
@@ -93,22 +96,9 @@ export default class ModifyBasicStockCar extends Vue {
    *
    */
   mounted() {
-    this.getBasicSupplier().then(val => {
-      //回调初始化编辑数据
-      if (this.stockCarData) {
-        this.model.id = this.stockCarData.id;
-        this.model.modelId = this.stockCarData.modelId;
-        this.model.remark = this.stockCarData.remark;
-        this.model.stockCarColor = this.stockCarData.stockCarColor;
-        this.model.stockCarNo = this.stockCarData.stockCarNo;
-        this.model.stockEngineNo = this.stockCarData.stockEngineNo;
-        this.model.supplierId =
-          this.stockCarData.supplierId > 0 ? this.stockCarData.supplierId : "";
-      } else {
-        //车型
-        this.model.modelId = this.modelId;
-      }
-    });
+    this.getBasicSupplier();
+    //车型
+    this.model.modelId = this.modelId;
   }
 
   /**
@@ -141,7 +131,21 @@ export default class ModifyBasicStockCar extends Vue {
    * 修改冲抵策略
    */
   private modifyBasicStock() {
-    return new Promise((resolve, reject) => {});
+    return new Promise((resolve, reject) => {
+      // 参数
+      let model={ 
+        orderId: this.stockCarData.orderId,
+        supplierId: this.model.supplierId,
+        stockCarNo: this.model.stockCarNo,
+        stockEngineNo: this.model.stockEngineNo,
+        stockCarColor: this.model.stockCarColor,
+        remark: this.model.remark,
+      };
+      
+      this.basicEnterShellSaveService
+        .addOrderCarStock(model)
+        .subscribe(data => resolve(true), err => reject(err));
+    });
   }
 
   /**
@@ -156,6 +160,7 @@ export default class ModifyBasicStockCar extends Vue {
         let result = this.stockCarData
           ? this.modifyBasicStock()
           : this.addBasicStock();
+
         result
           .then(v => {
             this.$Message.success("操作成功！");

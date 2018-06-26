@@ -1,48 +1,42 @@
 <!-- 修改库存车辆 -->
 <template>
   <section>
-    <Row type="flex" style="margin:10px 0;">
-      <i-col span="12">
-        <div style="display:table;">
-          <label style="width:100px;text-align:right;display:table-cell;">客户姓名：</label>
-          <div style="display:inline-block;">{{ model.customerName }}</div>
-        </div>
-      </i-col>
-      <i-col span="12">
-        <div style="display:block;">
-          <label style="width:100px;text-align:right;display:inline-block;">车型名称：</label>
-          <div style="display:inline-block;">{{ model.modelName }}</div>
-        </div>
-      </i-col>
-    </Row>
-    <Row style="margin:10px 0;">
-      <i-col span="12">
-        <div style="display:block;">
-          <label style="width:100px;text-align:right;display:inline-block;">车辆颜色：</label>
-          <div style="display:inline-block;">{{ model.modelColors }}</div>
-        </div>
-      </i-col>
-      <i-col span="12">
-        <div style="display:table;">
-          <label style="width:100px;text-align:right;display:table-cell;">状态：</label>
-          <div style="display:inline-block;">{{ $filter.dictConvert(model.stockStatus) }}</div>
-        </div>
-      </i-col>
-    </Row>
-    <Row style="margin:10px 0;">
-      <i-col span="12">
-        <div style="display:table;">
-          <label style="width:100px;text-align:right;display:table-cell;">车辆订单描述：</label>
-          <div style="display:inline-block;">{{ model.orderCarDesc }}</div>
-        </div>
-      </i-col>
-      <i-col span="12">
-        <div style="display:table;">
-          <label style="width:100px;text-align:right;display:table-cell;">车辆订单参数：</label>
-          <div style="display:inline-block;">{{ model.orderCarParamDesc }}</div>
-        </div>
-      </i-col>
-    </Row>
+<i-form :label-width="90" ref="form" :model="model">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="客户姓名" prop="customerName">
+            <i-input v-model="model.customerName" readonly></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车型名称" prop="modelName">
+            <i-input v-model="model.modelName" readonly></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车辆颜色" prop="modelColors">
+            <i-input v-model="model.modelColors"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="状态" prop="carSize">
+          <i-select v-model="model.stockStatus">
+            <i-option v-for="{value,label} in $dict.getDictData(10014)" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车型参数描述" prop="orderCarDesc">
+            <i-input v-model="model.orderCarDesc"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车型描述" prop="orderCarParamDesc">
+            <i-input v-model="model.orderCarParamDesc"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
   </section>
 </template>
 

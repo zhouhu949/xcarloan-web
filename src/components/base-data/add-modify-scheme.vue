@@ -102,7 +102,7 @@ import Component from 'vue-class-component';
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from '~/core/decorator';
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
-import { BasicOffsetService } from '~/services/base-service/basic-offset.service'
+import { BasicOffsetService } from '~/services/manage-service/basic-offset.service'
 import { Form } from "iview";
 
 @Component({

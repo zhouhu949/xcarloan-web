@@ -94,7 +94,14 @@ export default class SalesCarCheckout extends Page {
                     },
                     on: {
                       click: () => {
-                        this.onPickUp(row);
+                        this.$Modal.confirm({
+                          title: "提示",
+                          content: "确定执行提车操作吗？",
+                          transfer: false,
+                          onOk: () => {
+                            this.onPickUp(row);
+                          }
+                        });
                       }
                     }
                   },
@@ -205,7 +212,7 @@ export default class SalesCarCheckout extends Page {
    * 提车操作
    */
   onPickUp(data) {
-    this.basicStockCarService.editCsrStockStatus({ id: data.stockId, stockStatus: data.stockStatus }).subscribe(
+    this.basicStockCarService.updateCarStockStatus(data.stockId).subscribe(
       data => {
         this.$Message.success("操作成功！");
         this.refreshEnterShellSave();
@@ -224,7 +231,7 @@ export default class SalesCarCheckout extends Page {
       render: h =>
         h(OrderCarDetails, {
           props: {
-            orderId: row.orderId,
+            orderId: row.orderId
           }
         })
     });

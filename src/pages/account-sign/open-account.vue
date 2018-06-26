@@ -55,7 +55,7 @@ export default class OpenAccount extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           //10093:已开户；10094:未开户
-          if (row.accountStatus === 10093) {
+          if (row.accountStatus === 10094) {
             return h("div", [
               h(
                 "i-button",
@@ -75,7 +75,7 @@ export default class OpenAccount extends Page {
                 "开户"
               )
             ]);
-          } else if (row.accountStatus === 10094) {
+          } else if (row.accountStatus === 10093) {
             return h("div", [
               h(
                 "i-button",
@@ -127,28 +127,36 @@ export default class OpenAccount extends Page {
         editable: true,
         title: "客户类型",
         key: "customerType",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.customerType))
       },
       {
         align: "center",
         editable: true,
         title: "教育程度",
         key: "education",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.education))
       },
       {
         align: "center",
         editable: true,
         title: "居住状况",
         key: "homeStatus",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.homeStatus))
       },
       {
         align: "center",
         editable: true,
         title: "是否接受勘查",
         key: "houseProspecting",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.houseProspecting))
       },
       {
         align: "center",
@@ -162,7 +170,9 @@ export default class OpenAccount extends Page {
         editable: true,
         title: "身份证有效期类型",
         key: "idCardValidityPeriodType",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.idCardValidityPeriodType))
       },
       {
         align: "center",
@@ -183,7 +193,9 @@ export default class OpenAccount extends Page {
         editable: true,
         title: "客户类别",
         key: "personalProfile",
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.personalProfile))
       },
       {
         align: "center",
@@ -220,12 +232,24 @@ export default class OpenAccount extends Page {
     this.$dialog.show({
       title: "开户",
       footer: true,
+      onOk: customerBankList => {
+        return customerBankList
+          .submit()
+          .then(v => {
+            if (v) this.refreshOpenAccount();
+            else this.$Message.warning("请选择一行数据！");
+            return v;
+          })
+          .catch(err => {
+            this.$Message.error(err.msg);
+          });
+      },
       render: h =>
         h(CustomerBankList, {
           props: {
             customerId: data.id,
             // 未开户
-            isView: data.accountStatus === 10094
+            isView: data.accountStatus === 10093
           }
         })
     });

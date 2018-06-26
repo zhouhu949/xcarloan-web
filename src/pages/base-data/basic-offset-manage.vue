@@ -49,7 +49,7 @@ import ModifyBasicOffsetItem from "~/components/base-data/modify-basic-offset-it
 import { Form } from "iview";
 import { Dependencies } from "~/core/decorator";
 import { BasicExpenseService } from "~/services/manage-service/basic-expense.service";
-import { BasicOffsetService } from "~/services/base-service/basic-offset.service";
+import { BasicOffsetService } from "~/services/manage-service/basic-offset.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
 

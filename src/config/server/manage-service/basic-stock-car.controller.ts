@@ -51,12 +51,12 @@ export default {
     type: requestType.Get
   },
   /**
-   * 修改库存状态为已提车
+   * 修改库存状态
    */
-  editCarStockStatusYtc: {
+  updateCarStockStatus: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: "editCarStockStatusYtc",
-    type: requestType.Get
+    action: "updateCarStockStatus",
+    type: requestType.Put
   }
 }

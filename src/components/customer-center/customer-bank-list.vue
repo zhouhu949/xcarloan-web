@@ -1,10 +1,7 @@
 <!-- 客户银行卡列表 -->
 <template>
   <section class="page">
-    <page-header title="客户银行卡列表" hidden-print hidden-export>
-      <command-button label="开户" @click="onCutomerBankOperate"  v-show="!isView"></command-button>
-    </page-header>
-    <data-box :columns="cutomerBankColumns" :data="cutomerBankDataSet" :highlightRow="true" @on-current-change="onCurrentCutomerBankChange" @on-selection-change="onSelectionChange" ref="databox"></data-box>
+    <data-box :height="300" :columns="cutomerBankColumns" :data="cutomerBankDataSet" :highlightRow="true" @on-current-change="onCurrentCutomerBankChange" ref="databox"></data-box>
   </section>
 </template>
 
@@ -89,25 +86,19 @@ export default class CutomerBankList extends Vue {
    */
   onCurrentCutomerBankChange(currentRow, oldRow) {
     this.currentCustomerBankRow = currentRow;
-    console.log(this.currentCustomerBankRow);
-  }
-
-  onSelectionChange(selection){
-    console.log(selection);
   }
 
   /**
    * 开户操作
    */
-  onCutomerBankOperate() {
-    if (this.currentCustomerBankRow) {
+  submit() {
+    return new Promise((resolve, reject) => {
+      if (!this.currentCustomerBankRow) return resolve(false);
+
       this.basicCustomerAccountService
         .customerOpenAccount(this.currentCustomerBankRow)
-        .subscribe(
-          data => this.$Message.success("操作成功！"),
-          err => this.$Message.error(err.msg)
-        );
-    }
+        .subscribe(data => resolve(true), err => reject(err));
+    });
   }
 }
 </script>

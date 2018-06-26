@@ -20,7 +20,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { BasicOffsetService } from "~/services/base-service/basic-offset.service";
+import { BasicOffsetService } from "~/services/manage-service/basic-offset.service";
 import { Form } from "iview";
 import { State, Getter, namespace } from "vuex-class";
 

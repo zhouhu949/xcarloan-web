@@ -21,5 +21,14 @@ export default {
     controller: CONTROLLER,
     action: "getOrderCarById",
     type: requestType.Get
+  },
+  /**
+   * 外采时添加库存
+   */
+  addOrderCarStock: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: "addOrderCarStock",
+    type: requestType.Post
   }
 }

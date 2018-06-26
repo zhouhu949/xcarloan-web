@@ -44,4 +44,17 @@ export class BasicCustomerService {
       loading:true,
     })
   }
+
+  /**
+   * 获取客户签约列表
+   * @param page 分页参数实体
+   */
+  @Debounce()
+  getCustomerSignList(page){
+    return this.netService.send({
+      server: manageService.basicCustomerController.getCustomerSignList,
+      page: page,
+      loading: true,
+    })
+  }
 }

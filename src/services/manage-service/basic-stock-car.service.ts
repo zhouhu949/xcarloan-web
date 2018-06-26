@@ -59,4 +59,17 @@ export class BasicStockCarService {
       loading: true
     })
   }
+
+  /**
+   * 修改库存状态
+   * @param data 
+   */
+  @Debounce()
+  updateCarStockStatus(id) {
+    return this.netService.send({
+      server: manageService.basicStockCarManageController.updateCarStockStatus,
+      append: id,
+      loading: true
+    })
+  }
 }

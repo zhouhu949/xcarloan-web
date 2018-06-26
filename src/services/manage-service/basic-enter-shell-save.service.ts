@@ -18,7 +18,7 @@ export class BasicEnterShellSaveService {
       data: {
         orderNo: model.orderNo,
         customerName: model.customerName,
-        sctockStatus: model.sctockStatus
+        stockStatus: model.stockStatus
       },
       page: page,
       loading: true
@@ -34,6 +34,26 @@ export class BasicEnterShellSaveService {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.getOrderCarById,
       append: orderId,
+      loading: true
+    })
+  }
+
+  /**
+   * 外采时添加库存
+   * @param data 实体模型
+   */
+  @Debounce()
+  addOrderCarStock(data) {
+    return this.netService.send({
+      server: manageService.basicEnterShellSaveController.addOrderCarStock,
+      data: {
+        orderId: data.orderId,
+        supplierId: data.supplierId,
+        stockCarNo: data.stockCarNo,
+        stockEngineNo: data.stockEngineNo,
+        stockCarColor: data.stockCarColor,
+        remark: data.remark,
+      },
       loading: true
     })
   }
