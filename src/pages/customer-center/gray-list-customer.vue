@@ -1,6 +1,7 @@
 <template>
   <section class="page gray-list-customer">
     <page-header title="灰名单客户" hidden-print hidden-export>
+      <command-button label="移出灰名单" @click="onRemoveGrayListClick"></command-button>
     </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
@@ -19,7 +20,9 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+const CustomerOrderModule = namespace("customerOrderSpace")
 @Layout('workspace')
 @Component({
   components: {}
@@ -27,6 +30,7 @@ import { BasicCustomerCenterService } from "~/services/manage-service/basic-cust
 export default class GrayListCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private columns: any;
   private dataSet: any = [];
@@ -59,13 +63,22 @@ export default class GrayListCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.modifySupplier(row);
+                    this.showCustomerInfo(row.id)
+                    this.$dialog.show({
+                      width: 1050,
+                      render: h => h(OrderCustomerInfo)
+                    })
                   }
                 }
               },
               "查看")
           ])
         }
+      },
+      {
+        align: "center",
+        type: "selection",
+        width: 60
       },
       {
         align: "center",
@@ -122,6 +135,14 @@ export default class GrayListCustomer extends Page {
     ];
   }
 
+  private onRemoveGrayListClick() {
+    let dataBox: any = this.$refs['databox'];
+    let selection = dataBox.getCurrentSelection()
+    if (!selection.length) {
+      this.$Message.info('请选择需要移除的数据')
+      return
+    }
+  }
 
   /**
    * 获取灰名单客户列表
