@@ -17,6 +17,16 @@ export class BasicProductService {
       data: data,
       loading: true
     })
+  }/**
+   * 编辑车型产品
+   */
+  @Debounce()
+  editBasicProduct(data) {
+    return this.netService.send({
+      server: manageService.basicProductController.editBasicProduct,
+      data: data,
+      loading: true
+    })
   }
   /**
    * 删除车型产品
@@ -25,9 +35,7 @@ export class BasicProductService {
   deleteBasicProduct(id) {
     return this.netService.send({
       server: manageService.basicProductController.deleteBasicProduct,
-      data: {
-        id: id
-      },
+      append: id,
       loading: true
     })
   }
@@ -71,7 +79,30 @@ export class BasicProductService {
     return this.netService.send({
       server: manageService.basicProductController.findBasicProductList,
       append: carId,
-      page
+      page,
+      loading: true
+    })
+  }
+  /**
+   * 发布车型产品
+   */
+  @Debounce()
+  publishedBasicProduct(productId) {
+    return this.netService.send({
+      server: manageService.basicProductController.publishedBasicProduct,
+      append: productId,
+      loading: true
+    })
+  }
+  /**
+   * 取消发布车型产品
+   */
+  @Debounce()
+  cancelPublishedBasicProduct(productId) {
+    return this.netService.send({
+      server: manageService.basicProductController.cancelPublishedBasicProduct,
+      append: productId,
+      loading: true
     })
   }
 }

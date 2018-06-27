@@ -1,14 +1,14 @@
 <template>
   <section class="page product-manage">
     <page-header title="产品管理" hiddenPrint hiddenExport>
-      <command-button label="关联产品"></command-button>
+      <command-button v-show="allowAdd" label="新增产品" @click="addProduct"></command-button>
     </page-header>
     <i-row :gutter="16">
       <i-col :span="6" class="product-table-cell">
         <data-tree :data="carTreeData" @on-select-change="onTreeNodeSelectChange"></data-tree>
       </i-col>
       <i-col :span="18" class="product-table-cell">
-        <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+        <data-box :columns="columns" :data="dataSet" ref="databox" :page="pageService"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -18,11 +18,14 @@
 import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
-import DataTree from "~/components/common/data-tree.vue";
 import { namespace } from "vuex-class";
 import { CarPropertyType } from "~/config/enum.config.ts";
 import { BasicProductService } from "~/services/manage-service/basic-product.service";
 import { PageService } from "~/utils/page.service";
+import DataTree from "~/components/common/data-tree.vue";
+import AddModifyProduct from '~/components/base-data/add-modify-product.vue';
+import productDetail from '~/components/base-data/product-detail.vue';
+import checkRepayScheme from '~/components/base-data/check-repay-scheme.vue';
 
 const CarModule = namespace("carSpace")
 
@@ -39,7 +42,11 @@ export default class ProductManage extends Page {
 
   private columns: any;
   private dataSet: any = [];
-
+  private carId: Number = 0;
+  private carName: String = '';
+  private allowAdd: Boolean = false;
+  private isRelease: Boolean = false;
+  private schemeStatus: Number = 10056;
 
   private model = {
     name: ""
@@ -65,11 +72,12 @@ export default class ProductManage extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.modifySupplier(row);
+                    console.log(row)
+                    row.productStatus === 10056 ? this.publishProduct(row.id) : this.canclePublishProduct(row.id)
                   }
                 }
               },
-              "修改"
+              row.productStatus === 10056 ? '发布' : '取消发布'
             ),
             h(
               "i-button",
@@ -78,11 +86,30 @@ export default class ProductManage extends Page {
                   type: "text"
                 },
                 style: {
-                  color: "#265EA2"
+                  color: row.productStatus === 10056 ? "#265EA2" : "#C1C1C1",
+                  display: row.productStatus === 10056 ? "inline-block" : "none"
                 },
                 on: {
                   click: () => {
-                    // this.deleteSupplier(row);
+                    this.editProduct(row);
+                  }
+                }
+              },
+              "编辑"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: row.productStatus === 10056 ? "#265EA2" : "#C1C1C1",
+                  display: row.productStatus === 10056 ? "inline-block" : "none"
+                },
+                on: {
+                  click: () => {
+                    this.deleteBasicProduct(row.id);
                   }
                 }
               },
@@ -95,30 +122,96 @@ export default class ProductManage extends Page {
       {
         align: "center",
         editable: true,
-        title: "名称",
-        key: "supplierName",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "产品名称",
+        key: "productName",
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row, columns, index }) => {
+          return h(
+            'i-button',
+            {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#3367a7'
+              },
+              on: {
+                click: () => {
+                  this.checkProductDetail(row)
+                }
+              }
+            },
+            row.productName
+          )
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "电话",
-        key: "supplierPhone",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "产品类型",
+        key: "productType",
+        minWidth: this.$common.getColumnWidth(1),
+        render: (h, { row, columns, index }) => {
+          return h('span', {}, this.$dict.getDictName(row.productType))
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "地址",
-        key: "supplierAddress",
-        minWidth: this.$common.getColumnWidth(5)
+        title: "产品发布状态",
+        key: "productStatus",
+        minWidth: this.$common.getColumnWidth(1),
+        render: (h, { row, columns, index }) => {
+          return h('span', {}, this.$dict.getDictName(row.productStatus))
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "备注",
-        key: "remark",
-        minWidth: this.$common.getColumnWidth(6)
+        title: "还款方案",
+        key: "schemeName",
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row, columns, index }) => {
+          return h(
+            'i-button',
+            {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#3367a7'
+              },
+              on: {
+                click: () => {
+                  this.checkRepaySchemeDetail(row.id)
+                }
+              }
+            },
+            row.schemeName
+          )
+        }
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "车型名称",
+        key: "carModelName",
+        minWidth: this.$common.getColumnWidth(3),
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "期数",
+        key: "periods"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "利率",
+        key: "interestRate",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, row.interestRate !== null ? `${row.interestRate * 100}%` : null);
+        }
       }
     ];
   }
@@ -127,14 +220,159 @@ export default class ProductManage extends Page {
    * 车辆树节点发生改变时
    */
   private onTreeNodeSelectChange(data) {
-    if (data.type !== CarPropertyType.MODEL) return
-    let carId = data.id
-    this.basicProductService.findBasicProductList(carId, this.pageService).subscribe(
+    if (data.type !== CarPropertyType.MODEL) {
+      this.allowAdd = false
+      return
+    }
+    this.allowAdd = true
+    this.carId = data.id
+    this.carName = data.name
+    this.basicProductService.findBasicProductList(this.carId, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
   }
-
+  /**
+   * 新增产品
+   */
+  addProduct() {
+    this.$dialog.show({
+      title: '新增产品',
+      footer: true,
+      width: 700,
+      onOk: add => {
+        return add.addProduct().then(v => {
+          if (v) {
+            this.refreshProductList()
+          }
+          return v
+        })
+      },
+      render: h => h(AddModifyProduct, {
+        props: {
+          carId: this.carId,
+          carName: this.carName,
+          productData: {}
+        }
+      })
+    })
+  }
+  /**
+   * 编辑产品
+   */
+  editProduct(productData) {
+    this.$dialog.show({
+      title: '编辑产品',
+      footer: true,
+      width: 700,
+      onOk: modify => {
+        return modify.editProduct().then(v => {
+          if (v) {
+            this.refreshProductList()
+          }
+          return v
+        })
+      },
+      render: h => h(AddModifyProduct, {
+        props: {
+          carId: this.carId,
+          carName: this.carName,
+          productData: productData
+        }
+      })
+    })
+  }
+  /**
+   * 查看产品详情
+   */
+  checkProductDetail(data) {
+    this.$dialog.show({
+      title: '查看产品详情',
+      footer: true,
+      width: 1000,
+      render: h => h(productDetail, {
+        props: {
+          productData: data
+        }
+      })
+    })
+  }
+  /**
+   * 查看还款方案详情
+   */
+  checkRepaySchemeDetail(productId) {
+    this.$dialog.show({
+      title: '查看还款方案详情',
+      render: h => h(checkRepayScheme, {
+        props: {
+          productId: productId
+        }
+      })
+    })
+  }
+  /**
+   * 发布车型产品
+   */
+  publishProduct(productId) {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确定发布此车型产品吗？',
+      onOk: () => {
+        this.basicProductService.publishedBasicProduct(productId).subscribe(val => {
+          this.$Message.success('发布成功！')
+          this.refreshProductList()
+        },
+          err => {
+            this.$Message.error(err.msg)
+          })
+      }
+    })
+  }
+  /**
+   * 取消发布车型产品
+   */
+  canclePublishProduct(productId) {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确定取消发布此车型产品吗？',
+      onOk: () => {
+        this.basicProductService.cancelPublishedBasicProduct(productId).subscribe(val => {
+          this.$Message.success('取消发布成功！')
+          this.refreshProductList()
+        },
+          err => {
+            this.$Message.error(err.msg)
+          })
+      }
+    })
+  }
+  /**
+   * 删除车型产品
+   */
+  deleteBasicProduct(productId) {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确定删除此车型产品吗？',
+      onOk: () => {
+        this.basicProductService.deleteBasicProduct(productId).subscribe(val => {
+          this.$Message.success('删除成功！')
+          this.refreshProductList()
+        },
+          err => {
+            this.$Message.error(err.msg)
+          })
+      }
+    })
+  }
+  /**
+   * 刷新
+   */
+  refreshProductList() {
+    this.basicProductService.findBasicProductList(this.carId, this.pageService).subscribe(
+      data => this.dataSet = data,
+      err => this.$Message.error(err.msg)
+    )
+  }
 }
 </script>
 

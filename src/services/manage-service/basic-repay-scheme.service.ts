@@ -8,11 +8,11 @@ export class RepaySchemeService {
   private netService: NetService
 
   /**
-   * 获取所有还款方案菜单
+   * 获取当前用户下组织机构下所有的还款方案
    */
-  findAllBasicSchemeByAuth() {
+  getAllBasicSchemeByOrgId() {
     return this.netService.send({
-      server: manageService.basicRepaySchemeController.findAllBasicSchemeByAuth,
+      server: manageService.basicRepaySchemeController.getAllBasicSchemeByOrgId,
       loading: true
     })
   }
