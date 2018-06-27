@@ -142,7 +142,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
     this.rules = {
       customerName: [
         { required: true, message: "请填写客户姓名", trigger: "blur" },
-        { validator: this.$validator.chineseName, trigger: "blur" }
+        { validator: this.$validator.nomalStr, trigger: "blur" }
       ],
       customerSex: { required: true, message: "请选择客户性别", trigger: "blur", type: "number" },
       customerPhone: [
@@ -180,7 +180,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
    */
   private modifyCusomter() {
     return new Promise((resolve, reject) => {
-      this.basicCustomerService.addBasicCustomer(this.model).subscribe(
+      this.basicCustomerService.editBasicCustomer(this.model).subscribe(
         data => resolve(),
         err => reject(err)
       )

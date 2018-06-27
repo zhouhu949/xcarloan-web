@@ -71,6 +71,18 @@ export class BasicCustomerService {
       loading: true,
     })
   }
+  /*
+   * 修改客户
+   */
+  editBasicCustomer(data) {
+    let result = Object.assign({}, data)
+    result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
+    return this.netService.send({
+      server: manageService.basicCustomerController.editBasicCustomer,
+      data: result,
+      loading: true,
+    })
+  }
   /**
    * 新增银行卡
    * @param data 
