@@ -1,7 +1,6 @@
 <template>
   <section class="page white-list-customer">
-    <page-header title="白名单客户" hidden-print hidden-export>
-    </page-header>
+    <page-header title="白名单客户" hidden-print hidden-export></page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="客户姓名：">
@@ -9,7 +8,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet"></data-box>
   </section>
 </template>
 
@@ -19,7 +18,9 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+const CustomerOrderModule = namespace("customerOrderSpace")
 @Layout('workspace')
 @Component({
   components: {}
@@ -27,6 +28,7 @@ import { BasicCustomerCenterService } from "~/services/manage-service/basic-cust
 export default class WhiteListCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private columns: any;
   private dataSet: any = [];
@@ -35,6 +37,10 @@ export default class WhiteListCustomer extends Page {
     name: ""
   }
 
+
+  activated() {
+    this.refreshData();
+  }
 
   mounted() {
     this.refreshData();
@@ -59,11 +65,30 @@ export default class WhiteListCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.modifySupplier(row);
+                    this.showCustomerInfo({ id: row.id })
+                    this.$dialog.show({
+                      width: 1050,
+                      render: h => h(OrderCustomerInfo)
+                    })
                   }
                 }
               },
-              "查看")
+              "查看"
+            ),
+            h("i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => this.removeCustomerState(row.id)
+                }
+              },
+              "移出"
+            )
           ])
         }
       },
@@ -122,6 +147,18 @@ export default class WhiteListCustomer extends Page {
     ];
   }
 
+  /**
+   * 移除当前状态
+   */
+  private removeCustomerState(id) {
+    this.basicCustomerCenterService.updateCustomerStatusWhite(id).subscribe(
+      data => {
+        this.$Message.success("操作成功")
+        this.refreshData()
+      },
+      err => this.$Message.error(err.msg)
+    )
+  }
 
   /**
    * 获取白名单客户列表

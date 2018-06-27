@@ -107,4 +107,27 @@ export class BasicCustomerCenterService {
     })
   }
 
+  /**
+   * 白/灰名单移出
+   */
+  updateCustomerStatusWhite(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.updateCustomerStatusWhite,
+      data: {
+        customerId: customerId
+      }
+    })
+  }
+
+  /**
+   * 黑名单移入至意向客户
+   */
+  updateCustomerStatusBlack(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.updateCustomerStatusBlack,
+      data: {
+        customerId: customerId
+      }
+    })
+  }
 }
