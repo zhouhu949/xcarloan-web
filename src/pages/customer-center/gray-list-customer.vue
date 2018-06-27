@@ -63,7 +63,7 @@ export default class GrayListCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    this.showCustomerInfo(row.id)
+                     this.showCustomerInfo({ id: row.id })
                     this.$dialog.show({
                       width: 1050,
                       render: h => h(OrderCustomerInfo)

@@ -19,7 +19,9 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+const CustomerOrderModule = namespace("customerOrderSpace")
 @Layout('workspace')
 @Component({
   components: {}
@@ -27,6 +29,7 @@ import { BasicCustomerCenterService } from "~/services/manage-service/basic-cust
 export default class HistoryCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private columns: any;
   private dataSet: any = [];
@@ -59,7 +62,11 @@ export default class HistoryCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.modifySupplier(row);
+                    this.showCustomerInfo({ id: row.id })
+                    this.$dialog.show({
+                      width: 1050,
+                      render: h => h(OrderCustomerInfo)
+                    })
                   }
                 }
               },

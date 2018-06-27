@@ -64,7 +64,7 @@ export default class BlackListCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    this.showCustomerInfo(row.id)
+                    this.showCustomerInfo({ id: row.id })
                     this.$dialog.show({
                       width: 1050,
                       render: h => h(OrderCustomerInfo)
@@ -137,13 +137,13 @@ export default class BlackListCustomer extends Page {
   }
 
   private onRemoveBlackListClick() {
-    let dataBox:any = this.$refs['databox'];
+    let dataBox: any = this.$refs['databox'];
     let selection = dataBox.getCurrentSelection()
-    if(!selection.length){
+    if (!selection.length) {
       this.$Message.info('请选择需要移除的数据')
       return
     }
-    
+
   }
 
   /**

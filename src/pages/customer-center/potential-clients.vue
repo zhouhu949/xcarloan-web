@@ -21,7 +21,7 @@ import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-import CustomerInfo from "~/components/customer-center/customer-info.vue";
+import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-info-base/modify-customer-info-basedata.vue";
 import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -127,7 +127,8 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
-    this.showCustomerInfo(id)
+    console.log(id,'1')
+    this.showCustomerInfo({ id, enabledEdit: true })
     this.$dialog.show({
       width: 1050,
       render: h => h(OrderCustomerInfo)
@@ -148,12 +149,15 @@ export default class PotentialClients extends Page {
   private onCreatePotentialClick() {
     this.$dialog.show({
       title: "新增意向客户",
+      footer: true,
       width: 1050,
-      render: h => h(CustomerInfo, {
-        props: {
-          edit: true
-        }
-      })
+      onOk: addCustomerInfoBasedata => {
+        return addCustomerInfoBasedata.submit().then(v => {
+          if (v) this.refreshData()
+          return !!v
+        })
+      },
+      render: h => h(ModifyCustomerInfoBasedata)
     })
   }
 

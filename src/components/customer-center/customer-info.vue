@@ -16,10 +16,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import DataTree from "~/components/common/data-tree.vue";
-import { Getter } from "vuex-class";
+import { namespace } from "vuex-class";
 // 页面基础组件
 import BaseComponents from "./customer-info-base/index";
 
+const CustomerOrderModule = namespace("customerOrderSpace")
 const CUSTOMER_BASE_COMPONENT = [
   // 一级目录
   { id: 1, pid: 0, title: "基本资料", component: "CustomerInfoBasedata", default: true },
@@ -47,8 +48,8 @@ export default class CustomerInfo extends Vue {
    * 客户ID
    */
   @Prop() customerId: Number
+  @CustomerOrderModule.State edit;
 
-  @Prop() edit: Boolean
 
   /**
    * 生成树数据

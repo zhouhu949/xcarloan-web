@@ -26,14 +26,19 @@ import { BasicCustomerService } from "~/services/manage-service/basic-customer.s
 export default class CustomerInfoBank extends Vue {
   @Dependencies(BasicCustomerService) private basicCustomerService: BasicCustomerService;
   @Prop() id: Number
+  @Prop() edit:Boolean;
 
   private dataSet: Array<any> = []
 
-  mounted() {
-    this.basicCustomerService.findCustomerBankInfo(this.id).subscribe(
+  private refreshData(){
+     this.basicCustomerService.findCustomerBankInfo(this.id).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
+  }
+
+  mounted() {
+    this.refreshData()
   }
 
 }

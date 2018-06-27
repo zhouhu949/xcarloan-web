@@ -38,9 +38,11 @@ export class ValidatorService {
     // 车牌照正则表达式
     carCardNo: /^(([\u4e00-\u9fa5][a-zA-Z]|[\u4e00-\u9fa5]{2}\d{2}|[\u4e00-\u9fa5]{2}[a-zA-Z])[-]?|([wW][Jj][\u4e00-\u9fa5]{1}[-]?)|([a-zA-Z]{2}))([A-Za-z0-9]{5}|[DdFf][A-HJ-NP-Za-hj-np-z0-9][0-9]{4}|[0-9]{5}[DdFf])$/,
     //验证银行卡号
-    bankNumber:/^([1-9]{1})(\d{15}|\d{18})$/,
+    bankNumber: /^([1-9]{1})(\d{15}|\d{18})$/,
     // 常规的字符串组合
-    nomarlStr: /^[A-Za-z0-9\u4e00-\u9fa5]+$/
+    nomarlStr: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
+    // 中文姓名
+    chineseName: /^[\u4e00-\u9fa5]{2,5}$/
   }
 
   /**
@@ -87,7 +89,7 @@ export class ValidatorService {
   }
 
   /**
-  * 验证金额
+  * 验证邮编
   */
   static zipCode(rule, value, callback) {
     if (ValidatorService.regex.zipCode.test(value) || !value) {
@@ -97,7 +99,7 @@ export class ValidatorService {
     }
   }
   /**
-   * 验证手机号
+   * 验证车牌号
    */
   static carCardNo(rule, value, callback) {
     if (ValidatorService.regex.carCardNo.test(value) || !value) {
@@ -107,7 +109,7 @@ export class ValidatorService {
     }
   }
   /**
-   * 验证手机号
+   * 验证用户名
    */
   static userName(rule, value, callback) {
     if (ValidatorService.regex.userName.test(value) || !value) {
@@ -116,14 +118,25 @@ export class ValidatorService {
       callback(new Error("请输入6-16位[字母,数字,下划线,减号]"));
     }
   }
-   /**
-   * 验证常态化字符串
-   */
+  /**
+  * 验证常态化字符串
+  */
   static nomalStr(rule, value, callback) {
     if (ValidatorService.regex.nomarlStr.test(value) || !value) {
       callback();
     } else {
       callback(new Error("请输入汉字、字母、数字"));
+    }
+  }
+
+  /**
+   * 验证中文名字
+   */
+  static chineseName(rule, value, callback) {
+    if (ValidatorService.regex.chineseName.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入2-5位长度汉字"));
     }
   }
 
