@@ -131,7 +131,8 @@ export class BasicCarManageService {
   /**
    * 修改车型
    */
-  editCarModel(data) {
+  editCarModel(carId, data) {
+    console.log(data)
     return this.netService.send({
       data:{
         displacement: data.carEmissions,
@@ -143,8 +144,9 @@ export class BasicCarManageService {
         modelName : data.modelName,
         modelVolume :data.carSize,
         remark :data.remark,
-        id : data.seriesId,
         structure :data.carStructure,
+        referencePrice: data.referencePrice,
+        id : carId
       },
       loading:true,
       server: manageService.basicCarManagecontroller.editCarModel,

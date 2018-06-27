@@ -25,6 +25,7 @@
         <data-grid-item label="车辆排量" :span="6">{{carBaseInfo.displacement}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="6">{{carBaseInfo.modelColors}}</data-grid-item>
         <data-grid-item label="内饰颜色" :span="6">{{carBaseInfo.innerColor}}</data-grid-item>
+        <data-grid-item label="参考价格" :span="6">{{carBaseInfo.referencePrice | moneyFormat}}</data-grid-item>
       </data-grid>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
         <data-grid-item v-for="(item,index) of carParamList" :key="index" :span="4" :label="item.carParamName">

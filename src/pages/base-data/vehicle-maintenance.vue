@@ -12,7 +12,7 @@
         </div>
       </i-col>
       <i-col class="command" :span="18">
-        <car-params v-if="carId" :carId="carId"></car-params>
+        <car-params v-if="carId" :carId="carId" ref="carParams"></car-params>
         <div v-else class="empty-text">空空如也，请选择车辆^_^</div>
       </i-col>
 
@@ -158,6 +158,8 @@ export default class VehicleMaintenance extends Page {
           onOk: modify => {
             let result = modify.updateVehicle().then(() => {
               this.getAllCar()
+              let carParams = this.$refs.carParams as any;
+              carParams.getCarBaseInfo()
             }).catch(v => false)
             return result
           },
