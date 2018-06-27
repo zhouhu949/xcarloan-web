@@ -50,7 +50,7 @@ export default class SalesCarCheckout extends Page {
   private queryParamsModel = {
     orderNo: "",
     customerName: "",
-    stockStatus: ""
+    stockStatus: 10047
   };
 
   created() {
@@ -227,6 +227,7 @@ export default class SalesCarCheckout extends Page {
   onGetVehicleInfo(row) {
     this.$dialog.show({
       title: "详情",
+      isView: true,
       footer: true,
       render: h =>
         h(OrderCarDetails, {

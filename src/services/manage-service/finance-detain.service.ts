@@ -15,7 +15,7 @@ export class FinanceDetainService {
   getFinanceStorageList(queryParamsModel, page) {
     return this.netService.send({
       server: manageService.financeDetainController.getFinanceStorageList,
-      data:{
+      data: {
         orderNo: queryParamsModel.orderNo,
         customerName: queryParamsModel.customerName,
         mortgageStatus: queryParamsModel.mortgageStatus
@@ -90,6 +90,40 @@ export class FinanceDetainService {
         id: data.id,
         stockOutDate: data.stockOutDate,
       },
+      loading: true
+    })
+  }
+
+  /**
+   * 查看押品详情
+   * @param detainId 押品记录ID
+   */
+  getDetainDetails(detainId) {
+    return this.netService.send({
+      server: manageService.financeDetainController.getDetainDetails,
+      append: detainId,
+      loading: true
+    })
+  }
+
+  /**
+   * 查看抵押押品记录
+   */
+  getDetainMortRecord(detainId) {
+    return this.netService.send({
+      server: manageService.financeDetainController.getDetainMortRecord,
+      append: detainId,
+      loading: true
+    })
+  }
+
+  /**
+   * 查看质押押品记录
+   */
+  getDetainPoleRecord(detainId) {
+    return this.netService.send({
+      server: manageService.financeDetainController.getDetainPoleRecord,
+      append: detainId,
       loading: true
     })
   }

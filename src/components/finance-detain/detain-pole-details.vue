@@ -30,20 +30,13 @@
       </i-row>
       <i-row :gutter="15">
         <i-col :span="12">
-          <i-form-item label="采购价格" prop="stockPrice">
-            <i-input v-model="model.stockPrice" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车型参数描述" prop="orderCarParamDesc">
-            <i-input v-model="model.orderCarParamDesc" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="车型描述" prop="orderCarDesc">
+          <i-form-item label="车型参数描述" prop="orderCarDesc">
             <i-input v-model="model.orderCarDesc" :readonly="$parent.$parent.isView"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车型描述" prop="orderCarParamDesc" :readonly="$parent.$parent.isView">
+            <i-input v-model="model.orderCarParamDesc"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -57,44 +50,41 @@ import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { Form } from "iview";
-import { State, Getter, namespace } from "vuex-class";
-import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
-import { BasicEnterShellSaveService } from "~/services/manage-service/basic-enter-shell-save.service";
+import { FinanceDetainService } from "~/services/manage-service/finance-detain.service";
 
 @Component({})
-export default class OrderCarDetails extends Vue {
-  @Dependencies(BasicEnterShellSaveService)
-  private basicEnterShellSaveService: BasicEnterShellSaveService;
+export default class DetainPoleDetails extends Vue {
+  @Dependencies(FinanceDetainService)
+  private financeDetainService: FinanceDetainService;
 
   @Prop({
     default: 0
   })
-  orderId;
+  detainId;
 
   private model: any = {
-    modelName: "",
-    modelColors: "",
-    stockStatus: "",
-    orderCarParamDesc: "",
-    stockPrice: "",
-    orderCarDesc: "",
-    customerName: ""
+    mortgageNum: 0,
+    pledgePlace: "",
+    pledgePosition: "",
+    pledgeNo: "",
+    operatorTime: "",
+    operator: 1
   };
 
   /**
    *
    */
   mounted() {
-    this.getOrderCarById();
+    this.getDetainPoleRecord();
   }
 
   /**
-   * 获取供应商信息
+   * 获取详情
    */
-  private getOrderCarById() {
-    if (this.orderId) {
-      this.basicEnterShellSaveService
-        .getOrderCarById(this.orderId)
+  private getDetainPoleRecord() {
+    if (this.detainId) {
+      this.financeDetainService
+        .getDetainPoleRecord(this.detainId)
         .subscribe(
           data => (this.model = data),
           err => this.$Message.error(err)

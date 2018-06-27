@@ -17,7 +17,7 @@
         <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshStockCarByModel">
           <template slot="input">
             <i-form-item prop="supplierId" label="供应商：">
-              <i-select v-model="queryParamsModel.supplierId" clearable>
+              <i-select v-model="queryParamsModel.supplierId" clearable filterable>
                 <i-option v-for="{id,supplierName} in supplierDataSet" :key="id" :label="supplierName" :value="id"></i-option>
               </i-select>
             </i-form-item>
@@ -177,7 +177,7 @@ export default class InventoryQuery extends Page {
    */
   onStockCarOperate(val?: Object) {
     this.$dialog.show({
-      title: val ? "维护库存" : "新增库存",
+      title: val ? "维护库存车辆" : "新增库存车辆",
       footer: true,
       onOk: modifyBasicStockCar => {
         return modifyBasicStockCar.submit().then(v => {
@@ -198,9 +198,10 @@ export default class InventoryQuery extends Page {
   /**
    * 获取车型信息
    */
-  onGetCarParams(val:Object) {
+  onGetCarParams(val: Object) {
     this.$dialog.show({
       title: "查看车型信息",
+      isView: true,
       footer: true,
       render: h =>
         h(CarParams, {

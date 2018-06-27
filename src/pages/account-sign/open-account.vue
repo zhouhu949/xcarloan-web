@@ -231,7 +231,9 @@ export default class OpenAccount extends Page {
   onOpenAccount(data) {
     this.$dialog.show({
       title: "开户",
+      okText: "开户",
       footer: true,
+      isView: data.accountStatus === 10093,
       onOk: customerBankList => {
         return customerBankList
           .submit()

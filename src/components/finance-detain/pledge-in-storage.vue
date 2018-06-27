@@ -59,9 +59,9 @@ export default class ModifyBasicStockCar extends Vue {
     ],
     stockDate: {
       required: true,
+      type: "date",
       message: "请选择入库时间",
-      trigger: "blur",
-      type: "number"
+      trigger: "blur"
     }
   };
 
@@ -83,15 +83,13 @@ export default class ModifyBasicStockCar extends Vue {
    */
   submit() {
     let form = this.$refs["form"] as Form;
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       form.validate(v => {
         if (!v) return resolve(false);
 
-        return new Promise((resolve, reject) => {
-          this.financeDetainService
-            .financePledgeInStorage(this.model)
-            .subscribe(data => resolve(true), err => reject(err));
-        });
+        this.financeDetainService
+          .financePledgeInStorage(this.model)
+          .subscribe(data => resolve(true), err => reject(err));
       });
     });
   }

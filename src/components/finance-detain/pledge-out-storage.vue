@@ -31,6 +31,7 @@ export default class MortgageOutStorage extends Vue {
   private rules = {
     stockOutDate: {
       required: true,
+      type: "date",
       message: "请选择出库时间",
       trigger: "blur"
     }
