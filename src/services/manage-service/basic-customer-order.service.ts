@@ -18,4 +18,19 @@ export class BasicCustomerOrderService {
       }
     })
   }
+  /**
+   * 订单分页查询
+   */
+  query(data, page) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.query,
+      data: {
+        customerName: data.name,
+        orderNo: data.orderNo,
+        idCard: data.idCard,
+        customerPhone: data.phone
+      },
+      page
+    })
+  }
 }

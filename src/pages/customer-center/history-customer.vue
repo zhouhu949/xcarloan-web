@@ -19,7 +19,9 @@ import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+const CustomerOrderModule = namespace("customerOrderSpace")
 @Layout('workspace')
 @Component({
   components: {}
@@ -27,6 +29,7 @@ import { BasicCustomerCenterService } from "~/services/manage-service/basic-cust
 export default class HistoryCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private columns: any;
   private dataSet: any = [];
@@ -35,6 +38,9 @@ export default class HistoryCustomer extends Page {
     name: ""
   }
 
+  activated() {
+    this.refreshData();
+  }
 
   mounted() {
     this.refreshData();
@@ -59,11 +65,30 @@ export default class HistoryCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.modifySupplier(row);
+                    this.showCustomerInfo({ id: row.id })
+                    this.$dialog.show({
+                      width: 1050,
+                      render: h => h(OrderCustomerInfo)
+                    })
                   }
                 }
               },
-              "查看")
+              "查看"
+            ),
+            h("i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => this.removeCustomerState(row.id)
+                }
+              },
+              "移入意向客户"
+            )
           ])
         }
       },
@@ -122,6 +147,19 @@ export default class HistoryCustomer extends Page {
     ];
   }
 
+
+  /**
+   * 移除当前状态
+   */
+  private removeCustomerState(id) {
+    this.basicCustomerCenterService.updateCustomerStatusBlack(id).subscribe(
+      data => {
+        this.$Message.success("操作成功")
+        this.refreshData()
+      },
+      err => this.$Message.error(err.msg)
+    )
+  }
 
   /**
    * 获取历史客户列表

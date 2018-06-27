@@ -5,7 +5,11 @@ export default {
   state: {
     currentComponent: "",
     customerId: "",
-    orderId: ""
+    orderId: "",
+    /**
+     * 是否开启可以编辑页面数据
+     */
+    edit: false
   },
   mutations: {
     /**
@@ -14,9 +18,10 @@ export default {
      * @param name 组件名称
      * @param customerId 客户ID
      */
-    updateCustomerInfo(state, { name, customerId }) {
+    updateCustomerInfo(state, { name, customerId, enabledEdit }) {
       state.currentComponent = name
       state.customerId = customerId
+      state.edit = enabledEdit
     },
     /**
      * 更新订单信息
@@ -44,11 +49,11 @@ export default {
     /**
      * 显示客户信息页面
      * @param param0 
-     * @param customerId 
+     * @param customer 客户信息页面配置
      */
-    showCustomerInfo({ commit, getters }, customerId) {
+    showCustomerInfo({ commit, getters }, customer: { id: Number, enabledEdit?: Boolean }) {
       let current = getters.componentNameList.find(x => x.type === InfoCompontentType.CUSTOMER)
-      commit('updateCustomerInfo', { name: current.name, customerId: customerId })
+      commit('updateCustomerInfo', { name: current.name, customerId: customer.id, enabledEdit: customer.enabledEdit || false })
     },
     /**
      * 显示订单详情信息页面

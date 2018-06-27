@@ -75,5 +75,23 @@ export default {
     controller: CONTROLLER,
     action: 'findBasicCustomerOrderList',
     type: requestType.Get
+  },
+  /**
+   * 黑名单客户移入意向客户
+   */
+  updateCustomerStatusBlack: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateCustomerStatusBlack',
+    type: requestType.Post
+  },
+  /**
+   * 白/灰名单移出
+   */
+  updateCustomerStatusWhite: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateCustomerStatusWhite',
+    type: requestType.Post
   }
 }
