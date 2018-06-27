@@ -1,8 +1,6 @@
 <template>
   <section class="page gray-list-customer">
-    <page-header title="灰名单客户" hidden-print hidden-export>
-      <command-button label="移出灰名单" @click="onRemoveGrayListClick"></command-button>
-    </page-header>
+    <page-header title="灰名单客户" hidden-print hidden-export> </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="客户姓名：">
@@ -10,7 +8,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet"></data-box>
   </section>
 </template>
 
@@ -39,6 +37,9 @@ export default class GrayListCustomer extends Page {
     name: ""
   }
 
+  activated() {
+    this.refreshData();
+  }
 
   mounted() {
     this.refreshData();
@@ -63,7 +64,7 @@ export default class GrayListCustomer extends Page {
                 },
                 on: {
                   click: () => {
-                     this.showCustomerInfo({ id: row.id })
+                    this.showCustomerInfo({ id: row.id })
                     this.$dialog.show({
                       width: 1050,
                       render: h => h(OrderCustomerInfo)
@@ -71,14 +72,24 @@ export default class GrayListCustomer extends Page {
                   }
                 }
               },
-              "查看")
+              "查看"
+            ),
+            h("i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => this.removeCustomerState(row.id)
+                }
+              },
+              "移出"
+            )
           ])
         }
-      },
-      {
-        align: "center",
-        type: "selection",
-        width: 60
       },
       {
         align: "center",
@@ -135,13 +146,17 @@ export default class GrayListCustomer extends Page {
     ];
   }
 
-  private onRemoveGrayListClick() {
-    let dataBox: any = this.$refs['databox'];
-    let selection = dataBox.getCurrentSelection()
-    if (!selection.length) {
-      this.$Message.info('请选择需要移除的数据')
-      return
-    }
+  /**
+   * 移除当前状态
+   */
+  private removeCustomerState(id) {
+    this.basicCustomerCenterService.updateCustomerStatusWhite(id).subscribe(
+      data => {
+        this.$Message.success("操作成功")
+        this.refreshData()
+      },
+      err => this.$Message.error(err.msg)
+    )
   }
 
   /**

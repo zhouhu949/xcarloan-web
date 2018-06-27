@@ -44,6 +44,10 @@ export default class PotentialClients extends Page {
   }
 
 
+  activated() {
+    this.refreshData();
+  }
+
   mounted() {
     this.refreshData();
   }
@@ -94,31 +98,30 @@ export default class PotentialClients extends Page {
       },
       {
         align: "center",
-        title: '手机号码',
-        editable: true,
-        key: 'mobileMain',
+        title: '客户电话',
+        key: 'customerPhone',
         minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: "center",
-        title: '所属地区',
-        key: 'city',
+        title: '意向类型',
+        key: 'intentionType',
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.intentionType))
       },
       {
         align: "center",
-        title: '创建时间',
-        sortable: true,
-        key: 'createTime',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
+        title: '意向等级',
+        key: 'intentionLevel',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => h('Rate', { props: { value: row.intentionLevel,disabled: true } })
       },
       {
         align: "center",
-        title: '归属业务员',
-        key: 'operator',
+        title: '跟进结果',
+        key: 'followResult',
         minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.followResult))
       }
     ];
   }
@@ -127,7 +130,6 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
-    console.log(id,'1')
     this.showCustomerInfo({ id, enabledEdit: true })
     this.$dialog.show({
       width: 1050,

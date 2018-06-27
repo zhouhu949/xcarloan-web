@@ -52,7 +52,6 @@ export default {
      * @param customer 客户信息页面配置
      */
     showCustomerInfo({ commit, getters }, customer: { id: Number, enabledEdit?: Boolean }) {
-      console.log(customer,'customer')
       let current = getters.componentNameList.find(x => x.type === InfoCompontentType.CUSTOMER)
       commit('updateCustomerInfo', { name: current.name, customerId: customer.id, enabledEdit: customer.enabledEdit || false })
     },

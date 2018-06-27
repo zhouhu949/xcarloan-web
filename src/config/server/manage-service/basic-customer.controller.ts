@@ -39,5 +39,33 @@ export default {
     controller: CONTROLLER,
     action: 'addBasicCustomer',
     type: requestType.Post
+  },
+  /**
+   * 新增银行卡
+   */
+  addBasicCustomerBank: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicCustomerBank',
+    type: requestType.Post
+  },
+  /**
+   * 编辑客户开户银行卡
+   */
+  updateCustomerBank: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateCustomerBank',
+    type: requestType.Put
+  },
+  /**
+   * 删除银行卡信息
+   */
+  deleteCustomerBankInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteCustomerBankInfo',
+    type: requestType.Delete
   }
+
 }

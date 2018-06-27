@@ -19,6 +19,9 @@
       <i-form-item label="出生日期" prop="birthTime">
         <i-date-picker class="form-picker" v-model="model.birthTime" clearable></i-date-picker>
       </i-form-item>
+      <i-form-item label="民族" prop="nation">
+        <i-input v-model="model.nation" clearable></i-input>
+      </i-form-item>
       <i-form-item label="QQ" prop="qq">
         <i-input v-model="model.qq" clearable></i-input>
       </i-form-item>
@@ -36,7 +39,7 @@
       </i-form-item>
       <i-form-item label="有效期类型" prop="idCardValidityPeriodType">
         <i-select v-model="model.idCardValidityPeriodType" clearable>
-          <i-option v-for="{label,value} of $dict.getDictData(10008)" :key="value" :label="label" :value="value"></i-option>
+          <i-option v-for="{label,value} of $dict.getDictData(10041)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="有效期区间" prop="idCardValidityPeriodSection">
@@ -74,9 +77,6 @@
         <i-select v-model="model.houseProspecting" clearable>
           <i-option v-for="{label,value} of $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
-      </i-form-item>
-      <i-form-item label="民族" prop="nation">
-        <i-input v-model="model.nation" clearable></i-input>
       </i-form-item>
       <i-form-item label="健康状况" prop="healthStatus">
         <i-select v-model="model.healthStatus" clearable>
@@ -169,7 +169,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
   private addCoustomer() {
     return new Promise((resolve, reject) => {
       this.basicCustomerService.addBasicCustomer(this.model).subscribe(
-        data => resolve,
+        data => resolve(),
         err => reject(err)
       )
     })
@@ -181,7 +181,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
   private modifyCusomter() {
     return new Promise((resolve, reject) => {
       this.basicCustomerService.addBasicCustomer(this.model).subscribe(
-        data => resolve,
+        data => resolve(),
         err => reject(err)
       )
     })
@@ -193,7 +193,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
       form.validate(v => {
         if (!v) return resolve()
         let result = this.data ? this.modifyCusomter() : this.addCoustomer()
-        result.then(v => {
+        result.then(() => {
           this.$Message.success("操作成功")
           resolve(true)
         }).catch(e => {

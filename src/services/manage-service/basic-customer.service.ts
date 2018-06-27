@@ -52,14 +52,48 @@ export class BasicCustomerService {
   @Debounce()
   addBasicCustomer(data) {
     let result = Object.assign({}, data)
-    console.log(result,'123')
     result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
     return this.netService.send({
       server: manageService.basicCustomerController.addBasicCustomer,
-      data: {
-        customerName: result
-      },
+      data: result,
       loading: true,
     })
   }
+  /**
+   * 新增银行卡
+   * @param data 
+   */
+  @Debounce()
+  addBasicCustomerBank(data) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicCustomerBank,
+      data: data,
+      loading: true,
+    })
+  }
+
+  /**
+   * 编辑客户开户银行卡
+   */
+  @Debounce()
+  updateCustomerBank(data) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.updateCustomerBank,
+      data: data,
+      loading: true,
+    })
+  }
+  /**
+   * 删除银行卡信息
+   */
+  @Debounce()
+  deleteCustomerBankInfo(bankCardId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.deleteCustomerBankInfo,
+      data: {
+        bankId: bankCardId
+      }
+    })
+  }
+
 }

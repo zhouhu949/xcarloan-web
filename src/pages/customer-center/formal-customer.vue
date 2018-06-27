@@ -38,6 +38,10 @@ export default class FormalCustomer extends Page {
   }
 
 
+  activated() {
+    this.refreshData();
+  }
+
   mounted() {
     this.refreshData();
   }

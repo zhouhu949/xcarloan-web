@@ -38,6 +38,9 @@ export default class HistoryCustomer extends Page {
     name: ""
   }
 
+  activated() {
+    this.refreshData();
+  }
 
   mounted() {
     this.refreshData();
@@ -70,7 +73,22 @@ export default class HistoryCustomer extends Page {
                   }
                 }
               },
-              "查看")
+              "查看"
+            ),
+            h("i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => this.removeCustomerState(row.id)
+                }
+              },
+              "移入意向客户"
+            )
           ])
         }
       },
@@ -129,6 +147,19 @@ export default class HistoryCustomer extends Page {
     ];
   }
 
+
+  /**
+   * 移除当前状态
+   */
+  private removeCustomerState(id) {
+    this.basicCustomerCenterService.updateCustomerStatusBlack(id).subscribe(
+      data => {
+        this.$Message.success("操作成功")
+        this.refreshData()
+      },
+      err => this.$Message.error(err.msg)
+    )
+  }
 
   /**
    * 获取历史客户列表
