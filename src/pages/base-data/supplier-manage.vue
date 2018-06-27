@@ -60,8 +60,8 @@ export default class SupplierManage extends Page {
                 props: {
                   type: "text"
                 },
-                style: {
-                  color: "#265EA2"
+                class: {
+                  'row-command-button': true
                 },
                 on: {
                   click: () => {

@@ -1,48 +1,47 @@
 <!-- 产品详情 -->
 <template>
   <section class="component product-detail">
-    <!-- 产品信息 -->
-    <i-row>
-      <page-header title="产品信息" hiddenPrint hiddenExport></page-header>
-      <data-grid :total-span="24">
-        <data-grid-item label="产品名称" :label-width="150" :span="12">{{productData.productName}}</data-grid-item>
-        <data-grid-item label="产品类型" :label-width="150" :span="12">{{productData.product_type}}</data-grid-item>
-        <data-grid-item label="产品发布状态" :label-width="150" :span="12">{{productData.productStatus}}</data-grid-item>
-        <data-grid-item label="还款方案名称" :label-width="150" :span="12">{{productData.schemeName}}</data-grid-item>
-        <data-grid-item label="车型名称" :label-width="150" :span="12">{{productData.carModelName}}</data-grid-item>
-        <data-grid-item label="期数" :label-width="150" :span="12">{{productData.periods}}</data-grid-item>
-        <data-grid-item label="利率" :label-width="150" :span="12">{{productData.interestRate}}</data-grid-item>
-        <data-grid-item label="" :label-width="150" :span="12"></data-grid-item>
+
+    <i-card title="产品信息">
+      <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="产品名称" :span="6">{{productData.productName}}</data-grid-item>
+        <data-grid-item label="产品类型" :span="6">{{productData.productType | dictConvert}}</data-grid-item>
+        <data-grid-item label="产品发布状态" :span="6">{{productData.productStatus}}</data-grid-item>
+        <data-grid-item label="还款方案名称" :span="6">{{productData.schemeName}}</data-grid-item>
+        <data-grid-item label="车型名称" :span="6">{{productData.carModelName}}</data-grid-item>
+        <data-grid-item label="期数" :span="6">{{productData.periods}}</data-grid-item>
+        <data-grid-item label="利率" :span="6">{{productData.interestRate | decimalToPrecent}}</data-grid-item>
+        <data-grid-item label="" :span="6"></data-grid-item>
       </data-grid>
-    </i-row>
-    <i-row>
-      <!-- 还款方案信息 -->
-      <page-header title="还款方案信息" hiddenPrint hiddenExport></page-header>
-      <data-grid :total-span="24">
-        <data-grid-item label="方案类型" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.schemeType)}}</data-grid-item>
-        <data-grid-item label="方案名称" :label-width="150" :span="12">{{scehmeData.schemeName}}</data-grid-item>
-        <data-grid-item label="还款方式" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.repayType)}}</data-grid-item>
-        <data-grid-item label="抵押方式" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.mortgageType)}}</data-grid-item>
-        <data-grid-item label="发布状态" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.schemeStatus)}}</data-grid-item>
-        <data-grid-item label="征信保护天数" :label-width="150" :span="12">{{scehmeData.creditDays}}</data-grid-item>
-        <data-grid-item label="逾期保护天数" :label-width="150" :span="12">{{scehmeData.overdueDays}}</data-grid-item>
-        <data-grid-item label="期数" :label-width="150" :span="12">{{scehmeData.periods}}</data-grid-item>
-        <data-grid-item label="利率" :label-width="150" :span="12">{{scehmeData.interestRate * 100 + '%'}}</data-grid-item>
-        <data-grid-item label="周期类型" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.cycleType)}}</data-grid-item>
-        <data-grid-item label="融资最小金额" :label-width="150" :span="12">{{scehmeData.moneyMin}}</data-grid-item>
-        <data-grid-item label="融资最大金额" :label-width="150" :span="12">{{scehmeData.moneyMax}}</data-grid-item>
-        <data-grid-item label="账期类型" :label-width="150" :span="12">{{this.$dict.getDictName(scehmeData.accountPeriodType)}}</data-grid-item>
-        <data-grid-item label="还款日" :label-width="150" :span="12">{{scehmeData.accountDay}}</data-grid-item>
-        <data-grid-item label="冲抵策略" :label-width="150" :span="12">{{scehmeData.offsetName}}</data-grid-item>
-        <data-grid-item label="" :label-width="150" :span="12"></data-grid-item>
-        <data-grid-item label="备注" :label-width="150" :span="24" contentAlign="left">{{scehmeData.remark}}</data-grid-item>
+    </i-card>
+
+    <!-- 还款方案信息 -->
+    <i-card title="还款方案信息">
+      <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="方案名称" :span="6">{{scehmeData.schemeName}}</data-grid-item>
+        <data-grid-item label="方案类型" :span="6">{{ scehmeData.schemeType | dictConvert}}</data-grid-item>
+        <data-grid-item label="还款方式" :span="6">{{scehmeData.repayType | dictConvert}}</data-grid-item>
+        <data-grid-item label="抵押方式" :span="6">{{scehmeData.mortgageType | dictConvert}}</data-grid-item>
+        <data-grid-item label="发布状态" :span="6">{{scehmeData.schemeStatus | dictConvert}}</data-grid-item>
+        <data-grid-item label="征信保护天数" :span="6">{{scehmeData.creditDays}}</data-grid-item>
+        <data-grid-item label="逾期保护天数" :span="6">{{scehmeData.overdueDays}}</data-grid-item>
+        <data-grid-item label="期数" :span="6">{{scehmeData.periods}}</data-grid-item>
+        <data-grid-item label="利率" :span="6">{{ scehmeData.interestRate | decimalToPrecent }}</data-grid-item>
+        <data-grid-item label="周期类型" :span="6">{{scehmeData.cycleType | dictConvert}}</data-grid-item>
+        <data-grid-item label="融资最小金额" :span="6">{{scehmeData.moneyMin | toThousands}}</data-grid-item>
+        <data-grid-item label="融资最大金额" :span="6">{{scehmeData.moneyMax | toThousands}}</data-grid-item>
+        <data-grid-item label="账期类型" :span="6">{{scehmeData.accountPeriodType | dictConvert}}</data-grid-item>
+        <data-grid-item label="还款日" :span="6">{{scehmeData.accountDay}}</data-grid-item>
+        <data-grid-item label="冲抵策略" :span="6">{{scehmeData.offsetName}}</data-grid-item>
+        <data-grid-item label="备注" :span="6">{{scehmeData.remark}}</data-grid-item>
       </data-grid>
-    </i-row>
-    <i-row>
-      <!--还款方案比例详情-->
-      <page-header title="还款方案比例详情" hiddenPrint hiddenExport></page-header>
-      <data-box :id="34" :columns="columns1" :data="scehmeDetailData"></data-box>
-    </i-row>
+    </i-card>
+
+    <!--还款方案比例详情-->
+    <i-card title="还款方案比例详情">
+      <data-box :columns="columns" :data="scehmeDetailData"></data-box>
+    </i-card>
+
   </section>
 </template>
 <script lang="ts">
@@ -62,7 +61,7 @@ import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme
 export default class productDetail extends Vue {
   @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
   @Prop() productData
-  private columns1: any;
+  private columns: any;
   private scehmeData: any = {};
   private scehmeDetailData: any = [];
 
@@ -79,19 +78,13 @@ export default class productDetail extends Vue {
     this.repaySchemeService.findSchemeExpenseBySchemeId(this.productData.schemeId).subscribe(val => {
       this.scehmeDetailData = val
     })
-    this.columns1 = [
-      {
-        title: "序号",
-        type: "index",
-        align: "center",
-        width: 60
-      },
+    this.columns = [
       {
         title: "是否首付款",
         align: "center",
         key: "isFirst",
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.isFirst));
+          return h("span", {}, this.$filter.dictConvert(row.isFirst));
         }
       },
       {
@@ -99,7 +92,7 @@ export default class productDetail extends Vue {
         align: "center",
         key: "repayProportion",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.repayProportion !== null ? `${row.repayProportion * 100}%` : null);
+          return h("span", {}, this.$filter.decimalToPrecent(row.repayProportion));
         }
       },
       {
@@ -146,9 +139,9 @@ export default class productDetail extends Vue {
 
 <style lang="less">
 .component.product-detail {
-  .i-table.ivu-table-wrapper{
+  .i-table.ivu-table-wrapper {
     height: auto !important;
-    .ivu-table-body{
+    .ivu-table-body {
       height: auto !important;
       overflow-y: auto;
     }
