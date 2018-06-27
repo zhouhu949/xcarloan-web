@@ -4,6 +4,16 @@
     <i-row :gutter="16">
       <i-col class="col-card" v-for="item of dataSet" :key="item.id" :span="12">
         <i-card class="card" :title="item.bankName">
+          <div slot="extra" v-if="edit">
+            <a @click.prevent="onEditClick(item)">
+              <svg-icon iconClass="tianxie"></svg-icon>
+              修改
+            </a>
+            <a @click.prevent="onRemoveClick(item)">
+              <svg-icon iconClass="delete-bold"></svg-icon>
+              删除
+            </a>
+          </div>
           <p class="card-no">{{item.cardNo}}</p>
           <p class="card-branch">{{item.bankBranch}}</p>
           <p class="card-clientno">{{item.clientNumber}}</p>
@@ -11,6 +21,13 @@
         </i-card>
       </i-col>
     </i-row>
+
+    <div class="add-bank" v-if="edit">
+      <a @click="onModifyClick">
+        <svg-icon iconClass="add"></svg-icon>
+        添加银行卡
+      </a>
+    </div>
   </section>
 </template>
 
@@ -20,20 +37,59 @@ import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
+import ModifyCustomerInfoBank from "./modify-customer-info-bank.vue";
 
 
 @Component({})
 export default class CustomerInfoBank extends Vue {
   @Dependencies(BasicCustomerService) private basicCustomerService: BasicCustomerService;
   @Prop() id: Number
+  @Prop() edit: Boolean;
 
   private dataSet: Array<any> = []
 
-  mounted() {
+  private refreshData() {
     this.basicCustomerService.findCustomerBankInfo(this.id).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
+  }
+
+  mounted() {
+    this.refreshData()
+  }
+
+  private onEditClick(data) {
+    this.$dialog.show({
+      title: "维护银行卡",
+      footer: true,
+      onOk: modify => {
+        return modify.submit().then(v => {
+          if (v) this.refreshData()
+          return !!v
+        })
+      },
+      render: h => h(ModifyCustomerInfoBank, { props: { data } })
+    })
+  }
+
+  /**
+   * 删除银行卡
+   */
+  private onRemoveClick(data) {
+    let cardNo = data.cardNo;
+    this.$Modal.confirm({
+      content: `是否删除尾号为 <b>${cardNo.subStr(cardNo.length - 4)}</b> 的银行卡?`,
+      onOk: () => {
+        this.basicCustomerService.deleteCustomerBankInfo(data.id).subscribe(
+          data => {
+            this.$Message.success('删除成功')
+            this.refreshData()
+          },
+          err => this.$Message.error(err.msg)
+        )
+      }
+    })
   }
 
 }
@@ -62,6 +118,10 @@ export default class CustomerInfoBank extends Vue {
     &-state {
       padding-left: 10px;
     }
+  }
+  .add-bank {
+    text-align: right;
+    margin: 10px 30px 0px auto;
   }
 }
 </style>

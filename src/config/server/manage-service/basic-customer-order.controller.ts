@@ -12,5 +12,14 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerInfoByOrderId',
     type: requestType.Get
+  },
+  /**
+   * 订单分页查询
+   */
+  query: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'query',
+    type: requestType.Get
   }
 }

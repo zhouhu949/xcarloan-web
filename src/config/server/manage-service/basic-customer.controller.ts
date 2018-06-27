@@ -16,7 +16,7 @@ export default {
   /**
    * 客户银行卡信息
    */
-  getCustomerBankInfo:{
+  getCustomerBankInfo: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getCustomerBankInfo',
@@ -34,10 +34,56 @@ export default {
   /**
    * 获取客户签约列表
    */
-  getCustomerSignList:{
+  getCustomerSignList: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getCustomerSignList',
     type: requestType.Get
+  },
+  /*
+   * 新增客户
+   */
+  addBasicCustomer: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicCustomer',
+    type: requestType.Post
+  },
+  /**
+   * 修改客户信息
+   */
+  editBasicCustomer:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'editBasicCustomer',
+    type: requestType.Put
+  },
+  /**
+   * 新增银行卡
+   */
+  addBasicCustomerBank: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicCustomerBank',
+    type: requestType.Post
+  },
+  /**
+   * 编辑客户开户银行卡
+   */
+  updateCustomerBank: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateCustomerBank',
+    type: requestType.Put
+  },
+  /**
+   * 删除银行卡信息
+   */
+  deleteCustomerBankInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteCustomerBankInfo',
+    type: requestType.Delete
   }
+
 }

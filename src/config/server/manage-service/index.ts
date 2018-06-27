@@ -30,6 +30,7 @@ import basicCustomerDataController from "./basic-customer-data.controller";
 import basicCustomerOrderController from "./basic-customer-order.controller";
 import financeDetainController from "./finance-detain.controller";
 import basicOrderFileController from './basic-order-file.controller'
+import basicProductRepayTemplateController from './basic-product-repay-template.controller'
 
 export const manageService = {
   sysOrgController,
@@ -63,5 +64,6 @@ export const manageService = {
   basicCustomerDataController,
   basicCustomerOrderController,
   financeDetainController,
-  basicOrderFileController
+  basicOrderFileController,
+  basicProductRepayTemplateController
 }

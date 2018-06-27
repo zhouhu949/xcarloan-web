@@ -1,6 +1,7 @@
 <template>
   <section class="page potential-clients">
     <page-header title="意向客户" hidden-print hidden-export>
+      <command-button label="添加意向客户" @click="onCreatePotentialClick"></command-button>
     </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
@@ -20,6 +21,7 @@ import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-info-base/modify-customer-info-basedata.vue";
 import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -41,6 +43,10 @@ export default class PotentialClients extends Page {
     name: ""
   }
 
+
+  activated() {
+    this.refreshData();
+  }
 
   mounted() {
     this.refreshData();
@@ -92,31 +98,30 @@ export default class PotentialClients extends Page {
       },
       {
         align: "center",
-        title: '手机号码',
-        editable: true,
-        key: 'mobileMain',
+        title: '客户电话',
+        key: 'customerPhone',
         minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: "center",
-        title: '所属地区',
-        key: 'city',
+        title: '意向类型',
+        key: 'intentionType',
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.intentionType))
       },
       {
         align: "center",
-        title: '创建时间',
-        sortable: true,
-        key: 'createTime',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
+        title: '意向等级',
+        key: 'intentionLevel',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => h('Rate', { props: { value: row.intentionLevel,disabled: true } })
       },
       {
         align: "center",
-        title: '归属业务员',
-        key: 'operator',
+        title: '跟进结果',
+        key: 'followResult',
         minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.followResult))
       }
     ];
   }
@@ -125,7 +130,7 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
-    this.showCustomerInfo(id)
+    this.showCustomerInfo({ id, enabledEdit: true })
     this.$dialog.show({
       width: 1050,
       render: h => h(OrderCustomerInfo)
@@ -141,6 +146,21 @@ export default class PotentialClients extends Page {
         data => (this.dataSet = data),
         err => this.$Message.error(err.msg)
       );
+  }
+
+  private onCreatePotentialClick() {
+    this.$dialog.show({
+      title: "新增意向客户",
+      footer: true,
+      width: 1050,
+      onOk: addCustomerInfoBasedata => {
+        return addCustomerInfoBasedata.submit().then(v => {
+          if (v) this.refreshData()
+          return !!v
+        })
+      },
+      render: h => h(ModifyCustomerInfoBasedata)
+    })
   }
 
 }

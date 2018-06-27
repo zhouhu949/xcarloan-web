@@ -13,12 +13,21 @@ export default {
     type: requestType.Post
   },
   /**
+  * 编辑车型产品
+  */
+ editBasicProduct: {
+   service: SERVICE,
+   controller: CONTROLLER,
+   action: 'editBasicProduct',
+   type: requestType.Post
+ },
+  /**
    * 删除车型产品
    */
   deleteBasicProduct: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'roleAllocateBacklogs',
+    action: 'deleteBasicProduct',
     type: requestType.Delete
   },
   /**
@@ -56,6 +65,23 @@ export default {
     controller: CONTROLLER,
     action: 'findBasicProductList',
     type: requestType.Get
+  },
+  /**
+   * 发布车型产品
+   */
+  publishedBasicProduct: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'publishedBasicProduct',
+    type: requestType.Get
+  },
+  /**
+   * 发布车型产品
+   */
+  cancelPublishedBasicProduct: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'cancelPublishedBasicProduct',
+    type: requestType.Get
   }
-
 }

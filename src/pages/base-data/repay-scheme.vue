@@ -54,7 +54,7 @@
               <data-grid-item label="账期类型" :label-width="150" :span="12">{{this.$dict.getDictName(repaySchemeModel.accountPeriodType)}}</data-grid-item>
               <data-grid-item label="还款日" :label-width="150" :span="12">{{repaySchemeModel.accountDay}}</data-grid-item>
               <data-grid-item label="冲抵策略" :label-width="150" :span="12">{{repaySchemeModel.offsetName}}</data-grid-item>
-              <data-grid-item label="" :label-width="150" :span="12"></data-grid-item>
+              <data-grid-item label="审批流" :label-width="150" :span="12">{{repaySchemeModel.workFlowKey}}</data-grid-item>
               <data-grid-item label="备注" :label-width="150" :span="24" contentAlign="left">{{repaySchemeModel.remark}}</data-grid-item>
             </data-grid>
           </i-row>
@@ -115,7 +115,8 @@ export default class RepayScheme extends Page {
     accountDay: 0, // 还款日
     offsetId: 0, // 冲抵策略id
     offsetName: '', // 冲抵策略
-    remark: '' // 备注
+    remark: '', // 备注
+    workFlowKey: '' // 工作流key
   }
 
   created () {
@@ -231,10 +232,10 @@ export default class RepayScheme extends Page {
     return this.isRelease = this.schemeStatus === 10056 ? false : true
   }
   /**
-   * 获取所有还款方案菜单
+   * 获取当前用户下组织机构下所有的还款方案
    */
   getAllRepayScheme() {
-    this.repaySchemeService.findAllBasicSchemeByAuth().subscribe(val => {
+    this.repaySchemeService.getAllBasicSchemeByOrgId().subscribe(val => {
       this.dataType = val
       this.checkId = this.dataType[0].id
       this.getSchemeInfoById(this.checkId)
@@ -245,7 +246,7 @@ export default class RepayScheme extends Page {
    * 刷新还款方案菜单
    */
   refreshRepayScheme() {
-    this.repaySchemeService.findAllBasicSchemeByAuth().subscribe(val => {
+    this.repaySchemeService.getAllBasicSchemeByOrgId().subscribe(val => {
       this.dataType = val
       this.getSchemeInfoById(this.checkId)
       this.getSchemeDetail(this.checkId)
