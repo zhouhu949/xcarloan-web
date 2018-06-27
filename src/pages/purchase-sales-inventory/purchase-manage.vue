@@ -219,9 +219,9 @@ export default class PurchaseManage extends Page {
     this.basicEnterShellSaveService
       .queryOutSideList(this.queryParamsModel, this.pageService)
       .subscribe(
-        data => (this.enterShellSaveDataSet = data),
-        err => this.$Message.error(err.msg)
-      );
+        data => this.enterShellSaveDataSet = data,
+        err => this.$Message.error(err.message)
+      )
   }
 
   /**

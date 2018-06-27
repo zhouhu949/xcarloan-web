@@ -2,14 +2,15 @@
 <template>
   <section class="component customer-info-basedata">
     <div class="customer-no">
-      客户编号：<b>{{customerBaseInfo.customerCode}}</b>
+      客户编号：
+      <b>{{customerBaseInfo.customerCode}}</b>
     </div>
     <data-grid :labelWidth="90" labelAlign="right" contentAlign="left">
       <data-grid-item label="客户姓名" :span="4">{{customerBaseInfo.customerName}}</data-grid-item>
       <data-grid-item label="客户性别" :span="4">{{customerBaseInfo.customerSex | dictConvert}}</data-grid-item>
       <data-grid-item label="民族" :span="4">{{customerBaseInfo.nation}}</data-grid-item>
       <data-grid-item label="电话" :span="4">{{customerBaseInfo.customerPhone}}</data-grid-item>
-      <data-grid-item label="出生日期" :span="4">{{customerBaseInfo.birthTime}}</data-grid-item>
+      <data-grid-item label="出生日期" :span="4">{{customerBaseInfo.birthTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
       <data-grid-item label="QQ" :span="4">{{customerBaseInfo.qq}}</data-grid-item>
       <data-grid-item label="微信" :span="4">{{customerBaseInfo.wechat}}</data-grid-item>
       <data-grid-item label="邮箱" :span="4">{{customerBaseInfo.email}}</data-grid-item>
@@ -23,7 +24,7 @@
       <data-grid-item label="教育程度" :span="4">{{customerBaseInfo.education | dictConvert}}</data-grid-item>
       <data-grid-item label="毕业院校" :span="4">{{customerBaseInfo.school}}</data-grid-item>
       <data-grid-item label="婚姻状况" :span="4">{{customerBaseInfo.marital | dictConvert}}</data-grid-item>
-      <data-grid-item label="现居住地址" :span="4">{{customerBaseInfo.localHomeAddr | dictConvert}}</data-grid-item>
+      <data-grid-item label="现居住地址" :span="4">{{customerBaseInfo.localHomeAddr}}</data-grid-item>
       <data-grid-item label="地址详细" :span="4">{{customerBaseInfo.localHomeAddrDetail}}</data-grid-item>
       <data-grid-item label="家庭座机" :span="4">{{customerBaseInfo.localHomePhone}}</data-grid-item>
       <data-grid-item label="是否接受勘查" :span="4">{{customerBaseInfo.houseProspecting | dictConvert}}</data-grid-item>
@@ -94,7 +95,7 @@ export default class CustomerInfoBasedata extends Vue {
 
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .component.customer-info-basedata {
   .udpate-basedata {
     text-align: right;

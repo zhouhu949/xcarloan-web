@@ -11,7 +11,6 @@ export class BasicEnterShellSaveService {
    * @param model 查询参数实体
    * @param page 分页参数实体
    */
-  @Debounce()
   queryOutSideList(model, page) {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.queryOutSideList,
@@ -20,8 +19,7 @@ export class BasicEnterShellSaveService {
         customerName: model.customerName,
         stockStatus: model.stockStatus
       },
-      page: page,
-      loading: true
+      page: page
     })
   }
 
@@ -29,12 +27,10 @@ export class BasicEnterShellSaveService {
    * 查询订单车辆详情
    * @param orderId 订单ID
    */
-  @Debounce()
   getOrderCarById(orderId) {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.getOrderCarById,
-      append: orderId,
-      loading: true
+      append: orderId
     })
   }
 

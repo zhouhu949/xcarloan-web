@@ -78,7 +78,7 @@ export default class DataForm extends Vue {
     default: "timeSearch"
   })
   dateProp: string;
-
+  
   // 发送查询事件
   @Emit("on-search")
   emitSearch(option: { dateSearchType?: number } = {}) {}

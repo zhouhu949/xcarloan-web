@@ -31,8 +31,8 @@ export default class BlackListCustomer extends Page {
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
   @CustomerOrderModule.Action showCustomerInfo;
 
-  private columns: any;
-  private dataSet: any = [];
+  private columns: Array<any> = null;
+  private dataSet: Array<any> = null;
 
   private model = {
     name: ""

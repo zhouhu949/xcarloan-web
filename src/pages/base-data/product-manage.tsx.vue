@@ -3,18 +3,18 @@
     <page-header title="产品管理" hiddenPrint hiddenExport>
       <command-button v-show="allowAdd" label="新增产品" @click="addProduct"></command-button>
     </page-header>
-    <i-row :gutter="16">
+    <i-row>
       <i-col :span="6" class="product-table-cell">
         <data-tree :data="carTreeData" @on-select-change="onTreeNodeSelectChange"></data-tree>
       </i-col>
       <i-col :span="18" class="product-table-cell">
-        <data-box :columns="columns" :data="dataSet" ref="databox" :page="pageService"></data-box>
+        <data-box :columns="columns" :data="dataSet" ref="databox" :page="pageService" :height="520"></data-box>
       </i-col>
     </i-row>
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
@@ -26,6 +26,7 @@ import DataTree from "~/components/common/data-tree.vue";
 import AddModifyProduct from '~/components/base-data/add-modify-product.vue';
 import productDetail from '~/components/base-data/product-detail.vue';
 import checkRepayScheme from '~/components/base-data/check-repay-scheme.vue';
+import { Button } from "iview";
 
 const CarModule = namespace("carSpace")
 
@@ -60,63 +61,21 @@ export default class ProductManage extends Page {
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    console.log(row)
-                    row.productStatus === 10056 ? this.publishProduct(row.id) : this.canclePublishProduct(row.id)
-                  }
-                }
-              },
-              row.productStatus === 10056 ? '发布' : '取消发布'
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: row.productStatus === 10056 ? "#265EA2" : "#C1C1C1",
-                  display: row.productStatus === 10056 ? "inline-block" : "none"
-                },
-                on: {
-                  click: () => {
-                    this.editProduct(row);
-                  }
-                }
-              },
-              "编辑"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: row.productStatus === 10056 ? "#265EA2" : "#C1C1C1",
-                  display: row.productStatus === 10056 ? "inline-block" : "none"
-                },
-                on: {
-                  click: () => {
-                    this.deleteBasicProduct(row.id);
-                  }
-                }
-              },
-              "删除"
+          if (row.productStatus === 10056) {
+            return (<div>
+              <i-button type="text" class="row-command-button" onClick={() => this.publishProduct(row.id)}>发布</i-button>
+              <i-button type="text" class="row-command-button" onClick={() => this.editProduct(row)}>编辑</i-button>
+              <i-button type="text" class="row-command-button" onClick={() => this.deleteBasicProduct(row.id)}>删除</i-button>
+            </div>
             )
-          ]
-          )        }
+          } else {
+            return (
+              <div>
+                <i-button type="text" class="row-command-button" onClick={() => this.canclePublishProduct(row.id)}>取消发布</i-button>
+              </div>
+            )
+          }
+        }
       },
 
       {
@@ -126,22 +85,8 @@ export default class ProductManage extends Page {
         key: "productName",
         minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, columns, index }) => {
-          return h(
-            'i-button',
-            {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#3367a7'
-              },
-              on: {
-                click: () => {
-                  this.checkProductDetail(row)
-                }
-              }
-            },
-            row.productName
+          return (
+            <i-button type="text" class="row-command-button" onClick={() => this.checkProductDetail(row)}> {row.productName}</i-button>
           )
         }
       },
@@ -160,10 +105,8 @@ export default class ProductManage extends Page {
         editable: true,
         title: "产品发布状态",
         key: "productStatus",
-        minWidth: this.$common.getColumnWidth(1),
-        render: (h, { row, columns, index }) => {
-          return h('span', {}, this.$dict.getDictName(row.productStatus))
-        }
+        minWidth: this.$common.getColumnWidth(),
+        render: (h, { row, columns, index }) => h('span', {}, this.$dict.getDictName(row.productStatus))
       },
       {
         align: "center",
@@ -172,22 +115,8 @@ export default class ProductManage extends Page {
         key: "schemeName",
         minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, columns, index }) => {
-          return h(
-            'i-button',
-            {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#3367a7'
-              },
-              on: {
-                click: () => {
-                  this.checkRepaySchemeDetail(row.id)
-                }
-              }
-            },
-            row.schemeName
+          return (
+            <i-button type="text" class="row-command-button" onClick={() => this.checkRepaySchemeDetail(row.id)}> {row.schemeName}</i-button>
           )
         }
       },
@@ -210,10 +139,17 @@ export default class ProductManage extends Page {
         title: "利率",
         key: "interestRate",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.interestRate !== null ? `${row.interestRate * 100}%` : null);
+          return h("span", {}, this.$filter.decimalToPrecent(row.interestRate));
         }
       }
     ];
+  }
+
+  /**
+   * 获取当前状态是否已经发布
+   */
+  private getPublishState(value) {
+    return value === 10056
   }
 
   /**
@@ -285,14 +221,14 @@ export default class ProductManage extends Page {
   /**
    * 查看产品详情
    */
-  checkProductDetail(data) {
+  checkProductDetail(row) {
     this.$dialog.show({
       title: '查看产品详情',
-      footer: true,
+      isView: true,
       width: 1000,
       render: h => h(productDetail, {
         props: {
-          productData: data
+          productData: row
         }
       })
     })
@@ -313,18 +249,18 @@ export default class ProductManage extends Page {
   /**
    * 发布车型产品
    */
-  publishProduct(productId) {
+  publishProduct(productId: Number) {
     this.$Modal.confirm({
       title: '提示',
       content: '确定发布此车型产品吗？',
       onOk: () => {
-        this.basicProductService.publishedBasicProduct(productId).subscribe(val => {
-          this.$Message.success('发布成功！')
-          this.refreshProductList()
-        },
-          err => {
-            this.$Message.error(err.msg)
-          })
+        this.basicProductService.publishedBasicProduct(productId).subscribe(
+          val => {
+            this.$Message.success('发布成功！')
+            this.refreshProductList()
+          },
+          err => this.$Message.error(err.msg)
+        )
       }
     })
   }

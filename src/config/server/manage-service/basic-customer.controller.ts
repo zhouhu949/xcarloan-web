@@ -50,6 +50,15 @@ export default {
     type: requestType.Post
   },
   /**
+   * 修改客户信息
+   */
+  editBasicCustomer:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'editBasicCustomer',
+    type: requestType.Put
+  },
+  /**
    * 新增银行卡
    */
   addBasicCustomerBank: {
