@@ -1,7 +1,7 @@
 <!--银行卡信息-->
 <template>
   <section class="component modify-customer-info-bank">
-    <i-form ref="from" inline :model="model" :rules="rules" label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="账号" prop="cardNo">
         <i-input v-model="model.cardNo" clearable></i-input>
       </i-form-item>

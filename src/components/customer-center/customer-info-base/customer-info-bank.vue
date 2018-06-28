@@ -23,7 +23,7 @@
     </i-row>
 
     <div class="add-bank" v-if="edit">
-      <a @click="onModifyClick">
+      <a @click="onAddCardClick">
         <svg-icon iconClass="add"></svg-icon>
         添加银行卡
       </a>
@@ -89,6 +89,23 @@ export default class CustomerInfoBank extends Vue {
           err => this.$Message.error(err.msg)
         )
       }
+    })
+  }
+
+  /**
+   * 新增银行卡
+   */
+  private onAddCardClick() {
+    this.$dialog.show({
+      title: "新增银行卡",
+      footer: true,
+      onOk: add => {
+        return add.submit().then(v => {
+          if (v) this.refreshData()
+          return !!v
+        })
+      },
+      render: h => h(ModifyCustomerInfoBank, { props: { customerId: this.id } })
     })
   }
 
