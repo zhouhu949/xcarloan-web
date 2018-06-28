@@ -14,7 +14,7 @@ export default {
   /**
    * 客户评估列表
    */
-  findCustomerAssessmentList:{
+  findCustomerAssessmentList: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findCustomerAssessmentList',
@@ -45,6 +45,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findAssessmentReportList',
+    type: requestType.Get
+  },
+  /**
+   * 获取押品基础信息
+   */
+  findCustomerCarInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerCarInfo',
     type: requestType.Get
   }
 }

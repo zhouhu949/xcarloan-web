@@ -7,17 +7,6 @@ export class BasicOffsetService {
   private netService: NetService
 
   /**
-   * 获取所有冲抵策略
-   */
-  @Debounce()
-  findBasicOffsetByAuth() {
-    return this.netService.send({
-      server: manageService.basicOffsetController.findBasicOffsetByAuth,
-      loading: true
-    })
-  }
-
-  /**
    * 新增冲抵策略
    * @param data 新增实体
    */

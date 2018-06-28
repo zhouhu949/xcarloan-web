@@ -8,11 +8,6 @@
         <i-form-item prop="customerName" label="客户姓名：">
           <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
         </i-form-item>
-        <i-form-item prop="assessmentStatus" label="评估状态：">
-          <i-select v-model="queryParamsModel.assessmentStatus" clearable>
-            <i-option v-for="{value,label} in $dict.getDictData(10021)" :key="value" :label="label" :value="value"></i-option>
-          </i-select>
-        </i-form-item>
       </template>
     </data-form>
     <data-box :columns="customerAssessmentCarColumns" :data="customerAssessmentCarDataSet" @onPageChange="refreshCustomerAssessmentCar" :page="pageService" ref="databox"></data-box>
@@ -44,8 +39,7 @@ export default class Assessment extends Page {
 
   private queryParamsModel = {
     orderNo: "",
-    customerName: "",
-    assessmentStatus: ""
+    customerName: ""
   };
 
   created() {
@@ -90,7 +84,8 @@ export default class Assessment extends Page {
                 },
                 on: {
                   click: () => {
-                    this.onGetAssessmentReportList(row.carId);
+                    // this.onGetAssessmentReportList(row.carId);
+                    this.onModifyCustomerAssessment(row);
                   }
                 }
               },
@@ -148,9 +143,7 @@ export default class Assessment extends Page {
         editable: true,
         title: "评估结果",
         key: "assessmentResult",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.orderMrtgageType))
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
@@ -183,6 +176,7 @@ export default class Assessment extends Page {
   onModifyCustomerAssessment(val?: any) {
     this.$dialog.show({
       title: "评估",
+      width: 800,
       footer: true,
       onOk: modifyCustomerAssessment => {
         return modifyCustomerAssessment.submit().then(v => {
@@ -194,7 +188,8 @@ export default class Assessment extends Page {
         h(ModifyCustomerAssessment, {
           props: {
             customerId: val.customerId,
-            carId: val.carId
+            carId: val.carId,
+            assessmentReportId: val.assessmentReportId
           }
         })
     });
@@ -208,7 +203,7 @@ export default class Assessment extends Page {
     this.$dialog.show({
       title: "评估列表",
       isView: true,
-      width: 800,
+      width: 1000,
       footer: true,
       render: h =>
         h(AssessmentReportList, {

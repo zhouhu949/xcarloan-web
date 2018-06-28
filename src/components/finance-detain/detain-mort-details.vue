@@ -1,39 +1,11 @@
-<!-- 修改库存车辆 -->
+<!-- 查看质押详情 -->
 <template>
-  <section>
-    <i-form :label-width="90" ref="form" :model="model">
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="客户姓名" prop="mortgageNum">
-            <i-input v-model="model.mortgageNum" readonly></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车型名称" prop="mortgageNo">
-            <i-input v-model="model.mortgageNo" readonly></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="设备编码" prop="gpsNo">
-            <i-input v-model="model.gpsNo" readonly></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="设备厂商" prop="gpsManufactor">
-            <i-input v-model="model.gpsManufactor" readonly></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="时间" prop="operatorTime">
-           <i-date-picker type="datetime" placeholder="时间" v-model="model.operatorTime"></i-date-picker>
-          </i-form-item>
-        </i-col>
-      </i-row>
-    </i-form>
+  <section class="component detain-details">
+    <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+      <data-grid-item label="设备编码" :span="6">{{model.gpsNo}}</data-grid-item>
+      <data-grid-item label="设备厂商" :span="6">{{model.gpsManufactor | dictConvert}}</data-grid-item>
+      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
+    </data-grid>
   </section>
 </template>
 
@@ -43,8 +15,14 @@ import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { FinanceDetainService } from "~/services/manage-service/finance-detain.service";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 
-@Component({})
+@Component({
+  components:{
+    DataGrid,
+    DataGridItem
+  }
+})
 export default class DetainMortDetails extends Vue {
   @Dependencies(FinanceDetainService)
   private financeDetainService: FinanceDetainService;
@@ -78,7 +56,9 @@ export default class DetainMortDetails extends Vue {
       this.financeDetainService
         .getDetainMortRecord(this.detainId)
         .subscribe(
-          data => (this.model = data),
+        data => {
+          if (data) this.model = data;
+        },
           err => this.$Message.error(err)
         );
     }

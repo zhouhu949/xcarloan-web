@@ -48,6 +48,7 @@ export class BasicEnterShellSaveService {
         stockCarNo: data.stockCarNo,
         stockEngineNo: data.stockEngineNo,
         stockCarColor: data.stockCarColor,
+        stockPrice: data.stockPrice,
         remark: data.remark,
       },
       loading: true

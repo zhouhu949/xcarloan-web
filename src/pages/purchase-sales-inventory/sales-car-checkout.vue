@@ -184,6 +184,13 @@ export default class SalesCarCheckout extends Page {
       {
         align: "center",
         editable: true,
+        title: "采购价格（元）",
+        key: "stockPrice",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
         title: "状态",
         key: "stockStatus",
         minWidth: this.$common.getColumnWidth(3),
@@ -191,11 +198,13 @@ export default class SalesCarCheckout extends Page {
           h("p", {}, this.$filter.dictConvert(row.stockStatus))
       }
     ];
-
-    // 加载列表数据
-    this.refreshEnterShellSave();
   }
 
+  mounted() {
+    // 加载数据
+    this.refreshEnterShellSave();
+  }
+  
   /**
    * 刷新列表
    */

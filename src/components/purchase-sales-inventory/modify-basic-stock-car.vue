@@ -1,27 +1,51 @@
 <!-- 修改库存车辆 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="供应商" prop="supplierId">
-      <i-select v-model="model.supplierId">
-        <i-option v-for="{id,supplierName} in supplierDataSet" :key="id" :label="supplierName" :value="id"></i-option>
-      </i-select>
-    </i-form-item>
-    <i-form-item label="采购价格" prop="stockPrice">
-      <i-input v-model="stockPrice"></i-input>
-    </i-form-item>
-    <i-form-item label="车架号" prop="stockCarNo">
-      <i-input v-model="model.stockCarNo"></i-input>
-    </i-form-item>
-    <i-form-item label="发动机号" prop="stockEngineNo">
-      <i-input v-model="model.stockEngineNo"></i-input>
-    </i-form-item>
-    <i-form-item label="车辆颜色" prop="stockCarColor">
-      <i-input v-model="model.stockCarColor"></i-input>
-    </i-form-item>
-    <i-form-item label="备注" prop="remark">
-      <i-input type="textarea" v-model="model.remark" :maxlength="200"></i-input>
-    </i-form-item>
-  </i-form>
+  <section class="component modify-basic-stock-car">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="供应商" prop="supplierId">
+            <i-select v-model="model.supplierId">
+              <i-option v-for="{id,supplierName} in supplierDataSet" placeholder="请选择供应商" :key="id" :label="supplierName" :value="id"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车架号" prop="stockCarNo">
+            <i-input v-model="model.stockCarNo" placeholder="请输入车架号"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="发动机号" prop="stockEngineNo">
+            <i-input v-model="model.stockEngineNo" placeholder="请输入发动机号"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车辆颜色" prop="stockCarColor">
+            <i-input v-model="model.stockCarColor" placeholder="请输入车辆颜色" number></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="采购价格" prop="stockPrice">
+            <i-input-number v-model="model.stockPrice" placeholder="请输入采购价格" :precision="2" :step="0.01" :formatter="value => `￥ ${value}`.replace(/B(?=(d{3})+(?!d))/g, ',')" :parser="value => value.replace(/￥s?|(,*)/g, '')">
+            </i-input-number>
+            <span>元</span>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="24">
+          <i-form-item label="备注" prop="remark">
+            <i-input type="textarea" v-model="model.remark" placeholder="请输入备注" :maxlength="200"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -56,6 +80,7 @@ export default class ModifyBasicStockCar extends Vue {
     id: 0,
     modelId: 0,
     remark: "",
+    stockPrice: 0,
     stockCarColor: "",
     stockCarNo: "",
     stockEngineNo: "",
@@ -63,6 +88,14 @@ export default class ModifyBasicStockCar extends Vue {
   };
 
   private rules = {
+    stockPrice: [
+      {
+        required: true,
+        message: "请输入采购价格",
+        trigger: "change",
+        type: "number"
+      }
+    ],
     stockCarNo: [
       {
         required: true,
@@ -142,6 +175,7 @@ export default class ModifyBasicStockCar extends Vue {
         stockCarNo: this.model.stockCarNo,
         stockEngineNo: this.model.stockEngineNo,
         stockCarColor: this.model.stockCarColor,
+        stockPrice: this.model.stockPrice,
         remark: this.model.remark
       };
 
@@ -167,7 +201,6 @@ export default class ModifyBasicStockCar extends Vue {
         result
           .then(v => {
             this.$Message.success("操作成功！");
-
             resolve(true);
           })
           .catch(err => {
@@ -179,5 +212,6 @@ export default class ModifyBasicStockCar extends Vue {
   }
 }
 </script>
+
 <style lang="less">
 </style>

@@ -74,4 +74,17 @@ export class BasicCustomerAssessmentCarService {
       }
     })
   }
+
+  /**
+   * 获取押品基础信息
+   * @param carId 车辆Id
+   */
+  findCustomerCarInfo(carId: number) {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.findCustomerCarInfo,
+      data: {
+        carId: carId
+      }
+    })
+  }
 }

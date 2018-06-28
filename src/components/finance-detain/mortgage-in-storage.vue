@@ -1,18 +1,30 @@
 <!-- 抵押入库 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="设备号" prop="gpsNo">
-      <i-input v-model="model.gpsNo"></i-input>
-    </i-form-item>
-    <i-form-item label="设备厂家" prop="gpsManufactor">
-      <i-select v-model="model.gpsManufactor" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData(10014)" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-    </i-form-item>
-    <i-form-item label="入库时间" prop="stockDate">
-      <i-date-picker type="datetime" placeholder="选择入库时间" v-model="model.stockDate"></i-date-picker>
-    </i-form-item>
-  </i-form>
+  <section class="component mortgage-in-storage">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="设备号" prop="gpsNo">
+            <i-input v-model="model.gpsNo"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="设备厂商" prop="gpsManufactor">
+            <i-select v-model="model.gpsManufactor" clearable>
+              <i-option v-for="{value,label} in $dict.getDictData(10045)" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="入库时间" prop="stockDate">
+            <i-date-picker type="datetime" placeholder="选择入库时间" v-model="model.stockDate"></i-date-picker>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -37,7 +49,7 @@ export default class MortgageInStorage extends Vue {
 
   private model: any = {
     // 押品出入库id
-    id: 0,
+    id: this.id,
     gpsNo: "",
     gpsManufactor: "",
     stockDate: ""
@@ -59,7 +71,8 @@ export default class MortgageInStorage extends Vue {
     gpsManufactor: [
       {
         required: true,
-        message: "请选择设备厂家",
+        type:"number",
+        message: "请选择设备厂商",
         trigger: "blur"
       }
     ],

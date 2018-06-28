@@ -138,6 +138,13 @@ export default class InventoryQuery extends Page {
       {
         align: "center",
         editable: true,
+        title: "采购价格（元）",
+        key: "stockPrice",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
         title: "库存状态",
         key: "stockStatus",
         minWidth: this.$common.getColumnWidth(4),
@@ -176,6 +183,11 @@ export default class InventoryQuery extends Page {
    * @param val
    */
   onStockCarOperate(val?: Object) {
+    if (!this.modelId) {
+      this.$Message.warning("请选择车型！");
+      return;
+    }
+    
     this.$dialog.show({
       title: val ? "维护库存车辆" : "新增库存车辆",
       footer: true,

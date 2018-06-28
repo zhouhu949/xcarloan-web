@@ -1,10 +1,16 @@
 <!-- 抵押出库 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="出库时间" prop="stockDate">
-      <i-date-picker type="datetime" placeholder="选择出库时间" v-model="model.stockDate"></i-date-picker>
-    </i-form-item>
-  </i-form>
+  <section class="component mortgage-out-storage">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="出库时间" prop="stockOutDate">
+            <i-date-picker type="datetime" placeholder="选择出库时间" v-model="model.stockOutDate"></i-date-picker>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -22,7 +28,7 @@ export default class MortgageOutStorage extends Vue {
   private financeDetainService: FinanceDetainService;
 
   @Prop() outStorageData;
- 
+
   private model: any = {
     id: 0,
     stockOutDate: ""
@@ -44,7 +50,12 @@ export default class MortgageOutStorage extends Vue {
     // 初始化数据
     if (this.outStorageData) {
       this.model.id = this.outStorageData.id;
-      this.model.stockOutDate = this.outStorageData.stockOutDate;
+      // this.model.stockOutDate = this.outStorageData.stockOutDate
+        // ? this.$filter.dateFormat(
+            // this.outStorageData.stockOutDate,
+            // "yyyy-MM-dd hh:mm:ss"
+          // )
+        // : "";
     }
   }
 

@@ -39,6 +39,7 @@ export class BasicStockCarService {
         stockCarNo: data.stockCarNo,
         stockEngineNo: data.stockEngineNo,
         supplierId: data.supplierId,
+        stockPrice: data.stockPrice
       },
       loading: true
     })

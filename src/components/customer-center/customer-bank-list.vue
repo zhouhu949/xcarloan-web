@@ -1,13 +1,17 @@
 <!-- 客户银行卡列表 -->
 <template>
-  <section class="page">
-    <data-box :height="300" :columns="cutomerBankColumns" :data="cutomerBankDataSet" :highlightRow="true" @on-current-change="onCurrentCutomerBankChange" ref="databox"></data-box>
+  <section class="component customer-bank-list">
+    <i-card title="银行卡信息">
+      <a href="#" slot="extra" @click.prevent="addBankCard" v-show="!isView">添加银行卡</a>
+      <data-box :height="300" :columns="cutomerBankColumns" :data="cutomerBankDataSet" :highlightRow="true" @on-current-change="onCurrentCutomerBankChange" ref="databox"></data-box>
+    </i-card>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ModifyCustomerInfoBank from "~/components/customer-center/customer-info-base/modify-customer-info-bank.vue";
 import { Prop, Watch } from "vue-property-decorator";
 import { Form } from "iview";
 import { Dependencies } from "~/core/decorator";
@@ -16,7 +20,7 @@ import { BasicCustomerService } from "~/services/manage-service/basic-customer.s
 import { BasicCustomerAccountService } from "~/services/manage-service/basic-customer-account.service";
 
 @Component({})
-export default class CutomerBankList extends Vue {
+export default class CustomerBankList extends Vue {
   @Dependencies(BasicCustomerService)
   private basicCustomerService: BasicCustomerService;
   @Dependencies(BasicCustomerAccountService)
@@ -30,11 +34,10 @@ export default class CutomerBankList extends Vue {
 
   mounted() {
     // 客户银行卡列表信息
-    this.getCustomerBankInfo();
+    this.refreshCustomerBankInfo();
   }
 
   private currentCustomerBankRow: any;
-
   private cutomerBankColumns: any = [];
   private cutomerBankDataSet: Array<any> = [];
 
@@ -50,8 +53,31 @@ export default class CutomerBankList extends Vue {
       {
         align: "center",
         editable: true,
-        title: "银行",
+        title: "所属银行",
         key: "bankName",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "所属支行",
+        key: "bankBranch",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "账户类型",
+        key: "accountType",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.accountType))
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "开户城市",
+        key: "depositCity",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
@@ -69,7 +95,7 @@ export default class CutomerBankList extends Vue {
   /**
    * 获取客户银行卡信息
    */
-  getCustomerBankInfo() {
+  refreshCustomerBankInfo() {
     this.basicCustomerService.findCustomerBankInfo(this.customerId).subscribe(
       data => {
         this.cutomerBankDataSet = data.map(v =>
@@ -89,6 +115,28 @@ export default class CutomerBankList extends Vue {
   }
 
   /**
+   * 添加银行卡
+   */
+  addBankCard() {
+    this.$dialog.show({
+      title: "添加银行卡",
+      footer: true,
+      onOk: modifyCustomerAssessment => {
+        return modifyCustomerAssessment.submit().then(v => {
+          if (v) this.refreshCustomerBankInfo();
+          return v;
+        });
+      },
+      render: h =>
+        h(ModifyCustomerInfoBank, {
+          props: {
+            customerId: this.customerId,
+          }
+        })
+    });
+  }
+
+  /**
    * 开户操作
    */
   submit() {
@@ -102,5 +150,6 @@ export default class CutomerBankList extends Vue {
   }
 }
 </script>
+
 <style lang="less">
 </style>

@@ -31,7 +31,7 @@ export default class BasicExpenseManage extends Page {
   private expenseDataSet: any = [];
 
   mounted() {
-    this.findBasicExpenseByAuth();
+    this.findBasicExpenseByOrg();
   }
 
   created() {
@@ -175,9 +175,9 @@ export default class BasicExpenseManage extends Page {
   /**
    * 获取自己所能操作的所有费用项
    */
-  private findBasicExpenseByAuth() {
+  private findBasicExpenseByOrg() {
     this.basicExpenseService
-      .findBasicExpenseByAuth()
+      .findBasicExpenseByOrg()
       .subscribe(
         data => (this.expenseDataSet = data),
         err => this.$Message.error(err.msg)
@@ -188,7 +188,7 @@ export default class BasicExpenseManage extends Page {
    * 刷新列表数据
    */
   private refreshData() {
-    this.findBasicExpenseByAuth();
+    this.findBasicExpenseByOrg();
   }
 }
 </script>

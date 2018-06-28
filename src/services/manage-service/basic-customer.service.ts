@@ -48,12 +48,16 @@ export class BasicCustomerService {
 
   /**
    * 获取客户签约列表
+   * @param data 查询参数实体
    * @param page 分页参数实体
    */
   @Debounce()
-  getCustomerSignList(page) {
+  getCustomerSignList(data, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerSignList,
+      data: {
+        customerName: data.customerName
+      },
       page: page,
       loading: true,
     })

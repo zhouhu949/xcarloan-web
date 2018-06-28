@@ -2,6 +2,13 @@
   <section class="page sign-contract">
     <page-header title="客户签约" hidden-print hidden-export>
     </page-header>
+    <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshCustomerSign">
+      <template slot="input">
+        <i-form-item prop="customerName" label="客户姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :columns="customerSignColumns" :data="customerSignDataSet" @onPageChange="refreshCustomerSign" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
@@ -41,7 +48,7 @@ export default class SignContract extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           // 开户状态 10093 : 已开户 ; 10094 : 未开户
-          if (row.accountStatus === 10093) {
+          if (row.fileCount <= 0) {
             return h("div", [
               h(
                 "i-button",
@@ -61,7 +68,7 @@ export default class SignContract extends Page {
                 "上传合同"
               )
             ]);
-          } else if (row.accountStatus === 10094) {
+          } else {
             return h("div", [
               h(
                 "i-button",
@@ -118,13 +125,6 @@ export default class SignContract extends Page {
       {
         align: "center",
         editable: true,
-        title: "客户类型",
-        key: "customerType",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
         title: "教育程度",
         key: "education",
         minWidth: this.$common.getColumnWidth(4)
@@ -174,13 +174,6 @@ export default class SignContract extends Page {
       {
         align: "center",
         editable: true,
-        title: "客户类别",
-        key: "personalProfile",
-        minWidth: this.$common.getColumnWidth(3)
-      },
-      {
-        align: "center",
-        editable: true,
         title: "开户状态",
         key: "accountStatus",
         minWidth: this.$common.getColumnWidth(3),
@@ -198,7 +191,7 @@ export default class SignContract extends Page {
    */
   refreshCustomerSign() {
     this.basicCustomerService
-      .getCustomerSignList(this.pageService)
+      .getCustomerSignList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.customerSignDataSet = data),
         err => this.$Message.error(err.msg)

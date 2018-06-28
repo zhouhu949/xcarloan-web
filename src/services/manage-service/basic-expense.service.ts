@@ -6,17 +6,6 @@ export class BasicExpenseService {
   private netService: NetService
 
   /**
-   * 获取所有费用项
-   */
-  @Debounce()
-  findBasicExpenseByAuth() {
-    return this.netService.send({
-      server: manageService.basicExpenseController.findBasicExpenseByAuth,
-      loading: true
-    })
-  }
-
-  /**
    * 新增费用项
    * @param data 新增实体
    */
@@ -56,7 +45,7 @@ export class BasicExpenseService {
    * @param expenseId 费用项id
    */
   @Debounce()
-  deleteBasicExpense(expenseId){
+  deleteBasicExpense(expenseId) {
     return this.netService.send({
       server: manageService.basicExpenseController.deleteBasicExpense,
       append: expenseId,

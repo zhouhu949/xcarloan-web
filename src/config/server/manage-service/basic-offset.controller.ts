@@ -5,15 +5,6 @@ const CONTROLLER = 'basicOffsetController'
 
 export default {
   /**
-   * 获取数据权限下的冲抵策略
-   */
-  findBasicOffsetByAuth: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findBasicOffsetByAuth',
-    type: requestType.Get
-  },
-  /**
    * 新增冲抵策略
    */
   addBasicOffset: {
@@ -25,8 +16,8 @@ export default {
   /**
    * 新增冲抵项
    */
-  addBasicOffsetItem:{
-    service:SERVICE,
+  addBasicOffsetItem: {
+    service: SERVICE,
     controller: CONTROLLER,
     action: 'addBasicOffsetItem',
     type: requestType.Post
