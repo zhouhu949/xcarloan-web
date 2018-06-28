@@ -44,7 +44,7 @@ export class RepaySchemeService {
       server: manageService.basicRepaySchemeController.repayScheme,
       data: data,
       loading: true
-    }) 
+    })
   }
   /**
    * 删除还款方案
@@ -54,17 +54,20 @@ export class RepaySchemeService {
       server: manageService.basicRepaySchemeController.deleteRepayScheme,
       append: id,
       loading: true
-    }) 
+    })
   }
-   /**
-   * 发布/取消发布还款方案
-   */
-  releaseRepayScheme(data) {
+  /**
+  * 发布/取消发布还款方案
+  */
+  releaseRepayScheme(schemeId: Number, state: Number) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.releaseRepayScheme,
-      data: data,
+      data: {
+        id: schemeId,
+        schemeStatus: state
+      },
       loading: true
-    }) 
+    })
   }
   /**
    * 新增/修改还款方案比例详情
@@ -74,7 +77,7 @@ export class RepaySchemeService {
       server: manageService.basicRepaySchemeController.addBasicSchemeExpense,
       data: data,
       loading: true
-    }) 
+    })
   }
   /**
    * 删除还款方案比例详情
@@ -84,6 +87,6 @@ export class RepaySchemeService {
       server: manageService.basicRepaySchemeController.deleteRepaySchemeExpense,
       append: id,
       loading: true
-    }) 
+    })
   }
 }

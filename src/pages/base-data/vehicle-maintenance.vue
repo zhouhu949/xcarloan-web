@@ -8,7 +8,7 @@
           <span>车辆品牌</span>
         </i-row>
         <div class="data-form-tree">
-          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-clickNode="onClickNode" @on-edit="onEdit" @on-addEdit="onAddEdit" @on-deleteEdit="ondeleteEdit"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-clickNode="onClickNode" @on-edit="onEdit" @on-add="onAddClick" @on-delete="ondeleteClick"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
@@ -180,7 +180,7 @@ export default class VehicleMaintenance extends Page {
     }
   }
   // 树点击新增事件
-  private onAddEdit(data) {
+  private onAddClick(data) {
     switch (data.type) {
       case CarPropertyType.BRAND:
         console.log(data, '车系')
@@ -249,7 +249,7 @@ export default class VehicleMaintenance extends Page {
   }
 
   // 树点击删除事件
-  private ondeleteEdit(data) {
+  private ondeleteClick(data) {
     switch (data.type) {
       case CarPropertyType.BRAND:
         // 删除品牌

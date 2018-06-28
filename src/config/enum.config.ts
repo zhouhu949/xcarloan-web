@@ -36,3 +36,21 @@ export enum InfoCompontentType {
    */
   ORDER
 }
+
+/**
+ * 编辑类型
+ */
+export enum EditType{
+  /**
+   * 增加
+   */
+  ADD,
+  /**
+   * 编辑
+   */
+  MODIFY,
+  /**
+   * 删除
+   */
+  DELETE
+}

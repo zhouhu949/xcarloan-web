@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="component organize-tree">
     <template v-for="node of data">
       <data-tree-node :props="props||{}" v-if="node" :key="node.id" :data="node"></data-tree-node>
@@ -11,6 +11,7 @@ import Vue from "vue";
 import { Prop, Watch, Emit } from "vue-property-decorator";
 import Component from "vue-class-component";
 import DataTreeNode from "~/components/common/data-tree-node.vue";
+import { EditType } from "~/config/enum.config";
 
 @Component({
   components: {
@@ -39,10 +40,16 @@ export default class DataTree extends Vue {
   showCheckbox;
 
   @Prop({
-    type:Boolean,
-    default:false
+    type: Boolean,
+    default: false
   })
   showEdit
+
+  @Prop({
+    type: Array,
+    default: () => [EditType.ADD, EditType.MODIFY, EditType.DELETE]
+  })
+  editConfig
 
   // 数据源变化监听
   @Watch("data")
@@ -57,16 +64,16 @@ export default class DataTree extends Vue {
   emitCurrentCheckedChange(id, value) { }
 
   @Emit('on-edit')
-  emitEdit(data){}
+  emitEdit(data) { }
 
-  @Emit('on-addEdit')
-  addEdit(data){}
+  @Emit('on-add')
+  addEdit(data) { }
 
-  @Emit('on-deleteEdit')
-  deleteEdit(data){}
+  @Emit('on-delete')
+  deleteEdit(data) { }
 
   @Emit('on-clickNode')
-  clickNode(data){}
+  clickNode(data) { }
 
   private nodeMap = new Map<DataTreeNode, any>();
 
