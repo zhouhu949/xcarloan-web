@@ -1,5 +1,5 @@
 <template>
-  <section class="component data-tree-node"> 
+  <section class="component data-tree-node">
     <div :style="getSubTreeStyle()">
       <div @click="onSelect" class="node-title" :class="{selected:selected}">
         <span @click="onExpand" v-if="!isLeaf" :class="{expanded:expanded}">
@@ -9,19 +9,19 @@
         <span v-if="showCheckbox">
           <i-checkbox :indeterminate="indeterminate" v-model="checked" @on-change="onChecked"></i-checkbox>
         </span>
-        <span  @click="currentNode">{{data[propsObject.title]}}</span>
+        <span @click="currentNode">{{data[propsObject.title]}}</span>
         <small v-show="selected && showEdit" class="icon-box">
-          <a @click="editHandle" href="#">
+          <a @click="editHandle" href="#" :disabled="disabled" v-if="hasEdit">
             <div style="display:inline-block">
               <Icon type="edit"></Icon>
             </div>
           </a>
-          <a @click="addItemHandle" href="#">
+          <a @click="addItemHandle" href="#" :disabled="disabled" v-if="hasAdd">
             <div style="display:inline-block">
               <Icon type="plus"></Icon>
             </div>
           </a>
-          <a @click="deleteHandle" href="#">
+          <a @click="deleteHandle" href="#" :disabled="disabled" v-if="hasDelete">
             <div style="display:inline-block">
               <Icon type="minus"></Icon>
             </div>
@@ -40,6 +40,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import DataTree from "~/components/common/data-tree.vue";
+import { EditType } from "~/config/enum.config";
 
 @Component({})
 export default class DataTreeNode extends Vue {
@@ -47,6 +48,8 @@ export default class DataTreeNode extends Vue {
     required: true
   })
   data;
+
+
 
   public expanded = true;
   public selected = false;
@@ -68,8 +71,29 @@ export default class DataTreeNode extends Vue {
     return this.root.showCheckbox;
   }
 
+  /** 是否禁用操作项 */
+  get disabled() {
+    return this.data._disabled || false
+  }
+
   get showEdit() {
     return this.root.showEdit;
+  }
+
+  get editType() {
+    return this.root.editConfig as Array<EditType>
+  }
+
+  get hasAdd() {
+    return this.editType.includes(EditType.ADD)
+  }
+
+  get hasEdit() {
+    return this.editType.includes(EditType.MODIFY)
+  }
+
+  get hasDelete() {
+    return this.editType.includes(EditType.DELETE)
   }
 
   /**
@@ -93,7 +117,7 @@ export default class DataTreeNode extends Vue {
   /**
    * 点击当前节点
    */
-  private currentNode(){
+  private currentNode() {
     this.root.clickNode(this.data)
   }
 

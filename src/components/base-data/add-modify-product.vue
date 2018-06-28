@@ -1,34 +1,22 @@
 <!-- 新增产品 -->
 <template>
   <section class="component add-modify-product">
-    <i-form :label-width="100" :model="model" class="add-modify-product-form" ref="add-modify-product-form" :rules="rules">
-      <i-row>
-        <i-col :span="12">
-          <i-form-item label="产品名称" prop="productName">
-            <i-input v-model="model.productName" placeholder="请输入产品名称"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="产品类型" prop="schemeType">
-            <i-input value="融资租赁" disabled></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="还款方案名称" prop="schemeName">
-            <i-input v-model="model.schemeName" readonly @on-focus="selectScheme" placeholder="请选择还款方案"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车型名称" prop="carName">
-            <i-input v-model="carName" disabled></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="上传附件" prop="fileUrl">
-            <i-input v-model="model.fileUrl" readonly @on-focus="uploadFile" placeholder="请选择附件"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
+    <i-form :label-width="110" :model="model" ref="add-modify-product-form" :rules="rules" inline>
+      <i-form-item label="产品名称" prop="productName">
+        <i-input v-model="model.productName" placeholder="请输入产品名称"></i-input>
+      </i-form-item>
+      <i-form-item label="产品类型" prop="schemeType">
+        <i-input value="融资租赁" disabled></i-input>
+      </i-form-item>
+      <i-form-item label="还款方案名称" prop="schemeName">
+        <i-input v-model="model.schemeName" readonly @on-focus="selectScheme" placeholder="请选择还款方案"></i-input>
+      </i-form-item>
+      <i-form-item label="车型名称" prop="carName">
+        <i-input v-model="carName" disabled></i-input>
+      </i-form-item>
+      <i-form-item label="上传附件" prop="fileUrl">
+        <i-input v-model="model.fileUrl" readonly @on-focus="uploadFile" placeholder="请选择附件"></i-input>
+      </i-form-item>
     </i-form>
   </section>
 </template>
@@ -75,7 +63,7 @@ export default class AddModifyProduct extends Vue {
 
   created() {
     this.model.configId = this.carId
-    if(Object.keys(this.productData).length != 0) {
+    if (Object.keys(this.productData).length != 0) {
       this.model.productName = this.productData.productName
       this.model.fileUrl = this.productData.fileUrl
       this.model.schemeName = this.productData.schemeName

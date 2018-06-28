@@ -83,7 +83,7 @@ export default class ProductManage extends Page {
         editable: true,
         title: "产品名称",
         key: "productName",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) => {
           return (
             <i-button type="text" class="row-command-button" onClick={() => this.checkProductDetail(row)}> {row.productName}</i-button>
@@ -95,7 +95,7 @@ export default class ProductManage extends Page {
         editable: true,
         title: "产品类型",
         key: "productType",
-        minWidth: this.$common.getColumnWidth(1),
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.productType))
         }
@@ -105,7 +105,7 @@ export default class ProductManage extends Page {
         editable: true,
         title: "产品发布状态",
         key: "productStatus",
-        minWidth: this.$common.getColumnWidth(),
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => h('span', {}, this.$dict.getDictName(row.productStatus))
       },
       {
@@ -113,10 +113,10 @@ export default class ProductManage extends Page {
         editable: true,
         title: "还款方案",
         key: "schemeName",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, columns, index }) => {
           return (
-            <i-button type="text" class="row-command-button" onClick={() => this.checkRepaySchemeDetail(row.id)}> {row.schemeName}</i-button>
+            <i-button type="text" class="row-command-button" onClick={() => this.checkRepaySchemeDetail(row.schemeName, row.id)}> {row.schemeName}</i-button>
           )
         }
       },
@@ -125,19 +125,19 @@ export default class ProductManage extends Page {
         editable: true,
         title: "车型名称",
         key: "carModelName",
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: "center",
-        editable: true,
         title: "期数",
-        key: "periods"
+        key: "periods",
+        minWidth: this.$common.getColumnWidth(2),
       },
       {
         align: "center",
-        editable: true,
         title: "利率",
         key: "interestRate",
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$filter.decimalToPrecent(row.interestRate));
         }
@@ -236,9 +236,10 @@ export default class ProductManage extends Page {
   /**
    * 查看还款方案详情
    */
-  checkRepaySchemeDetail(productId) {
+  checkRepaySchemeDetail(name: String, productId: Number) {
     this.$dialog.show({
-      title: '查看还款方案详情',
+      title: name,
+      width: 1000,
       render: h => h(checkRepayScheme, {
         props: {
           productId: productId
@@ -267,7 +268,7 @@ export default class ProductManage extends Page {
   /**
    * 取消发布车型产品
    */
-  canclePublishProduct(productId) {
+  canclePublishProduct(productId: Number) {
     this.$Modal.confirm({
       title: '提示',
       content: '确定取消发布此车型产品吗？',
@@ -285,7 +286,7 @@ export default class ProductManage extends Page {
   /**
    * 删除车型产品
    */
-  deleteBasicProduct(productId) {
+  deleteBasicProduct(productId: Number) {
     this.$Modal.confirm({
       title: '提示',
       content: '确定删除此车型产品吗？',
