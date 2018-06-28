@@ -24,7 +24,26 @@ export default class CustomerInfoBadRecord extends Vue {
     this.columns = [
       {
         align: "center",
-        title: "身份状态",
+        title: "客户名",
+        key: "customerName",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        title: "性别",
+        key: "customerSex",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
+      },
+      {
+        align: "center",
+        title: "手机号",
+        key: "customerPhone",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        title: "记录类型",
         key: "blacklistType",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.blacklistType))
@@ -33,15 +52,15 @@ export default class CustomerInfoBadRecord extends Vue {
         align: "center",
         title: '开始时间',
         key: 'beginTime',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(6),
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.blacklistType))
       },
       {
         align: "center",
-        title: '客户状态',
-        editable: true,
-        key: 'customerStatus',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerStatus))
+        title: '结束时间',
+        key: 'endTime',
+        minWidth: this.$common.getColumnWidth(6),
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.blacklistType))
       },
       {
         align: "center",

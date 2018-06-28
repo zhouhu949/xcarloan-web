@@ -16,4 +16,37 @@ export class BasicCustomerHouseService {
       append: customerId
     })
   }
+  /**
+   * 新增房产信息
+   */
+  @Debounce()
+  addCustomHouse(data) {
+    return this.netService.send({
+      server: manageService.basicCustomHouseController.addCustomHouse,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 修改房产信息
+   */
+  @Debounce()
+  updateCustomHouse(data) {
+    return this.netService.send({
+      server: manageService.basicCustomHouseController.updateCustomHouse,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 删除房产信息
+   */
+  @Debounce()
+  deleteCustomHouse(houseId) {
+    return this.netService.send({
+      server: manageService.basicCustomHouseController.deleteCustomHouse,
+      data: { id: houseId},
+      loading: true
+    })
+  }
 }

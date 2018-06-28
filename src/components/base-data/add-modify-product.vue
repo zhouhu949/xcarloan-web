@@ -28,7 +28,7 @@ import { Dependencies } from '~/core/decorator';
 import { Form } from "iview";
 import { BasicProductService } from "~/services/manage-service/basic-product.service";
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
-import selectScheme from '~/components/base-data/select-scheme.vue'
+import SlectScheme from '~/components/base-data/select-scheme.vue'
 import uploadProductEnclosure from '~/components/base-data/upload-product-enclosure.vue';
 
 @Component({
@@ -132,7 +132,7 @@ export default class AddModifyProduct extends Vue {
         title: '选择还款方案',
         footer: true,
         width: 1000,
-        render: h => h(selectScheme, {
+        render: h => h(SlectScheme, {
           props: {
             schemeData: this.schemeData,
             productData: this.model

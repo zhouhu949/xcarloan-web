@@ -8,8 +8,7 @@ export class BasicCustomerAssessmentCarService {
   private netService: NetService
 
   /**
-   * 客户车产列表
-   * @param customerId 客户Id
+   * 获取客户车产信息
    */
   getBasicCustomerCarList(customerId) {
     return this.netService.send({
@@ -42,6 +41,17 @@ export class BasicCustomerAssessmentCarService {
   addBasicCustomerAssessment(data) {
     return this.netService.send({
       server: manageService.basicCustomerAssessmentCarController.addBasicCustomerAssessment,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 新增车产信息
+   */
+  @Debounce()
+  addAssessmentApplication(data) {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.addAssessmentApplication,
       data: data,
       loading: true
     })
@@ -85,6 +95,28 @@ export class BasicCustomerAssessmentCarService {
       data: {
         carId: carId
       }
+    })
+  }
+  /**
+   * 修改车产信息
+   */
+  @Debounce()
+  updateBasicCustomerCar(data) {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.updateBasicCustomerCar,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 删除车产信息
+   */
+  @Debounce()
+  deleteBasicCustomerCar(carId) {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.deleteBasicCustomerCar,
+      data: { id: carId },
+      loading: true
     })
   }
 }

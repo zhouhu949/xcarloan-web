@@ -21,5 +21,14 @@ export default {
     controller: CONTROLLER,
     action: 'query',
     type: requestType.Get
+  },
+  /**
+   * 获取订单基本资料
+   */
+  findCustomerOrderInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerOrderInfo',
+    type: requestType.Get
   }
 }

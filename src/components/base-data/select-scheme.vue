@@ -13,7 +13,7 @@ import { Dependencies } from '~/core/decorator';
 @Component({
   components: {}
 })
-export default class AddProduct extends Vue {
+export default class SelectScheme extends Vue {
   @Prop() productData
   @Prop() schemeData
 

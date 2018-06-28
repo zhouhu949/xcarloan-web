@@ -60,6 +60,7 @@ export default class CustomerInfoBank extends Vue {
   }
 
   private onEditClick(data) {
+    data.customerId = this.id
     this.$dialog.show({
       title: "维护银行卡",
       footer: true,

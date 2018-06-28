@@ -16,4 +16,37 @@ export class BasicCustomerContactService {
       append: customerId
     })
   }
+  /**
+   * 新增联系人信息
+   */
+  @Debounce()
+  addCustomContact(data) {
+    return this.netService.send({
+      server: manageService.basicCustomContactController.addCustomContact,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 修改联系人信息
+   */
+  @Debounce()
+  updateCustomContant(data) {
+    return this.netService.send({
+      server: manageService.basicCustomContactController.updateCustomContant,
+      data: data,
+      loading: true
+    })
+  }
+  /**
+   * 删除联系人信息
+   */
+  @Debounce()
+  deleteCustomContant(contactId) {
+    return this.netService.send({
+      server: manageService.basicCustomContactController.deleteCustomContant,
+      data: { contactId: contactId },
+      loading: true
+    })
+  }
 }

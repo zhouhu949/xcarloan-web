@@ -15,9 +15,7 @@
         <car-params v-if="carId" :carId="carId" ref="carParams"></car-params>
         <div v-else class="empty-text">空空如也，请选择车辆^_^</div>
       </i-col>
-
     </i-row>
-
   </section>
 </template>
 <script lang="ts">
@@ -313,6 +311,9 @@ export default class VehicleMaintenance extends Page {
 </script>
 <style lang="less" scoped>
 .page.vehicle-maintenance {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
   .textButton {
     width: 61px;
     color: #265ea2;
@@ -329,10 +330,12 @@ export default class VehicleMaintenance extends Page {
   }
   .form {
     margin-top: 10px;
+    flex: 1;
+    display: flex;
     .data-form {
       border: 1px solid #dddddd;
       padding: 20px 0;
-      height: 590px;
+      // height: 590px;
       .data-form-item {
         border-bottom: 1px solid #dddddd;
         position: relative;
@@ -353,7 +356,7 @@ export default class VehicleMaintenance extends Page {
         }
       }
       .data-form-tree {
-        height: 561px;
+        // height: 561px;
         overflow-y: auto;
         overflow-x: hidden;
         position: relative;
@@ -361,7 +364,7 @@ export default class VehicleMaintenance extends Page {
       }
     }
     .command {
-      height: 590px;
+      // height: 590px;
       border: 1px solid #dddddd;
       padding: 20px;
       .command-item {

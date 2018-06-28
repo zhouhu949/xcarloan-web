@@ -33,4 +33,15 @@ export class BasicCustomerOrderService {
       page
     })
   }
+  /**
+   * 获取订单基本资料
+   */
+  findCustomerOrderInfo(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderInfo,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }
