@@ -1,6 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
 export class BasicCustomerCenterService {
   @Inject(NetService)
@@ -128,6 +129,21 @@ export class BasicCustomerCenterService {
       data: {
         customerId: customerId
       }
+    })
+  }
+
+  /**
+   * 非黑名单客户列表
+   */
+  findNotBlackCustomerList(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.findNotBlackCustomerList,
+      data: {
+        customerName: data.name,
+        customerPhone: data.phone,
+        idCard: data.idCard
+      },
+      page
     })
   }
 }

@@ -51,9 +51,23 @@ body,
   .blueButton:hover {
     background: #1D4F8B;
     color: #fff;
-  } // 页面底部大按钮
+  } 
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
+  // 页面底部大按钮
   .highButton {
     height: 46px;
+    min-width: 90px;
     border-radius: 0;
     background: #265EA2;
     color: #fff;

@@ -11,7 +11,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getAllBasicSchemeByOrgId',
-    type: requestType.Get 
+    type: requestType.Get
   },
   /**
    * 根据还款方案id获取还款方案信息
@@ -20,7 +20,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findSchemeById',
-    type: requestType.Get 
+    type: requestType.Get
   },
   /**
    * 根据还款方案获取还款方案比例详情
@@ -29,7 +29,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findSchemeExpenseBySchemeId',
-    type: requestType.Get 
+    type: requestType.Get
   },
   /**
    * 新增/修改还款方案
@@ -38,7 +38,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'repayScheme',
-    type: requestType.Post 
+    type: requestType.Post
   },
   /**
    * 删除还款方案
@@ -47,7 +47,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'deleteRepayScheme',
-    type: requestType.Delete 
+    type: requestType.Delete
   },
   /**
    * 发布/取消发布还款方案
@@ -56,7 +56,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'releaseRepayScheme',
-    type: requestType.Put 
+    type: requestType.Put
   },
   /**
    * 新增/修改还款方案比例详情
@@ -74,6 +74,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'deleteRepaySchemeExpense',
-    type: requestType.Delete 
+    type: requestType.Delete
+  },
+  /**
+   * 获取已发布的方案
+   */
+  queryReleasedScheme: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryReleasedScheme',
+    type: requestType.Get
   }
 }

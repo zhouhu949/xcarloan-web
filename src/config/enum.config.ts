@@ -54,3 +54,21 @@ export enum EditType{
    */
   DELETE
 }
+
+/**
+ * 产品方案计算详情类型
+ */
+export enum ProdSchemeDetailType{
+  /**
+   * 产品配置
+   */
+  PRODUCT,
+  /**
+   * 融资租赁
+   */
+  FINANCE,
+  /**
+   * 抵押贷款
+   */
+  MORTGAGE
+}
