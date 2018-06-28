@@ -41,7 +41,7 @@ export default class SignContract extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           // 开户状态 10093 : 已开户 ; 10094 : 未开户
-          if (row.accountStatus === 10094) {
+          if (row.accountStatus === 10093) {
             return h("div", [
               h(
                 "i-button",
@@ -61,7 +61,7 @@ export default class SignContract extends Page {
                 "上传合同"
               )
             ]);
-          } else if (row.accountStatus === 10093) {
+          } else if (row.accountStatus === 10094) {
             return h("div", [
               h(
                 "i-button",
@@ -95,7 +95,7 @@ export default class SignContract extends Page {
       {
         align: "center",
         editable: true,
-        title: "订单号",
+        title: "订单编号",
         key: "orderNo",
         minWidth: this.$common.getColumnWidth(5)
       },
@@ -210,7 +210,8 @@ export default class SignContract extends Page {
    */
   uploadContractOperate(data) {
     let dialog = this.$dialog.show({
-      title: "上传文件",
+      title: "上传合同",
+      okText: "确认签约",
       footer: true,
       onOk: contractUpload => {
         return contractUpload
@@ -239,7 +240,8 @@ export default class SignContract extends Page {
    */
   showUploadContract(data) {
     let dialog = this.$dialog.show({
-      title: "查看文件",
+      title: "查看合同",
+      isView: true,
       footer: true,
       onOk: contractUpload => {
         return contractUpload

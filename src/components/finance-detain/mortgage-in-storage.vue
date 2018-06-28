@@ -65,6 +65,7 @@ export default class MortgageInStorage extends Vue {
     ],
     stockDate: {
       required: true,
+      type: "date",
       message: "请输入入库时间",
       trigger: "blur"
     }

@@ -6,6 +6,9 @@
         <i-option v-for="{id,supplierName} in supplierDataSet" :key="id" :label="supplierName" :value="id"></i-option>
       </i-select>
     </i-form-item>
+    <i-form-item label="采购价格" prop="stockPrice">
+      <i-input v-model="stockPrice"></i-input>
+    </i-form-item>
     <i-form-item label="车架号" prop="stockCarNo">
       <i-input v-model="model.stockCarNo"></i-input>
     </i-form-item>
@@ -133,15 +136,15 @@ export default class ModifyBasicStockCar extends Vue {
   private modifyBasicStock() {
     return new Promise((resolve, reject) => {
       // 参数
-      let model={ 
+      let model = {
         orderId: this.stockCarData.orderId,
         supplierId: this.model.supplierId,
         stockCarNo: this.model.stockCarNo,
         stockEngineNo: this.model.stockEngineNo,
         stockCarColor: this.model.stockCarColor,
-        remark: this.model.remark,
+        remark: this.model.remark
       };
-      
+
       this.basicEnterShellSaveService
         .addOrderCarStock(model)
         .subscribe(data => resolve(true), err => reject(err));

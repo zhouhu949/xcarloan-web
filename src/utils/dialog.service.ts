@@ -32,7 +32,9 @@ export class DialogService {
             title: option.title,
             footer: !!option.footer,
             value: true,
+            okText: option.okText,
             onOk: option.onOk,
+            cancelText: option.cancelText,
             onCancel: option.onCancel,
             isView: option.isView
           },

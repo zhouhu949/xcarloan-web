@@ -62,7 +62,7 @@ export default class DataBox extends Vue {
   // 分页服务
   @Prop() page: PageService;
 
-  // 表格高度
+  // 表格宽度
   @Prop() width: Number;
 
   // 表格高度

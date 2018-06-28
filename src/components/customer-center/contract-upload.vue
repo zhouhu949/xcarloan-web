@@ -1,7 +1,7 @@
 <!--财务·上传图片-->
 <template>
   <section class="component contract-upload">
-    <Button class="contract-title" type="primary" @click="showFileUpload" v-show="!hiddenUpload && !isView">上传文件</Button>
+    <Button class="contract-title" type="primary" @click="showFileUpload" v-show="!hiddenUpload && !isView">上传</Button>
     <i-table :height="300" :columns="uploadedColumns" :data="uploadedDataSet"></i-table>
   </section>
 </template>
@@ -13,7 +13,7 @@ import { Dependencies } from "~/core/decorator";
 import { NetService } from "~/utils/net.service";
 import { Prop, Model, Emit, Watch } from "vue-property-decorator";
 import FileUpload from "~/components/common/file-upload.tsx.vue";
-import { ContractService } from "~/services/contract-service/contract.service";
+import { BasicOrderFileService } from "~/services/manage-service/basic-order-file.service";
 import { Object } from "core-js";
 import { resolve } from "url";
 
@@ -21,7 +21,8 @@ import { resolve } from "url";
   components: {}
 })
 export default class ContractUpload extends Vue {
-  @Dependencies(ContractService) contractService: ContractService;
+  @Dependencies(BasicOrderFileService)
+  basicOrderFileService: BasicOrderFileService;
 
   @Prop({
     default: 0
@@ -67,25 +68,33 @@ export default class ContractUpload extends Vue {
       {
         title: "名称",
         key: "name",
+        width:150,
+        align: "center"
+      },
+      {
+        title: "文件路径",
+        key: "url",
         align: "center"
       },
       {
         title: "资料类型",
-        key: "contractType",
+        key: "fileType",
+        width:120,
         align: "center",
         render: (h, params) => {
           return h(
             "Select",
             {
               props: {
-                value: this.uploadedDataSet[params.index].contractType
+                value: this.uploadedDataSet[params.index].fileType
               },
               on: {
                 "on-change": value => {
-                  this.uploadedDataSet[params.index].contractType = value;
+                  this.uploadedDataSet[params.index].fileType = value;
                 }
               }
             },
+            // 资料类型
             this.$dict.getDictData(10036).map(function(item) {
               return h(
                 "Option",
@@ -105,7 +114,7 @@ export default class ContractUpload extends Vue {
       {
         title: "操作",
         minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: 150,
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [
@@ -139,7 +148,7 @@ export default class ContractUpload extends Vue {
                   click: () => {
                     this.$Modal.confirm({
                       title: "提示",
-                      content: "确定执删除吗？",
+                      content: "确定执行删除吗？",
                       transfer: false,
                       onOk: () => {
                         this.handleRemove(row);
@@ -166,8 +175,8 @@ export default class ContractUpload extends Vue {
 
   showFileUpload() {
     let dialog = this.$dialog.show({
-      title: "上传文件",
       footer: true,
+      okText: "上传",
       onOk: fileUpload => {
         return fileUpload.upload();
       },
@@ -179,9 +188,12 @@ export default class ContractUpload extends Vue {
           on: {
             "on-success": fileList => {
               let uploadFiles = fileList.map(v =>
-                Object.assign({ contractType: "" }, v.response)
+                Object.assign({ fileType: "" }, v.response)
               );
-              this.uploadedDataSet = uploadFiles;
+              // 文件列表追加
+              uploadFiles.forEach(element => {
+                this.uploadedDataSet.push(element);
+              });
             }
           }
         });
@@ -210,13 +222,19 @@ export default class ContractUpload extends Vue {
     return new Promise((resolve, reject) => {
       if (!this.orderId) return resolve(false);
 
-      // 提取url数据
-      let urls = this.uploadedDataSet.map(val => val.url);
-
-      this.contractService
-        .uploadContractResource({
+      // 提取参数数据
+      let fileModels = this.uploadedDataSet.map(val => {
+        return {
           orderId: this.orderId,
-          materialUrls: urls
+          fileUrl: val.url,
+          fileType: val.fileType
+        };
+      });
+
+      this.basicOrderFileService
+        .addUploadBasicOrderFile({
+          id: 0,
+          customerOrderFileModels: fileModels
         })
         .subscribe(data => resolve(true), err => reject(err));
     });
@@ -227,12 +245,25 @@ export default class ContractUpload extends Vue {
    * @param 订单ID
    */
   getContractResourceAll(orderId) {
-    this.contractService
-      .getContractResourceAll(orderId)
-      .subscribe(
-        data => (this.uploadedDataSet = data),
-        err => this.$Message.error(err)
-      );
+    this.basicOrderFileService.getOrderFile(orderId).subscribe(
+      data => {
+        this.uploadedDataSet = data.map(v => {
+          return {
+            id: "",
+            realName: "",
+            type: "xlsx",
+            url:v.fileUrl,
+            localUrl:"",
+            name: "",
+            size: 0,
+            createTime: "",
+            creator: null,
+            fileType:v.orderFileType
+          };
+        });
+      },
+      err => this.$Message.error(err)
+    );
   }
 }
 </script>

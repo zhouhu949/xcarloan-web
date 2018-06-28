@@ -51,9 +51,6 @@ export default class OutStorage extends Page {
   };
 
   created() {
-    // 加载数据
-    this.refreshOutStorage();
-
     this.outStorageColumns = [
       {
         title: "操作",
@@ -61,45 +58,80 @@ export default class OutStorage extends Page {
         width: 160,
         align: "center",
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    // this.onGetCarParams(row);
+          // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库
+          if (row.mortgageStatus == 10140) {
+            return h("div", [
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      // 10054 : 质押 ; 10055 : 抵押
+                      if (row.orderMrtgageType === 10055) {
+                        this.onMortgageOutStorage(row);
+                      } else if (row.orderMrtgageType === 10054) {
+                        this.onPledgeOutStorage(row);
+                      }
+                    }
                   }
-                }
-              },
-              "出库"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
                 },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    // this.onGetCarParams(row);
+                "出库"
+              ),
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.onGetCollateralStorageDetails(row);
+                    }
                   }
-                }
-              },
-              "查看"
-            )
-          ]);
+                },
+                "查看"
+              )
+            ]);
+          } else {
+            return h("div", [
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.onGetCollateralStorageDetails(row);
+                    }
+                  }
+                },
+                "查看"
+              )
+            ]);
+          }
         }
       },
 
+      {
+        align: "center",
+        editable: true,
+        title: "订单号",
+        key: "orderNo",
+        minWidth: this.$common.getColumnWidth(4)
+      },
       {
         align: "center",
         editable: true,
@@ -110,15 +142,8 @@ export default class OutStorage extends Page {
       {
         align: "center",
         editable: true,
-        title: "手机号",
+        title: "车牌号",
         key: "carNo",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
-        title: "订单号",
-        key: "orderNo",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
@@ -166,6 +191,8 @@ export default class OutStorage extends Page {
           h("p", {}, this.$filter.dictConvert(row.mortgageStatus))
       }
     ];
+
+    this.refreshOutStorage();
   }
 
   /**
@@ -173,13 +200,13 @@ export default class OutStorage extends Page {
    */
   refreshOutStorage() {
     this.financeDetainService
-      .getFinanceStorageList(this.queryParamsModel,this.pageService)
+      .getFinanceStorageList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.outStorageDataSet = data),
         err => this.$Message.error(err.msg)
       );
   }
-  
+
   /**
    * 抵押出库操作
    * @param val
@@ -225,6 +252,8 @@ export default class OutStorage extends Page {
         })
     });
   }
+
+  onGetCollateralStorageDetails(val) {}
 }
 </script>
 

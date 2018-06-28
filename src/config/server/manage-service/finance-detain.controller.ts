@@ -46,5 +46,32 @@ export default {
     controller: CONTROLLER,
     action: 'getFinanceStorageList',
     type: requestType.Get
+  },
+  /**
+   * 查看押品详情
+   */
+  getDetainDetails: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getDetainDetails',
+    type: requestType.Get
+  },
+  /**
+   * 查看抵押押品记录
+   */
+  getDetainMortRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getDetainMortRecord',
+    type: requestType.Get
+  },
+  /**
+   * 查看质押押品记录
+   */
+  getDetainPoleRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getDetainPoleRecord',
+    type: requestType.Get
   }
 }

@@ -2,7 +2,7 @@
 <template>
   <section class="page basic-offset">
     <page-header title="冲抵项管理" hiddenPrint hiddenExport>
-      <command-button class="command-add" label="新增数据" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
+      <command-button class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row type="flex" class="data-form">
       <i-row type="flex" style="flex:1;" >

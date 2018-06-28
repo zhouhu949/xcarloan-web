@@ -61,8 +61,8 @@ export default class InStorage extends Page {
         width: 160,
         align: "center",
         render: (h, { row, column, index }) => {
-          //
-          if (row.mortgageStatus == 10034) {
+          // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库
+          if (row.mortgageStatus == 10139) {
             return h("div", [
               h(
                 "i-button",
@@ -75,9 +75,10 @@ export default class InStorage extends Page {
                   },
                   on: {
                     click: () => {
-                      if (row.orderMrtgageType === 10004) {
+                      // 10054 : 质押 ; 10055 : 抵押
+                      if (row.orderMrtgageType === 10055) {
                         this.onMortgageInStorage(row);
-                      } else {
+                      } else if (row.orderMrtgageType === 10054) {
                         this.onPledgeInStorage(row);
                       }
                     }
@@ -130,6 +131,13 @@ export default class InStorage extends Page {
       {
         align: "center",
         editable: true,
+        title: "订单号",
+        key: "orderNo",
+        minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
         title: "客户姓名",
         key: "customerName",
         minWidth: this.$common.getColumnWidth(4)
@@ -137,15 +145,8 @@ export default class InStorage extends Page {
       {
         align: "center",
         editable: true,
-        title: "手机号",
+        title: "车牌号",
         key: "carNo",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
-        title: "订单号",
-        key: "orderNo",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
@@ -200,7 +201,7 @@ export default class InStorage extends Page {
    */
   refreshInStorage() {
     this.financeDetainService
-      .getFinanceStorageList(this.queryParamsModel,this.pageService)
+      .getFinanceStorageList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.inStorageDataSet = data),
         err => this.$Message.error(err.msg)
