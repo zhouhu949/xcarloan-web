@@ -79,7 +79,7 @@ export default class CustomerInfoBank extends Vue {
   private onRemoveClick(data) {
     let cardNo = data.cardNo;
     this.$Modal.confirm({
-      content: `是否删除尾号为 <b>${cardNo.subStr(cardNo.length - 4)}</b> 的银行卡?`,
+      content: `是否删除尾号为 <b>${cardNo.substr(cardNo.length - 4)}</b> 的银行卡?`,
       onOk: () => {
         this.basicCustomerService.deleteCustomerBankInfo(data.id).subscribe(
           data => {
