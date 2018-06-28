@@ -1,16 +1,28 @@
 <!-- 质押入库 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="质押地点" prop="pledgePlace">
-      <i-input v-model="model.pledgePlace"></i-input>
-    </i-form-item>
-    <i-form-item label="入库时间" prop="stockDate">
-      <i-date-picker type="datetime" placeholder="选择入库时间" v-model="model.stockDate"></i-date-picker>
-    </i-form-item>
-    <i-form-item label="质押位置" prop="pledgePosition">
-      <i-input type="textarea" v-model="model.pledgePosition"></i-input>
-    </i-form-item>
-  </i-form>
+  <section class="component modify-basic-stock-car">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="质押地点" prop="pledgePlace">
+            <i-input v-model="model.pledgePlace"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="入库时间" prop="stockDate">
+            <i-date-picker type="datetime" placeholder="选择入库时间" v-model="model.stockDate"></i-date-picker>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="24">
+          <i-form-item label="质押位置" prop="pledgePosition">
+            <i-input type="textarea" v-model="model.pledgePosition"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -35,7 +47,7 @@ export default class ModifyBasicStockCar extends Vue {
 
   private model: any = {
     // 押品出入库id
-    id: 0,
+    id: this.id,
     // 质押地点
     pledgePlace: "",
     // 质押位置

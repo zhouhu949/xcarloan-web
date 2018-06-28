@@ -1,18 +1,30 @@
 <!-- 修改冲抵配置 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="冲抵名称" prop="offsetName">
-      <i-input v-model="model.offsetName"></i-input>
-    </i-form-item>
-    <i-form-item label="冲抵类型" prop="offsetType">
-      <i-select v-model="model.offsetType">
-        <i-option v-for="{value,label} in $dict.getDictData(10025)" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-    </i-form-item>
-    <i-form-item label="备注" prop="remark">
-      <i-input type="textarea" v-model="model.remark" :maxlength="100"></i-input>
-    </i-form-item>
-  </i-form>
+  <section class="component modify-basic-offset">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="冲抵名称" prop="offsetName">
+            <i-input v-model="model.offsetName"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="冲抵类型" prop="offsetType">
+            <i-select v-model="model.offsetType">
+              <i-option v-for="{value,label} in $dict.getDictData(10025)" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row :gutter="15">
+        <i-col :span="24">
+          <i-form-item label="备注" prop="remark">
+            <i-input type="textarea" v-model="model.remark" :maxlength="100"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">

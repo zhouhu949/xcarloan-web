@@ -77,7 +77,7 @@ export default class BasicOffsetManage extends Page {
     this.refreshBasicOffset();
 
     //获取费用项
-    this.findBasicExpenseByAuth();
+    this.findBasicExpenseByOrg();
 
     this.basicOffsetItemColumns = [
       {
@@ -320,9 +320,9 @@ export default class BasicOffsetManage extends Page {
   /**
    * 获取自己所能操作的所有费用项
    */
-  private findBasicExpenseByAuth() {
+  private findBasicExpenseByOrg() {
     this.basicExpenseService
-      .findBasicExpenseByAuth()
+      .findBasicExpenseByOrg()
       .subscribe(
         data => (this.expenseDataSet = data),
         err => this.$Message.error(err.msg)
@@ -334,7 +334,7 @@ export default class BasicOffsetManage extends Page {
    */
   getBasicOffsetByAuth() {
     return new Promise((resolve, reject) => {
-      this.basicOffsetService.findBasicOffsetByAuth().subscribe(
+      this.basicOffsetService.findBasicOffsetByOrg().subscribe(
         data => {
           this.basicOffsetDataSet = data;
 

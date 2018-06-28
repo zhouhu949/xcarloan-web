@@ -68,7 +68,7 @@ export default class ContractUpload extends Vue {
       {
         title: "名称",
         key: "name",
-        width:150,
+        width: 150,
         align: "center"
       },
       {
@@ -79,7 +79,7 @@ export default class ContractUpload extends Vue {
       {
         title: "资料类型",
         key: "fileType",
-        width:120,
+        width: 120,
         align: "center",
         render: (h, params) => {
           return h(
@@ -226,6 +226,7 @@ export default class ContractUpload extends Vue {
       let fileModels = this.uploadedDataSet.map(val => {
         return {
           orderId: this.orderId,
+          fileName: val.name,
           fileUrl: val.url,
           fileType: val.fileType
         };
@@ -251,14 +252,14 @@ export default class ContractUpload extends Vue {
           return {
             id: "",
             realName: "",
-            type: "xlsx",
-            url:v.fileUrl,
-            localUrl:"",
-            name: "",
+            type: "",
+            url: v.fileUrl,
+            localUrl: "",
+            name: data.fileName,
             size: 0,
             createTime: "",
             creator: null,
-            fileType:v.orderFileType
+            fileType: v.orderFileType
           };
         });
       },

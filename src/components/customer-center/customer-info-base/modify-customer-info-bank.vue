@@ -1,7 +1,7 @@
 <!--银行卡信息-->
 <template>
   <section class="component modify-customer-info-bank">
-    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="账号" prop="cardNo">
         <i-input v-model="model.cardNo" clearable></i-input>
       </i-form-item>
@@ -34,6 +34,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component'
+import { Form } from 'iview'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
@@ -94,7 +95,7 @@ export default class ModifyCustomerInfoBank extends Vue {
    */
   submit() {
     return new Promise((resolve) => {
-      let form = this.$refs.form as any
+      let form = this.$refs.form as Form;
       form.validate(v => {
         if (!v) return resolve()
         // 根据customerId 判断新增 修改

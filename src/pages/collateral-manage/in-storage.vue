@@ -26,6 +26,9 @@ import Page from "~/core/page";
 import Component from "vue-class-component";
 import MortgageInStorage from "~/components/finance-detain/mortgage-in-storage.vue";
 import PledgeInStorage from "~/components/finance-detain/pledge-in-storage.vue";
+import DetainDetails from "~/components/finance-detain/detain-details.vue";
+import DetainMortDetails from "~/components/finance-detain/detain-mort-details.vue";
+import DetainPoleDetails from "~/components/finance-detain/detain-pole-details.vue";
 import { Layout } from "~/core/decorator";
 import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
@@ -51,9 +54,6 @@ export default class InStorage extends Page {
   };
 
   created() {
-    // 加载数据
-    this.refreshInStorage();
-
     this.inStorageColumns = [
       {
         title: "操作",
@@ -97,7 +97,7 @@ export default class InStorage extends Page {
                   },
                   on: {
                     click: () => {
-                      // this.onGetCarParams(row);
+                      this.onDetainDetails(row.id);
                     }
                   }
                 },
@@ -105,25 +105,82 @@ export default class InStorage extends Page {
               )
             ]);
           } else {
-            return h("div", [
-              h(
-                "i-button",
-                {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      // this.onGetCarParams(row);
+            // 10054 : 质押 ; 10055 : 抵押
+            if (row.orderMrtgageType === 10055) {
+              return h("div", [
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainDetails(row.id);
+                      }
                     }
-                  }
-                },
-                "查看"
-              )
-            ]);
+                  },
+                  "查看"
+                ),
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainMortDetails(row.id);
+                      }
+                    }
+                  },
+                  "查看抵押"
+                )
+              ]);
+            } else if (row.orderMrtgageType === 10054) {
+              return h("div", [
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainDetails(row.id);
+                      }
+                    }
+                  },
+                  "查看"
+                ),
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainPoleDetails(row.id);
+                      }
+                    }
+                  },
+                  "查看质押"
+                )
+              ]);
+            }
           }
         }
       },
@@ -196,6 +253,11 @@ export default class InStorage extends Page {
     ];
   }
 
+  mounted() {
+    // 加载数据
+    this.refreshInStorage();
+  }
+
   /**
    * 刷新列表
    */
@@ -249,6 +311,57 @@ export default class InStorage extends Page {
         h(PledgeInStorage, {
           props: {
             inStorageData: val
+          }
+        })
+    });
+  }
+
+  /**
+   * 查看详情
+   */
+  onDetainDetails(id: number) {
+    this.$dialog.show({
+      title: "押品详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(DetainDetails, {
+          props: {
+            detainId: id
+          }
+        })
+    });
+  }
+
+  /**
+   * 查看抵押详情
+   */
+  onDetainMortDetails(id: number) {
+    this.$dialog.show({
+      title: "低押详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(DetainMortDetails, {
+          props: {
+            detainId: id
+          }
+        })
+    });
+  }
+
+  /**
+   * 查看质押详情
+   */
+  onDetainPoleDetails(id: number) {
+    this.$dialog.show({
+      title: "质押详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(DetainPoleDetails, {
+          props: {
+            detainId: id
           }
         })
     });

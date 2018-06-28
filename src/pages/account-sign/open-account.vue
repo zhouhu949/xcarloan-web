@@ -125,15 +125,6 @@ export default class OpenAccount extends Page {
       {
         align: "center",
         editable: true,
-        title: "客户类型",
-        key: "customerType",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.customerType))
-      },
-      {
-        align: "center",
-        editable: true,
         title: "教育程度",
         key: "education",
         minWidth: this.$common.getColumnWidth(4),
@@ -187,15 +178,6 @@ export default class OpenAccount extends Page {
         title: "通讯地址",
         key: "messageAddr",
         minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
-        title: "客户类别",
-        key: "personalProfile",
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.personalProfile))
       },
       {
         align: "center",

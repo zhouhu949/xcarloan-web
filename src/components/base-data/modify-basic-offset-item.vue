@@ -1,12 +1,18 @@
 <!-- 新增冲抵项 -->
 <template>
-  <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
-    <i-form-item label="费用项" prop="expenseId">
-      <i-select v-model="model.expenseId">
-        <i-option v-for="item in expenseData" :key="item.id" :label="item.expenseName" :value="item.id"></i-option>
-      </i-select>
-    </i-form-item>
-  </i-form>
+  <section class="component modify-basic-offset-item">
+    <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
+      <i-row :gutter="15">
+        <i-col :span="12">
+          <i-form-item label="费用项" prop="expenseId">
+            <i-select v-model="model.expenseId">
+              <i-option v-for="item in expenseData" :key="item.id" :label="item.expenseName" :value="item.id"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -20,7 +26,7 @@ import { Form } from "iview";
 import { State, Getter, namespace } from "vuex-class";
 
 @Component({})
-export default class ModifyBasicExpense extends Vue {
+export default class modifyBasicOffsetItem extends Vue {
   @Dependencies(BasicOffsetService)
   private basicOffsetService: BasicOffsetService;
   @Dependencies(BasicExpenseService)
@@ -68,9 +74,7 @@ export default class ModifyBasicExpense extends Vue {
    * 修改冲抵项
    */
   private modifyBasicOffsetItem() {
-    return new Promise((resolve, reject) => { 
-
-    });
+    return new Promise((resolve, reject) => {});
   }
 
   /**
@@ -100,5 +104,4 @@ export default class ModifyBasicExpense extends Vue {
 }
 </script>
 <style lang="less">
-
 </style>

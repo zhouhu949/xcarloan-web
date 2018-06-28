@@ -5,15 +5,6 @@ const CONTROLLER = 'basicExpenseController'
 
 export default {
   /**
-   * 查询费用项列表
-   */
-  findBasicExpenseByAuth: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findBasicExpenseByAuth',
-    type: requestType.Get
-  },
-  /**
    * 新增费用项
    */
   addBasicExpense: {

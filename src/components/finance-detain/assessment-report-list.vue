@@ -155,17 +155,19 @@ export default class AssessmentReportList extends Vue {
    * 获取评估报告详情
    */
   findAssessmentReportList() {
-    this.basicCustomerAssessmentCarService
-      .findAssessmentReportList(this.carId, this.pageService)
-      .subscribe(
-        data => {
-          this.assessmentReportDataSet = data;
-        },
-        err => this.$Message.error(err.msg)
-      );
+    if (this.carId) {
+      this.basicCustomerAssessmentCarService
+        .findAssessmentReportList(this.carId, this.pageService)
+        .subscribe(
+          data => {
+            this.assessmentReportDataSet = data;
+          },
+          err => this.$Message.error(err.msg)
+        );
+    }
   }
 
-   /**
+  /**
    * 获取评估详情
    * @param assessmentReportId 评估报告Id
    */

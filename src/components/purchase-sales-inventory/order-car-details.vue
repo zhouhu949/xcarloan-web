@@ -1,53 +1,14 @@
 <!-- 修改库存车辆 -->
 <template>
-  <section>
-    <i-form :label-width="90" ref="form" :model="model">
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="客户姓名" prop="customerName">
-            <i-input v-model="model.customerName" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车型名称" prop="modelName">
-            <i-input v-model="model.modelName" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="车辆颜色" prop="modelColors">
-            <i-input v-model="model.modelColors" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="状态" prop="carSize">
-            <i-select v-model="model.stockStatus" :disabled="$parent.$parent.isView">
-              <i-option v-for="{value,label} in $dict.getDictData(10014)" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="采购价格" prop="stockPrice">
-            <i-input v-model="model.stockPrice" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车型参数描述" prop="orderCarParamDesc">
-            <i-input v-model="model.orderCarParamDesc" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="车型描述" prop="orderCarDesc">
-            <i-input v-model="model.orderCarDesc" :readonly="$parent.$parent.isView"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-    </i-form>
+  <section class="component detain-details">
+    <data-grid :labelWidth="90" labelAlign="right" contentAlign="left">
+      <data-grid-item label="客户姓名" :span="6">{{model.customerName}}</data-grid-item>
+      <data-grid-item label="车型名称" :span="6">{{model.modelName }}</data-grid-item>
+      <data-grid-item label="车辆颜色" :span="6">{{model.modelColors}}</data-grid-item>
+      <data-grid-item label="采购价格" :span="6">{{model.stockPrice | toThousands}}</data-grid-item>
+      <data-grid-item label="车型参数描述" :span="12">{{model.orderCarParamDesc}}</data-grid-item>
+      <data-grid-item label="车型描述" :span="12">{{model.orderCarDesc}}</data-grid-item>
+    </data-grid>
   </section>
 </template>
 
@@ -60,8 +21,14 @@ import { Form } from "iview";
 import { State, Getter, namespace } from "vuex-class";
 import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
 import { BasicEnterShellSaveService } from "~/services/manage-service/basic-enter-shell-save.service";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 
-@Component({})
+@Component({
+  components:{
+    DataGrid,
+    DataGridItem
+  }
+})
 export default class OrderCarDetails extends Vue {
   @Dependencies(BasicEnterShellSaveService)
   private basicEnterShellSaveService: BasicEnterShellSaveService;
