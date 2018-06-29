@@ -1,4 +1,3 @@
-//待办事项管理 backlog-controller
 import { requestType } from '~/config/enum.config'
 const SERVICE = 'service-manage'
 const CONTROLLER = 'basicProductController'
@@ -82,6 +81,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'cancelPublishedBasicProduct',
+    type: requestType.Get
+  },
+  /**
+   * 根据车型分页获取车型产品
+   */
+  queryReleaseProductByCar:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryReleaseProductByCar',
     type: requestType.Get
   }
 }

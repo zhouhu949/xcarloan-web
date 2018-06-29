@@ -1,5 +1,6 @@
+<!--抵押贷款申请-->
 <template>
-  <section class="page finlish-order-query">
+  <section class="page mortgage-apply">
 
   </section>
 </template>
@@ -13,7 +14,7 @@ import Component from "vue-class-component";
 @Component({
   components: {}
 })
-export default class FinlishOrderQuery extends Page {
+export default class MortgageApply extends Page {
 
 }
 </script>

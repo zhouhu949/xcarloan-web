@@ -1,6 +1,8 @@
 import { manageService } from '~/config/server/manage-service'
 import { Inject, Debounce } from '~/core/decorator'
 import { NetService } from '~/utils/net.service'
+import { CommonService } from '~/utils/common.service';
+import { FilterService } from '~/utils/filter.service';
 
 export class FinanceDetainService {
   @Inject()
@@ -31,14 +33,17 @@ export class FinanceDetainService {
    */
   @Debounce()
   financeMortgageInStorage(data) {
+    // 模型
+    let model = Object.assign({}, data);
+
     return this.netService.send({
       server: manageService.financeDetainController.financeMortgageInStorage,
       data: {
         // 押品出入库id
-        id: data.id,
-        gpsNo: data.gpsNo,
-        gpsManufactor: data.gpsManufactor,
-        stockDate: data.stockDate,
+        id: model.id,
+        gpsNo: model.gpsNo,
+        gpsManufactor: model.gpsManufactor,
+        stockDate: FilterService.dateFormat(model.stockDate,"yyyy-MM-dd")
       },
       loading: true
     })
@@ -50,11 +55,14 @@ export class FinanceDetainService {
    */
   @Debounce()
   financeMortgageOutStorage(data) {
+    // 模型
+    let model = Object.assign({}, data);
+
     return this.netService.send({
       server: manageService.financeDetainController.financeMortgageOutStorage,
       data: {
         id: data.id,
-        stockOutDate: data.stockOutDate,
+        stockOutDate: FilterService.dateFormat(model.stockOutDate, "yyyy-MM-dd")
       },
       loading: true
     })
@@ -66,13 +74,16 @@ export class FinanceDetainService {
    */
   @Debounce()
   financePledgeInStorage(data) {
+    // 模型
+    let model = Object.assign({}, data);
+
     return this.netService.send({
       server: manageService.financeDetainController.financePledgeInStorage,
       data: {
-        id: data.id,
-        pledgePlace: data.pledgePlace,
-        pledgePosition: data.pledgePosition,
-        stockDate: data.stockDate,
+        id: model.id,
+        pledgePlace: model.pledgePlace,
+        pledgePosition: model.pledgePosition,
+        stockDate: FilterService.dateFormat(model.stockDate, "yyyy-MM-dd")
       },
       loading: true
     })
@@ -84,11 +95,14 @@ export class FinanceDetainService {
    */
   @Debounce()
   financePledgeOutStorage(data) {
+    // 模型
+    let model = Object.assign({}, data);
+
     return this.netService.send({
       server: manageService.financeDetainController.financePledgeOutStorage,
       data: {
-        id: data.id,
-        stockOutDate: data.stockOutDate,
+        id: model.id,
+        stockOutDate: FilterService.dateFormat(model.stockOutDate, "yyyy-MM-dd")
       },
       loading: true
     })

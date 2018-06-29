@@ -74,7 +74,7 @@ export default class BlackListCustomer extends Page {
                   }
                 }
               },
-              "查看"
+              "详情"
             ),
             h("i-button",
               {

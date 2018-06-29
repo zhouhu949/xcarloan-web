@@ -1,40 +1,61 @@
 <template>
-  <section class="page formal-customer">
-    <page-header title="正式客户" hidden-print hidden-export>
-    </page-header>
+  <section class="component choose-customer">
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
-        <i-form-item prop="name" label="客户姓名：">
-          <i-input placeholder="请输入客户姓名：" v-model="model.name"></i-input>
+        <i-form-item prop="name" label="客户姓名">
+          <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
+        </i-form-item>
+        <i-form-item prop="phone" label="联系电话">
+          <i-input placeholder="请输入客户联系电话" v-model="model.phone"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="身份证号">
+          <i-input placeholder="请输入客户身份证号" v-model="model.idCard"></i-input>
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :show-config-column="false" :height="400" :columns="columns" highlightRow :data="dataSet" ref="databox" :page="pageService" @on-current-change="onDataBoxSelectedChange" @onPageChange="refreshData"></data-box>
   </section>
 </template>
 
 <script lang="ts">
-import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
+import Vue from 'vue';
+import { Dependencies } from '~/core/decorator';
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { namespace } from "vuex-class";
+import { Prop, Emit } from "vue-property-decorator";
 const CustomerOrderModule = namespace("customerOrderSpace")
-@Layout('workspace')
+
+
 @Component({
   components: {}
 })
-export default class FormalCustomer extends Page {
+export default class ChooseCustomer extends Vue {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
   @CustomerOrderModule.Action showCustomerInfo;
+  @Prop() customerId: Number;
+
+  /**
+   * 当前选中行的数据
+   */
+  public selectData: {
+    customerId: Number,
+    name: String,
+    phone: String,
+    idCard: String
+  } = null;
+
+
   private columns: any;
   private dataSet: any = [];
 
   private model = {
-    name: ""
+    name: "",
+    phone: "",
+    idCard: ""
   }
 
 
@@ -73,7 +94,7 @@ export default class FormalCustomer extends Page {
                   }
                 }
               },
-              "详情")
+              "查看")
           ])
         }
       },
@@ -87,49 +108,46 @@ export default class FormalCustomer extends Page {
       {
         align: "center",
         editable: true,
-        title: "证件类型",
-        key: "certificateType",
+        title: "性别",
+        key: "customerSex",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.certificateType))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "客户类型",
+        key: "customerStatus",
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerStatus))
       },
       {
         align: "center",
         editable: true,
         title: "证件号码",
-        key: "certificateNumber",
+        key: "idCard",
         minWidth: this.$common.getColumnWidth(6)
       },
       {
         title: '手机号码',
         editable: true,
-        key: 'mobileMain',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '所属地区',
-        editable: true,
-        key: 'city',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
-      },
-      {
-        title: '创建时间',
-        editable: true,
-        sortable: true,
-        key: 'createTime',
-        minWidth: this.$common.getColumnWidth(3),
         align: 'center',
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
-      },
-      {
-        title: '归属业务员',
-        editable: true,
-        key: 'operator',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
+        key: 'customerPhone',
+        minWidth: this.$common.getColumnWidth(3)
       }
     ];
+  }
+
+  /**
+   * dataBox 选中项变更
+   */
+  private onDataBoxSelectedChange(currentRow, oldRow) {
+    this.selectData = {
+      customerId: currentRow.customerId,
+      name: currentRow.customerName,
+      phone: currentRow.customerPhone,
+      idCard: currentRow.idCard
+    }
   }
 
 
@@ -137,9 +155,14 @@ export default class FormalCustomer extends Page {
    * 获取正式客户列表
    */
   private refreshData() {
-    this.basicCustomerCenterService.findFormalCustomerList(this.model, this.pageService)
+    this.basicCustomerCenterService.findNotBlackCustomerList(this.model, this.pageService)
       .subscribe(
-        data => (this.dataSet = data),
+        data => {
+          data.forEach(v => {
+            v._highlight = v.customerId === this.customerId
+          })
+          this.dataSet = data
+        },
         err => this.$Message.error(err.msg)
       );
   }

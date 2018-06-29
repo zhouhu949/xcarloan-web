@@ -30,5 +30,23 @@ export default {
     controller: CONTROLLER,
     action: 'findCustomerOrderInfo',
     type: requestType.Get
+  },
+  /**
+   * 融资租赁贷款计算器
+   */
+  findFinancingRepayDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findFinancingRepayDetail',
+    type: requestType.Get
+  },
+  /**
+   * 获取押品资料
+   */
+  findCustomerCollateral: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerCollateral',
+    type: requestType.Get
   }
 }

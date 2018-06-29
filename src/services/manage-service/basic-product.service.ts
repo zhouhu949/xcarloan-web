@@ -2,6 +2,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import { PageService } from '~/utils/page.service';
 
 export class BasicProductService {
   @Inject(NetService)
@@ -75,7 +76,7 @@ export class BasicProductService {
    * 获取车型产品列表
    */
   @Debounce()
-  findBasicProductList(carId,page) {
+  findBasicProductList(carId, page) {
     return this.netService.send({
       server: manageService.basicProductController.findBasicProductList,
       append: carId,
@@ -103,6 +104,19 @@ export class BasicProductService {
       server: manageService.basicProductController.cancelPublishedBasicProduct,
       append: productId,
       loading: true
+    })
+  }
+  /**
+   * 根据车型分页获取车型产品
+   */
+  queryReleaseProductByCar(carId: Number, schemeName: String, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicProductController.queryReleaseProductByCar,
+      data: {
+        carId: carId,
+        schemeName: schemeName
+      },
+      page
     })
   }
 }

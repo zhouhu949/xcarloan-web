@@ -44,4 +44,26 @@ export class BasicCustomerOrderService {
       }
     })
   }
+  /**
+   * 融资租赁贷款计算器
+   */
+  findFinancingRepayDetail(productId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findFinancingRepayDetail,
+      data: {
+        productId
+      }
+    })
+  }
+  /**
+   * 获取押品资料
+   */
+  findCustomerCollateral(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerCollateral,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

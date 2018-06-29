@@ -6,13 +6,13 @@
         <i-input v-model="model.productName" placeholder="请输入产品名称"></i-input>
       </i-form-item>
       <i-form-item label="产品类型" prop="schemeType">
-        <i-input value="融资租赁" disabled></i-input>
+        <i-input value="融资租赁" readonly></i-input>
       </i-form-item>
       <i-form-item label="还款方案名称" prop="schemeName">
-        <i-input v-model="model.schemeName" readonly @on-focus="selectScheme" placeholder="请选择还款方案"></i-input>
+        <i-input v-model="model.schemeName" readonly @on-focus="onSelectSchemeFocus" placeholder="请选择还款方案"></i-input>
       </i-form-item>
       <i-form-item label="车型名称" prop="carName">
-        <i-input v-model="carName" disabled></i-input>
+        <i-input v-model="carName" readonly></i-input>
       </i-form-item>
       <i-form-item label="上传附件" prop="fileUrl">
         <i-input v-model="model.fileUrl" readonly @on-focus="uploadFile" placeholder="请选择附件"></i-input>
@@ -28,11 +28,12 @@ import { Dependencies } from '~/core/decorator';
 import { Form } from "iview";
 import { BasicProductService } from "~/services/manage-service/basic-product.service";
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
-import SlectScheme from '~/components/base-data/select-scheme.vue'
+import ChooseScheme from '~/components/base-data/choose-scheme.vue'
 import uploadProductEnclosure from '~/components/base-data/upload-product-enclosure.vue';
 
 @Component({
   components: {
+    ChooseScheme
   }
 })
 export default class AddModifyProduct extends Vue {
@@ -52,7 +53,7 @@ export default class AddModifyProduct extends Vue {
     fileUrl: '', // 附件地址
     schemeName: '', // 还款方案名称
     configId: 0, // 车型id
-    schemeId: 0, // 方案id
+    schemeId: null, // 方案id
     id: 0 // 产品id
   }
 
@@ -87,8 +88,8 @@ export default class AddModifyProduct extends Vue {
               this.$Message.success("操作成功！");
               resolve(true)
             },
-            ({ msg }) => {
-              this.$Message.error(msg);
+            err => {
+              this.$Message.error(err.message);
               resolve(false)
             }
           );
@@ -119,28 +120,24 @@ export default class AddModifyProduct extends Vue {
   /**
    * 选择还款方案
    */
-  selectScheme() {
-    this.repaySchemeService.getAllBasicSchemeByOrgId().subscribe(val => {
-      this.schemeData = val.filter(v => {
-        return v.schemeStatus === 10057 && v.schemeType === 10049
-      })
-      if (this.schemeData.length === 0) {
-        this.$Message.warning('您还没有已发布的还款方案！')
-        return
-      }
-      this.$dialog.show({
-        title: '选择还款方案',
-        footer: true,
-        width: 1000,
-        render: h => h(SlectScheme, {
-          props: {
-            schemeData: this.schemeData,
-            productData: this.model
-          }
-        })
+  private onSelectSchemeFocus() {
+    this.$dialog.show({
+      title: "还款方案选择",
+      footer: true,
+      width: 1000,
+      onOk: (chooseScheme: ChooseScheme) => {
+        if (!chooseScheme.selecedData) return
+        this.model.schemeName = chooseScheme.selecedData.schemeName
+        this.model.schemeId = chooseScheme.selecedData.schemeId
+      },
+      render: h => h(ChooseScheme, {
+        props: {
+          schemeId: this.model.schemeId
+        }
       })
     })
   }
+
   /**
    * 选择附件
    */

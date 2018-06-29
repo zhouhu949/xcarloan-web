@@ -115,7 +115,7 @@ export default {
   /**
    * 查看车型
    */
-   getCarModelById: {
+  getCarModelById: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getCarModelById',
@@ -184,7 +184,7 @@ export default {
     controller: CONTROLLER,
     action: 'addCarModelPhoto',
     type: requestType.Post
-  }, 
+  },
   /**
    * 查看车辆基本参数
    */
@@ -212,6 +212,14 @@ export default {
     action: 'getCarModelPhotoList',
     type: requestType.Get
   },
-
+  /**
+   * 查询车型
+   */
+  queryCarModel: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryCarModel',
+    type: requestType.Get
+  }
 
 }

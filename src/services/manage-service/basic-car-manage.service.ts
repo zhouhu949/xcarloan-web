@@ -1,9 +1,10 @@
 import { NetService } from '~/utils/net.service'
-import { Inject, Debounce } from "~/core/decorator"; 
+import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
-export class BasicCarManageService { 
+export class BasicCarManageService {
   @Inject(NetService)
   private netService: NetService
 
@@ -22,7 +23,7 @@ export class BasicCarManageService {
     return this.netService.send({
       data: {
         brandName: brandName,
-        brandPhotoUrl : url,
+        brandPhotoUrl: url,
       },
       loading: true,
       server: manageService.basicCarManagecontroller.addCarBrand,
@@ -33,7 +34,7 @@ export class BasicCarManageService {
    */
   editCarBrand(data) {
     return this.netService.send({
-      data:data,
+      data: data,
       loading: true,
       server: manageService.basicCarManagecontroller.editCarBrand,
     })
@@ -43,8 +44,8 @@ export class BasicCarManageService {
    */
   getCarBrandById(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.getCarBrandById,
     })
   }
@@ -53,7 +54,7 @@ export class BasicCarManageService {
    */
   deleteCarBrand(id) {
     return this.netService.send({
-      append:id,
+      append: id,
       server: manageService.basicCarManagecontroller.deleteCarBrand,
     })
   }
@@ -62,8 +63,8 @@ export class BasicCarManageService {
    */
   addCarSeries(data) {
     return this.netService.send({
-      data:data,
-      loading:true,
+      data: data,
+      loading: true,
       server: manageService.basicCarManagecontroller.addCarSeries,
     })
   }
@@ -72,8 +73,8 @@ export class BasicCarManageService {
    */
   deleteCarSeries(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.deleteCarSeries,
     })
   }
@@ -82,7 +83,7 @@ export class BasicCarManageService {
    */
   getCarSeriesById(id) {
     return this.netService.send({
-      append:id,
+      append: id,
       server: manageService.basicCarManagecontroller.getCarSeriesById,
     })
   }
@@ -91,8 +92,8 @@ export class BasicCarManageService {
    */
   editCarSeries(data) {
     return this.netService.send({
-      data:data,
-      loading:true,
+      data: data,
+      loading: true,
       server: manageService.basicCarManagecontroller.editCarSeries,
     })
   }
@@ -101,21 +102,20 @@ export class BasicCarManageService {
    */
   addCarModel(data) {
     return this.netService.send({
-      data:{
+      data: {
         displacement: data.carEmissions,
-        diveway : data.drivingMode,
-        fulyway : data.fuel,
-        innerColor :data.interiorColor,
-        modelColors :data.carColour,
-        modelFuel : data.fuelConsumption,
-        modelName : data.modelName,
-        modelVolume :data.carSize,
-        remark :data.remark,
-        seriesId : data.seriesId,
-        structure :data.carStructure,
-        referencePrice: data.referencePrice
+        diveway: data.drivingMode,
+        fulyway: data.fuel,
+        innerColor: data.interiorColor,
+        modelColors: data.carColour,
+        modelFuel: data.fuelConsumption,
+        modelName: data.modelName,
+        modelVolume: data.carSize,
+        remark: data.remark,
+        seriesId: data.seriesId,
+        structure: data.carStructure,
       },
-      loading:true,
+      loading: true,
       server: manageService.basicCarManagecontroller.addCarModel,
     })
   }
@@ -124,8 +124,8 @@ export class BasicCarManageService {
    */
   deleteCarModel(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.deleteCarModel,
     })
   }
@@ -135,21 +135,20 @@ export class BasicCarManageService {
   editCarModel(carId, data) {
     console.log(data)
     return this.netService.send({
-      data:{
+      data: {
         displacement: data.carEmissions,
-        diveway : data.drivingMode,
-        fulyway : data.fuel,
-        innerColor :data.interiorColor,
-        modelColors :data.carColour,
-        modelFuel : data.fuelConsumption,
-        modelName : data.modelName,
-        modelVolume :data.carSize,
-        remark :data.remark,
-        structure :data.carStructure,
-        referencePrice: data.referencePrice,
-        id : carId
+        diveway: data.drivingMode,
+        fulyway: data.fuel,
+        innerColor: data.interiorColor,
+        modelColors: data.carColour,
+        modelFuel: data.fuelConsumption,
+        modelName: data.modelName,
+        modelVolume: data.carSize,
+        remark: data.remark,
+        id: data.seriesId,
+        structure: data.carStructure,
       },
-      loading:true,
+      loading: true,
       server: manageService.basicCarManagecontroller.editCarModel,
     })
   }
@@ -158,8 +157,8 @@ export class BasicCarManageService {
    */
   getCarModelById(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.getCarModelById,
     })
   }
@@ -168,8 +167,8 @@ export class BasicCarManageService {
    */
   getCarSeriesByCarName(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.getCarSeriesByCarName,
     })
   }
@@ -178,8 +177,8 @@ export class BasicCarManageService {
    */
   findCarConfigParamList(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.findCarConfigParamList,
     })
   }
@@ -188,12 +187,12 @@ export class BasicCarManageService {
    */
   addCarConfigParamInfo(data) {
     return this.netService.send({
-      data:{
-        carParamName:data.name,
-        carParamValue :data.comment,
-        modelId:data.id, 
+      data: {
+        carParamName: data.name,
+        carParamValue: data.comment,
+        modelId: data.id,
       },
-      loading:true,
+      loading: true,
       server: manageService.basicCarManagecontroller.addCarConfigParamInfo,
     })
   }
@@ -202,23 +201,23 @@ export class BasicCarManageService {
    */
   addCarIntenduceInfo(data) {
     return this.netService.send({
-      data:{
-        introduceName:data.name,
+      data: {
+        introduceName: data.name,
         introduceUrl: data.imgall,
-        remark:data.comment,
-        modelId :data.id 
+        remark: data.comment,
+        modelId: data.id
       },
-      loading:true,
+      loading: true,
       server: manageService.basicCarManagecontroller.addCarIntenduceInfo,
     })
   }
-   /**
-   *  查看车型介绍
-   */
+  /**
+  *  查看车型介绍
+  */
   findCarIntroduceList(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.findCarIntroduceList,
     })
   }
@@ -227,18 +226,18 @@ export class BasicCarManageService {
    */
   deleteCarIntenduceInfo(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.deleteCarIntenduceInfo,
     })
   }
-   /**
-   *  添加车辆主图
-   */ 
+  /**
+  *  添加车辆主图
+  */
   addCarModelPhoto(data) {
     return this.netService.send({
-      data:data,
-      loading:true,
+      data: data,
+      loading: true,
       server: manageService.basicCarManagecontroller.addCarModelPhoto,
     })
   }
@@ -247,18 +246,18 @@ export class BasicCarManageService {
    */
   getCarParams(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.getCarParams,
     })
   }
-   /**
-   * 删除配置参数
-   */
+  /**
+  * 删除配置参数
+  */
   deleteCarConfigParam(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.deleteCarConfigParam,
     })
   }
@@ -267,9 +266,24 @@ export class BasicCarManageService {
    */
   getCarModelPhotoList(id) {
     return this.netService.send({
-      append:id,
-      loading:true,
+      append: id,
+      loading: true,
       server: manageService.basicCarManagecontroller.getCarModelPhotoList,
+    })
+  }
+
+  /**
+   * 查看车辆主图
+   */
+  queryCarModel(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCarManagecontroller.queryCarModel,
+      data: {
+        brandName: data.brand, //品牌
+        seriesName: data.series, //系列
+        modelName: data.model // 车型
+      },
+      page
     })
   }
 

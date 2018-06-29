@@ -2,6 +2,7 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
 export class RepaySchemeService {
   @Inject(NetService)
@@ -87,6 +88,19 @@ export class RepaySchemeService {
       server: manageService.basicRepaySchemeController.deleteRepaySchemeExpense,
       append: id,
       loading: true
+    })
+  }
+  /**
+   * 获取已发布的方案
+   */
+  queryReleasedScheme(schemeName: String, schemeType: Number, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicRepaySchemeController.queryReleasedScheme,
+      data: {
+        schemeName: schemeName,
+        schemeType: schemeType
+      },
+      page
     })
   }
 }

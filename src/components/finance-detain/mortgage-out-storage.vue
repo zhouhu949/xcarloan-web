@@ -4,8 +4,8 @@
     <i-form :label-width="80" style="margin-top:20px;" :model="model" :rules="rules" ref="form">
       <i-row :gutter="15">
         <i-col :span="12">
-          <i-form-item label="出库时间" prop="stockOutDate">
-            <i-date-picker type="datetime" placeholder="选择出库时间" v-model="model.stockOutDate"></i-date-picker>
+          <i-form-item label="出库日期" prop="stockOutDate">
+            <i-date-picker type="date" placeholder="选择出库日期" v-model="model.stockOutDate"></i-date-picker>
           </i-form-item>
         </i-col>
       </i-row>
@@ -50,12 +50,6 @@ export default class MortgageOutStorage extends Vue {
     // 初始化数据
     if (this.outStorageData) {
       this.model.id = this.outStorageData.id;
-      // this.model.stockOutDate = this.outStorageData.stockOutDate
-        // ? this.$filter.dateFormat(
-            // this.outStorageData.stockOutDate,
-            // "yyyy-MM-dd hh:mm:ss"
-          // )
-        // : "";
     }
   }
 

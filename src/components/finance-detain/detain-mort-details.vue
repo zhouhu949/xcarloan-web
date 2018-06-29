@@ -4,7 +4,8 @@
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
       <data-grid-item label="设备编码" :span="6">{{model.gpsNo}}</data-grid-item>
       <data-grid-item label="设备厂商" :span="6">{{model.gpsManufactor | dictConvert}}</data-grid-item>
-      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
+      <data-grid-item label="抵押次数" :span="6">{{model.mortgageNum}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
     </data-grid>
   </section>
 </template>
