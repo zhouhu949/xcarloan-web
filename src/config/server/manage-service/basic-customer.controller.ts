@@ -84,6 +84,41 @@ export default {
     controller: CONTROLLER,
     action: 'deleteCustomerBankInfo',
     type: requestType.Delete
+  },
+  /**
+   * 意向记录列表
+   */
+  findAllCustomerIntentionList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findAllCustomerIntentionList',
+    type: requestType.Get
+  },
+  /**
+   * 根据客户id查找意向记录列表
+   */
+  findCustomerIntentionList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerIntentionList',
+    type: requestType.Get
+  },
+  /**
+   * 根据意向id查找跟踪记录
+   */
+  findCustomerFollowList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerFollowList',
+    type: requestType.Get
+  },
+  /**
+   * 新增跟进记录
+   */
+  addBasicCustomerFollow: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicCustomerFollow',
+    type: requestType.Post
   }
-
 }

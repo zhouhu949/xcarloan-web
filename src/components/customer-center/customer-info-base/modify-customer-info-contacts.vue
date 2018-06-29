@@ -1,7 +1,7 @@
 <!--维护联系人信息-->
 <template>
   <section class="component modify-customer-info-contacts">
-    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="姓名" prop="contactName">
         <i-input v-model="model.contactName"></i-input>
       </i-form-item>
@@ -100,7 +100,7 @@ export default class ModifyCustomerInfoContacts extends Vue {
   }
 
   private submit() {
-    let form: any = this.$refs.from
+    let form: any = this.$refs.form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve()

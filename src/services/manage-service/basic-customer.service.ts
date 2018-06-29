@@ -123,5 +123,47 @@ export class BasicCustomerService {
       }
     })
   }
-
+  /**
+   * 意向记录列表
+   */
+  findAllCustomerIntentionList(page) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findAllCustomerIntentionList,
+      page: page
+    })
+  }
+  /**
+   * 根据客户id查找意向记录列表
+   */
+  findCustomerIntentionList(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findCustomerIntentionList,
+      append: customerId
+    })
+  }
+  /**
+   * 根据意向id查找跟踪记录
+   */
+  findCustomerFollowList(intentionId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findCustomerFollowList,
+      append: intentionId
+    })
+  }
+  /**
+   * 新增跟进记录
+   */
+  @Debounce()
+  addBasicCustomerFollow(data, intentionId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicCustomerFollow,
+      data: {
+        intentionId: intentionId,
+        followType: data.followType,
+        followResult: data.followResult,
+        remark: data.remark
+      },
+      loading: true
+    })
+  }
 }

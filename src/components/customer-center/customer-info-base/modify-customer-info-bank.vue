@@ -1,14 +1,9 @@
 <!--银行卡信息-->
 <template>
   <section class="component modify-customer-info-bank">
-    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="账号" prop="cardNo">
         <i-input v-model="model.cardNo" clearable></i-input>
-      </i-form-item>
-      <i-form-item label="开户状态" prop="accountStatus">
-        <i-select v-model="model.accountStatus" clearable>
-          <i-option v-for="{label,value} of $dict.getDictData(10030)" :key="value" :label="label" :value="value"></i-option>
-        </i-select>
       </i-form-item>
       <i-form-item label="账户类型" prop="accountType">
         <i-select v-model="model.accountType" clearable>
@@ -21,11 +16,18 @@
       <i-form-item label="开户行" prop="bankBranch">
         <i-input v-model="model.bankBranch" clearable></i-input>
       </i-form-item>
-      <i-form-item label="客户号" prop="clientNumber">
-        <i-input v-model="model.clientNumber" clearable></i-input>
+      <i-form-item label="开户省份" prop="province">
+        <i-select placeholder="选择省" v-model="model.province" clearable>
+          <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="开户城市" prop="depositCity">
+        <i-select placeholder="选择市" v-model="model.depositCity" :disabled="!model.province" clearable>
+          <i-option v-for="{value,label} in this.model.province ? this.$city.getCityData({ level: 1, id: this.model.province }) : []" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="remark">
-        <i-input type="textarea" v-model="model.remark" clearable></i-input>
+        <i-input v-model="model.remark" clearable></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -54,19 +56,18 @@ export default class ModifyCustomerInfoBank extends Vue {
 
   created() {
     this.model = {
-      accountStatus: "",
       accountType: "",
       bankBranch: "",
       bankName: "",
+      province: "",
+      depositCity: "",
       cardNo: "",
-      clientNumber: "",
       customerId: "",
       id: 0,
       remark: ""
     }
     
     this.rules = {
-      accountStatus: { required: true, message: "请选择开户状态", trigger: "blur", type: "number" },
       accountType: { required: true, message: "请选择账户类型", trigger: "blur", type: "number" },
       bankName: { required: true, message: "请填写银行名称", trigger: "blur" },
       cardNo: { required: true, message: "请填写银行卡号", trigger: "blur" }

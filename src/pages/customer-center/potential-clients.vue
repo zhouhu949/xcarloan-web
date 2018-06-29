@@ -5,8 +5,14 @@
     </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
-        <i-form-item prop="name" label="客户姓名：">
-          <i-input placeholder="请输入客户姓名：" v-model="model.name"></i-input>
+        <i-form-item prop="name" label="姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="身份证号：">
+          <i-input placeholder="请输入客户身份证号" v-model="model.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="phoneNumber" label="手机号：">
+          <i-input placeholder="请输入客户手机号" v-model="model.phoneNumber"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -22,6 +28,7 @@ import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-info-base/modify-customer-info-basedata.vue";
+import CustomerInfoIntentionRecord from "~/components/customer-center/customer-info-base/customer-info-intention-record.vue";
 import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -40,7 +47,9 @@ export default class PotentialClients extends Page {
   private dataSet: any = [];
 
   private model = {
-    name: ""
+    name: "",
+    phoneNumber: "",
+    idCard: ""
   }
 
 
@@ -73,7 +82,22 @@ export default class PotentialClients extends Page {
                   click: () => this.viewCustomerInfo(row.id)
                 }
               },
-              "查看")
+              "修改"
+            ),
+            h("i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => this.followCustomer(row.id)
+                }
+              },
+              "跟进"
+            ),
           ])
         }
       },
@@ -134,6 +158,22 @@ export default class PotentialClients extends Page {
     this.$dialog.show({
       width: 1050,
       render: h => h(OrderCustomerInfo)
+    })
+  }
+
+  /**
+   * 跟进
+   */
+  followCustomer(customerId) {
+    this.$dialog.show({
+      title: "意向记录",
+      width: 1050,
+      render: h => h(CustomerInfoIntentionRecord, {
+        props: {
+          id: customerId,
+          modifyRecord: true
+        }
+      })
     })
   }
 

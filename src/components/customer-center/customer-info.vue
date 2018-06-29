@@ -30,7 +30,8 @@ const CUSTOMER_BASE_COMPONENT = [
   { id: 5, pid: 0, title: "银行卡信息", component: "CustomerInfoBank" },
   { id: 6, pid: 0, title: "附件资料", component: "CustomerInfoMaterials" },
   { id: 7, pid: 0, title: "黑白灰名单记录", component: "CustomerInfoBadRecord" },
-  { id: 8, pid: 0, title: "订单记录", component: "CustomerInfoOrderRecord" },
+  { id: 8, pid: 0, title: "意向记录", component: "CustomerInfoIntentionRecord" },
+  { id: 9, pid: 0, title: "订单记录", component: "CustomerInfoOrderRecord" },
   // 二级目录
   { id: 1021, pid: 2, title: "车产信息", component: "CustomerInfoCar" },
   { id: 1022, pid: 2, title: "房产信息", component: "CustomerInfoHouse" },

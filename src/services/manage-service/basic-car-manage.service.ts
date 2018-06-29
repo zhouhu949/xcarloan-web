@@ -145,8 +145,9 @@ export class BasicCarManageService {
         modelName: data.modelName,
         modelVolume: data.carSize,
         remark: data.remark,
-        id: data.seriesId,
+        id: carId,
         structure: data.carStructure,
+        referencePrice: data.referencePrice
       },
       loading: true,
       server: manageService.basicCarManagecontroller.editCarModel,

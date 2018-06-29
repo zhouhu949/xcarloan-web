@@ -15,7 +15,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findPotentialCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -28,7 +30,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findHistoryCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -41,7 +45,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findWhiteCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -54,7 +60,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findGrayCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -66,7 +74,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findBlackCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -78,7 +88,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findFormalCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
