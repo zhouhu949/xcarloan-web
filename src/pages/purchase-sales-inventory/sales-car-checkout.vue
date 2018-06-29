@@ -81,7 +81,7 @@ export default class SalesCarCheckout extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 ),
                 h(
                   "i-button",
@@ -125,7 +125,7 @@ export default class SalesCarCheckout extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 )
               ]);
           }

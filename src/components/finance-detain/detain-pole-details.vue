@@ -4,7 +4,8 @@
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
       <data-grid-item label="质押地点" :span="6">{{model.pledgePlace}}</data-grid-item>
       <data-grid-item label="质押位置" :span="6">{{model.pledgePosition }}</data-grid-item>
-      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat}}</data-grid-item>
+      <data-grid-item label="抵押次数" :span="6">{{model.mortgageNum}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>
