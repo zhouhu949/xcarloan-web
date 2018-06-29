@@ -23,8 +23,8 @@ import { CarPropertyType } from "~/config/enum.config.ts";
 import { BasicProductService } from "~/services/manage-service/basic-product.service";
 import { PageService } from "~/utils/page.service";
 import DataTree from "~/components/common/data-tree.vue";
-import AddModifyProduct from '~/components/base-data/add-modify-product.vue';
-import productDetail from '~/components/base-data/product-detail.vue';
+import ModifyProduct from '~/components/base-data/modify-product.vue';
+import ProductDetail from '~/components/base-data/product-detail.vue';
 import ProductSchemeDetail from '~/components/base-data/product-scheme-detail.vue';
 import { ProdSchemeDetailType } from "~/config/enum.config";
 import { Button } from "iview";
@@ -183,7 +183,7 @@ export default class ProductManage extends Page {
           return v
         })
       },
-      render: h => (<AddModifyProduct carId={this.carId} carName={this.carName}></AddModifyProduct>)
+      render: h => (<ModifyProduct carId={this.carId} carName={this.carName}></ModifyProduct>)
     })
   }
   /**
@@ -202,7 +202,7 @@ export default class ProductManage extends Page {
           return v
         })
       },
-      render: h => (<AddModifyProduct carId={this.carId} carName={this.carName} productData={productData}></AddModifyProduct>)
+      render: h => (<ModifyProduct carId={this.carId} carName={this.carName} productData={productData}></ModifyProduct>)
     })
   }
   /**
@@ -213,7 +213,7 @@ export default class ProductManage extends Page {
       title: '查看产品详情',
       isView: true,
       width: 1000,
-      render: h => (<productDetail productData={row}></productDetail>)
+      render: h => (<ProductDetail productData={row}></ProductDetail>)
     })
   }
   /**

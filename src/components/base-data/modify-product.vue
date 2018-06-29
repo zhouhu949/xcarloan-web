@@ -1,6 +1,6 @@
-<!-- 新增产品 -->
+<!-- 产品维护 -->
 <template>
-  <section class="component add-modify-product">
+  <section class="component modify-product">
     <i-form :label-width="110" :model="model" ref="add-modify-product-form" :rules="rules" inline>
       <i-form-item label="产品名称" prop="productName">
         <i-input v-model="model.productName" placeholder="请输入产品名称"></i-input>
@@ -13,9 +13,6 @@
       </i-form-item>
       <i-form-item label="车型名称" prop="carName">
         <i-input v-model="carName" readonly></i-input>
-      </i-form-item>
-      <i-form-item label="上传附件" prop="fileUrl">
-        <i-input v-model="model.fileUrl" readonly @on-focus="uploadFile" placeholder="请选择附件"></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -37,7 +34,7 @@ import { ProdSchemeDetailType } from "~/config/enum.config";
     ChooseScheme
   }
 })
-export default class AddModifyProduct extends Vue {
+export default class ModifyProduct extends Vue {
   @Dependencies(BasicProductService) private basicProductService: BasicProductService
   @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
 
@@ -134,7 +131,7 @@ export default class AddModifyProduct extends Vue {
       render: h => h(ChooseScheme, {
         props: {
           schemeId: this.model.schemeId,
-          schemeType : ProdSchemeDetailType.FINANCE
+          schemeType: ProdSchemeDetailType.FINANCE
         }
       })
     })
