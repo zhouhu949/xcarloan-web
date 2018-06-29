@@ -80,7 +80,7 @@ export default class PurchaseManage extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               ),
               h(
                 "i-button",
@@ -118,7 +118,7 @@ export default class PurchaseManage extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               ),
               h(
                 "i-button",
@@ -162,7 +162,7 @@ export default class PurchaseManage extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               )
             ]);
           }

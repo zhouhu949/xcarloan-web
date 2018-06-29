@@ -73,7 +73,7 @@ export default class FormalCustomer extends Page {
                   }
                 }
               },
-              "查看")
+              "详情")
           ])
         }
       },

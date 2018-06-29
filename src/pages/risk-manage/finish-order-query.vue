@@ -1,33 +1,58 @@
+<!-- 订单查询 -->
 <template>
-  <section class="page repayment-query">
- <page-header title="还款查询" hiddenPrint hiddenExport>
+  <section class="page finish-order-query">
+    <page-header title="订单查询" hiddenPrint hiddenExport>
     </page-header>
-    <data-box :columns="repayOrderColumns" :data="repayOrderDataSet" @onPageChange="refreshRepayOrder" ref="databox"></data-box>
+    <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshOrder">
+      <template slot="input">
+        <i-form-item prop="customerName" label="客户姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
+        </i-form-item>
+        <i-form-item prop="customerName" label="身份证号：">
+          <i-input placeholder="请输入身份证号" v-model="queryParamsModel.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="customerName" label="电话号码：">
+          <i-input placeholder="请输入电话号码" v-model="queryParamsModel.customerPhone"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNo" label="订单号：">
+          <i-input placeholder="请输入订单号" v-model="queryParamsModel.orderNo"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="orderColumns" :data="orderDataSet" @onPageChange="refreshOrder" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
 <script lang="ts">
-import Page from '~/core/page'
-import { Layout } from '~/core/decorator'
+import Page from "~/core/page";
 import Component from "vue-class-component";
+import { Layout } from "~/core/decorator";
+import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
+import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { PageService } from "~/utils/page.service";
 
-@Layout('workspace')
+@Layout("workspace")
 @Component({
   components: {}
 })
-export default class RepaymentQuery extends Page {
-@Dependencies(FinancialManagementService)
-  financialManagementService: FinancialManagementService;
+export default class FinishOrderQuery extends Page {
+  @Dependencies(WorkFlowApprovalService)
+  workFlowApprovalService: WorkFlowApprovalService;
   @Dependencies(PageService) private pageService: PageService;
 
-  private repayOrderColumns: any;
-  private repayOrderDataSet: Array<any> = [];
+  private orderColumns: any;
+  private orderDataSet: Array<any> = [];
+
+  queryParamsModel: any = {
+    customerName: "",
+    idCard: "",
+    customerPhone: "",
+    orderNo: ""
+  };
 
   created() {
-    this.repayOrderColumns = [
+    this.orderColumns = [
       {
         title: "操作",
         minWidth: this.$common.getColumnWidth(5),
@@ -144,23 +169,22 @@ export default class RepaymentQuery extends Page {
 
   mounted() {
     // 加载数据
-    this.refreshRepayOrder();
+    this.refreshOrder();
   }
 
   /**
    * 刷新列表
    */
-  refreshRepayOrder() {
-    this.financialManagementService
-      .findRepayOrderList()
+  refreshOrder() {
+    this.workFlowApprovalService
+      .queryAllWaitApprovalByAuth(this.queryParamsModel, this.pageService)
       .subscribe(
-        data => (this.repayOrderDataSet = data),
+        data => (this.orderDataSet = data),
         err => this.$Message.error(err.msg)
       );
   }
 }
 </script>
-
 
 <style lang="less" scoped>
 </style>

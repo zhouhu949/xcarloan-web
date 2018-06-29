@@ -66,7 +66,7 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="出厂日期" prop="factoryTime" :readonly="isView">
-              <i-date-picker type="datetime" placeholder="请选择出厂日期" v-model="model.factoryTime" :readonly="isView"></i-date-picker>
+              <i-date-picker type="date" placeholder="请选择出厂日期" v-model="model.factoryTime" :readonly="isView"></i-date-picker>
             </i-form-item>
           </i-col>
         </i-row>
@@ -136,12 +136,12 @@
         <i-row :gutter="15">
           <i-col :span="12">
             <i-form-item label="申请评估日期" prop="assessmentApplyDate">
-              <i-date-picker type="datetime" placeholder="选择申请评估日期" v-model="model.assessmentApplyDate" :readonly="isView"></i-date-picker>
+              <i-date-picker type="date" placeholder="选择申请评估日期" v-model="model.assessmentApplyDate" :readonly="isView"></i-date-picker>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="评估日期" prop="assessmentDate">
-              <i-date-picker type="datetime" placeholder="选择评估日期" v-model="model.assessmentDate" :readonly="isView"></i-date-picker>
+              <i-date-picker type="date" placeholder="选择评估日期" v-model="model.assessmentDate" :readonly="isView"></i-date-picker>
             </i-form-item>
           </i-col>
         </i-row>

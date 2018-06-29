@@ -53,6 +53,10 @@ export default class InStorage extends Page {
     mortgageStatus: ""
   };
 
+  activated(){
+    console.log("instorage当前窗口活动中");
+  }
+
   created() {
     this.inStorageColumns = [
       {
@@ -101,7 +105,7 @@ export default class InStorage extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               )
             ]);
           } else {
@@ -123,7 +127,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 ),
                 h(
                   "i-button",
@@ -140,7 +144,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "查看抵押"
+                  "抵押详情"
                 )
               ]);
             } else if (row.orderMrtgageType === 10054) {
@@ -160,7 +164,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 ),
                 h(
                   "i-button",
@@ -177,7 +181,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "查看质押"
+                  "质押详情"
                 )
               ]);
             }
@@ -221,12 +225,7 @@ export default class InStorage extends Page {
         title: "入库日期",
         key: "stockInDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h(
-            "span",
-            {},
-            this.$filter.dateFormat(row.stockInDate, "yyyy-MM-dd hh:mm:ss")
-          )
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockInDate))
       },
       {
         align: "center",
@@ -234,12 +233,7 @@ export default class InStorage extends Page {
         title: "出库日期",
         key: "stockOutDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h(
-            "span",
-            {},
-            this.$filter.dateFormat(row.stockOutDate, "yyyy-MM-dd hh:mm:ss")
-          )
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockOutDate))
       },
       {
         align: "center",

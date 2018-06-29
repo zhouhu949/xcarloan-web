@@ -85,7 +85,7 @@ export default class SignContract extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               )
             ]);
           }

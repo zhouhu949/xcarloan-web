@@ -18,8 +18,8 @@
       </i-row>
       <i-row :gutter="15">
         <i-col :span="12">
-          <i-form-item label="入库时间" prop="stockDate">
-            <i-date-picker type="datetime" placeholder="选择入库时间" v-model="model.stockDate"></i-date-picker>
+          <i-form-item label="入库日期" prop="stockDate">
+            <i-date-picker type="date" placeholder="选择入库日期" v-model="model.stockDate"></i-date-picker>
           </i-form-item>
         </i-col>
       </i-row>

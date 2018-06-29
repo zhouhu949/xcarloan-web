@@ -101,7 +101,7 @@ export default class OutStorage extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               )
             ]);
           } else {
@@ -123,7 +123,7 @@ export default class OutStorage extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 ),
                 h(
                   "i-button",
@@ -160,7 +160,7 @@ export default class OutStorage extends Page {
                       }
                     }
                   },
-                  "查看"
+                  "详情"
                 ),
                 h(
                   "i-button",
@@ -221,12 +221,7 @@ export default class OutStorage extends Page {
         title: "入库日期",
         key: "stockInDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h(
-            "span",
-            {},
-            this.$filter.dateFormat(row.stockInDate, "yyyy-MM-dd hh:mm:ss")
-          )
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockInDate))
       },
       {
         align: "center",
@@ -234,12 +229,7 @@ export default class OutStorage extends Page {
         title: "出库日期",
         key: "stockOutDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h(
-            "span",
-            {},
-            this.$filter.dateFormat(row.stockOutDate, "yyyy-MM-dd hh:mm:ss")
-          )
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockOutDate))
       },
       {
         align: "center",

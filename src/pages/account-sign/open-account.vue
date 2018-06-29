@@ -92,7 +92,7 @@ export default class OpenAccount extends Page {
                     }
                   }
                 },
-                "查看"
+                "详情"
               )
             ]);
           }
