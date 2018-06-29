@@ -15,12 +15,12 @@
         <data-grid-item label="购车价格" :span="6">{{assessmentReportInfo.carPrice | toThousands }}</data-grid-item>
         <data-grid-item label="车辆型号" :span="6">{{assessmentReportInfo.carType | dictConvert}}</data-grid-item>
         <data-grid-item label="是否二手车" :span="6">{{assessmentReportInfo.isSecondHand | dictConvert}}</data-grid-item>
-        <data-grid-item label="初次登记日期" :span="6">{{assessmentReportInfo.registerTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
+        <data-grid-item label="初次登记日期" :span="6">{{assessmentReportInfo.registerTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
         <data-grid-item label="抵押登记次数" :span="6">{{assessmentReportInfo.mortgageNum}}</data-grid-item>
         <data-grid-item label="购买方式" :span="6">{{assessmentReportInfo.buyType | dictConvert}}</data-grid-item>
         <data-grid-item label="是否贷款已还清" :span="6">{{assessmentReportInfo.isLoanFinished | dictConvert}}</data-grid-item>
         <data-grid-item label="车辆状态" :span="6">{{assessmentReportInfo.carStatus | dictConvert}}</data-grid-item>
-        <data-grid-item label="出厂日期" :span="6">{{assessmentReportInfo.factoryTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
+        <data-grid-item label="出厂日期" :span="6">{{assessmentReportInfo.factoryTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
         <data-grid-item label="行驶里程" :span="6">{{assessmentReportInfo.mileAge}}</data-grid-item>
         <data-grid-item label="行驶证号" :span="6">{{assessmentReportInfo.drivingNo}}</data-grid-item>
         <data-grid-item label="过户次数" :span="6">{{assessmentReportInfo.transferNo}}</data-grid-item>

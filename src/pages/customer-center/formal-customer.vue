@@ -15,13 +15,15 @@
 
 <script lang="ts">
 import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
+import { namespace } from "vuex-class";
+import { Layout, Dependencies } from '~/core/decorator'
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-import { namespace } from "vuex-class";
+
 const CustomerOrderModule = namespace("customerOrderSpace")
+
 @Layout('workspace')
 @Component({
   components: {}

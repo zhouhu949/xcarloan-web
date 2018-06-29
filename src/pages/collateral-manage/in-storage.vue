@@ -53,10 +53,6 @@ export default class InStorage extends Page {
     mortgageStatus: ""
   };
 
-  activated(){
-    console.log("instorage当前窗口活动中");
-  }
-
   created() {
     this.inStorageColumns = [
       {
@@ -144,7 +140,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "抵押详情"
+                  "押品详情"
                 )
               ]);
             } else if (row.orderMrtgageType === 10054) {
@@ -181,7 +177,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "质押详情"
+                  "押品详情"
                 )
               ]);
             }
@@ -248,6 +244,14 @@ export default class InStorage extends Page {
   }
 
   mounted() {
+    // 加载数据
+    this.refreshInStorage();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载数据
     this.refreshInStorage();
   }

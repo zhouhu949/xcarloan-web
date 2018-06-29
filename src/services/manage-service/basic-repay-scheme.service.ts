@@ -50,6 +50,7 @@ export class RepaySchemeService {
   /**
    * 删除还款方案
    */
+  @Debounce()
   deleteRepayScheme(id) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.deleteRepayScheme,
@@ -60,6 +61,7 @@ export class RepaySchemeService {
   /**
   * 发布/取消发布还款方案
   */
+  @Debounce()
   releaseRepayScheme(schemeId: Number, state: Number) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.releaseRepayScheme,
@@ -73,6 +75,7 @@ export class RepaySchemeService {
   /**
    * 新增/修改还款方案比例详情
    */
+  @Debounce()
   addBasicSchemeExpense(data) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.addBasicSchemeExpense,
@@ -83,6 +86,7 @@ export class RepaySchemeService {
   /**
    * 删除还款方案比例详情
    */
+  @Debounce()
   deleteRepaySchemeExpense(id) {
     return this.netService.send({
       server: manageService.basicRepaySchemeController.deleteRepaySchemeExpense,

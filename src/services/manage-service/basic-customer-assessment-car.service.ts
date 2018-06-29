@@ -27,7 +27,7 @@ export class BasicCustomerAssessmentCarService {
     return this.netService.send({
       server: manageService.basicCustomerAssessmentCarController.findCustomerAssessmentList,
       data: {
-        orderNo: model.orderNo,
+        carNo: model.carNo,
         customerName: model.customerName
       },
       page: page

@@ -249,6 +249,14 @@ export default class OutStorage extends Page {
   }
 
   /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
+    // 加载数据
+    this.refreshOutStorage();
+  }
+
+  /**
    * 刷新列表
    */
   refreshOutStorage() {
@@ -311,7 +319,7 @@ export default class OutStorage extends Page {
    */
   onDetainDetails(id: number) {
     this.$dialog.show({
-      title: "押品详情",
+      title: "查看详情",
       isView: true,
       footer: true,
       render: h =>
@@ -328,7 +336,7 @@ export default class OutStorage extends Page {
    */
   onDetainMortDetails(id: number) {
     this.$dialog.show({
-      title: "低押详情",
+      title: "抵押详情",
       isView: true,
       footer: true,
       render: h =>

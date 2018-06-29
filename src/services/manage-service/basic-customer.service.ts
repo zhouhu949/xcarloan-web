@@ -10,7 +10,6 @@ export class BasicCustomerService {
   /**
    * 根据ID查找客户
    */
-  @Debounce()
   findCustomerById(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.findCustomerById,
@@ -20,7 +19,6 @@ export class BasicCustomerService {
   /**
    * 客户银行卡信息
    */
-  @Debounce()
   findCustomerBankInfo(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerBankInfo,
@@ -34,7 +32,6 @@ export class BasicCustomerService {
    * @param model 查询参数实体
    * @param page 分页实体
    */
-  @Debounce()
   findAllCustomerList(model, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.findAllCustomerList,
@@ -51,7 +48,6 @@ export class BasicCustomerService {
    * @param data 查询参数实体
    * @param page 分页参数实体
    */
-  @Debounce()
   getCustomerSignList(data, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerSignList,
@@ -78,6 +74,7 @@ export class BasicCustomerService {
   /*
    * 修改客户
    */
+  @Debounce()
   editBasicCustomer(data) {
     let result = Object.assign({}, data)
     result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")

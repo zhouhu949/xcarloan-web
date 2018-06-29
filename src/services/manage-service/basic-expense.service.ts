@@ -10,7 +10,7 @@ export class BasicExpenseService {
    * @param data 新增实体
    */
   @Debounce()
-  addBasicExpense(data) {
+  addBasicExpense(data: any): any {
     return this.netService.send({
       server: manageService.basicExpenseController.addBasicExpense,
       data: {
@@ -28,7 +28,7 @@ export class BasicExpenseService {
    * @param data 修改实体
    */
   @Debounce()
-  editBasicExpense(data) {
+  editBasicExpense(data: any): any {
     return this.netService.send({
       server: manageService.basicExpenseController.editBasicExpense,
       data: {
@@ -45,7 +45,7 @@ export class BasicExpenseService {
    * @param expenseId 费用项id
    */
   @Debounce()
-  deleteBasicExpense(expenseId) {
+  deleteBasicExpense(expenseId: number): any {
     return this.netService.send({
       server: manageService.basicExpenseController.deleteBasicExpense,
       append: expenseId,
@@ -57,7 +57,7 @@ export class BasicExpenseService {
    * 复制模板
    */
   @Debounce()
-  copyTemplate() {
+  copyTemplate(): any {
     return this.netService.send({
       server: manageService.basicExpenseController.copyTemplate,
       loading: true
@@ -66,7 +66,7 @@ export class BasicExpenseService {
   /**
    * 获取当前用户所属机构下的费用项(下拉选用)
    */
-  findBasicExpenseByOrg() {
+  findBasicExpenseByOrg(): any {
     return this.netService.send({
       server: manageService.basicExpenseController.findBasicExpenseByOrg,
       loading: true

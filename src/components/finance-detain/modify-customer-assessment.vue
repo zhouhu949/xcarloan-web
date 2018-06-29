@@ -7,8 +7,8 @@
         <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
         <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
         <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-        <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-        <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType | dictConvert }}</data-grid-item>
+        <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType | dictConvert }}</data-grid-item>
       </data-grid>
     </i-card>
 
@@ -77,32 +77,32 @@
             <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
               <data-grid-item label="客户姓名" :span="6">
                 <i-radio-group v-model="model.remark">
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="value" :true-value="value">{{label}}</i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="value" :true-value="value">{{label}}</i-radio>
                 </i-radio-group>
               </data-grid-item>
               <data-grid-item label="客户电话" :span="6"> 
                 <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="label" :true-value="value"></i-radio>
                 </i-radio-group>
               </data-grid-item>
               <data-grid-item label="身份证" :span="6">
                 <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="label" :true-value="value"></i-radio>
                 </i-radio-group>
               </data-grid-item>
               <data-grid-item label="车牌号" :span="6">
                 <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="label" :true-value="value"></i-radio>
                 </i-radio-group>
               </data-grid-item>
               <data-grid-item label="车辆型号" :span="6">
                 <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="label" :true-value="value"></i-radio>
                 </i-radio-group>
               </data-grid-item>
               <data-grid-item label="购买方式" :span="6">
                 <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="label" :true-value="value"></i-radio>
                 </i-radio-group>
               </data-grid-item>
             </data-grid>
@@ -114,8 +114,8 @@
               <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
               <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
               <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
+              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType | dictConvert }}</data-grid-item>
+              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType | dictConvert }}</data-grid-item>
             </data-grid>
           </i-panel>
           <i-panel name="3">
@@ -125,8 +125,8 @@
               <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
               <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
               <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
+              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType | dictConvert }}</data-grid-item>
+              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType | dictConvert }}</data-grid-item>
             </data-grid>
           </i-panel>
         </i-collapse>
@@ -148,7 +148,7 @@
         <i-row :gutter="15">
           <i-col :span="12">
             <i-form-item label="估价" prop="evaluation">
-              <i-input-number v-model="model.evaluation" placeholder="请选输入估价" :precision="2" :step="0.01" :formatter="value => `￥ ${value}`.replace(/B(?=(d{3})+(?!d))/g, ',')" :parser="value => value.replace(/￥s?|(,*)/g, '')" :readonly="isView"></i-input-number>
+              <i-input-number v-model="model.evaluation" placeholder="请选输入估价" :readonly="isView" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
               <span>元</span>
             </i-form-item>
           </i-col>

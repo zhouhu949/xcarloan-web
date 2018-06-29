@@ -30,10 +30,6 @@ export default class BasicExpenseManage extends Page {
   private expenseColumns: any;
   private expenseDataSet: any = [];
 
-  mounted() {
-    this.findBasicExpenseByOrg();
-  }
-
   created() {
     this.expenseColumns = [
       {
@@ -111,6 +107,19 @@ export default class BasicExpenseManage extends Page {
     ];
   }
 
+  mounted() {
+    // 加载列表数据
+    this.refreshBasicExpenseByOrg();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
+    // 加载列表数据
+    this.refreshBasicExpenseByOrg();
+  }
+
   /**
    * 费用项维护
    * @param val 需要维护的费用项数据
@@ -121,7 +130,7 @@ export default class BasicExpenseManage extends Page {
       footer: true,
       onOk: modifyBasicExpense => {
         return modifyBasicExpense.submit().then(v => {
-          if (v) this.refreshData();
+          if (v) this.refreshBasicExpenseByOrg();
           return v;
         });
       },
@@ -142,7 +151,7 @@ export default class BasicExpenseManage extends Page {
       val => {
         this.$Message.success("模板复制成功！");
 
-        this.refreshData();
+        this.refreshBasicExpenseByOrg();
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -162,7 +171,7 @@ export default class BasicExpenseManage extends Page {
           val => {
             this.$Message.success("删除成功！");
 
-            this.refreshData();
+            this.refreshBasicExpenseByOrg();
           },
           ({ msg }) => {
             this.$Message.error(msg);
@@ -175,20 +184,13 @@ export default class BasicExpenseManage extends Page {
   /**
    * 获取自己所能操作的所有费用项
    */
-  private findBasicExpenseByOrg() {
+  private refreshBasicExpenseByOrg() {
     this.basicExpenseService
       .findBasicExpenseByOrg()
       .subscribe(
         data => (this.expenseDataSet = data),
         err => this.$Message.error(err.msg)
       );
-  }
-
-  /**
-   * 刷新列表数据
-   */
-  private refreshData() {
-    this.findBasicExpenseByOrg();
   }
 }
 </script>

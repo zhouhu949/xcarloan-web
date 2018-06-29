@@ -28,6 +28,7 @@ import Page from "~/core/page";
 import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
 import OrderCarDetails from "~/components/purchase-sales-inventory/order-car-details.vue";
+import CarParams from "~/components/base-data/car-params.vue";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { BasicEnterShellSaveService } from "~/services/manage-service/basic-enter-shell-save.service";
@@ -63,6 +64,9 @@ export default class SalesCarCheckout extends Page {
         render: (h, { row, column, index }) => {
           // 根据状态执行不同的操作 10123 : 待采购 ; 10046 : 整备中 ; 10047 : 整备完成 ; 10048 : 已提车
           switch (row.stockStatus) {
+            // 待采购
+            case 10123:
+              break;
             // 整备完成
             case 10047:
               return h("div", [
@@ -153,25 +157,23 @@ export default class SalesCarCheckout extends Page {
         key: "modelName",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.onGetVehicleInfo(row);
-                  }
-                }
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
               },
-              row.modelName
-            )
-          ]);
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.onGetCarParams(row.modelId);
+                }
+              }
+            },
+            row.modelName
+          );
         }
       },
       {
@@ -204,7 +206,15 @@ export default class SalesCarCheckout extends Page {
     // 加载数据
     this.refreshEnterShellSave();
   }
-  
+
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated() {
+    // 加载数据
+    this.refreshEnterShellSave();
+  }
+
   /**
    * 刷新列表
    */
@@ -242,6 +252,24 @@ export default class SalesCarCheckout extends Page {
         h(OrderCarDetails, {
           props: {
             orderId: row.orderId
+          }
+        })
+    });
+  }
+
+  /**
+   * 查看车型信息
+   */
+  onGetCarParams(modelId) {
+    this.$dialog.show({
+      title: "车型信息",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(CarParams, {
+          props: {
+            carId: modelId,
+            isView: true
           }
         })
     });

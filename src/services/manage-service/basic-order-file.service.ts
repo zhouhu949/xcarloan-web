@@ -9,7 +9,6 @@ export class BasicOrderFileService {
   /**
    * 查询订单附件
    */
-  @Debounce()
   getOrderFile(orderId) {
     return this.netService.send({
       server: manageService.basicOrderFileController.getOrderFile,

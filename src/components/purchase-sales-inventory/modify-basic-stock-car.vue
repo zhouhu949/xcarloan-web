@@ -31,7 +31,7 @@
       <i-row :gutter="15">
         <i-col :span="12">
           <i-form-item label="采购价格" prop="stockPrice">
-            <i-input-number v-model="model.stockPrice" placeholder="请输入采购价格" :precision="2" :step="0.01" :formatter="value => `￥ ${value}`.replace(/B(?=(d{3})+(?!d))/g, ',')" :parser="value => value.replace(/￥s?|(,*)/g, '')">
+            <i-input-number v-model="model.stockPrice" placeholder="请输入采购价格" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse">
             </i-input-number>
             <span>元</span>
           </i-form-item>
@@ -70,17 +70,18 @@ export default class ModifyBasicStockCar extends Vue {
 
   @Prop() stockCarData;
   @Prop({
-    default: 0
+    default: 0,
+    type: Number
   })
-  modelId;
+  modelId: number;
 
-  private supplierDataSet: Array<Object> = [];
+  private supplierDataSet: Array<any> = [];
 
   private model: any = {
     id: 0,
     modelId: 0,
     remark: "",
-    stockPrice: 0,
+    stockPrice: "",
     stockCarColor: "",
     stockCarNo: "",
     stockEngineNo: "",

@@ -2,10 +2,13 @@
 <template>
   <section class="component detain-details">
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+      <data-grid-item label="质押编号" :span="6">{{model.pledgeNo}}</data-grid-item>
       <data-grid-item label="质押地点" :span="6">{{model.pledgePlace}}</data-grid-item>
-      <data-grid-item label="质押位置" :span="6">{{model.pledgePosition }}</data-grid-item>
-      <data-grid-item label="抵押次数" :span="6">{{model.mortgageNum}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat}}</data-grid-item>
+      <data-grid-item label="质押位置" :span="12">{{model.pledgePosition }}</data-grid-item>
+      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat("yyyy-MM-dd") }}</data-grid-item>
+      <data-grid-item label="操作人" :span="6">{{model.operator}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
     </data-grid>
   </section>
 </template>
@@ -33,13 +36,21 @@ export default class DetainPoleDetails extends Vue {
   })
   detainId;
 
-  private model: any = { 
-    mortgageNum : "",
-    pledgePlace :  "",
-    pledgePosition : "",
-    pledgeNo : "",
-    operatorTime :  "",
-    operator :  ""
+  private model: any = {
+    // 操作人
+    operator: "",
+    // 操作时间
+    operatorTime: "",
+    // 质押编号
+    pledgeNo: "",
+    // 质押地点
+    pledgePlace: "",
+    // 质押位置
+    pledgePosition: "",
+    // 入库日期
+    stockInDate: "",
+    // 出库日期
+    stockOutDate: ""
   };
 
   /**

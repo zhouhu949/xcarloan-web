@@ -181,7 +181,17 @@ export default class SignContract extends Page {
           h("p", {}, this.$filter.dictConvert(row.accountStatus))
       }
     ];
+  }
 
+  mounted() {
+    // 加载列表数据
+    this.refreshCustomerSign();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载列表数据
     this.refreshCustomerSign();
   }

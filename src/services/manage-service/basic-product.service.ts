@@ -43,7 +43,6 @@ export class BasicProductService {
   /**
    * 获取车型产品
    */
-  @Debounce()
   findBasicProduct(id) {
     return this.netService.send({
       server: manageService.basicProductController.findBasicProduct,
@@ -75,7 +74,6 @@ export class BasicProductService {
   /**
    * 获取车型产品列表
    */
-  @Debounce()
   findBasicProductList(carId, page) {
     return this.netService.send({
       server: manageService.basicProductController.findBasicProductList,
@@ -106,6 +104,7 @@ export class BasicProductService {
       loading: true
     })
   }
+  
   /**
    * 根据车型分页获取车型产品
    */

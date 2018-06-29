@@ -189,7 +189,17 @@ export default class OpenAccount extends Page {
           h("p", {}, this.$filter.dictConvert(row.accountStatus))
       }
     ];
+  }
 
+  mounted() {
+    // 加载列表数据
+    this.refreshOpenAccount();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载列表数据
     this.refreshOpenAccount();
   }

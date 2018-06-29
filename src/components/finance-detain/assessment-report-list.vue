@@ -50,11 +50,11 @@ export default class AssessmentReportList extends Vue {
               },
               on: {
                 click: () => {
-                  this.onGetAssessmentReportInfo(row.assessmentReportId);
+                  this.onGetAssessmentReportInfo(row.carAssessmentId);
                 }
               }
             },
-            "查看评估"
+            "评估详情"
           );
         }
       },
@@ -92,9 +92,11 @@ export default class AssessmentReportList extends Vue {
       {
         align: "center",
         editable: true,
-        title: "购车价格",
+        title: "购车价格(元)",
         key: "carPrice",
-        minWidth: this.$common.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.toThousands(row.carPrice))
       },
       {
         align: "center",
@@ -115,10 +117,7 @@ export default class AssessmentReportList extends Vue {
           h(
             "span",
             {},
-            this.$filter.dateFormat(
-              row.assessmentApplyDate,
-              "yyyy-MM-dd hh:mm:ss"
-            )
+            this.$filter.dateFormat(row.assessmentApplyDate, "yyyy-MM-dd")
           )
       },
       {
@@ -131,7 +130,7 @@ export default class AssessmentReportList extends Vue {
           h(
             "span",
             {},
-            this.$filter.dateFormat(row.assessmentDate, "yyyy-MM-dd hh:mm:ss")
+            this.$filter.dateFormat(row.assessmentDate, "yyyy-MM-dd")
           )
       },
       {
@@ -139,9 +138,7 @@ export default class AssessmentReportList extends Vue {
         editable: true,
         title: "评估结果",
         key: "assessmentResult",
-        minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.assessmentResult))
+        minWidth: this.$common.getColumnWidth(2)
       }
     ];
   }

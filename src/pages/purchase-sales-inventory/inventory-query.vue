@@ -73,8 +73,6 @@ export default class InventoryQuery extends Page {
   };
 
   created() {
-    //加载供应商信息
-    this.getBasicSupplier();
     //当前
     this.dataTree = this.$refs["data-tree"] as DataTree;
     //
@@ -163,6 +161,11 @@ export default class InventoryQuery extends Page {
     ];
   }
 
+  mounted() {
+    //加载供应商信息
+    this.getBasicSupplier();
+  }
+  
   /**
    * 车型选中改变事件
    */
@@ -209,6 +212,7 @@ export default class InventoryQuery extends Page {
 
   /**
    * 获取车型信息
+   * @param val 选中行数据
    */
   onGetCarParams(val: Object) {
     this.$dialog.show({

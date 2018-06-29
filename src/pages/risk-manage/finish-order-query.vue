@@ -8,10 +8,10 @@
         <i-form-item prop="customerName" label="客户姓名：">
           <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
         </i-form-item>
-        <i-form-item prop="customerName" label="身份证号：">
+        <i-form-item prop="idCard" label="身份证号：">
           <i-input placeholder="请输入身份证号" v-model="queryParamsModel.idCard"></i-input>
         </i-form-item>
-        <i-form-item prop="customerName" label="电话号码：">
+        <i-form-item prop="customerPhone" label="电话号码：">
           <i-input placeholder="请输入电话号码" v-model="queryParamsModel.customerPhone"></i-input>
         </i-form-item>
         <i-form-item prop="orderNo" label="订单号：">
@@ -26,11 +26,14 @@
 <script lang="ts">
 import Page from "~/core/page";
 import Component from "vue-class-component";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { Layout } from "~/core/decorator";
 import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { PageService } from "~/utils/page.service";
+
+const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Layout("workspace")
 @Component({
@@ -40,6 +43,8 @@ export default class FinishOrderQuery extends Page {
   @Dependencies(WorkFlowApprovalService)
   workFlowApprovalService: WorkFlowApprovalService;
   @Dependencies(PageService) private pageService: PageService;
+  @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private orderColumns: any;
   private orderDataSet: Array<any> = [];
@@ -54,46 +59,64 @@ export default class FinishOrderQuery extends Page {
   created() {
     this.orderColumns = [
       {
-        title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
-        align: "center",
-        render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    // this.onDetainDetails(row.id);
-                  }
-                }
-              },
-              "详情"
-            )
-          ]);
-        }
-      },
-
-      {
         align: "center",
         editable: true,
         title: "订单号",
         key: "orderNo",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showOrderInfo(row.orderId);
+                  this.$dialog.show({
+                    width: 1050,
+                    render: h => h(OrderCustomerInfo)
+                  });
+                }
+              }
+            },
+            row.orderNo
+          );
+        }
       },
       {
         align: "center",
         editable: true,
         title: "客户姓名",
         key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showCustomerInfo({ id: row.customerId });
+                  this.$dialog.show({
+                    width: 1050,
+                    render: h => h(OrderCustomerInfo)
+                  });
+                }
+              }
+            },
+            row.customerName
+          );
+        }
       },
       {
         align: "center",
@@ -168,6 +191,14 @@ export default class FinishOrderQuery extends Page {
   }
 
   mounted() {
+    // 加载数据
+    this.refreshOrder();
+  }
+
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated() {
     // 加载数据
     this.refreshOrder();
   }

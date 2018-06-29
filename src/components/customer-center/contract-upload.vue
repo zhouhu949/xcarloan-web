@@ -117,8 +117,8 @@ export default class ContractUpload extends Vue {
         width: 150,
         align: "center",
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
+          if (this.isView) {
+            return h(
               "i-button",
               {
                 props: {
@@ -134,32 +134,52 @@ export default class ContractUpload extends Vue {
                 }
               },
               "下载"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确定执行删除吗？",
-                      transfer: false,
-                      onOk: () => {
-                        this.handleRemove(row);
-                      }
-                    });
+            );
+          } else {
+            return h("div", [
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.download(row);
+                    }
                   }
-                }
-              },
-              "删除"
-            )
-          ]);
+                },
+                "下载"
+              ),
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: "提示",
+                        content: "确定执行删除吗？",
+                        transfer: false,
+                        onOk: () => {
+                          this.handleRemove(row);
+                        }
+                      });
+                    }
+                  }
+                },
+                "删除"
+              )
+            ]);
+          }
         }
       }
     ];
