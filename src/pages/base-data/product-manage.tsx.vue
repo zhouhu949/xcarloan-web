@@ -107,7 +107,7 @@ export default class ProductManage extends Page {
         title: "产品发布状态",
         key: "productStatus",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, columns, index }) => h('span', {}, this.$dict.getDictName(row.productStatus))
+        render: (h, { row, column, index }) => (<span>{this.$filter.dictConvert(row.productStatus)}</span>)
       },
       {
         align: "center",
@@ -139,9 +139,7 @@ export default class ProductManage extends Page {
         title: "利率",
         key: "interestRate",
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, column, index }) => {
-          return h("span", {}, this.$filter.decimalToPrecent(row.interestRate));
-        }
+        render: (h, { row, column, index }) => (<span>{this.$filter.decimalToPrecent(row.interestRate)}</span>)
       }
     ];
   }
@@ -185,13 +183,7 @@ export default class ProductManage extends Page {
           return v
         })
       },
-      render: h => h(AddModifyProduct, {
-        props: {
-          carId: this.carId,
-          carName: this.carName,
-          productData: {}
-        }
-      })
+      render: h => (<AddModifyProduct carId={this.carId} carName={this.carName}></AddModifyProduct>)
     })
   }
   /**
@@ -210,13 +202,7 @@ export default class ProductManage extends Page {
           return v
         })
       },
-      render: h => h(AddModifyProduct, {
-        props: {
-          carId: this.carId,
-          carName: this.carName,
-          productData: productData
-        }
-      })
+      render: h => (<AddModifyProduct carId={this.carId} carName={this.carName} productData={productData}></AddModifyProduct>)
     })
   }
   /**
@@ -227,26 +213,19 @@ export default class ProductManage extends Page {
       title: '查看产品详情',
       isView: true,
       width: 1000,
-      render: h => h(productDetail, {
-        props: {
-          productData: row
-        }
-      })
+      render: h => (<productDetail productData={row}></productDetail>)
     })
   }
   /**
    * 查看还款方案详情
    */
   checkRepaySchemeDetail(name: String, productId: Number) {
+    let queryParams = { productId: productId }
+    let type = ProdSchemeDetailType.PRODUCT
     this.$dialog.show({
       title: name,
       width: 1000,
-      render: h => h(ProductSchemeDetail, {
-        props: {
-          productId: productId,
-          productType: ProdSchemeDetailType.PRODUCT
-        }
-      })
+      render: h => (<ProductSchemeDetail queryParams={queryParams} productType={type}></ProductSchemeDetail>)
     })
   }
   /**

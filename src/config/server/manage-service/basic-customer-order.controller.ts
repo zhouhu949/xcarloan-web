@@ -30,5 +30,33 @@ export default {
     controller: CONTROLLER,
     action: 'findFinancingRepayDetail',
     type: requestType.Get
+  },
+  /**
+   * 抵押贷款计算器
+   */
+  findMortgageRepayDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findMortgageRepayDetail',
+    type: requestType.Get
+  },
+  /**
+   * 创建抵押贷款申请订单
+   */
+  createMortgageOrder:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createMortgageOrder',
+    type: requestType.Post
+  },
+   /**
+   * 创建融资租赁申请订单
+   */
+  createFinancingOrder:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createFinancingOrder',
+    type: requestType.Post
   }
+
 }

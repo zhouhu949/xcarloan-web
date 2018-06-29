@@ -1,7 +1,10 @@
 <!--查看还款方案信息-->
 <template>
   <section class="component product-scheme-detail">
-    <data-box :columns="columns" :data="schemeDataSet" ref="databox"></data-box>
+    <data-box v-if="schemeDataSet.length > 0" :height="400" :columns="columns" :data="schemeDataSet" ref="databox"></data-box>
+    <div v-else class="no-data">
+      暂无结果...
+    </div>
   </section>
 </template>
 <script lang="ts">
@@ -20,14 +23,42 @@ export default class ProductSchemeDetail extends Vue {
   @Dependencies(BasicProductRepayTemplateService) private basicProductRepayTemplateService: BasicProductRepayTemplateService
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
 
-  @Prop() productId
+  @Prop() queryParams: {
+    productId: Number,
+    schemeId: Number,
+    loanAmt: Number,
+  };
+
   @Prop() productType: ProdSchemeDetailType;
-  @Watch('productId', { immediate: true })
+
+  @Watch('queryParams', { immediate: true })
   onProductIdChange(val) {
     if (!val) return
-    this.refreshData()
+    switch (this.productType) {
+      case ProdSchemeDetailType.PRODUCT:
+        if (!this.queryParams.productId) return
+        this.queryProductCarScheme(this.queryParams.productId)
+        break;
+      case ProdSchemeDetailType.FINANCE:
+        if (!this.queryParams.productId) return
+        this.queryFinancingRepayDetail(this.queryParams.productId)
+        break;
+      case ProdSchemeDetailType.MORTGAGE:
+        if (!this.queryParams.schemeId || !this.queryParams.loanAmt) return
+        this.queryMortgageRepayDetail(this.queryParams.schemeId, this.queryParams.loanAmt)
+        break;
+      default:
+        this.$Message.error('查询方案类型错误')
+        break;
+    }
   }
 
+  /**
+   * 获取产品ID
+   */
+  get productId() {
+    return this.queryParams.productId
+  }
 
   private schemeDataSet: Array<any> = [];
   private columns: Array<any> = [
@@ -62,38 +93,55 @@ export default class ProductSchemeDetail extends Vue {
     this.columns.push(...items)
   }
 
-  refreshData() {
-    // 通过服务获取方案数据
-    switch (this.productType) {
-      case ProdSchemeDetailType.PRODUCT:
-        this.basicProductRepayTemplateService.queryBasicProductCarScheme(this.productId).subscribe(
-          val => {
-            this.createClumnItem(val.header)
-            this.schemeDataSet = val.dataList || []
-          },
-          err => this.$Message.error(err.message)
-        )
-        break;
-      case ProdSchemeDetailType.FINANCE:
-        this.basicCustomerOrderService.findFinancingRepayDetail(this.productId).subscribe(
-          data => {
-            this.createClumnItem(data.header)
-            this.schemeDataSet = data.dataList || []
-          },
-          err => this.$Message.error(err.message)
-        )
-        break;
-      case ProdSchemeDetailType.MORTGAGE:
+  /**
+   * 查询车辆与方案关联的明细计划数据
+   */
+  private queryProductCarScheme(productId) {
+    this.basicProductRepayTemplateService.queryBasicProductCarScheme(productId).subscribe(
+      val => {
+        this.createClumnItem(val.header)
+        this.schemeDataSet = val.dataList || []
+      },
+      err => this.$Message.error(err.message)
+    )
+  }
 
-        break;
+  /**
+   * 查询融资租赁付款明细
+   */
+  private queryFinancingRepayDetail(productId) {
+    this.basicCustomerOrderService.findFinancingRepayDetail(productId).subscribe(
+      data => {
+        this.createClumnItem(data.header)
+        this.schemeDataSet = data.dataList || []
+      },
+      err => this.$Message.error(err.message)
+    )
+  }
 
-      default:
-        break;
-    }
-
+  /**
+   * 查询抵押贷款付款明细
+   */
+  private queryMortgageRepayDetail(schemeId: Number, loanAmt: Number) {
+    this.basicCustomerOrderService.findMortgageRepayDetail(schemeId, loanAmt).subscribe(
+      data => {
+        this.createClumnItem(data.header)
+        this.schemeDataSet = data.dataList || []
+      },
+      err => this.$Message.error(err.message)
+    )
   }
 }
 </script>
 
 <style lang="less">
+.component.product-scheme-detail {
+  .no-data {
+    text-align: center;
+    line-height: 400px;
+    height: 400px;
+    font-size: 40px;
+    color: rgb(176, 178, 182);
+  }
+}
 </style>
