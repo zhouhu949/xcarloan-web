@@ -1,6 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
 export class BasicCustomerOrderService {
   @Inject(NetService)
@@ -64,6 +65,70 @@ export class BasicCustomerOrderService {
       data: {
         orderId: orderId
       }
+    })
+  }
+  /*
+   * 抵押贷款计算器
+   */
+  findMortgageRepayDetail(schemeId: Number, loanAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findMortgageRepayDetail,
+      data: {
+        schemeId: schemeId,
+        amount: loanAmt
+      }
+    })
+  }
+
+  /**
+   * 创建抵押贷款申请订单
+   * @param customerId 客户ID
+   * @param carIds 抵押车辆ID集合
+   * @param schemeId 方案ID
+   * @param loanAmt 贷款金额
+   */
+  createMortgageOrder(customerId: Number, carIds: Array<Number>, schemeId: Number, loanAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.createMortgageOrder,
+      data: {
+        amount: loanAmt,
+        carIds: carIds,
+        customerId: customerId,
+        schemeId: schemeId
+      }
+    })
+  }
+
+  /**
+   * 创建融资租赁申请订单
+   * @param customerId 客户ID
+   * @param carId 车辆ID
+   * @param productId 产品ID
+   */
+  createFinancingOrder(customerId: Number, carId: Number, productId: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.createFinancingOrder,
+      data: {
+        customerId: customerId,
+        modelId: carId,
+        productId: productId
+      }
+    })
+  }
+
+  /**
+   * 查询待补填资料订单
+   */
+  queryCustomerOrderFile(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.queryCustomerOrderFile,
+      data: {
+        customerName: data.name,
+        orderNo: data.orderNo,
+        idCard: data.idCard,
+        customerPhone: data.phone
+      },
+      page
     })
   }
 }

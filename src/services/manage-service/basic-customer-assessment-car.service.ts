@@ -119,4 +119,13 @@ export class BasicCustomerAssessmentCarService {
       loading: true
     })
   }
+  /**
+   * 查询客户未抵押车辆 
+   */
+  getCustomerCarList(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.getCustomerCarList,
+      append: customerId
+    })
+  }
 }

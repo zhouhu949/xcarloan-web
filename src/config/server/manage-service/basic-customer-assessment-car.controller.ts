@@ -82,5 +82,14 @@ export default {
     controller: CONTROLLER,
     action: 'deleteBasicCustomerCar',
     type: requestType.Delete
+  },
+  /**
+   * 查询客户未抵押车辆 
+   */
+  getCustomerCarList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerCarList',
+    type: requestType.Get
   }
 }

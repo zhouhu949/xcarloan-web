@@ -18,6 +18,7 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from '~/core/decorator';
 import { PageService } from "~/utils/page.service";
 import { RepaySchemeService } from "~/services/manage-service/basic-repay-scheme.service";
+import { ProdSchemeDetailType } from "~/config/enum.config";
 
 @Component({
   components: {}
@@ -27,13 +28,13 @@ export default class ChooseScheme extends Vue {
   @Dependencies(RepaySchemeService) private pepaySchemeService: RepaySchemeService
   @Prop() schemeId: Number;
   /**
-   * 10049-融资租赁
-   * 10050-抵押贷款
+   * 10049-融资租赁-FINANCE
+   * 10050-抵押贷款-MORTGAGE
    */
   @Prop({
-    type: Number,
-    default: 10050
-  }) schemeType: Number
+    required: true,
+    type: Number
+  }) schemeType: ProdSchemeDetailType
 
   /**
    * 当前选择的方案数据

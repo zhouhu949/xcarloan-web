@@ -30,6 +30,7 @@ import { BasicProductService } from "~/services/manage-service/basic-product.ser
 import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service';
 import ChooseScheme from '~/components/base-data/choose-scheme.vue'
 import uploadProductEnclosure from '~/components/base-data/upload-product-enclosure.vue';
+import { ProdSchemeDetailType } from "~/config/enum.config";
 
 @Component({
   components: {
@@ -132,7 +133,8 @@ export default class AddModifyProduct extends Vue {
       },
       render: h => h(ChooseScheme, {
         props: {
-          schemeId: this.model.schemeId
+          schemeId: this.model.schemeId,
+          schemeType : ProdSchemeDetailType.FINANCE
         }
       })
     })

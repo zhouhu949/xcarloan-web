@@ -42,4 +42,15 @@ export class WorkFlowApprovalService {
       page: page
     })
   }
+
+  /**
+   * 订单提交审核
+   */
+  @Debounce()
+  submitApproval(orderId: Number) {
+    return this.netService.send({
+      server: manageService.workFlowApprovalController.submitApproval,
+      append: orderId
+    })
+  }
 }
