@@ -50,9 +50,7 @@ export class WorkFlowApprovalService {
   submitApproval(orderId: Number) {
     return this.netService.send({
       server: manageService.workFlowApprovalController.submitApproval,
-      data: {
-        orderId: orderId
-      }
+      append: orderId
     })
   }
 }

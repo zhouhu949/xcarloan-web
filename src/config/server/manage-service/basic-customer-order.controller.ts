@@ -43,20 +43,29 @@ export default {
   /**
    * 创建抵押贷款申请订单
    */
-  createMortgageOrder:{
+  createMortgageOrder: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'createMortgageOrder',
     type: requestType.Post
   },
-   /**
-   * 创建融资租赁申请订单
-   */
-  createFinancingOrder:{
+  /**
+  * 创建融资租赁申请订单
+  */
+  createFinancingOrder: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'createFinancingOrder',
     type: requestType.Post
+  },
+  /**
+   * 查询待补填资料订单
+   */
+  queryCustomerOrderFile: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryCustomerOrderFile',
+    type: requestType.Get
   }
 
 }

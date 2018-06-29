@@ -1,5 +1,6 @@
 <template>
-  <section class="page order-review">
+  <section class="page update-order-data">
+    <page-header title="补填资料" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="name" label="姓名">
@@ -20,14 +21,16 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
+import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { namespace } from "vuex-class";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { Button } from "iview";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -35,9 +38,10 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 @Component({
   components: {}
 })
-export default class OrderReview extends Page {
+export default class UpdateOrderData extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
+  @Dependencies(WorkFlowApprovalService) private workFlowApprovalService: WorkFlowApprovalService;
   @CustomerOrderModule.Action showOrderInfo;
 
   private model: any = {
@@ -56,45 +60,26 @@ export default class OrderReview extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.showOrderInfo(row.orderId)
-                    this.$dialog.show({
-                      width: 1050,
-                      render: h => h(OrderCustomerInfo)
-                    })
-                  }
-                }
-              },
-              '查看详情'
-            )
-          ])
-        }
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row, column, index }) => (
+          <div>
+            <i-button type="text" class="row-command-button" onClick={() => this.onAppedDataClick(row.orderId)}>补填资料</i-button>
+          </div>
+        )
       },
       {
         align: 'center',
         title: ' 订单号',
         key: 'orderNo',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onOrderNumberClick(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
         title: ' 订单状态',
         key: 'orderStatus',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderStatus))
+        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderStatus)}</span>)
       },
       {
         align: 'center',
@@ -106,7 +91,8 @@ export default class OrderReview extends Page {
         align: 'center',
         title: ' 订单金额',
         key: 'orderPrice',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.orderPrice)}</div>)
       },
       {
         align: 'center',
@@ -133,8 +119,23 @@ export default class OrderReview extends Page {
     this.refreshData()
   }
 
+  private onOrderNumberClick(orderId: Number) {
+    this.showOrderInfo(orderId)
+    this.$dialog.show({
+      width: 1050,
+      render: h => h(OrderCustomerInfo)
+    })
+  }
+
+  /**
+   * 补填资料
+   */
+  private onAppedDataClick(orderId: Number) {
+   
+  }
+
   private refreshData() {
-    this.basicCustomerOrderService.query(this.model, this.pageService).subscribe(
+    this.basicCustomerOrderService.queryCustomerOrderFile(this.model, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )

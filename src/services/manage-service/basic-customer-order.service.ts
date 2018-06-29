@@ -1,6 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
 export class BasicCustomerOrderService {
   @Inject(NetService)
@@ -90,6 +91,22 @@ export class BasicCustomerOrderService {
         modelId: carId,
         productId: productId
       }
+    })
+  }
+
+  /**
+   * 查询待补填资料订单
+   */
+  queryCustomerOrderFile(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.queryCustomerOrderFile,
+      data: {
+        customerName: data.name,
+        orderNo: data.orderNo,
+        idCard: data.idCard,
+        customerPhone: data.phone
+      },
+      page
     })
   }
 }
