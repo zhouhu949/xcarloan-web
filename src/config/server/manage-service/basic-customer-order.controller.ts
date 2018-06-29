@@ -21,5 +21,14 @@ export default {
     controller: CONTROLLER,
     action: 'query',
     type: requestType.Get
+  },
+  /**
+   * 融资租赁贷款计算器
+   */
+  findFinancingRepayDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findFinancingRepayDetail',
+    type: requestType.Get
   }
 }

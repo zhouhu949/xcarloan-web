@@ -33,4 +33,15 @@ export class BasicCustomerOrderService {
       page
     })
   }
+  /**
+   * 融资租赁贷款计算器
+   */
+  findFinancingRepayDetail(productId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findFinancingRepayDetail,
+      data: {
+        productId
+      }
+    })
+  }
 }

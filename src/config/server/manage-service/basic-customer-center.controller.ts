@@ -93,5 +93,14 @@ export default {
     controller: CONTROLLER,
     action: 'updateCustomerStatusWhite',
     type: requestType.Post
+  },
+  /**
+   * 非黑名单客户列表
+   */
+  findNotBlackCustomerList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findNotBlackCustomerList',
+    type: requestType.Get
   }
 }
