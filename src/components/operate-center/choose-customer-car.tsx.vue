@@ -12,7 +12,6 @@ import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerAssessmentCarService } from "~/services/manage-service/basic-customer-assessment-car.service";
 import { PageService } from "~/utils/page.service";
-import CarParams from "~/components/base-data/car-params.vue";
 import { Button } from "iview";
 
 @Component({

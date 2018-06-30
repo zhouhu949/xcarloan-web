@@ -11,8 +11,8 @@
         <i-form-item prop="idCard" label="身份证号">
           <i-input v-model="model.idCard" placeholder="请输入身份证号"></i-input>
         </i-form-item>
-        <i-form-item prop="phone" label="联系方式">
-          <i-input v-model="model.phone" placeholder="请输入联系方式"></i-input>
+        <i-form-item prop="phone" label="联系电话">
+          <i-input v-model="model.phone" placeholder="请输入联系电话"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -117,6 +117,9 @@ export default class OrderReview extends Page {
     ]
   }
 
+  activated() {
+    this.refreshData()
+  }
   mounted() {
     this.refreshData()
   }

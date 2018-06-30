@@ -4,7 +4,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout } from '~/core/decorator'
 import Component from "vue-class-component";

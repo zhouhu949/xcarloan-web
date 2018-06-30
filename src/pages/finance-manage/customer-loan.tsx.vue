@@ -1,6 +1,6 @@
 <template>
-  <section class="page order-query">
-    <page-header title="订单查询" hidden-print hidden-export></page-header>
+  <section class="page customer-loan">
+    <page-header title="客户放款" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="name" label="姓名">
@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" @onPageChange="refreshData" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" @on-page-change="refreshData" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -26,11 +26,11 @@ import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
-import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { namespace } from "vuex-class";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { Button } from "iview";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -38,10 +38,10 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 @Component({
   components: {}
 })
-export default class OrderQuery extends Page {
+export default class CustomerLoan extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
-  @Dependencies(WorkFlowApprovalService) private workFlowApprovalService: WorkFlowApprovalService;
+  @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
+  @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
   @CustomerOrderModule.Action showOrderInfo;
 
   private model: any = {
@@ -61,11 +61,7 @@ export default class OrderQuery extends Page {
         fixed: 'left',
         align: 'center',
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, column, index }) => {
-          if (row.orderStatus === 10107) {
-            return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>提交审核</i-button>)
-          }
-        }
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>放款</i-button>)
       },
       {
         align: 'center',
@@ -122,7 +118,7 @@ export default class OrderQuery extends Page {
     ]
   }
 
-  activated(){
+  activated() {
     this.refreshData()
   }
 
@@ -139,13 +135,13 @@ export default class OrderQuery extends Page {
   }
 
   /**
-   * 提交订单到审核
+   * 放款操作
    */
   private onSubmitClick(orderId: Number) {
     this.$Modal.confirm({
-      content: "提交后将不可再修改订单,是否确认提交？",
+      content: "是否确认放款？",
       onOk: () => {
-        this.workFlowApprovalService.submitApproval(orderId).subscribe(
+        this.financialManagementService.customerOrderLoan(orderId).subscribe(
           data => {
             this.$Message.success('操作成功')
             this.refreshData()
@@ -157,7 +153,7 @@ export default class OrderQuery extends Page {
   }
 
   private refreshData() {
-    this.basicCustomerOrderService.query(this.model, this.pageService).subscribe(
+    this.financialQueryService.findRepayOrderUnpaidList(this.model, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )

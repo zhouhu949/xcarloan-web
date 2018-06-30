@@ -27,6 +27,41 @@ export class FinancialQueryService {
 
   /**
    * 
+   * @param orderId 提前收回或提前结清查询
+   */
+  @Debounce()
+  findBalance(orderId: Number) {
+    return this.netService.send({
+      server: manageService.financialQueryController.findBalance,
+      append: orderId
+    })
+  }
+
+  /**
+   * 查询供应商列表
+   */
+  findBasicOrderCarList(queryData, page: PageService) {
+    return this.netService.send({
+      server: manageService.financialQueryController.findBasicOrderCarList,
+      data: {
+        id: queryData.supplierId
+      },
+      page
+    })
+  }
+
+  /**
+   * 查询未开票的记录列表
+   */
+  findFinancialInvoiceList() {
+    return this.netService.send({
+      server: manageService.financialQueryController.findFinancialInvoiceList,
+    })
+  }
+
+
+  /**
+   * 
    * @param orderId 订单Id
    */
   findOrderRepayScheme(orderId: number): any {
@@ -35,4 +70,23 @@ export class FinancialQueryService {
       append: orderId
     })
   }
+
+  /**
+   * 查询客户还款中的订单
+   * @param queryData 
+   * @param page 
+   */
+  findRepayOrderList(queryData, page: PageService) {
+    return this.netService.send({
+      server: manageService.financialQueryController.findRepayOrderList,
+      data: {
+        customerName: queryData.name,
+        orderNo: queryData.orderNo,
+        idCard: queryData.idCard,
+        customerPhone: queryData.phone
+      },
+      page
+    })
+  }
+
 }

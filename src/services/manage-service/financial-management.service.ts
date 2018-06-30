@@ -10,10 +10,12 @@ export class FinancialManagementService {
   /**
    * 客户放款
    */
+  @Debounce()
   customerOrderLoan(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.customerOrderLoan,
-      append: orderId
+      append: orderId,
+      loadding: true
     })
   }
   /**
@@ -23,7 +25,10 @@ export class FinancialManagementService {
   earlyRecycle(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.earlyRecycle,
-      append: orderId
+      data: {
+        orderId
+      },
+      loadding: true
     })
   }
   /**
@@ -33,17 +38,25 @@ export class FinancialManagementService {
   earlyRepayMoney(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.earlyRepayMoney,
-      append: orderId
+      data: {
+        orderId
+      },
+      loadding: true
     })
   }
   /**
    * 确定开票
    */
   @Debounce()
-  financialInvoice(orderId: Number) {
+  financialInvoice(money: Number, orderId: Number, periods: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.financialInvoice,
-      append: orderId
+      data: {
+        money,
+        orderId,
+        periods
+      },
+      loadding: true
     })
   }
   /**
@@ -53,66 +66,10 @@ export class FinancialManagementService {
   financialRefund(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.financialRefund,
-      append: orderId
-    })
-  }
-  /**
-   * 还款或提前结清查询
-   */
-  findBalance(orderId: Number) {
-    return this.netService.send({
-      server: manageService.financialManagementController.findBalance,
-      append: orderId
-    })
-  }
-  /**
-   * 查询未放款的供应商订单车型
-   */
-  findBasicOrderCarList() {
-    return this.netService.send({
-      server: manageService.financialManagementController.findBasicOrderCarList
-    })
-  }
-  /**
-   * 查询未放款的客户订单
-   */
-  findCustomerOrder() {
-    return this.netService.send({
-      server: manageService.financialManagementController.findCustomerOrder
-    })
-  }
-  /**
-   * 查询客户待放款订单Id
-   */
-  findCustomerOrderLoan() {
-    return this.netService.send({
-      server: manageService.financialManagementController.findCustomerOrderLoan
-    })
-  }
-  /**
-   * 查询未开票的记录列表
-   */
-  findFinancialInvoiceList() {
-    return this.netService.send({
-      server: manageService.financialManagementController.findFinancialInvoiceList
-    })
-  }
-  /**
-   * 根据订单Id查询还款详情
-   */
-  findOrderRepayScheme(orderId: Number) {
-    return this.netService.send({
-      server: manageService.financialManagementController.findOrderRepayScheme,
-      append: orderId
-    })
-  }
-  /**
-   * 查询退款详情
-   */
-  queryFinancialRefund(orderId: Number) {
-    return this.netService.send({
-      server: manageService.financialManagementController.queryFinancialRefund,
-      append: orderId
+      data: {
+        orderId
+      },
+      loadding: true
     })
   }
   /**
@@ -137,17 +94,8 @@ export class FinancialManagementService {
   supplierOrderLoan(carId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.supplierOrderLoan,
-      append: carId
-    })
-  }
-  /**
-   * 根据订单对客户放款
-   */
-  @Debounce()
-  updateCustomerLoanStatus(orderId: Number) {
-    return this.netService.send({
-      server: manageService.financialManagementController.updateCustomerLoanStatus,
-      append: orderId
+      append: carId,
+      loadding: true
     })
   }
 }
