@@ -1,6 +1,6 @@
 <template>
   <section class="page update-order-data">
-    <page-header title="补填资料" hidden-print hidden-export></page-header>
+    <page-header title="订单维护" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="name" label="姓名">
@@ -12,8 +12,8 @@
         <i-form-item prop="idCard" label="身份证号">
           <i-input v-model="model.idCard" placeholder="请输入身份证号"></i-input>
         </i-form-item>
-        <i-form-item prop="phone" label="联系方式">
-          <i-input v-model="model.phone" placeholder="请输入联系方式"></i-input>
+        <i-form-item prop="phone" label="联系电话">
+          <i-input v-model="model.phone" placeholder="请输入联系电话"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -30,6 +30,7 @@ import { BasicCustomerOrderService } from "~/services/manage-service/basic-custo
 import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { namespace } from "vuex-class";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import ModifyOrder from "~/components/operate-center/modify-order.vue";
 import { Button } from "iview";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -43,6 +44,7 @@ export default class UpdateOrderData extends Page {
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
   @Dependencies(WorkFlowApprovalService) private workFlowApprovalService: WorkFlowApprovalService;
   @CustomerOrderModule.Action showOrderInfo;
+  private readonly OperateType = 10050
 
   private model: any = {
     name: "",
@@ -61,11 +63,15 @@ export default class UpdateOrderData extends Page {
         fixed: 'left',
         align: 'center',
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, column, index }) => (
-          <div>
-            <i-button type="text" class="row-command-button" onClick={() => this.onAppedDataClick(row.orderId)}>补填资料</i-button>
-          </div>
-        )
+        render: (h, { row, column, index }) => {
+          if (row.orderType === this.OperateType) {
+            return (
+              <div>
+                <i-button type="text" class="row-command-button" onClick={() => this.onModifyOrderPrice(row.orderNo,row.orderId, row.orderPrice)}>修改金额</i-button>
+              </div>
+            )
+          }
+        }
       },
       {
         align: 'center',
@@ -80,6 +86,13 @@ export default class UpdateOrderData extends Page {
         key: 'orderStatus',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderStatus)}</span>)
+      },
+      {
+        align: 'center',
+        title: ' 订单类型',
+        key: 'orderType',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderType)}</span>)
       },
       {
         align: 'center',
@@ -115,6 +128,10 @@ export default class UpdateOrderData extends Page {
     ]
   }
 
+  activated() {
+    this.refreshData()
+  }
+
   mounted() {
     this.refreshData()
   }
@@ -128,10 +145,21 @@ export default class UpdateOrderData extends Page {
   }
 
   /**
-   * 补填资料
+   * 修改订单金额
    */
-  private onAppedDataClick(orderId: Number) {
-   
+  private onModifyOrderPrice(orderNo:String,orderId: Number, amt: Number) {
+    this.$dialog.show({
+      title: `修改订单 ${orderNo} 金额`,
+      footer: true,
+      height: 200,
+      onOk: modifyOrder => {
+        return modifyOrder.submit().then(v => {
+          if (v) this.refreshData()
+          return v
+        })
+      },
+      render: h => (<ModifyOrder id={orderId} price={amt}></ModifyOrder>)
+    })
   }
 
   private refreshData() {

@@ -22,7 +22,7 @@ import Component from "vue-class-component";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { PageService } from "~/utils/page.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
@@ -31,8 +31,7 @@ const CustomerOrderModule = namespace("customerOrderSpace");
   components: {}
 })
 export default class RepaymentQuery extends Page {
-  @Dependencies(FinancialManagementService)
-  financialManagementService: FinancialManagementService;
+  @Dependencies(FinancialQueryService) private  financialQueryService: FinancialQueryService;
   @Dependencies(PageService) private pageService: PageService;
 
   @CustomerOrderModule.Action showOrderInfo;
@@ -196,8 +195,7 @@ export default class RepaymentQuery extends Page {
    * 刷新列表
    */
   refreshRepayOrder() {
-    this.financialManagementService
-      .findRepayOrderList(this.queryParamsModel, this.pageService)
+    this.financialQueryService.findRepayOrderList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.repayOrderDataSet = data),
         err => this.$Message.error(err.msg)

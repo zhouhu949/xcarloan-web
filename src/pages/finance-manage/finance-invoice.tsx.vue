@@ -1,8 +1,13 @@
 <template>
-  <section class="page order-query">
-    <page-header title="订单查询" hidden-print hidden-export></page-header>
+  <section class="page finance-invoice">
+    <page-header title="财务开票" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
+        <i-form-item prop="state" label="发票状态">
+          <i-select v-model="model.state">
+            <i-option v-for="{label,value} of $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
         <i-form-item prop="name" label="姓名">
           <i-input v-model="model.name" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
@@ -17,7 +22,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" @onPageChange="refreshData" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" @on-page-change="refreshData" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -26,11 +31,11 @@ import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
-import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { namespace } from "vuex-class";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { Button } from "iview";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -38,17 +43,18 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 @Component({
   components: {}
 })
-export default class OrderQuery extends Page {
+export default class FinanceInvoice extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
-  @Dependencies(WorkFlowApprovalService) private workFlowApprovalService: WorkFlowApprovalService;
+  @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
+  @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
   @CustomerOrderModule.Action showOrderInfo;
 
   private model: any = {
     name: "",
     orderNo: "",
     idCard: "",
-    phone: ""
+    phone: "",
+    state: 10003 // 默认查询未开票
   };
 
   private columns: Array<any> = [];
@@ -60,10 +66,10 @@ export default class OrderQuery extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, column, index }) => {
-          if (row.orderStatus === 10107) {
-            return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>提交审核</i-button>)
+        width: this.$common.getOperateWidth(1),
+        render: (h, { row }) => {
+          if (row.state === 10003) {
+            return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>放款</i-button>)
           }
         }
       },
@@ -122,7 +128,7 @@ export default class OrderQuery extends Page {
     ]
   }
 
-  activated(){
+  activated() {
     this.refreshData()
   }
 
@@ -139,13 +145,13 @@ export default class OrderQuery extends Page {
   }
 
   /**
-   * 提交订单到审核
+   * 放款操作
    */
   private onSubmitClick(orderId: Number) {
     this.$Modal.confirm({
-      content: "提交后将不可再修改订单,是否确认提交？",
+      content: "是否确认开票？",
       onOk: () => {
-        this.workFlowApprovalService.submitApproval(orderId).subscribe(
+        this.financialManagementService.customerOrderLoan(orderId).subscribe(
           data => {
             this.$Message.success('操作成功')
             this.refreshData()
@@ -157,7 +163,7 @@ export default class OrderQuery extends Page {
   }
 
   private refreshData() {
-    this.basicCustomerOrderService.query(this.model, this.pageService).subscribe(
+    this.financialQueryService.findRepayOrderUnpaidList(this.model, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
