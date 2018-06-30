@@ -8,18 +8,6 @@ export class FinancialManagementService {
   private netService: NetService;
 
   /**
-   * 查询客户指定状态的订单
-   * @param queryParamsModel 查询参数实体
-   * @param page 分页参数实体
-   */
-  findRepayOrderList(queryParamsModel, page: PageService) {
-    return this.netService.send({
-      server: manageService.financialManagementController.findRepayOrderList,
-      data: queryParamsModel,
-      page
-    })
-  }
-  /**
    * 客户放款
    */
   customerOrderLoan(orderId: Number) {
@@ -82,7 +70,7 @@ export class FinancialManagementService {
    */
   findBasicOrderCarList() {
     return this.netService.send({
-      server: manageService.financialManagementController.findRepayOrderList
+      server: manageService.financialManagementController.findBasicOrderCarList
     })
   }
   /**
@@ -90,7 +78,7 @@ export class FinancialManagementService {
    */
   findCustomerOrder() {
     return this.netService.send({
-      server: manageService.financialManagementController.findRepayOrderList
+      server: manageService.financialManagementController.findCustomerOrder
     })
   }
   /**
@@ -98,7 +86,7 @@ export class FinancialManagementService {
    */
   findCustomerOrderLoan() {
     return this.netService.send({
-      server: manageService.financialManagementController.findRepayOrderList
+      server: manageService.financialManagementController.findCustomerOrderLoan
     })
   }
   /**

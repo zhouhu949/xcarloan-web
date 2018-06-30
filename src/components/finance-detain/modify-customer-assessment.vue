@@ -73,7 +73,7 @@
 
         <i-collapse>
           <i-panel v-for="item in model.carAttributeModelList" :name="item.configType" :key="item.configType">
-            {{ $filter.dictConvert(item.configType) }}
+            {{ item.configType| dictConvert }}
             <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
               <data-grid-item v-for="item in item.data" :label="item.attrValue" :span="6" :key="item.attrName">
                 <i-radio-group v-model="item.attrCode">
@@ -376,42 +376,25 @@ export default class ModifyCustomerAssessment extends Vue {
 
     return new Promise((resolve, reject) => {
       form.validate(v => {
-        console.log("提交表单11111111111");
-
-        // if (!v) return resolve(false);
-
-        console.log("提交表单222222222");
-
-        console.log(this.model);
+        if (!v) return resolve(false);
 
         // 临时数据
-        let tempCarAttributeModelList: Array<any> = [];
-        // 数据解析
-        //var data = Object.assign({}, this.model);
+        let model = Object.assign([], this.model);
+        // 配置项处理
+        model.carAttributeModelList = [];
 
-        console.log("提交表单33333333333");
-
-        // let { carAttributeModelList: [{ data }] } = this.model;
-
-        this.model.carAttributeModelList.forEach(element => {
-          console.log("提交表单33333333000000000000");
+        // 数据处理
+        Object.assign([], this.model.carAttributeModelList).forEach(element => {
           element.data.forEach(item => {
-            console.log("提交表单3333333311111111111111");
-            tempCarAttributeModelList.push(Object.assign({}, item));
+            model.carAttributeModelList.push(Object.assign({}, item));
           });
         });
 
-        console.log("提交表单44444444444");
+        console.log(model);
 
-        // data.carAttributeModelList = tempCarAttributeModelList;
-
-        console.log("提交表单555555555555");
-        //console.log(data);
-        console.log("提交表单66666666666");
-
-        // this.basicCustomerAssessmentCarService
-        // .addBasicCustomerAssessment(data)
-        // .subscribe(data => resolve(true), err => reject(err));
+        this.basicCustomerAssessmentCarService
+          .addBasicCustomerAssessment(model)
+          .subscribe(data => resolve(true), err => reject(err));
       });
     });
   }

@@ -41,7 +41,6 @@ export class BasicCustomerAssessmentCarService {
   @Debounce()
   addBasicCustomerAssessment(data) {
     let model = Object.assign({}, data);
-
     return this.netService.send({
       server: manageService.basicCustomerAssessmentCarController.addBasicCustomerAssessment,
       data: {
@@ -79,10 +78,13 @@ export class BasicCustomerAssessmentCarService {
         transferNo: model.transferNo,
         // 变速箱形式
         transmission: model.transmission,
+        // 配置参数
+        carAttributeModelList: model.carAttributeModelList
       },
       loading: true
     })
   }
+
   /**
    * 新增车产信息
    */

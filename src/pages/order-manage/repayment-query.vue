@@ -4,10 +4,17 @@
     </page-header>
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshRepayOrder">
       <template slot="input">
-        <i-form-item prop="status" label="状态：">
-          <i-select v-model="queryParamsModel.status" clearable>
-            <i-option v-for="{value,label} in $dict.getDictData(10032)" :key="value" :label="label" :value="value"></i-option>
-          </i-select>
+        <i-form-item prop="customerName" label="客户姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="身份证号：">
+          <i-input placeholder="请输入身份证号" v-model="queryParamsModel.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="customerPhone" label="电话号码：">
+          <i-input placeholder="请输入电话号码" v-model="queryParamsModel.customerPhone"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNo" label="订单号：">
+          <i-input placeholder="请输入订单号" v-model="queryParamsModel.orderNo"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -20,9 +27,10 @@ import Page from "~/core/page";
 import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import OrderRepaySchemeDetails from "~/components/financial-query/order-repay-scheme-details.vue";
 import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { PageService } from "~/utils/page.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
@@ -31,8 +39,8 @@ const CustomerOrderModule = namespace("customerOrderSpace");
   components: {}
 })
 export default class RepaymentQuery extends Page {
-  @Dependencies(FinancialManagementService)
-  financialManagementService: FinancialManagementService;
+  @Dependencies(FinancialQueryService)
+  financialQueryService: FinancialQueryService;
   @Dependencies(PageService) private pageService: PageService;
 
   @CustomerOrderModule.Action showOrderInfo;
@@ -42,11 +50,42 @@ export default class RepaymentQuery extends Page {
   private repayOrderDataSet: Array<any> = [];
 
   private queryParamsModel = {
-    status: ""
+    customerName: "",
+    orderNo: "",
+    idCard: "",
+    customerPhone: ""
   };
 
   created() {
     this.repayOrderColumns = [
+      {
+        title: "操作",
+        minWidth: this.$common.getColumnWidth(5),
+        width: 160,
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("div", [
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.onOrderRepaySchemeDetails(row.orderId);
+                  }
+                }
+              },
+              "详情"
+            )
+          ]);
+        }
+      },
+
       {
         align: "center",
         editable: true,
@@ -192,12 +231,25 @@ export default class RepaymentQuery extends Page {
     this.refreshRepayOrder();
   }
 
+  onOrderRepaySchemeDetails(orderId: number) {
+    this.$dialog.show({
+      title: "查看详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(OrderRepaySchemeDetails, {
+          props: {
+            orderId: orderId
+          }
+        })
+    });
+  }
   /**
    * 刷新列表
    */
   refreshRepayOrder() {
-    this.financialManagementService
-      .findRepayOrderList(this.queryParamsModel, this.pageService)
+    this.financialQueryService
+      .findRepayOrderUnpaidList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.repayOrderDataSet = data),
         err => this.$Message.error(err.msg)

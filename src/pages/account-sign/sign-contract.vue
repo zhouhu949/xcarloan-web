@@ -148,7 +148,7 @@ export default class SignContract extends Page {
         editable: true,
         title: "身份证",
         key: "idCard",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: "center",

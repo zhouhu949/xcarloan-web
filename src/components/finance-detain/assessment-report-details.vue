@@ -24,17 +24,30 @@
         <data-grid-item label="行驶里程" :span="6">{{assessmentReportInfo.mileAge}}</data-grid-item>
         <data-grid-item label="行驶证号" :span="6">{{assessmentReportInfo.drivingNo}}</data-grid-item>
         <data-grid-item label="过户次数" :span="6">{{assessmentReportInfo.transferNo}}</data-grid-item>
-        <data-grid-item label="车辆用途" :span="6">{{assessmentReportInfo.carPurpose}}</data-grid-item>
+        <data-grid-item label="车辆用途" :span="6">{{assessmentReportInfo.carPurpose | dictConvert}}</data-grid-item>
         <data-grid-item label="变速箱形式" :span="6">{{assessmentReportInfo.transmission}}</data-grid-item>
         <data-grid-item label="驱动形式" :span="6">{{assessmentReportInfo.driver | dictConvert}}</data-grid-item>
         <data-grid-item label="排量" :span="6">{{assessmentReportInfo.displacement}}</data-grid-item>
       </data-grid>
+
+      <i-collapse v-if="assessmentReportInfo.carAttributeModelList" style="margin-top:20px;">
+        <i-panel v-for="item in assessmentReportInfo.carAttributeModelList" :name="item.configType" :key="item.configType">
+          {{ item.configType| dictConvert }}
+          <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
+            <data-grid-item v-for="item in item.data" :label="item.attrValue" :span="6" :key="item.attrName">
+              <i-radio-group v-model="item.attrCode">
+                <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="value" :true-value="value">{{label}}</i-radio>
+              </i-radio-group>
+            </data-grid-item>
+          </data-grid>
+        </i-panel>
+      </i-collapse>
     </i-card>
     <i-card title="评估信息">
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="车况" :span="6">{{assessmentReportInfo.carSituation}}</data-grid-item>
-        <data-grid-item label="估价" :span="6">{{assessmentReportInfo.evaluation}}</data-grid-item>
-        <data-grid-item label="备注" :span="12">{{assessmentReportInfo.remark}}</data-grid-item>
+        <data-grid-item label="车况" :span="6">{{ assessmentReportInfo.carSituation | dictConvert}}</data-grid-item>
+        <data-grid-item label="估价" :span="6">{{ assessmentReportInfo.evaluation | toThousands }}</data-grid-item>
+        <data-grid-item label="备注" :span="12">{{ assessmentReportInfo.remark}}</data-grid-item>
       </data-grid>
     </i-card>
   </section>

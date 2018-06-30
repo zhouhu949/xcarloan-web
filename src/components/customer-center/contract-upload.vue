@@ -86,7 +86,8 @@ export default class ContractUpload extends Vue {
             "Select",
             {
               props: {
-                value: this.uploadedDataSet[params.index].fileType
+                value: this.uploadedDataSet[params.index].fileType,
+                disabled: this.isView
               },
               on: {
                 "on-change": value => {
@@ -275,7 +276,7 @@ export default class ContractUpload extends Vue {
             type: "",
             url: v.fileUrl,
             localUrl: "",
-            name: data.fileName,
+            name: v.fileName,
             size: 0,
             createTime: "",
             creator: null,

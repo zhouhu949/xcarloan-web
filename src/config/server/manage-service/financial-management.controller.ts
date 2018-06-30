@@ -5,15 +5,6 @@ const CONTROLLER = 'financialManagementController'
 
 export default {
   /**
-   * 查询客户指定状态的订单
-   */
-  findRepayOrderList: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findRepayOrderList',
-    type: requestType.Get
-  },
-  /**
    * 客户放款
    */
   customerOrderLoan: {
