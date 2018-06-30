@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="inStorageColumns" :data="inStorageDataSet" @onPageChange="refreshInStorage" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="inStorageColumns" :data="inStorageDataSet" @on-page-change="refreshInStorage" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

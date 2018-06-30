@@ -163,4 +163,21 @@ export class BasicCustomerService {
       loading: true
     })
   }
+  /**
+   * 新增意向记录
+   */
+  @Debounce()
+  addBasicIntentionalCustomer(data, customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicIntentionalCustomer,
+      data: {
+        customerId: customerId,
+        intentionType: data.intentionType,
+        intentionStatus: data.intentionStatus,
+        intentionLevel: data.intentionLevel,
+        remark: data.remark
+      },
+      loading: true
+    })
+  }
 }

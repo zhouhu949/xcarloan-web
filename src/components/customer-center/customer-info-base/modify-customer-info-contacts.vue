@@ -50,8 +50,8 @@ export default class ModifyCustomerInfoContacts extends Vue {
     this.model = {
       contactName: '', // 姓名
       contactPhone: '', // 电话
-      contactSex: 0, // 性别
-      contactRelation: 0, // 身份关系
+      contactSex: '', // 性别
+      contactRelation: '', // 身份关系
       contactEmail: '', // 电子邮箱
       remark: '' // 备注
     }

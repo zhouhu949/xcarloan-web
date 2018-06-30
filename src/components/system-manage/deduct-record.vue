@@ -25,7 +25,7 @@
       <span class="col-two-name">客户姓名：陈丽</span>
       <span class="col-tow-account">出账客户号：2017101001</span>
     </div>
-    <data-box :columns="columns1" :data="data1" :noDefaultRow="true" @onPageChange="getDeductRecordList" :page="pageService"></data-box>
+    <data-box :columns="columns1" :data="data1" :noDefaultRow="true" @on-page-change="getDeductRecordList" :page="pageService"></data-box>
   </section>
 </template>
 

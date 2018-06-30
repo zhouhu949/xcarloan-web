@@ -1,11 +1,17 @@
 <!--意向记录-->
 <template>
   <section class="component customer-info-intention-record">
+    <div class="add-intention" v-if="!edit">
+      <a @click="addIntentionRecord">
+        <svg-icon iconClass="tianxie"></svg-icon>
+        新增意向记录
+      </a>
+    </div>
     <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Vue from 'vue';
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
@@ -14,6 +20,8 @@ import { BasicCustomerService } from "~/services/manage-service/basic-customer.s
 import { namespace } from "vuex-class";
 import CustomerInfoFollowRecord from "~/components/customer-center/customer-info-base/customer-info-follow-record.vue"
 import ModifyCustomerInfoFollow from "~/components/customer-center/customer-info-base/modify-customer-info-follow.vue"
+import ModifyCustomerInfoIntention from "~/components/customer-center/customer-info-base/modify-customer-info-intention.vue"
+import { Button } from "iview";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -22,8 +30,9 @@ export default class CustomerInfoIntentionRecord extends Vue {
   @Dependencies(BasicCustomerService) private basicCustomerService: BasicCustomerService;
   @Prop() id: Number;
   @CustomerOrderModule.Action showOrderInfo;
-  // 是否可新增跟进记录
-  @Prop() modifyRecord;
+  
+  // 是否可编辑
+  @Prop() edit;
 
   private dataSet: Array<any> = [];
   private columns: Array<any> = [];
@@ -33,26 +42,24 @@ export default class CustomerInfoIntentionRecord extends Vue {
     this.columns = [
       {
         title: "操作",
-        width: 100,
+        width: this.edit ? 110 : 200,
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h("i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => this.modifyRecord ? this.addFollowRecord(row.id) : this.checkFollowRecord(row.id)
-                }
-              },
-              this.modifyRecord ? "新增跟进记录" : "查看跟进记录"
+          if (this.edit) {
+            return (
+              <div>
+                <i-button type="text" class="row-command-button" onClick={() => this.checkFollowRecord(row.id)}>查看跟进记录</i-button>
+              </div>
             )
-          ])
+          } else {
+            return (
+              <div>
+                <i-button type="text" class="row-command-button" onClick={() => this.addFollowRecord(row.id)}>新增跟进记录</i-button>
+                <i-button type="text" class="row-command-button" onClick={() => this.checkFollowRecord(row.id)}>查看跟进记录</i-button>
+              </div>
+            )
+          }
         }
       },
       {
@@ -141,7 +148,35 @@ export default class CustomerInfoIntentionRecord extends Vue {
       })
     })
   }
+  
+  /**
+   * 新增意向记录
+   */
+  addIntentionRecord() {
+    this.$dialog.show({
+      title: "新增意向记录",
+      footer: true,
+      width: 700,
+      onOk: add => {
+        return add.addFollowRecord().then(v => {
+          if(v) this.refreshData()
+          return v
+        })
+      },
+      render: h => h(ModifyCustomerInfoIntention, {
+        props: {
+          customerId: this.id
+        }
+      })
+    })
+  }
 }
 </script>
 <style lang="less" scoped>
+.component.customer-info-intention-record{
+  .add-intention {
+    text-align: right;
+    margin: 10px 30px 0px auto;
+  }
+}
 </style>

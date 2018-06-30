@@ -18,7 +18,7 @@
       </template>
 
     </data-form>
-    <data-box :id="20" :columns="columns1" :data="dataSet" @onPageChange="searchRolesByAuth" :page="pageService" ref="databox"></data-box>
+    <data-box :id="20" :columns="columns1" :data="dataSet" @on-page-change="searchRolesByAuth" :page="pageService" ref="databox"></data-box>
 
   </section>
 </template>

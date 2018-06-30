@@ -16,7 +16,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" :page="pageService" ref="databox" @on-page-change="refreshData"></data-box>
   </section>
 </template>
 
@@ -28,7 +28,7 @@ import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-info-base/modify-customer-info-basedata.vue";
-import CustomerInfoIntentionRecord from "~/components/customer-center/customer-info-base/customer-info-intention-record.vue";
+import CustomerInfoIntentionRecord from "~/components/customer-center/customer-info-base/customer-info-intention-record.tsx.vue";
 import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")

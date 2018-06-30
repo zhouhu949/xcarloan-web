@@ -120,5 +120,14 @@ export default {
     controller: CONTROLLER,
     action: 'addBasicCustomerFollow',
     type: requestType.Post
+  },
+  /**
+   * 新增意向记录
+   */
+  addBasicIntentionalCustomer: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addBasicIntentionalCustomer',
+    type: requestType.Post
   }
 }

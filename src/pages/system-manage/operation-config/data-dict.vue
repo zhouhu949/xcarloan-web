@@ -23,7 +23,7 @@
               </i-form-item>
             </template>
           </data-form>
-          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
+          <data-box :columns="columns1" :data="dataNames" @on-page-change="seach" :page="pageService" :noDefaultRow="true"></data-box>
         </i-col>
       </i-row>
     </i-row>
