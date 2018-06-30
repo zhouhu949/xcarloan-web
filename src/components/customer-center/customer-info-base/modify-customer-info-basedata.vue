@@ -1,7 +1,7 @@
 <!--维护基础信息-->
 <template>
   <section class="component modify-customer-info-basedata">
-    <i-form ref="from" inline :model="model" :rules="rules" label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="客户姓名" prop="customerName">
         <i-input v-model="model.customerName" clearable></i-input>
       </i-form-item>
@@ -91,6 +91,14 @@
       <i-form-item label="通讯地址" prop="messageAddr">
         <i-input v-model="model.messageAddr" clearable></i-input>
       </i-form-item>
+      <i-form-item label="意向类型" prop="intentionType" v-if="!data">
+        <i-select v-model="model.intentionType" clearable>
+          <i-option v-for="{label,value} of $dict.getDictData(10015)" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="意向等级" prop="intentionLevel" v-if="!data">
+        <i-rate v-model="model.intentionLevel"></i-rate>
+      </i-form-item>
     </i-form>
   </section>
 </template>
@@ -136,7 +144,9 @@ export default class ModifyCustomerInfoBasedata extends Vue {
       nation: "",
       healthStatus: "",
       homeStatus: "",
-      messageAddr: ""
+      messageAddr: "",
+      intentionType: "",
+      intentionLevel: 0
     }
 
     this.rules = {
@@ -159,6 +169,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
 
   mounted() {
     if (this.data) {
+      this.data.birthTime = new Date(this.data.birthTime)
       this.model = this.data
     }
   }
@@ -188,7 +199,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
   }
 
   private submit() {
-    let form: any = this.$refs.from
+    let form: any = this.$refs.form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve()

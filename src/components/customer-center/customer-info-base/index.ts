@@ -7,6 +7,7 @@ import CustomerInfoHouse from "./customer-info-house.vue";
 import CustomerInfoJob from "./customer-info-job.vue";
 import CustomerInfoMaterials from "./customer-info-materials.vue";
 import CustomerInfoMoney from "./customer-info-money.vue";
+import CustomerInfoIntentionRecord from "./customer-info-intention-record.vue";
 import CustomerInfoOrderRecord from "./customer-info-order-record.vue";
 
 /**
@@ -22,5 +23,6 @@ export default {
   CustomerInfoJob,
   CustomerInfoMaterials,
   CustomerInfoMoney,
+  CustomerInfoIntentionRecord,
   CustomerInfoOrderRecord
 }

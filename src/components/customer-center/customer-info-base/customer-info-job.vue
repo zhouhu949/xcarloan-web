@@ -77,9 +77,7 @@ export default class CustomerInfoJob extends Vue {
    */
   private refreshData() {
     this.basicCustomerJobService.findCustomPersonalJob(this.id).subscribe(
-      data => {this.dataSet = data
-      
-    console.log(this.dataSet)},
+      data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
   }

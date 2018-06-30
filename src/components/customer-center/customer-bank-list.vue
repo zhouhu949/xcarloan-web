@@ -76,9 +76,10 @@ export default class CustomerBankList extends Vue {
       {
         align: "center",
         editable: true,
-        title: "开户城市",
+        title: "开户地址",
         key: "depositCity",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) => h("p", {}, `${this.$city.getCityName(row.province)} ${this.$city.getCityName(row.depositCity)}`)
       },
       {
         align: "center",
