@@ -146,7 +146,7 @@ export default class ModifyCustomerInfoBasedata extends Vue {
       homeStatus: "",
       messageAddr: "",
       intentionType: "",
-      intentionLevel: ""
+      intentionLevel: 0
     }
 
     this.rules = {
