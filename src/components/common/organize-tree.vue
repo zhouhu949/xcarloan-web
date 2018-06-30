@@ -7,7 +7,7 @@
 <script lang="ts">
 import OrganizeNode from '~/components/common/organize-node.vue'
 import Vue from "vue";
-import { Prop, Watch,Emit } from "vue-property-decorator";
+import { Prop, Watch, Emit } from "vue-property-decorator";
 import Component from "vue-class-component";
 
 @Component({
@@ -27,6 +27,16 @@ export default class OrganizeTree extends Vue {
 
   @Watch("dataList", { immediate: true })
   createTree(data) {
+
+
+    // 过滤父节点
+    let rootList = data.filter(x => {
+      if (!x.orgPid) {
+        return true;
+      }
+      return !data.find(item => item.id === x.orgPid);
+    });
+
     // 递归构建组织树
     let fun = (id) => {
       // 递归对象子元素
@@ -60,12 +70,12 @@ export default class OrganizeTree extends Vue {
     }
 
     // 生成数据树
-    this.dataTree = fun(0)
+    this.dataTree = fun((rootList[0] || {}).orgPid)
   }
   private dataTree: Array<any> = [] // 数据树
   private selected: String = '' // 当前选择项
 
- 
+
   created() {
 
   }
