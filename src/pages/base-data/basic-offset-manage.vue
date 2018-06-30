@@ -205,24 +205,29 @@ export default class BasicOffsetManage extends Page {
     expense: Array<Object>,
     val?: Object
   ) {
-    this.$dialog.show({
-      title: val ? "维护冲抵项" : "新增冲抵项",
-      footer: true,
-      onOk: modifyBasicOffsetItem => {
-        return modifyBasicOffsetItem.submit().then(v => {
-          if (v) this.getBasicOffsetItemList(this.checkedBasicOffsetId);
-          return v;
-        });
-      },
-      render: h =>
-        h(ModifyBasicOffsetItem, {
-          props: {
-            offsetId: offsetId,
-            offsetItemData: val,
-            expenseData: expense
-          }
-        })
-    });
+    // 判断是否选中冲抵策略
+    if (offsetId) {
+      this.$dialog.show({
+        title: val ? "维护冲抵项" : "新增冲抵项",
+        footer: true,
+        onOk: modifyBasicOffsetItem => {
+          return modifyBasicOffsetItem.submit().then(v => {
+            if (v) this.getBasicOffsetItemList(this.checkedBasicOffsetId);
+            return v;
+          });
+        },
+        render: h =>
+          h(ModifyBasicOffsetItem, {
+            props: {
+              offsetId: offsetId,
+              offsetItemData: val,
+              expenseData: expense
+            }
+          })
+      });
+    } else {
+      this.$Message.warning("请选择冲抵策略！");
+    }
   }
 
   /**

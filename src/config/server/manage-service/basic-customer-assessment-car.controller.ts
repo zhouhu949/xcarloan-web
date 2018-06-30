@@ -91,5 +91,11 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerCarList',
     type: requestType.Get
+  },
+  getAssessmentConfigList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAssessmentConfigList',
+    type: requestType.Get
   }
 }

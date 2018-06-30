@@ -2,6 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
+import { FilterService } from '~/utils/filter.service'
 
 export class BasicCustomerAssessmentCarService {
   @Inject(NetService)
@@ -39,9 +40,46 @@ export class BasicCustomerAssessmentCarService {
    */
   @Debounce()
   addBasicCustomerAssessment(data) {
+    let model = Object.assign({}, data);
+
     return this.netService.send({
       server: manageService.basicCustomerAssessmentCarController.addBasicCustomerAssessment,
-      data: data,
+      data: {
+        // 申请评估日期
+        assessmentApplyDate: FilterService.dateFormat(model.assessmentApplyDate, "yyyy-MM-dd"),
+        // 评估日期
+        assessmentDate: FilterService.dateFormat(model.assessmentDate, "yyyy-MM-dd"),
+        // 评估结果
+        assessmentResult: model.assessmentResult,
+        // 评估状态
+        assessmentStatus: model.assessmentStatus,
+        // 车辆id
+        carId: model.carId,
+        // 车辆用途
+        carPurpose: model.carPurpose,
+        // 车况
+        carSituation: model.carSituation,
+        // 客户id
+        customerId: model.customerId,
+        // 排量
+        displacement: model.displacement,
+        // 驱动形式
+        driver: model.driver,
+        // 行驶证号
+        drivingNo: model.drivingNo,
+        // 估价
+        evaluation: model.evaluation,
+        // 出厂日期
+        factoryTime: FilterService.dateFormat(model.factoryTime, "yyyy-MM-dd"),
+        // 行驶里程
+        mileAge: model.mileAge,
+        // 备注
+        remark: model.remark,
+        // 过户次数
+        transferNo: model.transferNo,
+        // 变速箱形式
+        transmission: model.transmission,
+      },
       loading: true
     })
   }
@@ -128,4 +166,14 @@ export class BasicCustomerAssessmentCarService {
       append: customerId
     })
   }
+
+  /**
+   * 获取评估车型列表
+   */
+  getAssessmentConfigList() {
+    return this.netService.send({
+      server: manageService.basicCustomerAssessmentCarController.getAssessmentConfigList
+    })
+  }
+
 }

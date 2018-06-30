@@ -16,13 +16,13 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" @onPageChange="refreshData" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
 <script lang="ts">
-import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
+import Page from "~/core/page";
+import { Layout, Dependencies } from "~/core/decorator";
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
@@ -31,17 +31,17 @@ import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-in
 import CustomerInfoIntentionRecord from "~/components/customer-center/customer-info-base/customer-info-intention-record.vue";
 import { namespace } from "vuex-class";
 
-const CustomerOrderModule = namespace("customerOrderSpace")
+const CustomerOrderModule = namespace("customerOrderSpace");
 
-@Layout('workspace')
+@Layout("workspace")
 @Component({
   components: {}
 })
 export default class PotentialClients extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @Dependencies(BasicCustomerCenterService)
+  private basicCustomerCenterService: BasicCustomerCenterService;
   @CustomerOrderModule.Action showCustomerInfo;
-
 
   private columns: any;
   private dataSet: any = [];
@@ -50,8 +50,7 @@ export default class PotentialClients extends Page {
     name: "",
     phoneNumber: "",
     idCard: ""
-  }
-
+  };
 
   activated() {
     this.refreshData();
@@ -70,7 +69,8 @@ export default class PotentialClients extends Page {
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [
-            h("i-button",
+            h(
+              "i-button",
               {
                 props: {
                   type: "text"
@@ -84,7 +84,8 @@ export default class PotentialClients extends Page {
               },
               "修改"
             ),
-            h("i-button",
+            h(
+              "i-button",
               {
                 props: {
                   type: "text"
@@ -97,8 +98,8 @@ export default class PotentialClients extends Page {
                 }
               },
               "跟进"
-            ),
-          ])
+            )
+          ]);
         }
       },
       {
@@ -109,10 +110,11 @@ export default class PotentialClients extends Page {
       },
       {
         align: "center",
-        title: '性别',
-        key: 'customerSex',
+        title: "性别",
+        key: "customerSex",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dictConvert(row.customerSex))
       },
       {
         align: "center",
@@ -122,30 +124,33 @@ export default class PotentialClients extends Page {
       },
       {
         align: "center",
-        title: '客户电话',
-        key: 'customerPhone',
-        minWidth: this.$common.getColumnWidth(3),
+        title: "客户电话",
+        key: "customerPhone",
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: "center",
-        title: '意向类型',
-        key: 'intentionType',
+        title: "意向类型",
+        key: "intentionType",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.intentionType))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dictConvert(row.intentionType))
       },
       {
         align: "center",
-        title: '意向等级',
-        key: 'intentionLevel',
+        title: "意向等级",
+        key: "intentionLevel",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('Rate', { props: { value: row.intentionLevel,disabled: true } })
+        render: (h, { row }) =>
+          h("Rate", { props: { value: row.intentionLevel, disabled: true } })
       },
       {
         align: "center",
-        title: '跟进结果',
-        key: 'followResult',
+        title: "跟进结果",
+        key: "followResult",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.followResult))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dictConvert(row.followResult))
       }
     ];
   }
@@ -154,11 +159,11 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
-    this.showCustomerInfo({ id, enabledEdit: true })
+    this.showCustomerInfo({ id, enabledEdit: true });
     this.$dialog.show({
       width: 1050,
       render: h => h(OrderCustomerInfo)
-    })
+    });
   }
 
   /**
@@ -168,20 +173,22 @@ export default class PotentialClients extends Page {
     this.$dialog.show({
       title: "意向记录",
       width: 1050,
-      render: h => h(CustomerInfoIntentionRecord, {
-        props: {
-          id: customerId,
-          modifyRecord: true
-        }
-      })
-    })
+      render: h =>
+        h(CustomerInfoIntentionRecord, {
+          props: {
+            id: customerId,
+            modifyRecord: true
+          }
+        })
+    });
   }
 
   /**
    * 获取意向客户列表
    */
   private refreshData() {
-    this.basicCustomerCenterService.findPotentialCustomerList(this.model, this.pageService)
+    this.basicCustomerCenterService
+      .findPotentialCustomerList(this.model, this.pageService)
       .subscribe(
         data => (this.dataSet = data),
         err => this.$Message.error(err.msg)
@@ -195,14 +202,13 @@ export default class PotentialClients extends Page {
       width: 1050,
       onOk: addCustomerInfoBasedata => {
         return addCustomerInfoBasedata.submit().then(v => {
-          if (v) this.refreshData()
-          return !!v
-        })
+          if (v) this.refreshData();
+          return !!v;
+        });
       },
       render: h => h(ModifyCustomerInfoBasedata)
-    })
+    });
   }
-
 }
 </script>
 

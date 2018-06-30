@@ -81,7 +81,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:0 通过
-                        this.approval({ oriderId: row.oriderId, type: 0 });
+                        this.approval({ orderId: row.orderId, type: 0 });
                       }
                     });
                   }
@@ -106,7 +106,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:2-移入黑名单
-                        this.approval({ oriderId: row.oriderId, type: 2 });
+                        this.approval({ orderId: row.oriderId, type: 2 });
                       }
                     });
                   }
@@ -131,7 +131,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:3-移入灰名单
-                        this.approval({ oriderId: row.oriderId, type: 3 });
+                        this.approval({ orderId: row.orderId, type: 3 });
                       }
                     });
                   }
@@ -156,7 +156,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:4-移入白名单
-                        this.approval({ oriderId: row.oriderId, type: 4 });
+                        this.approval({ orderId: row.orderId, type: 4 });
                       }
                     });
                   }
@@ -181,7 +181,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:5-退回
-                        this.approval({ oriderId: row.oriderId, type: 5 });
+                        this.approval({ orderId: row.orderId, type: 5 });
                       }
                     });
                   }
