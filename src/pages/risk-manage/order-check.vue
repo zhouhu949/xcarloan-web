@@ -339,12 +339,13 @@ export default class OrderCheck extends Page {
   }
 
   approval(data) {
-    this.workFlowApprovalService
-      .approval(data)
-      .subscribe(
-        data => this.$Message.success("操作成功！"),
-        err => this.$Message.error(err.msg)
-      );
+    this.workFlowApprovalService.approval(data).subscribe(
+      data => {
+        this.$Message.success("操作成功！");
+        this.refreshOrder();
+      },
+      err => this.$Message.error(err.msg)
+    );
   }
 
   /**
