@@ -33,6 +33,7 @@ import basicOrderFileController from './basic-order-file.controller'
 import basicProductRepayTemplateController from './basic-product-repay-template.controller'
 import workFlowApprovalController from './work-flow-approval.controller'
 import financialManagementController from './financial-management.controller'
+import financialQueryController from "./financial-query.controller";
 
 export const manageService = {
   sysOrgController,
@@ -69,5 +70,6 @@ export const manageService = {
   basicOrderFileController,
   basicProductRepayTemplateController,
   workFlowApprovalController,
-  financialManagementController
+  financialManagementController,
+  financialQueryController
 }

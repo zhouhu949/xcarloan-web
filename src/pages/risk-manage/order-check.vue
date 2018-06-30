@@ -59,9 +59,9 @@ export default class OrderCheck extends Page {
     this.orderColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 350,
+        fixed: 'left',
         align: "center",
+        width: this.$common.getOperateWidth(5),
         render: (h, { row, column, index }) => {
           return h("div", [
             h(
