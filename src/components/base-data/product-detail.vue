@@ -33,7 +33,7 @@ import SchemeDetail from "~/components/base-data/scheme-detail.vue";
     SchemeDetail
   }
 })
-export default class productDetail extends Vue {
+export default class ProductDetail extends Vue {
   @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
 
   /**

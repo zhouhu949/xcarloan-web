@@ -55,5 +55,41 @@ export default {
     controller: CONTROLLER,
     action: 'findCustomerCarInfo',
     type: requestType.Get
+  },
+  /*
+   * 新增车产信息
+   */
+  addAssessmentApplication: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'addAssessmentApplication',
+    type: requestType.Post
+  },
+  /**
+   * 修改车产信息
+   */
+  updateBasicCustomerCar: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateBasicCustomerCar',
+    type: requestType.Put
+  },
+  /**
+   * 删除车产信息
+   */
+  deleteBasicCustomerCar: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteBasicCustomerCar',
+    type: requestType.Delete
+  },
+  /**
+   * 查询客户未抵押车辆 
+   */
+  getCustomerCarList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerCarList',
+    type: requestType.Get
   }
 }

@@ -55,6 +55,18 @@ export class WorkFlowApprovalService {
         type: data.type
       },
       loading: true
+    });
+  }
+  
+  /**
+   * 订单提交审核
+   * @param orderId 订单id
+   */
+  @Debounce()
+  submitApproval(orderId: Number) {
+    return this.netService.send({
+      server: manageService.workFlowApprovalController.submitApproval,
+      append: orderId
     })
   }
 }

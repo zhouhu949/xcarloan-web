@@ -31,5 +31,14 @@ export default {
     controller: CONTROLLER,
     action: 'approval',
     type: requestType.Post
+  },
+   /**
+    * 订单提交审核
+    */
+  submitApproval:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'submitApproval',
+    type: requestType.Post
   }
 }

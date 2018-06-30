@@ -49,6 +49,11 @@
             <i-input v-model="model.carEmissions"></i-input>
           </i-form-item>
         </i-col>
+        <i-col :span="12">
+          <i-form-item label="参考价格" prop="referencePrice">
+            <i-input-number v-model="model.referencePrice" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
+          </i-form-item>
+        </i-col>
         <i-col :span="24">
           <i-form-item label="车身颜色" prop="carColour">
             <i-input v-model="model.carColour" class="item-full"></i-input>
@@ -110,17 +115,16 @@ export default class AddVehicle extends Vue {
     modelName: "", // 车辆型号
     seriesId: "", // 系列号id
     seriesName: "",  // 系列名称
-    referencePrice: "", // 参考价格
+    referencePrice: null, // 参考价格
     vehicleId: 0,
-    remark: ''   // 备注
-
+    remark: ''  // 备注
   };
 
   private rules = {
     // brandName: { trigger: "blur", message: "车辆品牌不得为空", required: true },
     // seriesName: { trigger: "blur", message: "车辆系列不得为空", required: true },
     remark: { trigger: "blur", message: "请输入备注", required: true },
-    referencePrice: { trigger: "blur", message: "请输入参考价格", required: true },
+    referencePrice: { trigger: "blur", message: "请输入参考价格", required: true, type: "number" },
     modelName: { trigger: "blur", message: "请输入车型名称", required: true },
     carColour: { trigger: "blur", message: "请输入车身颜色", required: true },
     carEmissions: { trigger: "blur", message: "请输入车辆排量", required: true },
@@ -164,7 +168,7 @@ export default class AddVehicle extends Vue {
     return new Promise((resolve, reject) => {
       this.form.validate(valid => {
         if (!valid) return reject()
-        this.basicCarManageService.editCarModel(this.model).subscribe(
+        this.basicCarManageService.editCarModel(this.carId, this.model).subscribe(
           data => {
             this.$Message.success("修改车辆成功！");
             resolve()
@@ -225,8 +229,9 @@ export default class AddVehicle extends Vue {
     if (this.carId) {
       this.getBrandInfoTwo()
         // this.model.seriesId = this.carId
-      this.basicCarManageService.getCarModelById(this.carId).subscribe(
+      this.basicCarManageService.getCarParams(this.carId).subscribe(
         data => {
+          console.log(data)
           this.model.carEmissions = data.displacement
           this.model.drivingMode = data.diveway
           this.model.fuel = data.fulyway
@@ -238,6 +243,7 @@ export default class AddVehicle extends Vue {
           this.model.remark = data.remark
           this.model.seriesId = data.id
           this.model.carStructure = data.structure
+          this.model.referencePrice = data.referencePrice
         },
         err => this.$Message.error(err.msg)
       )

@@ -139,8 +139,7 @@ export class BasicCarManageService {
   /**
    * 修改车型
    */
-  @Debounce()
-  editCarModel(data) {
+  editCarModel(carId, data) {
     return this.netService.send({
       data: {
         displacement: data.carEmissions,

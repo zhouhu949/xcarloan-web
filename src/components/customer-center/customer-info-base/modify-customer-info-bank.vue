@@ -64,6 +64,13 @@ export default class ModifyCustomerInfoBank extends Vue {
       id: 0,
       remark: ""
     }
+    
+    this.rules = {
+      accountStatus: { required: true, message: "请选择开户状态", trigger: "blur", type: "number" },
+      accountType: { required: true, message: "请选择账户类型", trigger: "blur", type: "number" },
+      bankName: { required: true, message: "请填写银行名称", trigger: "blur" },
+      cardNo: { required: true, message: "请填写银行卡号", trigger: "blur" }
+    }
   }
 
   /**
@@ -71,6 +78,7 @@ export default class ModifyCustomerInfoBank extends Vue {
    */
   private addBankInfo() {
     return new Promise((resolve, reject) => {
+      console.log(this.model)
       this.basicCustomerService.addBasicCustomerBank(this.model).subscribe(
         data => resolve(),
         err => reject(err)
@@ -83,6 +91,7 @@ export default class ModifyCustomerInfoBank extends Vue {
    */
   private modifyBankInfo() {
     return new Promise((resolve, reject) => {
+      console.log(this.model)
       this.basicCustomerService.updateCustomerBank(this.model).subscribe(
         data => resolve(),
         err => reject(err)
