@@ -284,7 +284,7 @@ export default class ContractUpload extends Vue {
           };
         });
       },
-      err => this.$Message.error(err)
+      err => this.$Message.error(err.msg)
     );
   }
 }

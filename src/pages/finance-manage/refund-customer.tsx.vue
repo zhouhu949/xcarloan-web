@@ -185,6 +185,7 @@ export default class RefundCustomer extends Page {
       title: "退款",
       footer: true,
       okText:"退款",
+      height:380,
       onOk: refundCustomer => {
         return refundCustomer.submit().then(v => {
           if (v) this.refreshData();
