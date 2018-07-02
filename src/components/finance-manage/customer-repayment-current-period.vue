@@ -60,7 +60,7 @@ export default class CustomerRepaymentCurrentPeriod extends Vue {
     // 查询要还款的期数的详情
     this.financialQueryService.selectRepayInfo(this.orderId, this.period).subscribe(
       data => this.orderInfo = data,
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 }

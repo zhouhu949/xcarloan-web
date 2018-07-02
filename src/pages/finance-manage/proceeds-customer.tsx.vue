@@ -27,6 +27,8 @@ import { Layout, Dependencies } from '~/core/decorator'
 import { PageService } from "~/utils/page.service";
 import Component from "vue-class-component";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import ProceedsCustomerInfo from "~/components/finance-manage/proceeds-customer-info.vue";
+import { Button } from "iview";
 import { namespace } from "vuex-class";
 const CustomerOrderModule = namespace("customerOrderSpace")
 @Layout('workspace')
@@ -37,6 +39,7 @@ export default class ProceedsCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
   @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private model: any = {
     name: "",
@@ -58,62 +61,37 @@ export default class ProceedsCustomer extends Page {
         width: this.$common.getOperateWidth(2),
         render: (h, { row }) => (
           <div>
-            <i-button type="text" class="row-command-button" onClick="">还款</i-button>
-            <i-button type="text" class="row-command-button" onClick="">还款总览</i-button>
+            <i-button type="text" class="row-command-button" onClick={() => this.onProceedClick(row)}>收款</i-button>
           </div>
         )
       },
       {
         align: 'center',
-        title: ' 订单号',
+        title: '订单号',
         key: 'orderNo',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showOrderInfo(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
-        title: ' 订单状态',
-        key: 'orderStatus',
+        title: '客户姓名',
+        key: 'orderNo',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderStatus)}</span>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showCustomerInfo({ id: row.customerId })}>{row.customerName}</i-button>)
       },
       {
         align: 'center',
-        title: ' 订单类型',
-        key: 'orderType',
+        title: '收款金额',
+        key: 'proceedMoney',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderType)}</span>)
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.proceedMoney)}</div>)
       },
       {
         align: 'center',
-        title: ' 订单期数',
-        key: 'orderPeriods',
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: 'center',
-        title: ' 订单金额',
-        key: 'orderPrice',
+        title: '是否已收款',
+        key: 'repay',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.orderPrice)}</div>)
-      },
-      {
-        align: 'center',
-        title: ' 客户姓名',
-        key: 'customerName',
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: 'center',
-        title: ' 电话号码',
-        key: 'customerPhone',
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: 'center',
-        title: ' 身份证号',
-        key: 'idCard',
-        minWidth: this.$common.getColumnWidth(4)
+        render: (h, { row }) => (<span>{row.repay === 1 ? "已收款" : "未收款"}</span>)
       }
     ]
   }
@@ -127,10 +105,26 @@ export default class ProceedsCustomer extends Page {
   }
 
   /**
-   * 还款总览点击
+   * 收款点击
    */
-  private onPaymenyDetailClick(orderId: Number) {
-
+  private onProceedClick(rowData) {
+    let data = {
+      orderId: rowData.orderId,
+      orderNumber: rowData.orderNo,
+      customerId: rowData.customerId,
+      customerName: rowData.customerName
+    }
+    this.$dialog.show({
+      title: "客户收款",
+      footer: true,
+      onOk: proceed => {
+        return proceed.submit().then(v => {
+          if (v) this.refreshData()
+          return v
+        })
+      },
+      render: h => (<ProceedsCustomerInfo orderInfo={data}></ProceedsCustomerInfo>)
+    })
   }
 
 

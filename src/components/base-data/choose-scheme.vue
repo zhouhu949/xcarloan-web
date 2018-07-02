@@ -116,7 +116,7 @@ export default class ChooseScheme extends Vue {
         data.forEach(v => { v._highlight = v.id === this.schemeId })
         this.schemeDataSet = data
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 

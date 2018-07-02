@@ -3,13 +3,13 @@ import axios from 'axios'
 import Qs from 'qs'
 import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
-import { resolve } from "url";
 import { LoadingService } from "~/utils/loading.service";
 // import cookie from 'js-cookie'
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
 export class NetService {
+
   // 使用GET请求类型
   private axiosInstance
   private userToken
@@ -218,6 +218,9 @@ export class NetService {
         switch (ex.response.status) {
           case 500:
             error.msg = "服务端内部错误,请稍后重试"
+            break;
+          case 401:
+            error.msg = "用户身份过期,请重新登录"
             break;
           default:
             error.msg = "服务器内部错误,请稍后重试"

@@ -3,8 +3,8 @@
     <page-header title="财务开票" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
-        <i-form-item prop="state" label="发票状态">
-          <i-select v-model="model.state">
+        <i-form-item prop="state" label="是否已开票">
+          <i-select v-model="model.state" clearable>
             <i-option v-for="{label,value} of $dict.getDictData(10001)" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -48,6 +48,7 @@ export default class FinanceInvoice extends Page {
   @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
   @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
   @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private model: any = {
     name: "",
@@ -68,63 +69,51 @@ export default class FinanceInvoice extends Page {
         align: 'center',
         width: this.$common.getOperateWidth(1),
         render: (h, { row }) => {
-          if (row.state === 10003) {
-            return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>放款</i-button>)
+          if (row.isInvoice === 10003) {
+            return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.id)}>开票</i-button>)
           }
         }
       },
       {
         align: 'center',
-        title: ' 订单号',
+        title: '订单号',
         key: 'orderNo',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onOrderNumberClick(row.orderId)}>{row.orderNo}</i-button>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showOrderInfo(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
-        title: ' 订单状态',
-        key: 'orderStatus',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderStatus)}</span>)
-      },
-      {
-        align: 'center',
-        title: ' 订单类型',
-        key: 'orderType',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderType)}</span>)
-      },
-      {
-        align: 'center',
-        title: ' 订单期数',
-        key: 'orderPeriods',
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: 'center',
-        title: ' 订单金额',
-        key: 'orderPrice',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.orderPrice)}</div>)
-      },
-      {
-        align: 'center',
-        title: ' 客户姓名',
+        title: '客户姓名',
         key: 'customerName',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showCustomerInfo({ id: row.customerId })}>{row.customerName}</i-button>)
       },
       {
         align: 'center',
-        title: ' 电话号码',
+        title: '开票金额',
+        key: 'receivableDetialMoney',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.receivableDetialMoney)}</div>)
+      },
+      {
+        align: 'center',
+        title: '电话号码',
         key: 'customerPhone',
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: 'center',
-        title: ' 身份证号',
-        key: 'idCard',
+        title: '开票人',
+        key: 'operatorName',
         minWidth: this.$common.getColumnWidth(4)
-      }
+      },
+      {
+        align: 'center',
+        title: '开票时间',
+        key: 'receivableDate',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<span>{this.$filter.dateTimeFormat(row.receivableDate)}</span>)
+      },
     ]
   }
 
@@ -136,34 +125,26 @@ export default class FinanceInvoice extends Page {
     this.refreshData()
   }
 
-  private onOrderNumberClick(orderId: Number) {
-    this.showOrderInfo(orderId)
-    this.$dialog.show({
-      width: 1050,
-      render: h => h(OrderCustomerInfo)
-    })
-  }
-
   /**
    * 放款操作
    */
-  private onSubmitClick(orderId: Number) {
+  private onSubmitClick(id: Number) {
     this.$Modal.confirm({
       content: "是否确认开票？",
       onOk: () => {
-        this.financialManagementService.customerOrderLoan(orderId).subscribe(
+        this.financialManagementService.financialInvoice(id).subscribe(
           data => {
             this.$Message.success('操作成功')
             this.refreshData()
           },
-          err => this.$Message.error(err.message)
+          err => this.$Message.error(err.msg)
         )
       }
     })
   }
 
   private refreshData() {
-    this.financialQueryService.findRepayOrderUnpaidList(this.model, this.pageService).subscribe(
+    this.financialQueryService.queryFinancialInvoice(this.model, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
