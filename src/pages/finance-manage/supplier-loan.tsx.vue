@@ -61,7 +61,7 @@ export default class SupplierLoan extends Page {
         fixed: 'left',
         align: 'center',
         minWidth: this.$common.getColumnWidth(1),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.modelId)}>放款</i-button>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.id)}>放款</i-button>)
       },
       {
         align: 'center',
