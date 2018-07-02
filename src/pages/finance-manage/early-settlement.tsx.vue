@@ -1,10 +1,10 @@
 <template>
-  <section class="page supplier-loan">
+  <section class="page early-settlement">
 
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout } from '~/core/decorator'
 import Component from "vue-class-component";
@@ -13,7 +13,7 @@ import Component from "vue-class-component";
 @Component({
   components: {}
 })
-export default class SupplierLoan extends Page {
+export default class EarlySttlement extends Page {
 
 }
 </script>

@@ -1,12 +1,12 @@
 <!--维护车产信息-->
 <template>
   <section class="component modify-customer-info-car">
-    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="车牌号" prop="carNo">
         <i-input v-model="model.carNo"></i-input>
       </i-form-item>
       <i-form-item label="购车价格" prop="carPrice">
-        <i-input-number v-model="model.carPrice" :min="0"></i-input-number>
+        <i-input-number v-model="model.carPrice" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="是否二手车" prop="isSecondHand">
         <i-select v-model="model.isSecondHand" clearable>
@@ -55,12 +55,12 @@ export default class ModifyCustomerInfoCar extends Vue {
     this.model = {
       carNo: '', // 车牌号
       carPrice: 0, // 购车价格
-      isSecondHand: 0, // 是否二手车
-      buyType: 0, // 购买方式
-      carStatus: 0, // 抵押状态
+      isSecondHand: '', // 是否二手车
+      buyType: '', // 购买方式
+      carStatus: '', // 抵押状态
       mortgageNum: 0, // 抵押登记次数 
       remark: '', // 备注
-      isLoanFinished: 0, // 是否贷款已还清
+      isLoanFinished: '', // 是否贷款已还清
       registerTime: '', // 初次登记时间
       operator: '', // 操作人
       carType: '', // 车辆型号
@@ -107,7 +107,7 @@ export default class ModifyCustomerInfoCar extends Vue {
   }
 
   private submit() {
-    let form: any = this.$refs.from
+    let form: any = this.$refs.form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve()

@@ -1,7 +1,7 @@
 <!--维护职业信息-->
 <template>
   <section class="component modify-customer-info-job">
-    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="单位名称" prop="companyName">
         <i-input v-model="model.companyName"></i-input>
       </i-form-item>
@@ -21,7 +21,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="基本月薪" prop="basicSalary">
-        <i-input-number v-model="model.basicSalary" :min="0"></i-input-number>
+        <i-input-number v-model="model.basicSalary" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="单位地址" prop="companyAddress">
         <i-input v-model="model.companyAddress"></i-input>
@@ -61,7 +61,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="注册资本" prop="registeredCapital">
-        <i-input-number v-model="model.registeredCapital" :min="0"></i-input-number>
+        <i-input-number v-model="model.registeredCapital" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="股占比(%)" prop="stockScale">
         <i-input-number v-model="model.stockScale" :min="0"></i-input-number>
@@ -70,10 +70,10 @@
         <i-input-number v-model="model.employeesNumber" :min="0"></i-input-number>
       </i-form-item>
       <i-form-item label="过去一年营业收入" prop="pastyearIncome">
-        <i-input-number v-model="model.pastyearIncome" :min="0"></i-input-number>
+        <i-input-number v-model="model.pastyearIncome" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="过去一年利润" prop="pastyearProfit">
-        <i-input-number v-model="model.pastyearProfit" :min="0"></i-input-number>
+        <i-input-number v-model="model.pastyearProfit" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="经营归属地" prop="enterpriseManageBelong">
         <i-input v-model="model.enterpriseManageBelong"></i-input>
@@ -85,13 +85,13 @@
         <i-input v-model="model.identity"></i-input>
       </i-form-item>
       <i-form-item label="每月其它收入" prop="monthOtherIncome">
-        <i-input-number v-model="model.monthOtherIncome" :min="0"></i-input-number>
+        <i-input-number v-model="model.monthOtherIncome" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="其它收入来源" prop="otherIncomeSource">
         <i-input v-model="model.otherIncomeSource"></i-input>
       </i-form-item>
       <i-form-item label="年收入" prop="yearlySalaries">
-        <i-input-number v-model="model.yearlySalaries" :min="0"></i-input-number>
+        <i-input-number v-model="model.yearlySalaries" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="备注" prop="remark">
         <i-input v-model="model.remark"></i-input>
@@ -122,9 +122,9 @@ export default class ModifyCustomerInfoJob extends Vue {
   created() {
     this.model = {
       companyName: '', // 单位名称
-      companyNature: 0, // 单位性质
-      industry: 0, // 所属行业
-      jobType: 0, // 职业类型
+      companyNature: '', // 单位性质
+      industry: '', // 所属行业
+      jobType: '', // 职业类型
       basicSalary: 0, // 基本月薪
       companyAddress: '', // 单位地址
       companyAddressDetail: '', // 单位地址详细
@@ -163,8 +163,10 @@ export default class ModifyCustomerInfoJob extends Vue {
   }
 
   mounted() {
-    if (this.data) this.model = this.data
-    this.model.accessCompanyTime = this.$filter.dateFormat(this.model.accessCompanyTime)
+    if (this.data) {
+      this.data.accessCompanyTime = new Date(this.data.accessCompanyTime)
+      this.model = this.data
+    }
     if (this.customerId) this.model.customerId = this.customerId
   }
 
@@ -193,7 +195,7 @@ export default class ModifyCustomerInfoJob extends Vue {
   }
 
   private submit() {
-    let form: any = this.$refs.from
+    let form: any = this.$refs.form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve()

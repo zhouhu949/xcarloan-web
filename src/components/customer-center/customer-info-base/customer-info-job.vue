@@ -2,7 +2,12 @@
 <template>
   <section class="component customer-info-job">
     <i-row :gutter="16">
-      <i-col class="col-job" v-for="item of dataSet" :key="item.id" :span="24">
+      <i-col v-if="dataSet.length === 0">
+        <div class="no-data-notice">
+          暂无数据
+        </div>
+      </i-col>
+      <i-col class="col-job" v-for="item of dataSet" :key="item.id" :span="24" v-else>
         <i-card class="job" :title="item.companyName">
           <div slot="extra" v-if="edit">
             <a @click="onDeleteClick(item)">
@@ -35,7 +40,7 @@
         </i-card>
       </i-col>
     </i-row>
-    <div class="add-job" v-if="edit">
+    <div class="add-customer-info" v-if="edit">
       <a @click="onAddJobInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增职业信息
@@ -77,9 +82,7 @@ export default class CustomerInfoJob extends Vue {
    */
   private refreshData() {
     this.basicCustomerJobService.findCustomPersonalJob(this.id).subscribe(
-      data => {this.dataSet = data
-      
-    console.log(this.dataSet)},
+      data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
   }
@@ -153,10 +156,6 @@ export default class CustomerInfoJob extends Vue {
 .component.customer-info-job {
   .job {
     margin-bottom: 20px;
-  }
-  .add-job {
-    text-align: right;
-    margin: 0px 30px 0px auto;
   }
 }
 </style>

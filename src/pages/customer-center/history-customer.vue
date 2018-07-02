@@ -4,12 +4,18 @@
     </page-header>
     <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
       <template slot="input">
-        <i-form-item prop="name" label="客户姓名：">
-          <i-input placeholder="请输入客户姓名：" v-model="model.name"></i-input>
+        <i-form-item prop="name" label="姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="身份证号：">
+          <i-input placeholder="请输入客户身份证号" v-model="model.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="phoneNumber" label="手机号：">
+          <i-input placeholder="请输入客户手机号" v-model="model.phoneNumber"></i-input>
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" ref="databox" :page="pageService" @on-page-change="refreshData"></data-box>
   </section>
 </template>
 
@@ -35,7 +41,9 @@ export default class HistoryCustomer extends Page {
   private dataSet: any = [];
 
   private model = {
-    name: ""
+    name: "",
+    phoneNumber: "",
+    idCard: ""
   }
 
   activated() {
@@ -73,7 +81,7 @@ export default class HistoryCustomer extends Page {
                   }
                 }
               },
-              "查看"
+              "详情"
             ),
             h("i-button",
               {
@@ -102,45 +110,37 @@ export default class HistoryCustomer extends Page {
       {
         align: "center",
         editable: true,
-        title: "证件类型",
-        key: "certificateType",
+        title: "客户状态",
+        key: "customerStatus",
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.certificateType))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerStatus))
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "客户性别",
+        key: "customerSex",
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
       },
       {
         align: "center",
         editable: true,
         title: "证件号码",
-        key: "certificateNumber",
+        key: "idCard",
         minWidth: this.$common.getColumnWidth(6)
       },
       {
-        title: '手机号码',
-        editable: true,
-        key: 'mobileMain',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '所属地区',
-        editable: true,
-        key: 'city',
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
-      },
-      {
-        title: '创建时间',
-        editable: true,
-        sortable: true,
-        key: 'createTime',
+        title: '开户状态',
+        key: 'accountStatus',
         minWidth: this.$common.getColumnWidth(3),
         align: 'center',
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.certificateType, 'yyyy-MM-dd'))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.accountStatus))
       },
       {
         title: '归属业务员',
         editable: true,
-        key: 'operator',
+        key: 'operatorName',
         minWidth: this.$common.getColumnWidth(3),
         align: 'center'
       }

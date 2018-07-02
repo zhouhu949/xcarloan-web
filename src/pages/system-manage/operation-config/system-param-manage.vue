@@ -16,7 +16,7 @@
             </template>
         </data-form>
 
-        <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
+        <data-box :id="77" :columns="columns1" :data="systemParamsData" @on-page-change="getSystemParam" :page="pageService"></data-box>
 
         <template>
             <i-modal v-model="editSysParamsModal" title="修改系统参数">

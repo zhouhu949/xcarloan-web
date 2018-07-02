@@ -9,9 +9,9 @@ export class BasicCustomerOrderService {
 
   /**
    * 根据订单获取客户信息
+   * @param orderId 订单id
    */
-  @Debounce()
-  getCustomerInfoByOrderId(orderId) {
+  getCustomerInfoByOrderId(orderId): any {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.getCustomerInfoByOrderId,
       data: {
@@ -19,21 +19,25 @@ export class BasicCustomerOrderService {
       }
     })
   }
+
   /**
    * 订单分页查询
+   * @param queryParamsModel 查询参数实体
+   * @param page 分页参数实体
    */
-  query(data, page) {
+  query(queryParamsModel: any, page: PageService): any {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.query,
       data: {
-        customerName: data.name,
-        orderNo: data.orderNo,
-        idCard: data.idCard,
-        customerPhone: data.phone
+        customerName: queryParamsModel.name,
+        orderNo: queryParamsModel.orderNo,
+        idCard: queryParamsModel.idCard,
+        customerPhone: queryParamsModel.phone
       },
       page
     })
   }
+
   /**
    * 获取订单基本资料
    */
@@ -47,8 +51,9 @@ export class BasicCustomerOrderService {
   }
   /**
    * 融资租赁贷款计算器
+   * @param productId 产品Id
    */
-  findFinancingRepayDetail(productId) {
+  findFinancingRepayDetail(productId: number): any {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.findFinancingRepayDetail,
       data: {
@@ -102,13 +107,13 @@ export class BasicCustomerOrderService {
   /**
    * 收款记录
    */
-  findCustomerOrderFinancialSituationList(orderId,page: PageService) {
+  findCustomerOrderFinancialSituationList(orderId, page: PageService) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.findCustomerOrderFinancialSituationList,
       data: {
         orderId: orderId
       },
-      page:page
+      page: page
     })
   }
   /**
@@ -141,6 +146,85 @@ export class BasicCustomerOrderService {
       server: manageService.basicCustomerOrderController.findCustomerOrderFinanceSettleList,
       data: {
         orderId: orderId
+      }
+    })
+  }
+  /*
+   * 抵押贷款计算器
+   */
+  findMortgageRepayDetail(schemeId: Number, loanAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findMortgageRepayDetail,
+      data: {
+        schemeId: schemeId,
+        amount: loanAmt
+      }
+    })
+  }
+
+  /**
+   * 创建抵押贷款申请订单
+   * @param customerId 客户ID
+   * @param carIds 抵押车辆ID集合
+   * @param schemeId 方案ID
+   * @param loanAmt 贷款金额
+   */
+  createMortgageOrder(customerId: Number, carIds: Array<Number>, schemeId: Number, loanAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.createMortgageOrder,
+      data: {
+        amount: loanAmt,
+        carIds: carIds,
+        customerId: customerId,
+        schemeId: schemeId
+      }
+    })
+  }
+
+  /**
+   * 创建融资租赁申请订单
+   * @param customerId 客户ID
+   * @param carId 车辆ID
+   * @param productId 产品ID
+   */
+  createFinancingOrder(customerId: Number, carId: Number, productId: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.createFinancingOrder,
+      data: {
+        customerId: customerId,
+        modelId: carId,
+        productId: productId
+      }
+    })
+  }
+
+  /**
+   * 查询待补填资料订单
+   */
+  queryCustomerOrderFile(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.queryCustomerOrderFile,
+      data: {
+        customerName: data.name,
+        orderNo: data.orderNo,
+        idCard: data.idCard,
+        customerPhone: data.phone
+      },
+      page
+    })
+  }
+
+  /**
+   * 修改订单金额
+   * @param orderId 订单ID
+   * @param orderAmt 订单金额
+   */
+  updateOrderPrice(orderId: Number, orderAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.updateOrderPrice,
+      data: {
+        orderId: orderId,
+        price: orderAmt,
       }
     })
   }

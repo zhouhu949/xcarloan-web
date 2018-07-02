@@ -88,6 +88,15 @@ export class CommonService {
     return count * unit
   }
 
+  /**
+   * 获取操作列宽度
+   * @param buttonCount 
+   */
+  static getOperateWidth(buttonCount) {
+    let baseSize = 6
+    return buttonCount <= 2 ? baseSize * unit : (buttonCount * 2 + baseSize) * unit
+  }
+
   static reset(target, options?) {
     let check = (item, key, value) => {
       switch (typeof value) {

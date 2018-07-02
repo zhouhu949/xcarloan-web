@@ -1,4 +1,5 @@
-import { SysOrgService } from "~/services/manage-service/sys-org.service";
+
+const CreateSysOrgService = import("~/services/manage-service/sys-org.service")
 
 export default {
   namespaced: true,
@@ -58,7 +59,8 @@ export default {
      * 获取机构数据
      * @param param0 
      */
-    getOrgData({ commit }) {
+    async getOrgData({ commit }) {
+      let { SysOrgService } = await CreateSysOrgService;
       let sysOrgService = new SysOrgService()
       sysOrgService.findAllOrganizationByAuth().subscribe(
         data => commit("updateOrgData", data),

@@ -22,5 +22,23 @@ export default {
     controller: CONTROLLER,
     action: 'queryWaitApproval',
     type: requestType.Get
+  },
+  /**
+   * 订单审核
+   */
+  approval: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'approval',
+    type: requestType.Post
+  },
+   /**
+    * 订单提交审核
+    */
+  submitApproval:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'submitApproval',
+    type: requestType.Post
   }
 }

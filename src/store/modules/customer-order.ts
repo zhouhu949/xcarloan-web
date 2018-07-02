@@ -1,4 +1,6 @@
 import { InfoCompontentType } from "~/config/enum.config";
+import { DialogService } from "~/utils/dialog.service";
+const CreateOrderCustomerInfo = () => import("~/components/base-data/order-customer-info.vue")
 
 export default {
   namespaced: true,
@@ -51,18 +53,29 @@ export default {
      * @param param0 
      * @param customer 客户信息页面配置
      */
-    showCustomerInfo({ commit, getters }, customer: { id: Number, enabledEdit?: Boolean }) {
+    showCustomerInfo({ commit, getters, dispatch }, customer: { id: Number, enabledEdit?: Boolean }) {
       let current = getters.componentNameList.find(x => x.type === InfoCompontentType.CUSTOMER)
       commit('updateCustomerInfo', { name: current.name, customerId: customer.id, enabledEdit: customer.enabledEdit || false })
+      dispatch('showModalInfo')
     },
     /**
      * 显示订单详情信息页面
      * @param param0 
      * @param orderId 
      */
-    showOrderInfo({ commit, getters }, orderId) {
+    showOrderInfo({ commit, getters, dispatch }, orderId) {
       let current = getters.componentNameList.find(x => x.type === InfoCompontentType.ORDER)
       commit('updateOrderInfo', { name: current.name, orderId: orderId })
+      dispatch('showModalInfo')
+    },
+    /**
+     * 显示订单 /  客户详情信息
+     */
+    showModalInfo() {
+      DialogService.show({
+        width: 1050,
+        render: h => h(CreateOrderCustomerInfo())
+      })
     }
   }
 }

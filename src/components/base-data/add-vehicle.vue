@@ -231,7 +231,6 @@ export default class AddVehicle extends Vue {
         // this.model.seriesId = this.carId
       this.basicCarManageService.getCarParams(this.carId).subscribe(
         data => {
-          console.log(data)
           this.model.carEmissions = data.displacement
           this.model.drivingMode = data.diveway
           this.model.fuel = data.fulyway

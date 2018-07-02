@@ -7,7 +7,8 @@
       <data-grid-item label="车牌号" :span="6">{{model.carNo}}</data-grid-item>
       <data-grid-item label="是否二手车" :span="6">{{model.isSecondHand | dictConvert}}</data-grid-item>
       <data-grid-item label="购买方式" :span="6">{{model.buyType | dictConvert}}</data-grid-item>
-      <data-grid-item label="抵押类型" :span="6">{{model.orderMortgageType | dictConvert}}</data-grid-item>
+      <data-grid-item label="抵押方式" :span="6">{{model.orderMortgageType | dictConvert}}</data-grid-item>
+      <data-grid-item label="初次登记日期" :span="6">{{model.registerTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
     </data-grid>
   </section>
 </template>
@@ -31,17 +32,26 @@ export default class DetainDetails extends Vue {
   private financeDetainService: FinanceDetainService;
 
   @Prop({
-    default: 0
+    default: 0,
+    type:Number
   })
-  detainId;
+  detainId:number;
 
   private model: any = {
-    customerName: "",
-    customerPhone: "",
-    carNo: "",
-    isSecondHand: "",
+    // 购买方式
     buyType: "",
-    orderMortgageType: ""
+    // 车牌号
+    carNo: "",
+    // 客户姓名
+    customerName: "",
+    // 客户电话
+    customerPhone: "",
+    // 是否二手车
+    isSecondHand: "",
+    // 抵押方式
+    orderMortgageType: "",
+    // 初次登记时间
+    registerTime: ""
   };
 
   /**

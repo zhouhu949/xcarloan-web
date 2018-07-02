@@ -2,7 +2,12 @@
 <template>
   <section class="component customer-info-contacts">
     <i-row :gutter="16">
-      <i-col class="col-contacts" v-for="item of dataSet" :key="item.id" :span="24">
+      <i-col v-if="dataSet.length === 0">
+        <div class="no-data-notice">
+          暂无数据
+        </div>
+      </i-col>
+      <i-col class="col-contacts" v-for="item of dataSet" :key="item.id" :span="24" v-else>
         <i-card class="contacts" :title="item.contactName">
           <div slot="extra" v-if="edit">
             <a @click="onDeleteClick(item)">
@@ -25,7 +30,7 @@
         </i-card>
       </i-col>
     </i-row>
-    <div class="add-contacts" v-if="edit">
+    <div class="add-customer-info" v-if="edit">
       <a @click="addContactInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增联系人信息
@@ -143,10 +148,6 @@ export default class CustomerInfoContacts extends Vue {
   }
   .contacts {
     margin-bottom: 20px;
-  }
-  .add-contacts {
-    text-align: right;
-    margin: 0px 30px 0px auto;
   }
 }
 </style>

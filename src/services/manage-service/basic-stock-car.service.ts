@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { Inject, Debounce } from '~/core/decorator'
 import { NetService } from '~/utils/net.service'
+import { PageService } from '~/utils/page.service'
 
 export class BasicStockCarService {
   @Inject()
@@ -11,8 +12,7 @@ export class BasicStockCarService {
    * @param model 查询参数实体
    * @param page 分页参数实体
    */
-  @Debounce()
-  findAllStockCarList(model, page) {
+  findAllStockCarList(model: any, page: PageService): any {
     return this.netService.send({
       server: manageService.basicStockCarManageController.findAllStockCarList,
       data: {
@@ -29,7 +29,7 @@ export class BasicStockCarService {
    * @param data 库存车辆实体
    */
   @Debounce()
-  addBasicStock(data) {
+  addBasicStock(data: any): any {
     return this.netService.send({
       server: manageService.basicStockCarManageController.addBasicStock,
       data: {
@@ -50,7 +50,7 @@ export class BasicStockCarService {
    * @param data 
    */
   @Debounce()
-  editCsrStockStatus(data) {
+  editCsrStockStatus(data: any): any {
     return this.netService.send({
       server: manageService.basicStockCarManageController.editCsrStockStatus,
       data: {
@@ -63,10 +63,10 @@ export class BasicStockCarService {
 
   /**
    * 修改库存状态
-   * @param data 
+   * @param id 
    */
   @Debounce()
-  updateCarStockStatus(id) {
+  updateCarStockStatus(id: number): any {
     return this.netService.send({
       server: manageService.basicStockCarManageController.updateCarStockStatus,
       append: id,

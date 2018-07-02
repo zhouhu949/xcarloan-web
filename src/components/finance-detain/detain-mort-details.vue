@@ -2,10 +2,14 @@
 <template>
   <section class="component detain-details">
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-      <data-grid-item label="设备编码" :span="6">{{model.gpsNo}}</data-grid-item>
+      <data-grid-item label="设备号" :span="6">{{model.gpsNo}}</data-grid-item>
       <data-grid-item label="设备厂商" :span="6">{{model.gpsManufactor | dictConvert}}</data-grid-item>
-      <data-grid-item label="抵押次数" :span="6">{{model.mortgageNum}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd hh:mm:ss")}}</data-grid-item>
+      <data-grid-item label="安装状态" :span="6">{{model.gpsStatus | dictConvert}}</data-grid-item>
+      <data-grid-item label="抵押号" :span="6">{{model.mortgageNo}}</data-grid-item>
+      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作人" :span="6">{{model.operator}}</data-grid-item>
+      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
     </data-grid>
   </section>
 </template>
@@ -19,7 +23,7 @@ import { FinanceDetainService } from "~/services/manage-service/finance-detain.s
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 
 @Component({
-  components:{
+  components: {
     DataGrid,
     DataGridItem
   }
@@ -29,17 +33,28 @@ export default class DetainMortDetails extends Vue {
   private financeDetainService: FinanceDetainService;
 
   @Prop({
-    default: 0
+    default: 0,
+    type:Number
   })
-  detainId;
+  detainId:number;
 
   private model: any = {
-    mortgageNum: "",
-    mortgageNo: "",
+    // 生产厂家
     gpsManufactor: "",
+    // 设备号
     gpsNo: "",
+    // 安装状态
+    gpsStatus: "",
+    // 抵押号
+    mortgageNo: "",
+    // 操作人
+    operator: "",
+    // 操作时间
     operatorTime: "",
-    operator: ""
+    // 入库日期
+    stockInDate: "",
+    // 入库日期
+    stockOutDate: ""
   };
 
   /**
@@ -54,14 +69,12 @@ export default class DetainMortDetails extends Vue {
    */
   private getDetainMortRecord() {
     if (this.detainId) {
-      this.financeDetainService
-        .getDetainMortRecord(this.detainId)
-        .subscribe(
+      this.financeDetainService.getDetainMortRecord(this.detainId).subscribe(
         data => {
           if (data) this.model = data;
         },
-          err => this.$Message.error(err)
-        );
+        err => this.$Message.error(err)
+      );
     }
   }
 }

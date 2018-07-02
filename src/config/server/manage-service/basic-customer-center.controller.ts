@@ -59,6 +59,15 @@ export default {
     type: requestType.Get
   },
   /**
+   * 补填资料客户列表
+   */
+  findCustomerList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCustomerList',
+    type: requestType.Get
+  },
+  /**
    * 获取黑白灰名单记录
    */
   findCustomerBlackListRecord: {

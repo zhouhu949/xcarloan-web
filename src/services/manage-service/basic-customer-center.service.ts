@@ -15,7 +15,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findPotentialCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -28,7 +30,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findHistoryCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -41,7 +45,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findWhiteCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -54,7 +60,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findGrayCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -66,7 +74,9 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findBlackCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -78,7 +88,24 @@ export class BasicCustomerCenterService {
     return this.netService.send({
       server: manageService.basicCustomerCenterController.findFormalCustomerList,
       data: {
-        customerName: data.name
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
+      },
+      page
+    })
+  }
+
+  /**
+   * 补填资料客户列表
+   */
+  findCustomerList(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.findCustomerList,
+      data: {
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
       },
       page
     })
@@ -146,4 +173,5 @@ export class BasicCustomerCenterService {
       page
     })
   }
+
 }

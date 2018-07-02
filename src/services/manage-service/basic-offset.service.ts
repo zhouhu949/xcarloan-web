@@ -11,7 +11,7 @@ export class BasicOffsetService {
    * @param data 新增实体
    */
   @Debounce()
-  addBasicOffset(data) {
+  addBasicOffset(data: any): any {
     return this.netService.send({
       server: manageService.basicOffsetController.addBasicOffset,
       data: {
@@ -29,7 +29,7 @@ export class BasicOffsetService {
   * @param data 新增实体
   */
   @Debounce()
-  addBasicOffsetItem(data) {
+  addBasicOffsetItem(data: any): any {
     return this.netService.send({
       server: manageService.basicOffsetController.addBasicOffsetItem,
       data: {
@@ -45,7 +45,7 @@ export class BasicOffsetService {
    * @param data 修改实体
    */
   @Debounce()
-  updateBasicOffset(data) {
+  updateBasicOffset(data: any): any {
     return this.netService.send({
       server: manageService.basicOffsetController.editBasicOffset,
       data: {
@@ -63,7 +63,7 @@ export class BasicOffsetService {
    * @param offsetId 费用项id
    */
   @Debounce()
-  deleteBasicOffset(offsetId) {
+  deleteBasicOffset(offsetId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.deleteBasicOffset,
       append: offsetId,
@@ -76,7 +76,7 @@ export class BasicOffsetService {
    * @param offsetId 费用项id
    */
   @Debounce()
-  deleteBasicOffsetItem(offsetItemId) {
+  deleteBasicOffsetItem(offsetItemId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.deleteBasicOffsetItem,
       append: offsetItemId,
@@ -86,13 +86,10 @@ export class BasicOffsetService {
 
   /**
    * 获取当前用户所属机构下的冲抵策略
-   * @param orgId 机构id
    */
-  @Debounce()
-  findBasicOffsetByOrg() {
+  findBasicOffsetByOrg(): any {
     return this.netService.send({
-      server: manageService.basicOffsetController.findBasicOffsetByOrg,
-      loading: true
+      server: manageService.basicOffsetController.findBasicOffsetByOrg
     })
   }
 
@@ -100,12 +97,10 @@ export class BasicOffsetService {
    * 查单条冲抵策略
    * @param offsetId 冲抵策略id
    */
-  @Debounce()
-  findBasicOffsetInfo(offsetId) {
+  findBasicOffsetInfo(offsetId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.findBasicOffsetInfo,
-      append: offsetId,
-      loading: true
+      append: offsetId
     })
   }
 
@@ -113,8 +108,7 @@ export class BasicOffsetService {
    * 查单条冲抵策略
    * @param offsetItemId 冲抵策略项id
    */
-  @Debounce()
-  findBasicOffsetItemInfo(offsetItemId) {
+  findBasicOffsetItemInfo(offsetItemId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.findBasicOffsetItemInfo,
       append: offsetItemId,
@@ -124,10 +118,10 @@ export class BasicOffsetService {
 
   /**
    * 查询冲抵项列表
-   * @param offsetItemId 冲抵策略id
+   * @param offsetId 冲抵策略id
    */
   @Debounce()
-  findBasicOffsetItemList(offsetId) {
+  findBasicOffsetItemList(offsetId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.findBasicOffsetItemList,
       append: offsetId,
@@ -138,11 +132,9 @@ export class BasicOffsetService {
   /**
    * 查询冲抵策略列表
    */
-  @Debounce()
-  findBasicOffsetList() {
+  findBasicOffsetList(): any {
     return this.netService.send({
-      server: manageService.basicOffsetController.findBasicOffsetList,
-      loading: true
+      server: manageService.basicOffsetController.findBasicOffsetList
     })
   }
 
@@ -151,7 +143,7 @@ export class BasicOffsetService {
    * @param offsetItemId 冲抵项Id
    */
   @Debounce()
-  moveDown(offsetItemId) {
+  moveDown(offsetItemId: any): any {
     return this.netService.send({
       server: manageService.basicOffsetController.moveDown,
       append: offsetItemId,
@@ -164,7 +156,7 @@ export class BasicOffsetService {
    * @param offsetItemId 冲抵项Id
    */
   @Debounce()
-  moveUp(offsetItemId) {
+  moveUp(offsetItemId: number): any {
     return this.netService.send({
       server: manageService.basicOffsetController.moveUP,
       append: offsetItemId,

@@ -2,7 +2,12 @@
 <template>
   <section class="component customer-info-car">
     <i-row :gutter="16">
-      <i-col class="col-car" v-for="item of dataSet" :key="item.id" :span="24">
+      <i-col v-if="dataSet.length === 0">
+        <div class="no-data-notice">
+          暂无数据
+        </div>
+      </i-col>
+      <i-col class="col-car" v-for="item of dataSet" :key="item.id" :span="24" v-else>
         <i-card class="car" :title="item.carNo">
           <div slot="extra" v-if="edit">
             <a @click="onDeleteClick(item)">
@@ -26,7 +31,7 @@
         </i-card>
       </i-col>
     </i-row>
-    <div class="add-car" v-if="edit">
+    <div class="add-customer-info" v-if="edit">
       <a @click="onAddCarInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增车产信息
@@ -140,10 +145,6 @@ export default class CustomerInfoCar extends Vue {
 .component.customer-info-car {
   .car {
     margin-bottom: 20px;
-  }
-  .add-car {
-    text-align: right;
-    margin: 0px 30px 0px auto;
   }
 }
 </style>

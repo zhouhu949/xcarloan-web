@@ -34,7 +34,7 @@
           </template>
         </data-form>
 
-        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="searchUserByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
+        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @on-page-change="searchUserByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
       </i-col>
     </i-row>
 

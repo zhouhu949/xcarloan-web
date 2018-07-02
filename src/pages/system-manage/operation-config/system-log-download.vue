@@ -16,7 +16,7 @@
       </template>
     </data-form>
 
-    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
+    <data-box :id="57" :columns="columns1" :data="systemLogsList" @on-page-change="search" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

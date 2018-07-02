@@ -9,7 +9,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="customerSignColumns" :data="customerSignDataSet" @onPageChange="refreshCustomerSign" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="customerSignColumns" :data="customerSignDataSet" @on-page-change="refreshCustomerSign" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -42,8 +42,7 @@ export default class SignContract extends Page {
     this.customerSignColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {
@@ -148,7 +147,7 @@ export default class SignContract extends Page {
         editable: true,
         title: "身份证",
         key: "idCard",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: "center",
@@ -181,7 +180,17 @@ export default class SignContract extends Page {
           h("p", {}, this.$filter.dictConvert(row.accountStatus))
       }
     ];
+  }
 
+  mounted() {
+    // 加载列表数据
+    this.refreshCustomerSign();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载列表数据
     this.refreshCustomerSign();
   }

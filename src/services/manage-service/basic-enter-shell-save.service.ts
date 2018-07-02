@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { Inject, Debounce } from '~/core/decorator'
 import { NetService } from '~/utils/net.service'
+import { PageService } from '~/utils/page.service'
 
 export class BasicEnterShellSaveService {
   @Inject()
@@ -8,16 +9,16 @@ export class BasicEnterShellSaveService {
 
   /**
    * 外采列表
-   * @param model 查询参数实体
+   * @param queryParamsModel 查询参数实体
    * @param page 分页参数实体
    */
-  queryOutSideList(model, page) {
+  queryOutSideList(queryParamsModel: any, page: PageService): any {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.queryOutSideList,
       data: {
-        orderNo: model.orderNo,
-        customerName: model.customerName,
-        stockStatus: model.stockStatus
+        orderNo: queryParamsModel.orderNo,
+        customerName: queryParamsModel.customerName,
+        stockStatus: queryParamsModel.stockStatus
       },
       page: page
     })
@@ -27,7 +28,7 @@ export class BasicEnterShellSaveService {
    * 查询订单车辆详情
    * @param orderId 订单ID
    */
-  getOrderCarById(orderId) {
+  getOrderCarById(orderId: number): any {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.getOrderCarById,
       append: orderId
@@ -39,7 +40,7 @@ export class BasicEnterShellSaveService {
    * @param data 实体模型
    */
   @Debounce()
-  addOrderCarStock(data) {
+  addOrderCarStock(data: any): any {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.addOrderCarStock,
       data: {

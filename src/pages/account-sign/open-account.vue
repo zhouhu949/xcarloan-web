@@ -9,7 +9,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="20" :columns="openAccountColumns" :data="openAccountDataSet" @onPageChange="refreshOpenAccount" :page="pageService" ref="databox"></data-box>
+    <data-box :id="20" :columns="openAccountColumns" :data="openAccountDataSet" @on-page-change="refreshOpenAccount" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -49,8 +49,7 @@ export default class OpenAccount extends Page {
     this.openAccountColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 80,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {
@@ -154,7 +153,7 @@ export default class OpenAccount extends Page {
         editable: true,
         title: "身份证",
         key: "idCard",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: "center",
@@ -189,7 +188,17 @@ export default class OpenAccount extends Page {
           h("p", {}, this.$filter.dictConvert(row.accountStatus))
       }
     ];
+  }
 
+  mounted() {
+    // 加载列表数据
+    this.refreshOpenAccount();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载列表数据
     this.refreshOpenAccount();
   }

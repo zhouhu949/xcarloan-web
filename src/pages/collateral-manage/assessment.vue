@@ -2,15 +2,15 @@
   <section class="page assessment">
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshCustomerAssessmentCar">
       <template slot="input">
-        <i-form-item prop="orderNo" label="订单编号：">
-          <i-input placeholder="请输入订单编号" v-model="queryParamsModel.orderNo"></i-input>
+        <i-form-item prop="carNo" label="车牌号：">
+          <i-input placeholder="请输入车牌号" v-model="queryParamsModel.carNo"></i-input>
         </i-form-item>
         <i-form-item prop="customerName" label="客户姓名：">
           <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="customerAssessmentCarColumns" :data="customerAssessmentCarDataSet" @onPageChange="refreshCustomerAssessmentCar" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="customerAssessmentCarColumns" :data="customerAssessmentCarDataSet" @on-page-change="refreshCustomerAssessmentCar" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -38,23 +38,19 @@ export default class Assessment extends Page {
   private customerAssessmentCarDataSet: Array<any> = [];
 
   private queryParamsModel = {
-    orderNo: "",
+    carNo: "",
     customerName: ""
   };
 
   created() {
-    // 加载数据
-    this.refreshCustomerAssessmentCar();
-
     this.customerAssessmentCarColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           //评估状态[10021] 10062 : 待评估 ; 10061 : 已评估
-          if (row.assessmentStatus == 10062) {
+          if (!row.assessmentStatus || row.assessmentStatus == 10062) {
             return h(
               "i-button",
               {
@@ -84,8 +80,8 @@ export default class Assessment extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.onGetAssessmentReportList(row.carId);
-                    this.onModifyCustomerAssessment(row);
+                    this.onGetAssessmentReportList(row.carId);
+                    // this.onModifyCustomerAssessment(row);
                   }
                 }
               },
@@ -155,6 +151,19 @@ export default class Assessment extends Page {
           h("p", {}, this.$filter.dictConvert(row.assessmentStatus))
       }
     ];
+  }
+
+  mounted() {
+    // 加载数据
+    this.refreshCustomerAssessmentCar();
+  }
+
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated() {
+    // 加载数据
+    this.refreshCustomerAssessmentCar();
   }
 
   /**

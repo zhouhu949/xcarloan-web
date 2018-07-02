@@ -61,13 +61,11 @@ export class FilterService {
     return target
   }
 
-
   /**
    * 日期格式化
    * @param date
-   * @param fmt
    */
-  static dateFormat(date, fmt = "yyyy-MM-dd hh:mm:ss"): string {
+  static dateFormat(date, fmt = "yyyy-MM-dd"): string {
     // 空数据处理
     if (date === null || date === undefined || date === '') {
       return ''
@@ -95,6 +93,15 @@ export class FilterService {
     }
 
     return fmt
+  }
+
+  /**
+   * 日期时间格式化
+   * @param date
+   * @param fmt
+   */
+  static dateTimeFormat(date, fmt = "yyyy-MM-dd HH:mm:ss"): string {
+    return FilterService.dateFormat(date, fmt)
   }
   /**
    * 千分位转换
@@ -185,17 +192,10 @@ export class FilterService {
   /**
    * 
    * @param value 要格式化的金额字符串
+   * @param roundPre 精度 默认为2
    */
-  static moneyFormat(value: number) {
-    let result = LodashService.round(value as number, 2)
-    return `${result}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
-  }
-  /**
-   * 
-   * @param value 要格式化的金额字符串
-   */
-  static moneyFormatFour(value: number) {
-    let result = LodashService.round(value as number, 4)
+  static moneyFormat(value: number, roundPre: Number = 2) {
+    let result = LodashService.round(value as number, roundPre)
     return `${result}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
   }
 

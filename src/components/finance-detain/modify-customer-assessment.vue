@@ -7,8 +7,8 @@
         <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
         <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
         <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-        <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-        <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType | dictConvert }}</data-grid-item>
+        <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType | dictConvert }}</data-grid-item>
       </data-grid>
     </i-card>
 
@@ -72,61 +72,14 @@
         </i-row>
 
         <i-collapse>
-          <i-panel name="1">
-            外观
+          <i-panel v-for="item in model.carAttributeModelList" :name="$filter.dictConvert(item.configType)" :key="item.configType">
+            {{ item.configType | dictConvert }}
             <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
-              <data-grid-item label="客户姓名" :span="6">
-                <i-radio-group v-model="model.remark">
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="value" :true-value="value">{{label}}</i-radio>
+              <data-grid-item v-for="item in item.data" :label="item.attrValue" :span="6" :key="item.attrName">
+                <i-radio-group v-model="item.attrCode">
+                  <i-radio v-for="{value,label} in $dict.getDictData(10057)" :key="value" :label="value" :true-value="value">{{label}}</i-radio>
                 </i-radio-group>
               </data-grid-item>
-              <data-grid-item label="客户电话" :span="6"> 
-                <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
-                </i-radio-group>
-              </data-grid-item>
-              <data-grid-item label="身份证" :span="6">
-                <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
-                </i-radio-group>
-              </data-grid-item>
-              <data-grid-item label="车牌号" :span="6">
-                <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
-                </i-radio-group>
-              </data-grid-item>
-              <data-grid-item label="车辆型号" :span="6">
-                <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
-                </i-radio-group>
-              </data-grid-item>
-              <data-grid-item label="购买方式" :span="6">
-                <i-radio-group>
-                  <i-radio v-for="{value,label} in $dict.getDictData(10001)" :key="value" :label="label" :true-value="value"></i-radio>
-                </i-radio-group>
-              </data-grid-item>
-            </data-grid>
-          </i-panel>
-          <i-panel name="2">
-            内饰
-            <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left">
-              <data-grid-item label="客户姓名" :span="6">{{customerCarInfo.customerName }}</data-grid-item>
-              <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
-              <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
-              <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
-            </data-grid>
-          </i-panel>
-          <i-panel name="3">
-            机舱/底盘
-            <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left">
-              <data-grid-item label="客户姓名" :span="6">{{customerCarInfo.customerName }}</data-grid-item>
-              <data-grid-item label="客户电话" :span="6">{{customerCarInfo.customerPhone}}</data-grid-item>
-              <data-grid-item label="身份证" :span="6">{{customerCarInfo.idCard}}</data-grid-item>
-              <data-grid-item label="车牌号" :span="6">{{customerCarInfo.carNo }}</data-grid-item>
-              <data-grid-item label="车辆型号" :span="6">{{customerCarInfo.carType |dictConvert }}</data-grid-item>
-              <data-grid-item label="购买方式" :span="6">{{customerCarInfo.buyType |dictConvert }}</data-grid-item>
             </data-grid>
           </i-panel>
         </i-collapse>
@@ -148,7 +101,7 @@
         <i-row :gutter="15">
           <i-col :span="12">
             <i-form-item label="估价" prop="evaluation">
-              <i-input-number v-model="model.evaluation" placeholder="请选输入估价" :precision="2" :step="0.01" :formatter="value => `￥ ${value}`.replace(/B(?=(d{3})+(?!d))/g, ',')" :parser="value => value.replace(/￥s?|(,*)/g, '')" :readonly="isView"></i-input-number>
+              <i-input-number v-model="model.evaluation" placeholder="请选输入估价" :readonly="isView" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
               <span>元</span>
             </i-form-item>
           </i-col>
@@ -194,6 +147,7 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerAssessmentCarService } from "~/services/manage-service/basic-customer-assessment-car.service";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { Object } from "core-js";
 
 @Component({
   components: {
@@ -234,17 +188,18 @@ export default class ModifyCustomerAssessment extends Vue {
   isView: boolean;
 
   isLtRegisterTime = (rule, value, callback) => {
-    if (
-      new Date(value).getTime() > new Date(this.model.assessmentDate).getTime()
-    ) {
-      // 拼接:000是因为时间戳算到毫秒，根据自己拿到的值的实际情况来
-      callback(new Error());
-    } else {
-      callback();
-    }
+    try {
+      if (
+        new Date(value).getTime() >
+        new Date(this.model.assessmentDate).getTime()
+      ) {
+        // 拼接:000是因为时间戳算到毫秒，根据自己拿到的值的实际情况来
+        callback(new Error());
+      } else {
+        callback();
+      }
+    } catch (error) {}
   };
-
-  private test: string;
 
   private customerCarInfo: any = {
     buyType: "",
@@ -288,7 +243,9 @@ export default class ModifyCustomerAssessment extends Vue {
     // 过户次数
     transferNo: 0,
     // 变速箱形式
-    transmission: ""
+    transmission: "",
+    // 配置
+    carAttributeModelList: []
   };
 
   private rules = {
@@ -382,19 +339,55 @@ export default class ModifyCustomerAssessment extends Vue {
           err => this.$Message.error(err.msg)
         );
     }
+
+    // 获取配置项列表
+    this.refreshCustomerBankInfo();
+  }
+
+  configChange(item, index) {
+    this.model.config[index] = {
+      attrType: item.attrType,
+      attrName: item.attrName,
+      attrValue: item.attrValue
+    };
   }
 
   /**
-   * 提交抵押入库
+   * 获取评估车型列表
+   */
+  refreshCustomerBankInfo() {
+    this.basicCustomerAssessmentCarService.getAssessmentConfigList().subscribe(
+      data => {
+        this.model.carAttributeModelList = Object.assign([], data);
+      },
+      err => this.$Message.error(err.msg)
+    );
+  }
+
+  /**
+   * 提交评估
    */
   submit() {
     let form = this.$refs["form"] as Form;
+
     return new Promise((resolve, reject) => {
       form.validate(v => {
         if (!v) return resolve(false);
 
+        // 临时数据
+        let model = Object.assign([], this.model);
+        // 配置项处理
+        model.carAttributeModelList = [];
+
+        // 数据处理
+        Object.assign([], this.model.carAttributeModelList).forEach(element => {
+          element.data.forEach(item => {
+            model.carAttributeModelList.push(Object.assign({}, item));
+          });
+        });
+
         this.basicCustomerAssessmentCarService
-          .addBasicCustomerAssessment(this.model)
+          .addBasicCustomerAssessment(model)
           .subscribe(data => resolve(true), err => reject(err));
       });
     });

@@ -8,8 +8,8 @@
         <i-form-item prop="idCard" label="身份证号">
           <i-input v-model="model.idCard" placeholder="请输入身份证号"></i-input>
         </i-form-item>
-        <i-form-item prop="phone" label="联系方式">
-          <i-input v-model="model.phone" placeholder="请输入联系方式"></i-input>
+        <i-form-item prop="phone" label="联系电话">
+          <i-input v-model="model.phone" placeholder="请输入联系电话"></i-input>
         </i-form-item>
         <i-form-item prop="orderNo" label="订单号">
           <i-input v-model="model.orderNo" placeholder="请输入订单号"></i-input>
@@ -19,11 +19,11 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" @onPageChange="refreshData" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" @on-page-change="refreshData" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
@@ -31,8 +31,9 @@ import { PageService } from "~/utils/page.service";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 import { namespace } from "vuex-class";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { Button } from "iview";
 
-const CustomerOrderModule = namespace("customerOrderSpace")
+const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Layout('workspace')
 @Component({
@@ -42,6 +43,11 @@ export default class OrderReview extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
   @CustomerOrderModule.Action showOrderInfo;
+
+  /**
+   * 可以结案的案件状态
+   */
+  private readonly CLOSE_STATUS: Array<Number> = [10112, 10113, 10115];
 
   private model: any = {
     name: "",
@@ -59,45 +65,26 @@ export default class OrderReview extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.showOrderInfo(row.orderId)
-                    this.$dialog.show({
-                      width: 1050,
-                      render: h => h(OrderCustomerInfo)
-                    })
-                  }
-                }
-              },
-              '查看详情'
-            )
-          ])
+          if (this.CLOSE_STATUS.includes(row.orderStatus)) {
+            return (<i-button type="text" class="row-command-button" onClick={() => this.onCloseClick(row.orderId)}>结案</i-button>)
+          }
         }
       },
       {
         align: 'center',
         title: ' 订单号',
         key: 'orderNo',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onOrderNumberClick(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
         title: ' 订单状态',
         key: 'orderStatus',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderStatus))
+        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderStatus)}</span>)
       },
       {
         align: 'center',
@@ -109,7 +96,8 @@ export default class OrderReview extends Page {
         align: 'center',
         title: ' 订单金额',
         key: 'orderPrice',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.orderPrice)}</div>)
       },
       {
         align: 'center',
@@ -132,6 +120,9 @@ export default class OrderReview extends Page {
     ]
   }
 
+  activated() {
+    this.refreshData()
+  }
   mounted() {
     this.refreshData()
   }
@@ -141,6 +132,21 @@ export default class OrderReview extends Page {
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
+  }
+
+  /**
+   * 结案
+   */
+  private onCloseClick(orderId: Number) {
+
+  }
+
+  private onOrderNumberClick(orderId: Number) {
+    this.showOrderInfo(orderId)
+    this.$dialog.show({
+      width: 1050,
+      render: h => h(OrderCustomerInfo)
+    })
   }
 
 }

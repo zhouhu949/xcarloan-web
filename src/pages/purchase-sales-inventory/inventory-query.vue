@@ -1,7 +1,7 @@
 <template>
   <section class="page inventory-manage">
     <page-header title="库存车辆管理" hiddenPrint hiddenExport>
-      <command-button label="新增库存车辆" @click="onStockCarOperate()"></command-button>
+      <command-button label="新增库存车辆" @click="onStockCarOperate"></command-button>
     </page-header>
     <i-row class="form" :gutter="16">
       <i-col class="data-form" :span="6">
@@ -23,7 +23,7 @@
             </i-form-item>
           </template>
         </data-form>
-        <data-box :columns="inventoryColumns" :data="inventoryDataSet" @onPageChange="refreshStockCarByModel" :page="pageService" ref="databox"></data-box>
+        <data-box :columns="inventoryColumns" :data="inventoryDataSet" @on-page-change="refreshStockCarByModel" :page="pageService" ref="databox"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -73,8 +73,6 @@ export default class InventoryQuery extends Page {
   };
 
   created() {
-    //加载供应商信息
-    this.getBasicSupplier();
     //当前
     this.dataTree = this.$refs["data-tree"] as DataTree;
     //
@@ -163,6 +161,11 @@ export default class InventoryQuery extends Page {
     ];
   }
 
+  mounted() {
+    //加载供应商信息
+    this.getBasicSupplier();
+  }
+  
   /**
    * 车型选中改变事件
    */
@@ -209,6 +212,7 @@ export default class InventoryQuery extends Page {
 
   /**
    * 获取车型信息
+   * @param val 选中行数据
    */
   onGetCarParams(val: Object) {
     this.$dialog.show({
@@ -229,6 +233,11 @@ export default class InventoryQuery extends Page {
    * 刷新数据
    */
   refreshStockCarByModel() {
+    if (!this.modelId) {
+      this.$Message.warning("请选择车型！");
+      return;
+    }
+    
     this.basicStockCarService
       .findAllStockCarList(this.queryParamsModel, this.pageService)
       .subscribe(

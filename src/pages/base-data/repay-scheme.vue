@@ -75,7 +75,7 @@ export default class RepayScheme extends Page {
           }
         })
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 

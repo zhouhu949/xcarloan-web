@@ -1,30 +1,60 @@
 <template>
   <section class="page repayment-query">
- <page-header title="还款查询" hiddenPrint hiddenExport>
+    <page-header title="还款查询" hiddenPrint hiddenExport>
     </page-header>
-    <data-box :columns="repayOrderColumns" :data="repayOrderDataSet" @onPageChange="refreshRepayOrder" ref="databox"></data-box>
+    <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshRepayOrder">
+      <template slot="input">
+        <i-form-item prop="customerName" label="客户姓名：">
+          <i-input placeholder="请输入客户姓名" v-model="queryParamsModel.customerName"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="身份证号：">
+          <i-input placeholder="请输入身份证号" v-model="queryParamsModel.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="customerPhone" label="电话号码：">
+          <i-input placeholder="请输入电话号码" v-model="queryParamsModel.customerPhone"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNo" label="订单号：">
+          <i-input placeholder="请输入订单号" v-model="queryParamsModel.orderNo"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="repayOrderColumns" :data="repayOrderDataSet" @on-page-change="refreshRepayOrder" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
 <script lang="ts">
-import Page from '~/core/page'
-import { Layout } from '~/core/decorator'
+import Page from "~/core/page";
+import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import OrderRepaySchemeDetails from "~/components/financial-query/order-repay-scheme-details.vue";
+import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { PageService } from "~/utils/page.service";
 
-@Layout('workspace')
+const CustomerOrderModule = namespace("customerOrderSpace");
+@Layout("workspace")
 @Component({
   components: {}
 })
 export default class RepaymentQuery extends Page {
-@Dependencies(FinancialManagementService)
-  financialManagementService: FinancialManagementService;
+  @Dependencies(FinancialQueryService)
+  financialQueryService: FinancialQueryService;
   @Dependencies(PageService) private pageService: PageService;
+
+  @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private repayOrderColumns: any;
   private repayOrderDataSet: Array<any> = [];
+
+  private queryParamsModel = {
+    customerName: "",
+    orderNo: "",
+    idCard: "",
+    customerPhone: ""
+  };
 
   created() {
     this.repayOrderColumns = [
@@ -46,7 +76,7 @@ export default class RepaymentQuery extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.onDetainDetails(row.id);
+                    this.onOrderRepaySchemeDetails(row.orderId);
                   }
                 }
               },
@@ -61,14 +91,60 @@ export default class RepaymentQuery extends Page {
         editable: true,
         title: "订单号",
         key: "orderNo",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showOrderInfo(row.orderId);
+                  this.$dialog.show({
+                    width: 1050,
+                    render: h => h(OrderCustomerInfo)
+                  });
+                }
+              }
+            },
+            row.orderNo
+          );
+        }
       },
       {
         align: "center",
         editable: true,
         title: "客户姓名",
         key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showCustomerInfo({ id: row.customerId });
+                  this.$dialog.show({
+                    width: 1050,
+                    render: h => h(OrderCustomerInfo)
+                  });
+                }
+              }
+            },
+            row.customerName
+          );
+        }
       },
       {
         align: "center",
@@ -148,11 +224,32 @@ export default class RepaymentQuery extends Page {
   }
 
   /**
+   * keep-alive生命周期钩子函数
+   */
+  activated() {
+    // 加载数据
+    this.refreshRepayOrder();
+  }
+
+  onOrderRepaySchemeDetails(orderId: number) {
+    this.$dialog.show({
+      title: "查看详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(OrderRepaySchemeDetails, {
+          props: {
+            orderId: orderId
+          }
+        })
+    });
+  }
+  /**
    * 刷新列表
    */
   refreshRepayOrder() {
-    this.financialManagementService
-      .findRepayOrderList()
+    this.financialQueryService
+      .findRepayOrderUnpaidList(this.queryParamsModel, this.pageService)
       .subscribe(
         data => (this.repayOrderDataSet = data),
         err => this.$Message.error(err.msg)
@@ -160,7 +257,6 @@ export default class RepaymentQuery extends Page {
   }
 }
 </script>
-
 
 <style lang="less" scoped>
 </style>

@@ -1,28 +1,31 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import { PageService } from '~/utils/page.service'
+
 export class BasicSupplierService {
   @Inject()
   private netService: NetService
 
   /**
    * 查询供应商数据
+   * @param queryParamsModel 查询参数实体
+   * @param page 分页参数实体
    */
-  @Debounce()
-  queryBasicSupplierPage(data, page) {
+  queryBasicSupplierPage(queryParamsModel: any, page: PageService): any {
     return this.netService.send({
       server: manageService.basicSupplierController.queryBasicSupplierPage,
       data: {
-        supplierName: data.name
+        supplierName: queryParamsModel.name
       },
       page
     })
   }
+
   /**
    * 获取供应商列表
    */
-  @Debounce()
-  getBasicSupplierList() {
+  getBasicSupplierList(): any {
     return this.netService.send({
       server: manageService.basicSupplierController.getBasicSupplierList
     })
@@ -32,8 +35,7 @@ export class BasicSupplierService {
    * 根据供应商ID查找供应商
    * @param id 供应商ID
    */
-  @Debounce()
-  getBasicSupplierById(id) {
+  getBasicSupplierById(id: number): any {
     return this.netService.send({
       server: manageService.basicSupplierController.getBasicSupplierById,
       append: id,
@@ -45,7 +47,7 @@ export class BasicSupplierService {
    * @param data 修改实体
    */
   @Debounce()
-  editBasicSupplier(data) {
+  editBasicSupplier(data: any): any {
     return this.netService.send({
       server: manageService.basicSupplierController.editBasicSupplier,
       data: {
@@ -61,10 +63,10 @@ export class BasicSupplierService {
 
   /**
    * 删除供应商
-   * @param expenseId 供应商id
+   * @param number 供应商id
    */
   @Debounce()
-  deleteBasicSupplier(id) {
+  deleteBasicSupplier(id: number): any {
     return this.netService.send({
       server: manageService.basicSupplierController.deleteBasicSupplier,
       append: id,
@@ -76,7 +78,7 @@ export class BasicSupplierService {
    * 新增供应商
    */
   @Debounce()
-  addBasicSupplier(data) {
+  addBasicSupplier(data: any): any {
     return this.netService.send({
       server: manageService.basicSupplierController.addBasicSupplier,
       data: {

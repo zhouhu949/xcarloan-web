@@ -86,7 +86,8 @@ export default class ContractUpload extends Vue {
             "Select",
             {
               props: {
-                value: this.uploadedDataSet[params.index].fileType
+                value: this.uploadedDataSet[params.index].fileType,
+                disabled: this.isView
               },
               on: {
                 "on-change": value => {
@@ -95,8 +96,8 @@ export default class ContractUpload extends Vue {
               }
             },
             // 资料类型
-            this.$dict.getDictData(10036).map(function(item) {
-              return h(
+            this.$dict.getDictData(10036).map(item =>
+              h(
                 "Option",
                 {
                   props: {
@@ -106,8 +107,8 @@ export default class ContractUpload extends Vue {
                   }
                 },
                 item
-              );
-            })
+              )
+            )
           );
         }
       },
@@ -117,8 +118,8 @@ export default class ContractUpload extends Vue {
         width: 150,
         align: "center",
         render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
+          if (this.isView) {
+            return h(
               "i-button",
               {
                 props: {
@@ -134,32 +135,52 @@ export default class ContractUpload extends Vue {
                 }
               },
               "下载"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: "提示",
-                      content: "确定执行删除吗？",
-                      transfer: false,
-                      onOk: () => {
-                        this.handleRemove(row);
-                      }
-                    });
+            );
+          } else {
+            return h("div", [
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.download(row);
+                    }
                   }
-                }
-              },
-              "删除"
-            )
-          ]);
+                },
+                "下载"
+              ),
+              h(
+                "i-button",
+                {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: "提示",
+                        content: "确定执行删除吗？",
+                        transfer: false,
+                        onOk: () => {
+                          this.handleRemove(row);
+                        }
+                      });
+                    }
+                  }
+                },
+                "删除"
+              )
+            ]);
+          }
         }
       }
     ];
@@ -255,7 +276,7 @@ export default class ContractUpload extends Vue {
             type: "",
             url: v.fileUrl,
             localUrl: "",
-            name: data.fileName,
+            name: v.fileName,
             size: 0,
             createTime: "",
             creator: null,

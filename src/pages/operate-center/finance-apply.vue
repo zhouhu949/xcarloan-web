@@ -2,7 +2,7 @@
 <template>
   <section class="page finance-apply">
     <page-header title="融资租赁申请" hiddenPrint hiddenExport></page-header>
-    <i-form class="base-form" inline :label-width="110" :model="basicModel">
+    <i-form ref="form" class="base-form" inline :label-width="110" :model="basicModel">
       <i-card title="客户基本信息">
         <div slot="extra">
           <a @click="dialog.selectedCustomer=true">
@@ -29,12 +29,12 @@
         </i-form-item>
       </i-card>
     </i-form>
-    <i-card title="还款详情" v-show="!!basicModel.schemeId">
-      <product-scheme-detail :productId="basicModel.productId" :productType="detailType"></product-scheme-detail>
+    <i-card title="还款详情" v-show="!!basicModel.productId">
+      <product-scheme-detail :queryParams="{productId:basicModel.productId}" :productType="detailType"></product-scheme-detail>
     </i-card>
 
-    <div v-show="!!dataSet.length" class="fixed-container">
-      <i-button class="highButton">提交</i-button>
+    <div v-show="!!basicModel.productId" class="fixed-container">
+      <i-button class="highButton" @click="submit">提交</i-button>
     </div>
 
     <template>
@@ -60,6 +60,7 @@ import ChooseCustomer from "~/components/operate-center/choose-customer.vue";
 import ChooseProduct from "~/components/operate-center/choose-product.vue";
 import ProductSchemeDetail from "~/components/base-data/product-scheme-detail.vue";
 import { ProdSchemeDetailType } from "~/config/enum.config";
+import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 
 @Layout('workspace')
 @Component({
@@ -71,11 +72,10 @@ import { ProdSchemeDetailType } from "~/config/enum.config";
   }
 })
 export default class FinanceApply extends Page {
-
+  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService
   private detailType = ProdSchemeDetailType.FINANCE
   private basicModel: any = null;
   private columns: Array<any> = null;
-  private dataSet: Array<any> = [];
   private dialog = {
     selectedCar: false,
     selectedCustomer: false,
@@ -176,6 +176,33 @@ export default class FinanceApply extends Page {
     this.basicModel.productName = data.productName
   }
 
+  /**
+   * 提交
+   */
+  private submit() {
+    this.basicCustomerOrderService.createFinancingOrder(
+      this.basicModel.customerId,
+      this.basicModel.carId,
+      this.basicModel.productId
+    ).subscribe(
+      data => {
+        this.$Message.success('操作成功')
+        this.resetPage()
+      },
+      err => this.$Message.error(err.msg)
+    )
+  }
+
+  /**
+   * 重置页面
+   */
+  private resetPage() {
+    let form: any = this.$refs.form
+    form.resetFields()
+    this.basicModel.customerId = null
+    this.basicModel.carIds = null
+    this.basicModel.productId = null
+  }
 
 }
 </script>
@@ -186,5 +213,6 @@ export default class FinanceApply extends Page {
   .base-form {
     margin-top: 20px;
   }
+  margin-bottom: 80px;
 }
 </style>

@@ -1,8 +1,20 @@
-export const requestType = {
-  Delete: "DELETE",
-  Get: "GET",
-  Post: "POST",
-  Put: "PUT"
+export enum requestType {
+  /**
+   * 删除
+   */
+  Delete = "DELETE",
+  /**
+   * 获取
+   */
+  Get = "GET",
+  /**
+   * 修改
+   */
+  Post = "POST",
+  /**
+   * 修改
+   */
+  Put = "PUT"
 }
 
 /**
@@ -40,7 +52,7 @@ export enum InfoCompontentType {
 /**
  * 编辑类型
  */
-export enum EditType{
+export enum EditType {
   /**
    * 增加
    */
@@ -56,9 +68,9 @@ export enum EditType{
 }
 
 /**
- * 产品方案计算详情类型
+ * 产品方案/计算详情类型
  */
-export enum ProdSchemeDetailType{
+export enum ProdSchemeDetailType {
   /**
    * 产品配置
    */
@@ -66,9 +78,9 @@ export enum ProdSchemeDetailType{
   /**
    * 融资租赁
    */
-  FINANCE,
+  FINANCE = 10049,
   /**
    * 抵押贷款
    */
-  MORTGAGE
+  MORTGAGE = 10050
 }

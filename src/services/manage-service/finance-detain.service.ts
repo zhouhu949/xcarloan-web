@@ -1,8 +1,8 @@
 import { manageService } from '~/config/server/manage-service'
 import { Inject, Debounce } from '~/core/decorator'
 import { NetService } from '~/utils/net.service'
-import { CommonService } from '~/utils/common.service';
 import { FilterService } from '~/utils/filter.service';
+import { PageService } from '~/utils/page.service'
 
 export class FinanceDetainService {
   @Inject()
@@ -13,8 +13,7 @@ export class FinanceDetainService {
    * @param queryParamsModel 查询参数实体
    * @param page 分页参数实体
    */
-  @Debounce()
-  getFinanceStorageList(queryParamsModel, page) {
+  getFinanceStorageList(queryParamsModel: any, page: PageService): any {
     return this.netService.send({
       server: manageService.financeDetainController.getFinanceStorageList,
       data: {
@@ -32,7 +31,7 @@ export class FinanceDetainService {
    * @param data 抵押实体
    */
   @Debounce()
-  financeMortgageInStorage(data) {
+  financeMortgageInStorage(data: any): any {
     // 模型
     let model = Object.assign({}, data);
 
@@ -43,7 +42,7 @@ export class FinanceDetainService {
         id: model.id,
         gpsNo: model.gpsNo,
         gpsManufactor: model.gpsManufactor,
-        stockDate: FilterService.dateFormat(model.stockDate,"yyyy-MM-dd")
+        stockDate: FilterService.dateFormat(model.stockDate, "yyyy-MM-dd")
       },
       loading: true
     })
@@ -54,7 +53,7 @@ export class FinanceDetainService {
    * @param data 抵押实体
    */
   @Debounce()
-  financeMortgageOutStorage(data) {
+  financeMortgageOutStorage(data: any): any {
     // 模型
     let model = Object.assign({}, data);
 
@@ -73,7 +72,7 @@ export class FinanceDetainService {
    * @param data 质押实体
    */
   @Debounce()
-  financePledgeInStorage(data) {
+  financePledgeInStorage(data: any): any {
     // 模型
     let model = Object.assign({}, data);
 
@@ -94,7 +93,7 @@ export class FinanceDetainService {
    * @param data 质押实体
    */
   @Debounce()
-  financePledgeOutStorage(data) {
+  financePledgeOutStorage(data: any): any {
     // 模型
     let model = Object.assign({}, data);
 
@@ -112,7 +111,7 @@ export class FinanceDetainService {
    * 查看押品详情
    * @param detainId 押品记录ID
    */
-  getDetainDetails(detainId) {
+  getDetainDetails(detainId: number): any {
     return this.netService.send({
       server: manageService.financeDetainController.getDetainDetails,
       append: detainId,
@@ -122,8 +121,9 @@ export class FinanceDetainService {
 
   /**
    * 查看抵押押品记录
+   * @param detainId 押品Id
    */
-  getDetainMortRecord(detainId) {
+  getDetainMortRecord(detainId: number): any {
     return this.netService.send({
       server: manageService.financeDetainController.getDetainMortRecord,
       append: detainId,
@@ -133,8 +133,9 @@ export class FinanceDetainService {
 
   /**
    * 查看质押押品记录
+   * @param detainId 押品Id
    */
-  getDetainPoleRecord(detainId) {
+  getDetainPoleRecord(detainId: number): any {
     return this.netService.send({
       server: manageService.financeDetainController.getDetainPoleRecord,
       append: detainId,

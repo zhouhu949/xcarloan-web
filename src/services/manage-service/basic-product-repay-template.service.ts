@@ -10,6 +10,7 @@ export class BasicProductRepayTemplateService {
   /**
    * 确认发布产品
    */
+  @Debounce()
   publishBasicProduct(data) {
     return this.netService.send({
       server: manageService.basicProductRepayTemplateController.publishBasicProduct,

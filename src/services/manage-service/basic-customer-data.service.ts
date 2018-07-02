@@ -13,9 +13,7 @@ export class BasicCustomerDataService {
   getCustomerData(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerDataController.getCustomerData,
-      data: {
-        id: customerId
-      }
+      append: customerId
     })
   }
 }

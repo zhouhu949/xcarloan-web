@@ -1,7 +1,7 @@
 <!--维护房产信息-->
 <template>
   <section class="component modify-customer-info-house">
-    <i-form ref="from" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
       <i-form-item label="户型" prop="houseType">
         <i-select v-model="model.houseType" clearable>
           <i-option v-for="{value,label} in $dict.getDictData(10034)" :key="value" :label="label" :value="value"></i-option>
@@ -40,10 +40,9 @@ export default class ModifyCustomerInfoHouse extends Vue {
 
   created() {
     this.model = {
-      houseType: 0, // 户型
+      houseType: '', // 户型
       houseArea: 0, // 房产面积
       houseAddress: '', // 房屋地址
-      // houseId: 0, // 房产id
       remark: '' // 备注
     }
 
@@ -84,7 +83,7 @@ export default class ModifyCustomerInfoHouse extends Vue {
   }
 
   private submit() {
-    let form: any = this.$refs.from
+    let form: any = this.$refs.form
     return new Promise((resolve) => {
       form.validate(v => {
         if (!v) return resolve()

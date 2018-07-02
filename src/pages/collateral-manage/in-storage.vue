@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="inStorageColumns" :data="inStorageDataSet" @onPageChange="refreshInStorage" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="inStorageColumns" :data="inStorageDataSet" @on-page-change="refreshInStorage" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -53,16 +53,11 @@ export default class InStorage extends Page {
     mortgageStatus: ""
   };
 
-  activated(){
-    console.log("instorage当前窗口活动中");
-  }
-
   created() {
     this.inStorageColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库
@@ -144,7 +139,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "抵押详情"
+                  "押品详情"
                 )
               ]);
             } else if (row.orderMrtgageType === 10054) {
@@ -181,7 +176,7 @@ export default class InStorage extends Page {
                       }
                     }
                   },
-                  "质押详情"
+                  "押品详情"
                 )
               ]);
             }
@@ -248,6 +243,14 @@ export default class InStorage extends Page {
   }
 
   mounted() {
+    // 加载数据
+    this.refreshInStorage();
+  }
+  
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
     // 加载数据
     this.refreshInStorage();
   }

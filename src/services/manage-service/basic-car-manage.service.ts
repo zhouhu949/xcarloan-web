@@ -1,6 +1,5 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 import { PageService } from '~/utils/page.service';
 
@@ -19,6 +18,7 @@ export class BasicCarManageService {
   /**
    * 新增品牌
    */
+  @Debounce()
   addCarBrand(brandName, url) {
     return this.netService.send({
       data: {
@@ -32,6 +32,7 @@ export class BasicCarManageService {
   /**
    * 修改车辆品牌
    */
+  @Debounce()
   editCarBrand(data) {
     return this.netService.send({
       data: data,
@@ -52,6 +53,7 @@ export class BasicCarManageService {
   /**
    * 删除车辆品牌
    */
+  @Debounce()
   deleteCarBrand(id) {
     return this.netService.send({
       append: id,
@@ -61,6 +63,7 @@ export class BasicCarManageService {
   /**
    * 新增车系
    */
+  @Debounce()
   addCarSeries(data) {
     return this.netService.send({
       data: data,
@@ -71,6 +74,7 @@ export class BasicCarManageService {
   /**
    * 删除车系
    */
+  @Debounce()
   deleteCarSeries(id) {
     return this.netService.send({
       append: id,
@@ -90,6 +94,7 @@ export class BasicCarManageService {
   /**
    * 修改车系
    */
+  @Debounce()
   editCarSeries(data) {
     return this.netService.send({
       data: data,
@@ -100,6 +105,7 @@ export class BasicCarManageService {
   /**
    * 新增车型
    */
+  @Debounce()
   addCarModel(data) {
     return this.netService.send({
       data: {
@@ -122,6 +128,7 @@ export class BasicCarManageService {
   /**
    * 删除车型
    */
+  @Debounce()
   deleteCarModel(id) {
     return this.netService.send({
       append: id,
@@ -133,7 +140,6 @@ export class BasicCarManageService {
    * 修改车型
    */
   editCarModel(carId, data) {
-    console.log(data)
     return this.netService.send({
       data: {
         displacement: data.carEmissions,
@@ -145,8 +151,9 @@ export class BasicCarManageService {
         modelName: data.modelName,
         modelVolume: data.carSize,
         remark: data.remark,
-        id: data.seriesId,
+        id: carId,
         structure: data.carStructure,
+        referencePrice: data.referencePrice
       },
       loading: true,
       server: manageService.basicCarManagecontroller.editCarModel,
@@ -185,6 +192,7 @@ export class BasicCarManageService {
   /**
    * 添加车辆配置参数
    */
+  @Debounce()
   addCarConfigParamInfo(data) {
     return this.netService.send({
       data: {
@@ -199,6 +207,7 @@ export class BasicCarManageService {
   /**
    * 新增 车型介绍
    */
+  @Debounce()
   addCarIntenduceInfo(data) {
     return this.netService.send({
       data: {
@@ -224,6 +233,7 @@ export class BasicCarManageService {
   /**
    * 删除车型介绍
    */
+  @Debounce()
   deleteCarIntenduceInfo(id) {
     return this.netService.send({
       append: id,
@@ -234,6 +244,7 @@ export class BasicCarManageService {
   /**
   *  添加车辆主图
   */
+  @Debounce()
   addCarModelPhoto(data) {
     return this.netService.send({
       data: data,
@@ -254,6 +265,7 @@ export class BasicCarManageService {
   /**
   * 删除配置参数
   */
+  @Debounce()
   deleteCarConfigParam(id) {
     return this.netService.send({
       append: id,

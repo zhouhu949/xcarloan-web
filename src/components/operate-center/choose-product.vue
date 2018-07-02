@@ -122,7 +122,7 @@ export default class ChooseProduct extends Vue {
         this.schemeDataSet = data
         if (!this.schemeDataSet.length) this.selecedData = null
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 }

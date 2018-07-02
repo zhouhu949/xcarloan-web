@@ -10,7 +10,6 @@ export class BasicCustomerService {
   /**
    * 根据ID查找客户
    */
-  @Debounce()
   findCustomerById(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.findCustomerById,
@@ -20,7 +19,6 @@ export class BasicCustomerService {
   /**
    * 客户银行卡信息
    */
-  @Debounce()
   findCustomerBankInfo(customerId) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerBankInfo,
@@ -34,7 +32,6 @@ export class BasicCustomerService {
    * @param model 查询参数实体
    * @param page 分页实体
    */
-  @Debounce()
   findAllCustomerList(model, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.findAllCustomerList,
@@ -51,7 +48,6 @@ export class BasicCustomerService {
    * @param data 查询参数实体
    * @param page 分页参数实体
    */
-  @Debounce()
   getCustomerSignList(data, page) {
     return this.netService.send({
       server: manageService.basicCustomerController.getCustomerSignList,
@@ -78,6 +74,7 @@ export class BasicCustomerService {
   /*
    * 修改客户
    */
+  @Debounce()
   editBasicCustomer(data) {
     let result = Object.assign({}, data)
     result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
@@ -123,5 +120,64 @@ export class BasicCustomerService {
       }
     })
   }
-
+  /**
+   * 意向记录列表
+   */
+  findAllCustomerIntentionList(page) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findAllCustomerIntentionList,
+      page: page
+    })
+  }
+  /**
+   * 根据客户id查找意向记录列表
+   */
+  findCustomerIntentionList(customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findCustomerIntentionList,
+      append: customerId
+    })
+  }
+  /**
+   * 根据意向id查找跟踪记录
+   */
+  findCustomerFollowList(intentionId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.findCustomerFollowList,
+      append: intentionId
+    })
+  }
+  /**
+   * 新增跟进记录
+   */
+  @Debounce()
+  addBasicCustomerFollow(data, intentionId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicCustomerFollow,
+      data: {
+        intentionId: intentionId,
+        followType: data.followType,
+        followResult: data.followResult,
+        remark: data.remark
+      },
+      loading: true
+    })
+  }
+  /**
+   * 新增意向记录
+   */
+  @Debounce()
+  addBasicIntentionalCustomer(data, customerId) {
+    return this.netService.send({
+      server: manageService.basicCustomerController.addBasicIntentionalCustomer,
+      data: {
+        customerId: customerId,
+        intentionType: data.intentionType,
+        intentionStatus: data.intentionStatus,
+        intentionLevel: data.intentionLevel,
+        remark: data.remark
+      },
+      loading: true
+    })
+  }
 }

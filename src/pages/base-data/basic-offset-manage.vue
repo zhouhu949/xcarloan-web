@@ -5,32 +5,16 @@
       <command-button class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row type="flex" class="data-form">
-      <i-row type="flex" style="flex:1;" >
+      <i-row type="flex" style="flex:1;">
         <i-col :span="4" style="padding:10px 0 10px 0;display:flex;flex-direction: column;">
           <div class="data-form-item">
             <div class="data-form-item-icon"></div>
             <span>冲抵策略</span>
-            <span  @click="basicOffsetOperate()" class="data-form-item-add">
+            <span @click="basicOffsetOperate()" class="data-form-item-add">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </span>
           </div>
-          <div class="data-form-list" style="flex:1;">
-            <div class="data-form-basicoffsetlist" v-for="item in basicOffsetDataSet" :key="item.id" :value="item.offsetName" :id="'basicOffset'+item.id" @click="onCheckedBasicOffset(item)">
-              <span style="">{{item.offsetName}}</span>
-              <small class="icon-box" :hidden="item.id !== checkedBasicOffsetId">
-                <a href="#" class="el-icon-edit" @click.stop="basicOffsetOperate(item)">
-                  <div style="display: inline-block;">
-                    <i class="ivu-icon ivu-icon-edit"></i>
-                  </div>
-                </a>
-                <a href="#" class="el-icon-minus" @click.stop="onDeleteBasicOffset(item)">
-                  <div style="display: inline-block;">
-                    <i class="ivu-icon ivu-icon-minus"></i>
-                  </div>
-                </a>
-              </small>
-            </div>
-          </div>
+          <data-tree style="flex:1;" :data="treeData" showEdit :editConfig="editConfig" @on-select-change="onCheckedBasicOffset" @on-edit="basicOffsetOperate" @on-delete="onDeleteBasicOffset"></data-tree>
         </i-col>
         <i-col class="command" :span="20">
           <data-box :columns="basicOffsetItemColumns" :data="basicOffsetItemDataSet"></data-box>
@@ -46,6 +30,8 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import ModifyBasicOffset from "~/components/base-data/modify-basic-offset.vue";
 import ModifyBasicOffsetItem from "~/components/base-data/modify-basic-offset-item.vue";
+import DataTree from "~/components/common/data-tree.vue";
+import { EditType } from "~/config/enum.config";
 import { Form } from "iview";
 import { Dependencies } from "~/core/decorator";
 import { BasicExpenseService } from "~/services/manage-service/basic-expense.service";
@@ -56,7 +42,8 @@ import { Modal } from "iview";
 @Layout("workspace")
 @Component({
   components: {
-    DataBox
+    DataBox,
+    DataTree
   }
 })
 export default class BasicOffsetManage extends Page {
@@ -65,20 +52,17 @@ export default class BasicOffsetManage extends Page {
   @Dependencies(BasicExpenseService)
   private basicExpenseService: BasicExpenseService;
 
-  private basicOffsetDataSet: any = [];
+  private treeData: Array<any> = [];
   private expenseDataSet: any = [];
   private basicOffsetItemColumns: any;
   private basicOffsetItemDataSet: any = [];
 
   private checkedBasicOffsetId: number = 0;
 
+  // 编辑类型
+  private readonly editConfig = [EditType.MODIFY, EditType.DELETE];
+
   created() {
-    //刷新数据
-    this.refreshBasicOffset();
-
-    //获取费用项
-    this.findBasicExpenseByOrg();
-
     this.basicOffsetItemColumns = [
       {
         align: "center",
@@ -89,7 +73,7 @@ export default class BasicOffsetManage extends Page {
       },
       {
         title: "操作",
-        width: 150,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [
@@ -170,6 +154,23 @@ export default class BasicOffsetManage extends Page {
     ];
   }
 
+  mounted() {
+    //刷新数据
+    this.refreshBasicOffset();
+    //获取费用项
+    this.findBasicExpenseByOrg();
+  }
+
+  /**
+   * keep-alive生命周期钩子函数
+   */
+  activated() {
+    //刷新数据
+    this.refreshBasicOffset();
+    //获取费用项
+    this.findBasicExpenseByOrg();
+  }
+
   /**
    * 冲抵策略维护
    * @param val 需要维护的冲抵策略数据
@@ -204,24 +205,29 @@ export default class BasicOffsetManage extends Page {
     expense: Array<Object>,
     val?: Object
   ) {
-    this.$dialog.show({
-      title: val ? "维护冲抵项" : "新增冲抵项",
-      footer: true,
-      onOk: modifyBasicOffsetItem => {
-        return modifyBasicOffsetItem.submit().then(v => {
-          if (v) this.getBasicOffsetItemList(this.checkedBasicOffsetId);
-          return v;
-        });
-      },
-      render: h =>
-        h(ModifyBasicOffsetItem, {
-          props: {
-            offsetId: offsetId,
-            offsetItemData: val,
-            expenseData: expense
-          }
-        })
-    });
+    // 判断是否选中冲抵策略
+    if (offsetId) {
+      this.$dialog.show({
+        title: val ? "维护冲抵项" : "新增冲抵项",
+        footer: true,
+        onOk: modifyBasicOffsetItem => {
+          return modifyBasicOffsetItem.submit().then(v => {
+            if (v) this.getBasicOffsetItemList(this.checkedBasicOffsetId);
+            return v;
+          });
+        },
+        render: h =>
+          h(ModifyBasicOffsetItem, {
+            props: {
+              offsetId: offsetId,
+              offsetItemData: val,
+              expenseData: expense
+            }
+          })
+      });
+    } else {
+      this.$Message.warning("请选择冲抵策略！");
+    }
   }
 
   /**
@@ -336,7 +342,23 @@ export default class BasicOffsetManage extends Page {
     return new Promise((resolve, reject) => {
       this.basicOffsetService.findBasicOffsetByOrg().subscribe(
         data => {
-          this.basicOffsetDataSet = data;
+          this.treeData = data.map(v => {
+            return {
+              title: v.offsetName,
+              id: v.id,
+              pid: 0,
+              // 组织机构Id
+              orgId: v.orgId,
+              // 费用项名称
+              offsetName: v.offsetName,
+              // 费用项类型
+              offsetType: v.offsetType,
+              // 备注
+              remark: v.remark
+            };
+          });
+
+          console.log(this.treeData);
 
           resolve(true);
         },
@@ -363,12 +385,6 @@ export default class BasicOffsetManage extends Page {
    */
   refreshBasicOffset() {
     this.getBasicOffsetByAuth().then(val => {
-      if (this.basicOffsetDataSet)
-        //触发冲抵策略点击事件
-        document
-          .getElementById("basicOffset" + this.basicOffsetDataSet[0].id)
-          .click();
-
       return val;
     });
   }
@@ -376,11 +392,11 @@ export default class BasicOffsetManage extends Page {
 </script>
 <style lang="less" scoped>
 .page.basic-offset {
-  display:flex;
+  display: flex;
   flex-direction: column;
   .data-form {
     margin-top: 10px;
-    flex:1;
+    flex: 1;
     .data-form-item {
       width: 100%;
       height: 30px;

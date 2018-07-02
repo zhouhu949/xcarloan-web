@@ -14,7 +14,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :show-config-column="false" :height="400" :columns="columns" highlightRow :data="dataSet" ref="databox" :page="pageService" @on-current-change="onCurrentChange" @onPageChange="refreshData"></data-box>
+    <data-box :show-config-column="false" :height="400" :columns="columns" highlightRow :data="dataSet" ref="databox" :page="pageService" @on-current-change="onCurrentChange" @on-page-change="refreshData"></data-box>
   </section>
 </template>
 
@@ -57,14 +57,6 @@ export default class ChooseVehicleModel extends Vue {
     this.columns = [
       {
         align: "center",
-        title: "操作",
-        minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row }) => (
-          <i-button type="text" class="row-command-button" onClick={() => this.showCarDetail(row.modelId)}>查看详情</i-button>
-        )
-      },
-      {
-        align: "center",
         title: "品牌",
         key: 'brandName',
         minWidth: this.$common.getColumnWidth(4)
@@ -79,7 +71,8 @@ export default class ChooseVehicleModel extends Vue {
         align: "center",
         title: "车型",
         key: 'modelName',
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => ( <i-button type="text" class="row-command-button" onClick={() => this.showCarDetail(row.modelId)}>{row.modelName}</i-button> )
       }
     ]
   }
@@ -119,12 +112,7 @@ export default class ChooseVehicleModel extends Vue {
       title: "车型详情",
       isView: true,
       width: 1000,
-      render: h => h(CarParams, {
-        props: {
-          carId: carId,
-          isView: true
-        }
-      })
+      render: h => (<CarParams carId={carId} isView={true} ></CarParams>)
     })
   }
 

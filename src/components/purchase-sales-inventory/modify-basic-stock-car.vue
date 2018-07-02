@@ -24,14 +24,14 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="车辆颜色" prop="stockCarColor">
-            <i-input v-model="model.stockCarColor" placeholder="请输入车辆颜色" number></i-input>
+            <i-input v-model="model.stockCarColor" placeholder="请输入车辆颜色"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row :gutter="15">
         <i-col :span="12">
           <i-form-item label="采购价格" prop="stockPrice">
-            <i-input-number v-model="model.stockPrice" placeholder="请输入采购价格" :precision="2" :step="0.01" :formatter="value => `￥ ${value}`.replace(/B(?=(d{3})+(?!d))/g, ',')" :parser="value => value.replace(/￥s?|(,*)/g, '')">
+            <i-input-number v-model="model.stockPrice" placeholder="请输入采购价格" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse">
             </i-input-number>
             <span>元</span>
           </i-form-item>
@@ -70,11 +70,12 @@ export default class ModifyBasicStockCar extends Vue {
 
   @Prop() stockCarData;
   @Prop({
-    default: 0
+    default: 0,
+    type: Number
   })
-  modelId;
+  modelId: number;
 
-  private supplierDataSet: Array<Object> = [];
+  private supplierDataSet: Array<any> = [];
 
   private model: any = {
     id: 0,

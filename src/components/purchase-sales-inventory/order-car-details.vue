@@ -4,9 +4,12 @@
     <data-grid :labelWidth="90" labelAlign="right" contentAlign="left">
       <data-grid-item label="客户姓名" :span="6">{{model.customerName}}</data-grid-item>
       <data-grid-item label="车型名称" :span="6">{{model.modelName }}</data-grid-item>
+      <data-grid-item label="供应商" :span="6">{{model.supplierId | dictConvert}}</data-grid-item>
+      <data-grid-item label="车架号" :span="6">{{model.stockCarNo}}</data-grid-item>
+      <data-grid-item label="发动机号" :span="6">{{model.stockEngineNo }}</data-grid-item>
       <data-grid-item label="车辆颜色" :span="6">{{model.modelColors}}</data-grid-item>
       <data-grid-item label="采购价格" :span="6">{{model.stockPrice | toThousands}}</data-grid-item>
-      <data-grid-item label="车型参数描述" :span="12">{{model.orderCarParamDesc}}</data-grid-item>
+      <data-grid-item label="车型参数描述" :span="6">{{model.orderCarParamDesc}}</data-grid-item>
       <data-grid-item label="车型描述" :span="12">{{model.orderCarDesc}}</data-grid-item>
     </data-grid>
   </section>
@@ -24,7 +27,7 @@ import { BasicEnterShellSaveService } from "~/services/manage-service/basic-ente
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 
 @Component({
-  components:{
+  components: {
     DataGrid,
     DataGridItem
   }
@@ -34,18 +37,30 @@ export default class OrderCarDetails extends Vue {
   private basicEnterShellSaveService: BasicEnterShellSaveService;
 
   @Prop({
-    default: 0
+    default: 0,
+    type: Number
   })
-  orderId;
+  orderId: number;
 
   private model: any = {
+    // 客户姓名
+    customerName: "",
+    // 车型名称
     modelName: "",
+    // 车辆颜色
     modelColors: "",
-    stockStatus: "",
-    orderCarParamDesc: "",
+    // 采购价格
     stockPrice: "",
+    // 车型描述
     orderCarDesc: "",
-    customerName: ""
+    // 车型参数描述
+    orderCarParamDesc: "",
+    // 发动机号
+    stockEngineNo: "",
+    // 车架号
+    stockCarNo: "",
+    // 供应商Id
+    supplierId: ""
   };
 
   /**
@@ -70,5 +85,6 @@ export default class OrderCarDetails extends Vue {
   }
 }
 </script>
+
 <style lang="less">
 </style>

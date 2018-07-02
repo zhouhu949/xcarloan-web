@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="outStorageColumns" :data="outStorageDataSet" @onPageChange="refreshOutStorage" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="outStorageColumns" :data="outStorageDataSet" @on-page-change="refreshOutStorage" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -57,8 +57,7 @@ export default class OutStorage extends Page {
     this.outStorageColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库
@@ -249,6 +248,14 @@ export default class OutStorage extends Page {
   }
 
   /**
+   * keep-alive生命周期钩子函数
+   */
+  activated(){
+    // 加载数据
+    this.refreshOutStorage();
+  }
+
+  /**
    * 刷新列表
    */
   refreshOutStorage() {
@@ -311,7 +318,7 @@ export default class OutStorage extends Page {
    */
   onDetainDetails(id: number) {
     this.$dialog.show({
-      title: "押品详情",
+      title: "查看详情",
       isView: true,
       footer: true,
       render: h =>
@@ -328,7 +335,7 @@ export default class OutStorage extends Page {
    */
   onDetainMortDetails(id: number) {
     this.$dialog.show({
-      title: "低押详情",
+      title: "抵押详情",
       isView: true,
       footer: true,
       render: h =>

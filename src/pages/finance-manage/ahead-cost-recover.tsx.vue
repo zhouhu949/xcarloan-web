@@ -1,10 +1,10 @@
 <template>
-  <section class="page refund-customer">
+  <section class="page ahead-cost-recover">
 
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from '~/core/page'
 import { Layout } from '~/core/decorator'
 import Component from "vue-class-component";
@@ -13,7 +13,7 @@ import Component from "vue-class-component";
 @Component({
   components: {}
 })
-export default class RefundCustomer extends Page {
+export default class AheadCostRecover extends Page {
 
 }
 </script>
