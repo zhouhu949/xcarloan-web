@@ -13,8 +13,6 @@ import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 import { namespace } from "vuex-class";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-
-
 const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Component({})
@@ -30,8 +28,20 @@ export default class OrderInfoCustomerList extends Vue {
       {
         align: "center",
         title: "客户姓名",
-        key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
+        width: 90,
+        render: (h, { row }) => h('div', {}, [
+          h("i-button", {
+            props: {
+              type: "text"
+            },
+            style: {
+              color: "#265EA2"
+            },
+            on: {
+              click: () => this.showCustomerInfo(row.id)
+            }
+          }, row.customerName)
+        ])
       },
       {
         align: "center",
