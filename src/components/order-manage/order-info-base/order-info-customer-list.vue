@@ -12,7 +12,7 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 import { namespace } from "vuex-class";
-
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Component({})
@@ -27,7 +27,7 @@ export default class OrderInfoCustomerList extends Vue {
     this.columns = [
       {
         align: "center",
-        title: "操作",
+        title: "客户姓名",
         width: 90,
         render: (h, { row }) => h('div', {}, [
           h("i-button", {
@@ -40,14 +40,8 @@ export default class OrderInfoCustomerList extends Vue {
             on: {
               click: () => this.showCustomerInfo(row.id)
             }
-          }, "查看详情")
+          }, row.customerName)
         ])
-      },
-      {
-        align: "center",
-        title: "客户姓名",
-        key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
@@ -80,7 +74,7 @@ export default class OrderInfoCustomerList extends Vue {
         key: 'createTime',
         sortable: true,
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.createTime))
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.createTime,"yyyy-MM-dd"))
       }
     ]
   }

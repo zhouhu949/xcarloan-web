@@ -94,7 +94,7 @@ export default class SupplierLoan extends Page {
   mounted() {
     this.basicSupplierService.getBasicSupplierList().subscribe(
       data => this.supplierList = (data || []).map(v => ({ label: v.supplierName, value: v.id })),
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
     this.refreshData()
   }
@@ -121,7 +121,7 @@ export default class SupplierLoan extends Page {
             this.$Message.success('操作成功')
             this.refreshData()
           },
-          err => this.$Message.error(err.message)
+          err => this.$Message.error(err.msg)
         )
       }
     })

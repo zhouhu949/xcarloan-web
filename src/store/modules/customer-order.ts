@@ -1,6 +1,6 @@
 import { InfoCompontentType } from "~/config/enum.config";
 import { DialogService } from "~/utils/dialog.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+const CreateOrderCustomerInfo = () => import("~/components/base-data/order-customer-info.vue")
 
 export default {
   namespaced: true,
@@ -74,7 +74,7 @@ export default {
     showModalInfo() {
       DialogService.show({
         width: 1050,
-        render: h => h(OrderCustomerInfo)
+        render: h => h(CreateOrderCustomerInfo())
       })
     }
   }

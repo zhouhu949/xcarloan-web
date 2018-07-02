@@ -3,15 +3,13 @@
   <section class="component customer-repayment-current-period">
     <i-card title="订单信息" style="margin-bottom:20px;">
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="客户姓名" :span="6">
+        <data-grid-item label="客户姓名" :span="4">
           <i-button type="text" class="row-command-button" @click="showCustomerInfo(orderInfo.customerId)">{{orderInfo.customerName}}</i-button>
         </data-grid-item>
-        <data-grid-item label="订单号" :span="6">
+        <data-grid-item label="订单号" :span="4">
           <i-button type="text" class="row-command-button" @click="showOrderInfo(orderId)">{{orderInfo.orderNumber}}</i-button>
         </data-grid-item>
-        <data-grid-item label="当前期数" :span="6">{{``}}</data-grid-item>
-        <data-grid-item label="已还金额" :span="6">{{``}}</data-grid-item>
-        <data-grid-item label="待还金额" :span="6">{{``}}</data-grid-item>
+        <data-grid-item label="当前期数" :span="4">{{``}}</data-grid-item>
       </data-grid>
     </i-card>
 
@@ -60,7 +58,7 @@ export default class CustomerRepaymentCurrentPeriod extends Vue {
     // 查询要还款的期数的详情
     this.financialQueryService.selectRepayInfo(this.orderId, this.period).subscribe(
       data => this.orderInfo = data,
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 }

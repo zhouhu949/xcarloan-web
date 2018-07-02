@@ -61,13 +61,11 @@ export class FilterService {
     return target
   }
 
-
   /**
    * 日期格式化
    * @param date
-   * @param fmt
    */
-  static dateFormat(date, fmt = "yyyy-MM-dd hh:mm:ss"): string {
+  static dateFormat(date, fmt = "yyyy-MM-dd"): string {
     // 空数据处理
     if (date === null || date === undefined || date === '') {
       return ''
@@ -95,6 +93,15 @@ export class FilterService {
     }
 
     return fmt
+  }
+
+  /**
+   * 日期时间格式化
+   * @param date
+   * @param fmt
+   */
+  static dateTimeFormat(date, fmt = "yyyy-MM-dd HH:mm:ss"): string {
+    return FilterService.dateFormat(date, fmt)
   }
   /**
    * 千分位转换

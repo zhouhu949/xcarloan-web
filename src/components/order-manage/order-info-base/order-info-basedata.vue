@@ -1,4 +1,4 @@
-<!--基础信息-->
+<!--基本资料-->
 <template>
   <section class="component order-info-basedata">
     <data-grid :labelWidth="90" labelAlign="right" contentAlign="left">

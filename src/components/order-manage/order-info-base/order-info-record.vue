@@ -1,7 +1,7 @@
 <!--订单操作记录-->
 <template>
   <section class="component order-info-record">
-    <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
+    <data-box :columns="columns" :data="dataSet" :height="440" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -10,11 +10,13 @@ import Vue from 'vue';
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
+import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
+import { PageService } from "~/utils/page.service";
 
 @Component({})
 export default class OrderInfoRecord extends Vue {
-  @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
+  @Dependencies(PageService) private pageService:PageService;
 
   @Prop() id: Number
   private dataSet: Array<any> = [];
@@ -24,24 +26,25 @@ export default class OrderInfoRecord extends Vue {
     this.columns = [
       {
         align: "center",
-        title: "身份状态",
-        key: "blacklistType",
+        title: "订单环节",
+        key: "orderLink",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.blacklistType))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderLink))
       },
       {
         align: "center",
-        title: '开始时间',
-        key: 'beginTime',
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        title: '客户状态',
+        title: '订单状态',
         editable: true,
-        key: 'customerStatus',
+        key: 'orderStatus ',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerStatus))
+        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderStatus))
+      },
+      {
+        align: "center",
+        title: '操作时间',
+        key: 'operatorTime',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime,"yyyy-MM-dd"))
       },
       {
         align: "center",
@@ -53,10 +56,10 @@ export default class OrderInfoRecord extends Vue {
   }
 
   mounted() {
-    // this.basicCustomerCenterService.findCustomerBlackListRecord(this.id).subscribe(
-    //   data => this.dataSet = data,
-    //   err => this.$Message.error(err.msg)
-    // )
+    this.basicCustomerOrderService.findCustomerOrderRecord(this.id,this.pageService).subscribe(
+      data => this.dataSet = data,
+      err => this.$Message.error(err.msg)
+    )
   }
 
 }

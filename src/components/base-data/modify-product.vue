@@ -87,7 +87,7 @@ export default class ModifyProduct extends Vue {
               resolve(true)
             },
             err => {
-              this.$Message.error(err.message);
+              this.$Message.error(err.msg);
               resolve(false)
             }
           );

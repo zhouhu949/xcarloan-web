@@ -66,5 +66,14 @@ export default {
     controller: CONTROLLER,
     action: 'supplierOrderLoan',
     type: requestType.Post
+  },
+  /**
+   * 客户还款 首付款
+   */
+  financialAffirm:{ 
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'financialAffirm',
+    type: requestType.Post
   }
 }
