@@ -136,4 +136,19 @@ export class BasicCustomerOrderService {
       page
     })
   }
+
+  /**
+   * 修改订单金额
+   * @param orderId 订单ID
+   * @param orderAmt 订单金额
+   */
+  updateOrderPrice(orderId: Number, orderAmt: Number) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.updateOrderPrice,
+      data: {
+        orderId: orderId,
+        price: orderAmt,
+      }
+    })
+  }
 }

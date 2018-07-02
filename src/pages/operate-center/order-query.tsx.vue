@@ -12,8 +12,8 @@
         <i-form-item prop="idCard" label="身份证号">
           <i-input v-model="model.idCard" placeholder="请输入身份证号"></i-input>
         </i-form-item>
-        <i-form-item prop="phone" label="联系方式">
-          <i-input v-model="model.phone" placeholder="请输入联系方式"></i-input>
+        <i-form-item prop="phone" label="联系电话">
+          <i-input v-model="model.phone" placeholder="请输入联系电话"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -83,6 +83,13 @@ export default class OrderQuery extends Page {
       },
       {
         align: 'center',
+        title: ' 订单类型',
+        key: 'orderType',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<span>{this.$filter.dictConvert(row.orderType)}</span>)
+      },
+      {
+        align: 'center',
         title: ' 订单期数',
         key: 'orderPeriods',
         minWidth: this.$common.getColumnWidth(4)
@@ -113,6 +120,10 @@ export default class OrderQuery extends Page {
         minWidth: this.$common.getColumnWidth(4)
       }
     ]
+  }
+
+  activated(){
+    this.refreshData()
   }
 
   mounted() {

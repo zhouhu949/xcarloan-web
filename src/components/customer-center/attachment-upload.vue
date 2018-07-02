@@ -1,6 +1,6 @@
-<!--财务·上传图片-->
+<!--上传附件-->
 <template>
-  <section class="component contract-upload">
+  <section class="component attachment-upload">
     <Button class="contract-title" type="primary" @click="showFileUpload" v-show="!hiddenUpload && !isView">上传</Button>
     <i-table :height="300" :columns="uploadedColumns" :data="uploadedDataSet"></i-table>
   </section>
@@ -11,9 +11,11 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
 import { NetService } from "~/utils/net.service";
+import { PageService } from "~/utils/page.service";
 import { Prop, Model, Emit, Watch } from "vue-property-decorator";
 import FileUpload from "~/components/common/file-upload.tsx.vue";
 import { BasicOrderFileService } from "~/services/manage-service/basic-order-file.service";
+import { SysDictService } from '~/services/manage-service/sys-dict.service'
 import { Object } from "core-js";
 import { resolve } from "url";
 
@@ -21,8 +23,9 @@ import { resolve } from "url";
   components: {}
 })
 export default class ContractUpload extends Vue {
-  @Dependencies(BasicOrderFileService)
-  basicOrderFileService: BasicOrderFileService;
+  @Dependencies(PageService) private pageService: PageService;
+  @Dependencies(BasicOrderFileService) basicOrderFileService: BasicOrderFileService;
+  @Dependencies(SysDictService) sysDictService: SysDictService;
 
   @Prop({
     default: 0
@@ -56,11 +59,13 @@ export default class ContractUpload extends Vue {
 
   private uploadedDataSet: Array<any> = [];
   private uploadedColumns: Array<any> = [];
+  private customerDictData: Array<any> = [];
 
   mounted() {
     if (this.orderId) {
       this.getContractResourceAll(this.orderId);
     }
+    
   }
 
   created() {
@@ -86,8 +91,7 @@ export default class ContractUpload extends Vue {
             "Select",
             {
               props: {
-                value: this.uploadedDataSet[params.index].fileType,
-                disabled: this.isView
+                value: this.uploadedDataSet[params.index].fileType
               },
               on: {
                 "on-change": value => {
@@ -96,18 +100,22 @@ export default class ContractUpload extends Vue {
               }
             },
             // 资料类型
-            this.$dict.getDictData(10036).map(function(item) {
-              return h(
-                "Option",
-                {
-                  props: {
-                    value: item.value,
-                    label: item.label,
-                    key: item.value
-                  }
-                },
-                item
-              );
+            this.sysDictService.getDataDictByTypeCode({id: 10013}).subscribe(
+              data => { 
+                data.map( item => {
+                  console.log(item.dictItemName)
+                return h(
+                  "Option",
+                  {
+                    props: {
+                      value: item.id,
+                      label: item.dictItemName,
+                      key: item.id
+                    }
+                  },
+                  item
+                );
+              })
             })
           );
         }
@@ -194,10 +202,23 @@ export default class ContractUpload extends Vue {
     return this.uploadedDataSet.length >= (this.fileNumberLimit || 99);
   }
 
+  /**
+   * 获取自定义字典数据
+   */
+  getUserDictData(id) {
+    let result = []
+    this.sysDictService.getDataDictByTypeCode({id: id}).subscribe(
+      data => result = data
+    )
+    console.log(result)
+    return result
+  }
+
   showFileUpload() {
     let dialog = this.$dialog.show({
       footer: true,
       okText: "上传",
+      width: 700,
       onOk: fileUpload => {
         return fileUpload.upload();
       },
@@ -276,7 +297,7 @@ export default class ContractUpload extends Vue {
             type: "",
             url: v.fileUrl,
             localUrl: "",
-            name: v.fileName,
+            name: data.fileName,
             size: 0,
             createTime: "",
             creator: null,
@@ -291,7 +312,7 @@ export default class ContractUpload extends Vue {
 </script>
 
 <style lang="less" scoped>
-.component.contract-upload {
+.component.attachment-upload {
   .contract-title {
     margin-bottom: 10px;
   }

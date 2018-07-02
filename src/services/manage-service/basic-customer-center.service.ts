@@ -97,6 +97,21 @@ export class BasicCustomerCenterService {
   }
 
   /**
+   * 补填资料客户列表
+   */
+  findCustomerList(data, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerCenterController.findCustomerList,
+      data: {
+        customerName: data.name,
+        customerPhone: data.phoneNumber,
+        idCard: data.idCard
+      },
+      page
+    })
+  }
+
+  /**
    * 获取黑白灰名单记录
    */
   findCustomerBlackListRecord(customerId) {
@@ -158,4 +173,5 @@ export class BasicCustomerCenterService {
       page
     })
   }
+
 }

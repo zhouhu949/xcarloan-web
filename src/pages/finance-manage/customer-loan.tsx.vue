@@ -1,6 +1,6 @@
 <template>
-  <section class="page update-order-data">
-    <page-header title="订单维护" hidden-print hidden-export></page-header>
+  <section class="page customer-loan">
+    <page-header title="客户放款" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="name" label="姓名">
@@ -26,12 +26,11 @@ import Page from '~/core/page'
 import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
 import { PageService } from "~/utils/page.service";
-import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { namespace } from "vuex-class";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-import ModifyOrder from "~/components/operate-center/modify-order.vue";
 import { Button } from "iview";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -39,12 +38,11 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 @Component({
   components: {}
 })
-export default class UpdateOrderData extends Page {
+export default class CustomerLoan extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
-  @Dependencies(WorkFlowApprovalService) private workFlowApprovalService: WorkFlowApprovalService;
+  @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
+  @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
   @CustomerOrderModule.Action showOrderInfo;
-  private readonly OperateType = 10050
 
   private model: any = {
     name: "",
@@ -63,15 +61,7 @@ export default class UpdateOrderData extends Page {
         fixed: 'left',
         align: 'center',
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, column, index }) => {
-          if (row.orderType === this.OperateType) {
-            return (
-              <div>
-                <i-button type="text" class="row-command-button" onClick={() => this.onModifyOrderPrice(row.orderNo,row.orderId, row.orderPrice)}>修改金额</i-button>
-              </div>
-            )
-          }
-        }
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>放款</i-button>)
       },
       {
         align: 'center',
@@ -145,25 +135,25 @@ export default class UpdateOrderData extends Page {
   }
 
   /**
-   * 修改订单金额
+   * 放款操作
    */
-  private onModifyOrderPrice(orderNo:String,orderId: Number, amt: Number) {
-    this.$dialog.show({
-      title: `修改订单 ${orderNo} 金额`,
-      footer: true,
-      height: 200,
-      onOk: modifyOrder => {
-        return modifyOrder.submit().then(v => {
-          if (v) this.refreshData()
-          return v
-        })
-      },
-      render: h => (<ModifyOrder id={orderId} price={amt}></ModifyOrder>)
+  private onSubmitClick(orderId: Number) {
+    this.$Modal.confirm({
+      content: "是否确认放款？",
+      onOk: () => {
+        this.financialManagementService.customerOrderLoan(orderId).subscribe(
+          data => {
+            this.$Message.success('操作成功')
+            this.refreshData()
+          },
+          err => this.$Message.error(err.message)
+        )
+      }
     })
   }
 
   private refreshData() {
-    this.basicCustomerOrderService.queryCustomerOrderFile(this.model, this.pageService).subscribe(
+    this.financialQueryService.findRepayOrderUnpaidList(this.model, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )

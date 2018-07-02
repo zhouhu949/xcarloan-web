@@ -5,15 +5,7 @@ const SERVICE = 'service-manage'
 const CONTROLLER = 'sysDictController'
 
 export default {
-  /**
-   * 查询数字字典对应的数据字典项
-   */
-  getDataDictByTypeCode: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'getDataDictByTypeCode',
-    type: requestType.Get
-  },
+  
   /**
    * 修改数据字典项
    */
@@ -24,7 +16,7 @@ export default {
     type: requestType.Post
   },
   /**
-   * 新增数据字典项
+   * 新增用户自定义数据字典项
    */
   createUserDataDict: {
     service: SERVICE,
@@ -33,7 +25,7 @@ export default {
     type: requestType.Post
   },
   /**
-   * 删除数据字典项
+   * 删除用户自定义数据字典项
   */
   deleteDataDict: {
     service: SERVICE,
@@ -42,16 +34,7 @@ export default {
     type: requestType.Delete
   },
   /**
-   * 根据条件搜索对应的数字字典项
-  */
-  getAllDataDict: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'getAllDataDict',
-    type: requestType.Get
-  },
-  /**
-   * 查询所有数据字典项(无typeCode)
+   * 查询系统数据字典项
   */
   getAll: {
     service: SERVICE,
@@ -60,34 +43,16 @@ export default {
     type: requestType.Get
   },
   /**
-* 获取字典HASH
-*/
-  getDictHash: {
+  * 查询数据字典类型对应的数据字典项
+  */
+  getDataDictByTypeCode: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getHashCode',
-    type: 'GET'
+    action: 'getDataDictByTypeCode',
+    type: requestType.Get
   },
   /**
-   * 获取字典数据
-   */
-  getDictData: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'getAll',
-    type: 'GET'
-  },
-  /**
-   * 获取字典数据
-   */
-  getDataDictByTypeCodeWithPage: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'getDataDictByTypeCodeWithPage',
-    type: 'GET'
-  },
-  /**
-   * 查询所有数据字典类型
+   * 查询系统数据字典类型
    */
   getAllSysDictType: {
     service: SERVICE,
@@ -120,6 +85,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getAllUserDictType',
+    type: requestType.Get
+  },
+  /**
+   * 根据数据字典类型查询数据字典项
+   */
+  getSysItemBySysDictType: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getSysItemBySysDictType',
     type: requestType.Get
   }
 }

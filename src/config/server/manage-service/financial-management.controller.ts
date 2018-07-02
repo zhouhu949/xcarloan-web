@@ -5,22 +5,13 @@ const CONTROLLER = 'financialManagementController'
 
 export default {
   /**
-   * 查询客户指定状态的订单
-   */
-  findRepayOrderList: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findRepayOrderList',
-    type: requestType.Get
-  },
-  /**
    * 客户放款
    */
   customerOrderLoan: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'customerOrderLoan',
-    type: requestType.Get
+    type: requestType.Post
   },
   /**
    * 提前收回
@@ -29,7 +20,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'earlyRecycle',
-    type: requestType.Get
+    type: requestType.Post
   },
   /**
    * 提前还清
@@ -37,8 +28,8 @@ export default {
   earlyRepayMoney: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'earlyRecycle',
-    type: requestType.Get
+    action: 'earlyRepayMoney',
+    type: requestType.Post
   },
   /**
    * 确定开票
@@ -47,7 +38,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'financialInvoice',
-    type: requestType.Get
+    type: requestType.Post
   },
   /**
    * 退款
@@ -56,70 +47,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'financialRefund',
-    type: requestType.Get
-  },
-  /**
-   * 还款或提前结清查询
-   */
-  findBalance: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findBalance',
-    type: requestType.Get
-  },
-  /**
-   * 查询未放款的供应商订单车型
-   */
-  findBasicOrderCarList: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findBasicOrderCarList',
-    type: requestType.Get
-  },
-  /**
-   * 查询未放款的客户订单
-   */
-  findCustomerOrder: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findCustomerOrder',
-    type: requestType.Get
-  },
-  /**
-   * 查询客户待放款订单Id
-   */
-  findCustomerOrderLoan: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findCustomerOrderLoan',
-    type: requestType.Get
-  },
-  /**
-   * 查询未开票的记录列表
-   */
-  findFinancialInvoiceList: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findFinancialInvoiceList',
-    type: requestType.Get
-  },
-  /**
-   * 根据订单Id查询还款详情
-   */
-  findOrderRepayScheme: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findOrderRepayScheme',
-    type: requestType.Get
-  },
-  /**
-   * 查询退款详情
-   */
-  queryFinancialRefund: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'queryFinancialRefund',
-    type: requestType.Get
+    type: requestType.Post
   },
   /**
    * 客户还款
@@ -133,19 +61,10 @@ export default {
   /**
    * 供应商放款
    */
-  supplierOrderLoan: {
+  supplierOrderLoan:{
     service: SERVICE,
     controller: CONTROLLER,
     action: 'supplierOrderLoan',
-    type: requestType.Post
-  },
-  /**
-   * 根据订单对客户放款
-   */
-  updateCustomerLoanStatus: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'updateCustomerLoanStatus',
     type: requestType.Post
   }
 }

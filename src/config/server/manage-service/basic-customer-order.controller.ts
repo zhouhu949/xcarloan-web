@@ -84,6 +84,14 @@ export default {
     controller: CONTROLLER,
     action: 'queryCustomerOrderFile',
     type: requestType.Get
+  },
+  /**
+   * 更改订单金额
+   */
+  updateOrderPrice: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateOrderPrice',
+    type: requestType.Put
   }
-
 }
