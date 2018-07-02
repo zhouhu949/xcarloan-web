@@ -102,7 +102,7 @@ export default class ProductSchemeDetail extends Vue {
         this.createClumnItem(val.header)
         this.schemeDataSet = val.dataList || []
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 
@@ -115,7 +115,7 @@ export default class ProductSchemeDetail extends Vue {
         this.createClumnItem(data.header)
         this.schemeDataSet = data.dataList || []
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 
@@ -128,7 +128,7 @@ export default class ProductSchemeDetail extends Vue {
         this.createClumnItem(data.header)
         this.schemeDataSet = data.dataList || []
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     )
   }
 }

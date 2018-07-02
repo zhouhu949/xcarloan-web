@@ -120,5 +120,14 @@ export default {
     controller: CONTROLLER,
     action: 'selectRepayInfo',
     type: requestType.Get
+  },
+  /**
+   * 财务开票列表查询
+   */
+  queryFinancialInvoice:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryFinancialInvoice',
+    type: requestType.Get
   }
 }

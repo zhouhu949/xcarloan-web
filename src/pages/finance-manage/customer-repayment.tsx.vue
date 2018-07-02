@@ -48,7 +48,7 @@ export default class ProceedsForCustomer extends Page {
   @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
   @Dependencies(BasicSupplierService) private basicSupplierService: BasicSupplierService;
   @CustomerOrderModule.Action showOrderInfo;
-
+  @CustomerOrderModule.Action showCustomerInfo;
   private model: any = {
     name: "",
     orderNo: "",
@@ -82,6 +82,13 @@ export default class ProceedsForCustomer extends Page {
       },
       {
         align: 'center',
+        title: ' 客户姓名',
+        key: 'customerName',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showCustomerInfo({ id: row.customerId })}>{row.customerName}</i-button>)
+      },
+      {
+        align: 'center',
         title: ' 订单状态',
         key: 'orderStatus',
         minWidth: this.$common.getColumnWidth(4),
@@ -106,12 +113,6 @@ export default class ProceedsForCustomer extends Page {
         key: 'orderPrice',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.orderPrice)}</div>)
-      },
-      {
-        align: 'center',
-        title: ' 客户姓名',
-        key: 'customerName',
-        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: 'center',

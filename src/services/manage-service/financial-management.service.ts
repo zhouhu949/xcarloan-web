@@ -48,15 +48,10 @@ export class FinancialManagementService {
    * 确定开票
    */
   @Debounce()
-  financialInvoice(money: Number, orderId: Number, periods: Number) {
+  financialInvoice(id) {
     return this.netService.send({
       server: manageService.financialManagementController.financialInvoice,
-      data: {
-        money,
-        orderId,
-        periods
-      },
-      loadding: true
+      append: id
     })
   }
   /**
@@ -93,6 +88,19 @@ export class FinancialManagementService {
     return this.netService.send({
       server: manageService.financialManagementController.supplierOrderLoan,
       append: carId,
+      loadding: true
+    })
+  }
+
+  /**
+   * 客户还款 首付款 
+   * @param orderId 订单ID
+   */
+  @Debounce()
+  financialAffirm(orderId:Number) {
+    return this.netService.send({
+      server: manageService.financialManagementController.financialAffirm,
+      append: orderId,
       loadding: true
     })
   }

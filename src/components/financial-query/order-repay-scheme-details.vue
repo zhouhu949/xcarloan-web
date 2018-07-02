@@ -81,7 +81,7 @@ export default class OrderRepaySchemeDetails extends Vue {
           this.schemeDataSet = val;
         }
       },
-      err => this.$Message.error(err.message)
+      err => this.$Message.error(err.msg)
     );
   }
 }

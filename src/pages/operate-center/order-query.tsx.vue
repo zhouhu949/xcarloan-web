@@ -150,7 +150,7 @@ export default class OrderQuery extends Page {
             this.$Message.success('操作成功')
             this.refreshData()
           },
-          err => this.$Message.error(err.message)
+          err => this.$Message.error(err.msg)
         )
       }
     })

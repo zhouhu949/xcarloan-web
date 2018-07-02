@@ -165,5 +165,32 @@ export class FinancialQueryService {
       page
     })
   }
+  /**
+   * 财务开票列表查询
+   */
+  queryFinancialInvoice(queryData, page: PageService) {
+    return this.netService.send({
+      server: manageService.financialQueryController.queryFinancialInvoice,
+      data: {
+        isInvoice: queryData.state,
+        customerName: queryData.name,
+        orderNo: queryData.orderNo,
+        idCard: queryData.idCard,
+        customerPhone: queryData.phone
+      },
+      page
+    })
+  }
+
+  /**
+   * 收款详情-- 首付款项目
+   * @param orderId 订单ID
+   */
+  okReceipt(orderId: Number) {
+    return this.netService.send({
+      server: manageService.financialQueryController.okReceipt,
+      append: orderId
+    })
+  }
 
 }
