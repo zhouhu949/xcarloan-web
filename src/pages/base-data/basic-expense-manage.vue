@@ -34,7 +34,7 @@ export default class BasicExpenseManage extends Page {
     this.expenseColumns = [
       {
         title: "操作",
-        width: 100,
+        width: this.$common.getOperateWidth(1),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

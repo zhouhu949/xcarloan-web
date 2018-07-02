@@ -73,7 +73,7 @@ export default class BasicOffsetManage extends Page {
       },
       {
         title: "操作",
-        width: 150,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [

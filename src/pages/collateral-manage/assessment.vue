@@ -46,8 +46,7 @@ export default class Assessment extends Page {
     this.customerAssessmentCarColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           //评估状态[10021] 10062 : 待评估 ; 10061 : 已评估

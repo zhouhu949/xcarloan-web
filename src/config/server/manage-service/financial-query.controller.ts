@@ -104,6 +104,15 @@ export default {
     type: requestType.Get
   },
   /**
+   * 
+   */
+  supplierLoanRecord:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'supplierLoanRecord',
+    type: requestType.Get
+  },
+  /**
    * 查询当前期的还款详情
    */
   selectRepayInfo: {
