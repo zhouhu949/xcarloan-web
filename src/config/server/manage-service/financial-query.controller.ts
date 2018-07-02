@@ -102,5 +102,11 @@ export default {
     controller: CONTROLLER,
     action: 'queryFinancialRefundOrder',
     type: requestType.Get
+  },
+  supplierLoanRecord:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'supplierLoanRecord',
+    type: requestType.Get
   }
 }

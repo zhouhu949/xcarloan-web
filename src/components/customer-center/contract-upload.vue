@@ -96,8 +96,8 @@ export default class ContractUpload extends Vue {
               }
             },
             // 资料类型
-            this.$dict.getDictData(10036).map(function(item) {
-              return h(
+            this.$dict.getDictData(10036).map(item =>
+              h(
                 "Option",
                 {
                   props: {
@@ -107,8 +107,8 @@ export default class ContractUpload extends Vue {
                   }
                 },
                 item
-              );
-            })
+              )
+            )
           );
         }
       },

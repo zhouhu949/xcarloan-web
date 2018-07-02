@@ -57,8 +57,7 @@ export default class OutStorage extends Page {
     this.outStorageColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库

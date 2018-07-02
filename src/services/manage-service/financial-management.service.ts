@@ -66,9 +66,7 @@ export class FinancialManagementService {
   financialRefund(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.financialRefund,
-      data: {
-        orderId
-      },
+      append: orderId,
       loadding: true
     })
   }

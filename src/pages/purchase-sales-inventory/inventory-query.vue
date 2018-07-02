@@ -1,7 +1,7 @@
 <template>
   <section class="page inventory-manage">
     <page-header title="库存车辆管理" hiddenPrint hiddenExport>
-      <command-button label="新增库存车辆" @click="onStockCarOperate()"></command-button>
+      <command-button label="新增库存车辆" @click="onStockCarOperate"></command-button>
     </page-header>
     <i-row class="form" :gutter="16">
       <i-col class="data-form" :span="6">
@@ -233,6 +233,11 @@ export default class InventoryQuery extends Page {
    * 刷新数据
    */
   refreshStockCarByModel() {
+    if (!this.modelId) {
+      this.$Message.warning("请选择车型！");
+      return;
+    }
+    
     this.basicStockCarService
       .findAllStockCarList(this.queryParamsModel, this.pageService)
       .subscribe(

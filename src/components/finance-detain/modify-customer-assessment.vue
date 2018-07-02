@@ -72,8 +72,8 @@
         </i-row>
 
         <i-collapse>
-          <i-panel v-for="item in model.carAttributeModelList" :name="item.configType" :key="item.configType">
-            {{ item.configType| dictConvert }}
+          <i-panel v-for="item in model.carAttributeModelList" :name="$filter.dictConvert(item.configType)" :key="item.configType">
+            {{ item.configType | dictConvert }}
             <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
               <data-grid-item v-for="item in item.data" :label="item.attrValue" :span="6" :key="item.attrName">
                 <i-radio-group v-model="item.attrCode">
@@ -188,14 +188,17 @@ export default class ModifyCustomerAssessment extends Vue {
   isView: boolean;
 
   isLtRegisterTime = (rule, value, callback) => {
-    if (
-      new Date(value).getTime() > new Date(this.model.assessmentDate).getTime()
-    ) {
-      // 拼接:000是因为时间戳算到毫秒，根据自己拿到的值的实际情况来
-      callback(new Error());
-    } else {
-      callback();
-    }
+    try {
+      if (
+        new Date(value).getTime() >
+        new Date(this.model.assessmentDate).getTime()
+      ) {
+        // 拼接:000是因为时间戳算到毫秒，根据自己拿到的值的实际情况来
+        callback(new Error());
+      } else {
+        callback();
+      }
+    } catch (error) {}
   };
 
   private customerCarInfo: any = {
@@ -342,8 +345,6 @@ export default class ModifyCustomerAssessment extends Vue {
   }
 
   configChange(item, index) {
-    console.log(item);
-
     this.model.config[index] = {
       attrType: item.attrType,
       attrName: item.attrName,
@@ -357,12 +358,7 @@ export default class ModifyCustomerAssessment extends Vue {
   refreshCustomerBankInfo() {
     this.basicCustomerAssessmentCarService.getAssessmentConfigList().subscribe(
       data => {
-        this.model.carAttributeModelList = Object.assign(
-          {},
-          data.map(val => Object.assign({ attrCode: "" }, val))
-        );
-
-        console.log(this.model.carAttributeModelList);
+        this.model.carAttributeModelList = Object.assign([], data);
       },
       err => this.$Message.error(err.msg)
     );
@@ -389,8 +385,6 @@ export default class ModifyCustomerAssessment extends Vue {
             model.carAttributeModelList.push(Object.assign({}, item));
           });
         });
-
-        console.log(model);
 
         this.basicCustomerAssessmentCarService
           .addBasicCustomerAssessment(model)

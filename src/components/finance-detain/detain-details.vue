@@ -8,7 +8,7 @@
       <data-grid-item label="是否二手车" :span="6">{{model.isSecondHand | dictConvert}}</data-grid-item>
       <data-grid-item label="购买方式" :span="6">{{model.buyType | dictConvert}}</data-grid-item>
       <data-grid-item label="抵押方式" :span="6">{{model.orderMortgageType | dictConvert}}</data-grid-item>
-      <data-grid-item label="初次登记日期" :span="6">{{model.registerTime | dataFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="初次登记日期" :span="6">{{model.registerTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
     </data-grid>
   </section>
 </template>

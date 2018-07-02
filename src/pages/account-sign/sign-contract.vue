@@ -42,8 +42,7 @@ export default class SignContract extends Page {
     this.customerSignColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {

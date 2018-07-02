@@ -89,4 +89,47 @@ export class FinancialQueryService {
     })
   }
 
+  /**
+   * 查询退款中的订单
+   * @param queryParamsModel 查询参数实体
+   * @param page 分页参数实体
+   */
+  queryFinancialRefundOrder(queryParamsModel, page: PageService): any {
+    return this.netService.send({
+      server: manageService.financialQueryController.queryFinancialRefundOrder,
+      data: {
+        customerName: queryParamsModel.name,
+        orderNo: queryParamsModel.orderNo,
+        idCard: queryParamsModel.idCard,
+        customerPhone: queryParamsModel.phone
+      },
+      page
+    })
+  }
+
+  /**
+   * 查询退款详情
+   * @param orderId 订单id
+   */
+  queryFinancialRefund(orderId: number): any {
+    return this.netService.send({
+      server: manageService.financialQueryController.queryFinancialRefund,
+      append: orderId
+    })
+  }
+
+  /**
+   * 供应商开票查询
+   * @param queryParamsModel 
+   * @param page 
+   */
+  supplierLoanRecord(queryParamsModel: any, page: PageService) {
+    return this.netService.send({
+      server: manageService.financialQueryController.supplierLoanRecord,
+      data: {
+
+      },
+      page: page
+    })
+  }
 }

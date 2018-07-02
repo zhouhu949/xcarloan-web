@@ -24,7 +24,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="车辆颜色" prop="stockCarColor">
-            <i-input v-model="model.stockCarColor" placeholder="请输入车辆颜色" number></i-input>
+            <i-input v-model="model.stockCarColor" placeholder="请输入车辆颜色"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -81,7 +81,7 @@ export default class ModifyBasicStockCar extends Vue {
     id: 0,
     modelId: 0,
     remark: "",
-    stockPrice: "",
+    stockPrice: 0,
     stockCarColor: "",
     stockCarNo: "",
     stockEngineNo: "",
