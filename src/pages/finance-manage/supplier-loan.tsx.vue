@@ -4,7 +4,7 @@
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="supplierId" label="供应商">
-          <i-select v-model="model.supplierId">
+          <i-select v-model="model.supplierId" clearable>
             <i-option v-for="{label,value} of supplierList" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
