@@ -61,7 +61,7 @@ export class FinancialQueryService {
 
 
   /**
-   * 
+   * 根据订单ID 查询还款详情
    * @param orderId 订单Id
    */
   findOrderRepayScheme(orderId: number): any {
@@ -79,6 +79,37 @@ export class FinancialQueryService {
   findRepayOrderList(queryData, page: PageService) {
     return this.netService.send({
       server: manageService.financialQueryController.findRepayOrderList,
+      data: {
+        customerName: queryData.name,
+        orderNo: queryData.orderNo,
+        idCard: queryData.idCard,
+        customerPhone: queryData.phone
+      },
+      page
+    })
+  }
+
+  /**
+   * 查询当前期的还款详情
+   */
+  selectRepayInfo(orderId: Number, period: Number) {
+    return this.netService.send({
+      server: manageService.financialQueryController.selectRepayInfo,
+      data: {
+        orderId: orderId,
+        periods: period
+      }
+    })
+  }
+
+  /**
+   * 收款列表查询
+   * @param queryData 
+   * @param page 
+   */
+  findGathering(queryData, page: PageService) {
+    return this.netService.send({
+      server: manageService.financialQueryController.findGathering,
       data: {
         customerName: queryData.name,
         orderNo: queryData.orderNo,

@@ -93,8 +93,8 @@ export class CommonService {
    * @param buttonCount 
    */
   static getOperateWidth(buttonCount) {
-    let baseSize = 8
-    return buttonCount < 2 ? baseSize * unit : (buttonCount * 2 + baseSize) * unit
+    let baseSize = 6
+    return buttonCount <= 2 ? baseSize * unit : (buttonCount * 2 + baseSize) * unit
   }
 
   static reset(target, options?) {

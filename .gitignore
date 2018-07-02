@@ -11,7 +11,6 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-.vscode
 package-lock.json
 yarn.lock
 
