@@ -5,6 +5,7 @@ import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 import { LoadingService } from "~/utils/loading.service";
 // import cookie from 'js-cookie'
+import router from '~/router'
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
@@ -221,6 +222,7 @@ export class NetService {
             break;
           case 401:
             error.msg = "用户身份过期,请重新登录"
+            router.push('/')
             break;
           default:
             error.msg = "服务器内部错误,请稍后重试"

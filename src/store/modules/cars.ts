@@ -1,5 +1,5 @@
-import { BasicCarManageService } from "~/services/manage-service/basic-car-manage.service";
 import { CarPropertyType } from "~/config/enum.config";
+const CreateBasicCarManageService = () => import('~/services/manage-service/basic-car-manage.service')
 
 export default {
   namespaced: true,
@@ -62,7 +62,8 @@ export default {
      * 获取所有车辆数据
      * @param param0 
      */
-    getAllCar({ commit }) {
+    async getAllCar({ commit }) {
+      let { BasicCarManageService } = await CreateBasicCarManageService()
       let basicCarManageService = new BasicCarManageService()
       basicCarManageService.getAllCarTreeList().subscribe(
         data => commit("updateCarData", data),
