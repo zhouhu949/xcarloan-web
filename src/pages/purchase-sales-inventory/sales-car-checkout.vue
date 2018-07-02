@@ -19,7 +19,7 @@
       </template>
 
     </data-form>
-    <data-box :id="20" :columns="enterShellSaveColumns" :data="enterShellSaveDataSet" @onPageChange="refreshEnterShellSave" :page="pageService" ref="databox"></data-box>
+    <data-box :id="20" :columns="enterShellSaveColumns" :data="enterShellSaveDataSet" @on-page-change="refreshEnterShellSave" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

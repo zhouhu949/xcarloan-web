@@ -122,9 +122,9 @@ export default class ModifyCustomerInfoJob extends Vue {
   created() {
     this.model = {
       companyName: '', // 单位名称
-      companyNature: 0, // 单位性质
-      industry: 0, // 所属行业
-      jobType: 0, // 职业类型
+      companyNature: '', // 单位性质
+      industry: '', // 所属行业
+      jobType: '', // 职业类型
       basicSalary: 0, // 基本月薪
       companyAddress: '', // 单位地址
       companyAddressDetail: '', // 单位地址详细

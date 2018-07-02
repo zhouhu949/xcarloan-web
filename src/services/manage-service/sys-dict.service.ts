@@ -8,111 +8,9 @@ export class SysDictService {
   private netService: NetService
 
   /**
-   * 查询所有数据字典类型
-   */
-  getDataDictByTypeCode({ typeCode }) {
-    return this.netService.send({
-      server: manageService.sysDictController.getDataDictByTypeCode,
-      data: {
-        typeCode: typeCode
-      }
-    })
-  }
-  /**
-   * 修改数据字典项
-   */
-  updateDataDict(data) {
-    return this.netService.send({
-      server: manageService.sysDictController.updateDataDict,
-      data: data,
-      loading: true
-    })
-  }
-  /**
-   * 新增数据字典项
-   */
-  createUserDataDict(data) {
-    return this.netService.send({
-      server: manageService.sysDictController.createUserDataDict,
-      data: data,
-      loading: true
-    })
-  }
-   
-  /**
-   * 删除数据字典项
-   */
-  deleteDataDict({ id }) {
-    return this.netService.send({
-      server: manageService.sysDictController.deleteDataDict,
-      data: {
-        id: id
-      },
-      loading: true
-    })
-  }
-  /**
-   * 根据条件搜索对应的数字字典项
-  */
-  getAllDataDict(data, page) {
-    return this.netService.send({
-      server: manageService.sysDictController.getAllDataDict,
-      data: data,
-      page: page
-    })
-  }
-  /**
-   * 查询所有数据字典项(无typeCode)
-  */
-  getAll() {
-    return this.netService.send({
-      server: manageService.sysDictController.getAll,
-    })
-  }
-
-  getDictHash() {
-    return this.netService.send({
-      server: manageService.sysDictController.getDictHash,
-    })
-  }
-
-  /**
-  * 获取字典数据
-  */
-  getDictData() {
-    return this.netService.send({
-      server: manageService.sysDictController.getDictData,
-    })
-  }
-
-  /**
-  * 分页查询数据字典类型对应的数据字典项
-  */
-  getDataDictByTypeCodeWithPage(data, page) {
-    return this.netService.send({
-      server: manageService.sysDictController.getDataDictByTypeCodeWithPage,
-      data: data,
-      page: page
-    })
-  }
-
-  /**
-   * 查询所有数据字典类型
-   */
-  getAllSysDictType() {
-    return this.netService.send({
-        server: manageService.sysDictController.getAllSysDictType,
-    })
-  }
-  modifyDataDictType(data) {
-    return this.netService.send({
-        server: manageService.sysDictController.modifyDataDictType,
-        data
-    })
-  }
-  /**
    * 新增数据字典类型
    */
+  @Debounce()
   createDataDictType(data) {
     return this.netService.send({
       server: manageService.sysDictController.createDataDictType,
@@ -120,12 +18,101 @@ export class SysDictService {
       loading: true
     })
   }
+
   /**
-   * 查询所有用户字典类型
+   * 修改数据字典类型
+   * @param data 
+   */
+  @Debounce()
+  modifyDataDictType(data) {
+    return this.netService.send({
+        server: manageService.sysDictController.modifyDataDictType,
+        data
+    })
+  }
+
+  /**
+   * 查询系统数据字典类型
+   */
+  getAllSysDictType() {
+    return this.netService.send({
+        server: manageService.sysDictController.getAllSysDictType,
+    })
+  }
+
+  /**
+   * 查询系统数据字典项
+  */
+  getAll() {
+    return this.netService.send({
+      server: manageService.sysDictController.getAll,
+    })
+  }
+
+  /**
+   * 根据数据字典类型查询数据字典项
+   */
+  getSysItemBySysDictType(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.getSysItemBySysDictType,
+      data: data
+    })
+  }
+
+  /**
+  * 查询数据字典类型对应的数据字典项
+  */
+  getDataDictByTypeCode(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.getDataDictByTypeCode,
+      data: data
+    })
+  }
+
+  /**
+   * 查询用户自定义数据字典类型
    */
   getAllUserDictType() {
     return this.netService.send({
       server: manageService.sysDictController.getAllUserDictType
+    })
+  }
+
+  /**
+   * 新增用户自定义数据字典项
+   */
+  @Debounce()
+  createUserDataDict(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.createUserDataDict,
+      data: data,
+      loading: true
+    })
+  }
+
+  /**
+   * 修改数据字典项
+   */
+  @Debounce()
+  updateDataDict(data) {
+    return this.netService.send({
+      server: manageService.sysDictController.updateDataDict,
+      data: data,
+      loading: true
+    })
+  }
+   
+  /**
+   * 删除用户自定义数据字典项
+   */
+  @Debounce()
+  deleteDataDict({ id }) {
+    return this.netService.send({
+      server: manageService.sysDictController.deleteDataDict,
+      data: {
+        id: id
+      },
+      loading: true
     })
   }
 }

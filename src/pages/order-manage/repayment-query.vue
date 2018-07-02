@@ -18,7 +18,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="repayOrderColumns" :data="repayOrderDataSet" @onPageChange="refreshRepayOrder" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="repayOrderColumns" :data="repayOrderDataSet" @on-page-change="refreshRepayOrder" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

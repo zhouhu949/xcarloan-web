@@ -9,7 +9,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="20" :columns="openAccountColumns" :data="openAccountDataSet" @onPageChange="refreshOpenAccount" :page="pageService" ref="databox"></data-box>
+    <data-box :id="20" :columns="openAccountColumns" :data="openAccountDataSet" @on-page-change="refreshOpenAccount" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

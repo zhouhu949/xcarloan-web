@@ -55,12 +55,12 @@ export default class ModifyCustomerInfoCar extends Vue {
     this.model = {
       carNo: '', // 车牌号
       carPrice: 0, // 购车价格
-      isSecondHand: 0, // 是否二手车
-      buyType: 0, // 购买方式
-      carStatus: 0, // 抵押状态
+      isSecondHand: '', // 是否二手车
+      buyType: '', // 购买方式
+      carStatus: '', // 抵押状态
       mortgageNum: 0, // 抵押登记次数 
       remark: '', // 备注
-      isLoanFinished: 0, // 是否贷款已还清
+      isLoanFinished: '', // 是否贷款已还清
       registerTime: '', // 初次登记时间
       operator: '', // 操作人
       carType: '', // 车辆型号

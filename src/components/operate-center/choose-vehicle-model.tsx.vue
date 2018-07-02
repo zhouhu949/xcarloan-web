@@ -14,7 +14,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :show-config-column="false" :height="400" :columns="columns" highlightRow :data="dataSet" ref="databox" :page="pageService" @on-current-change="onCurrentChange" @onPageChange="refreshData"></data-box>
+    <data-box :show-config-column="false" :height="400" :columns="columns" highlightRow :data="dataSet" ref="databox" :page="pageService" @on-current-change="onCurrentChange" @on-page-change="refreshData"></data-box>
   </section>
 </template>
 

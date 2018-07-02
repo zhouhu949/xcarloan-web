@@ -1,0 +1,70 @@
+<!-- 客户当期还款 -->
+<template>
+  <section class="component customer-repayment-current-period">
+    <i-card title="订单信息" style="margin-bottom:20px;">
+      <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="客户姓名" :span="6">
+          <i-button type="text" class="row-command-button" @click="showCustomerInfo(orderInfo.customerId)">{{orderInfo.customerName}}</i-button>
+        </data-grid-item>
+        <data-grid-item label="订单号" :span="6">
+          <i-button type="text" class="row-command-button" @click="showOrderInfo(orderId)">{{orderInfo.orderNumber}}</i-button>
+        </data-grid-item>
+        <data-grid-item label="当前期数" :span="6">{{``}}</data-grid-item>
+        <data-grid-item label="已还金额" :span="6">{{``}}</data-grid-item>
+        <data-grid-item label="待还金额" :span="6">{{``}}</data-grid-item>
+      </data-grid>
+    </i-card>
+
+  </section>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { Dependencies } from "~/core/decorator";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+import { namespace } from "vuex-class";
+const CustomerOrderModule = namespace("customerOrderSpace")
+
+@Component({
+  components: {
+    DataGrid,
+    DataGridItem
+  }
+})
+export default class CustomerRepaymentCurrentPeriod extends Vue {
+  @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
+  @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
+  /**
+   * 订单号
+   */
+  @Prop({
+    required: true,
+    type: Number
+  }) orderId: number;
+  /**
+   * 要付款的期数
+   */
+  @Prop({
+    required: true,
+    type: Number
+  }) period: number;
+
+  private orderInfo: any = {}
+
+  mounted() {
+    // 查询要还款的期数的详情
+    this.financialQueryService.selectRepayInfo(this.orderId, this.period).subscribe(
+      data => this.orderInfo = data,
+      err => this.$Message.error(err.message)
+    )
+  }
+}
+</script>
+
+<style lang="less">
+</style>

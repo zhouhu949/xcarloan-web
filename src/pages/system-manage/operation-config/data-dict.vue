@@ -23,7 +23,7 @@
               </i-form-item>
             </template>
           </data-form>
-          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
+          <data-box :columns="columns1" :data="dataNames" :noDefaultRow="true"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -38,7 +38,6 @@ import { Form } from "iview";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { SysDictService } from "~/services/manage-service/sys-dict.service";
-import { PageService } from "~/utils/page.service";
 import { setTimeout } from "core-js";
 
 @Layout("workspace")
@@ -49,7 +48,6 @@ import { setTimeout } from "core-js";
 })
 export default class SysDict extends Page {
   @Dependencies(SysDictService) private sysDictService: SysDictService;
-  @Dependencies(PageService) private pageService: PageService;
   private data1: Array<Object> = [];
   private dataType: Array<any> = [];
   private dataNames: Array<any> = [];
@@ -119,7 +117,7 @@ export default class SysDict extends Page {
     this.dictCodes = item.dictCode;
     this.dictAguments.id = item.id;
     this.sysDictService
-      .getDataDictByTypeCodeWithPage(this.dictAguments, this.pageService)
+      .getSysItemBySysDictType(this.dictAguments)
       .subscribe(val => {
         this.dataNames = val;
       });

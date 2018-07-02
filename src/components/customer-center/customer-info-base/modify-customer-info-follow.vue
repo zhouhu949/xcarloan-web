@@ -29,7 +29,7 @@ import { BasicCustomerService } from "~/services/manage-service/basic-customer.s
 @Component({})
 export default class ModifyCustomerInfoCar extends Vue {
   @Dependencies(BasicCustomerService) private basicCustomerService: BasicCustomerService;
-  // 客户ID
+  // 意向ID
   @Prop() intentionId: Number;
 
   private model: any = null;

@@ -18,7 +18,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="orderColumns" :data="orderDataSet" @onPageChange="refreshOrder" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="orderColumns" :data="orderDataSet" @on-page-change="refreshOrder" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

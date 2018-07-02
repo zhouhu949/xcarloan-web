@@ -23,7 +23,7 @@
             </i-form-item>
           </template>
         </data-form>
-        <data-box :columns="inventoryColumns" :data="inventoryDataSet" @onPageChange="refreshStockCarByModel" :page="pageService" ref="databox"></data-box>
+        <data-box :columns="inventoryColumns" :data="inventoryDataSet" @on-page-change="refreshStockCarByModel" :page="pageService" ref="databox"></data-box>
       </i-col>
     </i-row>
   </section>

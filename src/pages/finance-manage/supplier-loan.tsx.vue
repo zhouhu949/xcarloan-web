@@ -4,7 +4,7 @@
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="supplierId" label="供应商">
-          <i-select v-model="model.supplierId">
+          <i-select v-model="model.supplierId" clearable>
             <i-option v-for="{label,value} of supplierList" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -61,7 +61,7 @@ export default class SupplierLoan extends Page {
         fixed: 'left',
         align: 'center',
         minWidth: this.$common.getColumnWidth(1),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.modelId)}>放款</i-button>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.id)}>放款</i-button>)
       },
       {
         align: 'center',

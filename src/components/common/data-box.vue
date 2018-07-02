@@ -91,7 +91,7 @@ export default class DataBox extends Vue {
   autoHiddenHeader;
 
   // 分页更新事件
-  @Emit("onPageChange")
+  @Emit("on-page-change")
   pageConfigChange(page) { }
 
   // 单行点击事件

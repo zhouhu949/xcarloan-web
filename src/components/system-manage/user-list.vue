@@ -11,7 +11,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="userList" @onPageChange="search" :page="pageService" :noDefaultRow="true"></data-box>
+    <data-box :columns="columns1" :data="userList" @on-page-change="search" :page="pageService" :noDefaultRow="true"></data-box>
   </section>
 </template>
 

@@ -13,7 +13,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="dataSet" ref="databox" @on-selection-change="onSelectionChanged" @onPageChange="searchRolesByAuth" :page="pageService" :height="500"></data-box>
+    <data-box :columns="columns1" :data="dataSet" ref="databox" @on-selection-change="onSelectionChanged" @on-page-change="searchRolesByAuth" :page="pageService" :height="500"></data-box>
   </section>
 </template>
 

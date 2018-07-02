@@ -18,7 +18,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="enterShellSaveColumns" :data="enterShellSaveDataSet" @onPageChange="refreshEnterShellSave" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="enterShellSaveColumns" :data="enterShellSaveDataSet" @on-page-change="refreshEnterShellSave" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

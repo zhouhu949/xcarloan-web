@@ -40,10 +40,9 @@ export default class ModifyCustomerInfoHouse extends Vue {
 
   created() {
     this.model = {
-      houseType: 0, // 户型
+      houseType: '', // 户型
       houseArea: 0, // 房产面积
       houseAddress: '', // 房屋地址
-      // houseId: 0, // 房产id
       remark: '' // 备注
     }
 

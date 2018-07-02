@@ -10,7 +10,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="customerAssessmentCarColumns" :data="customerAssessmentCarDataSet" @onPageChange="refreshCustomerAssessmentCar" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="customerAssessmentCarColumns" :data="customerAssessmentCarDataSet" @on-page-change="refreshCustomerAssessmentCar" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 

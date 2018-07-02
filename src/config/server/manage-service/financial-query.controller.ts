@@ -103,10 +103,22 @@ export default {
     action: 'queryFinancialRefundOrder',
     type: requestType.Get
   },
+  /**
+   * 
+   */
   supplierLoanRecord:{
     service: SERVICE,
     controller: CONTROLLER,
     action: 'supplierLoanRecord',
+    type: requestType.Get
+  },
+  /**
+   * 查询当前期的还款详情
+   */
+  selectRepayInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'selectRepayInfo',
     type: requestType.Get
   }
 }

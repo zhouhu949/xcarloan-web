@@ -73,7 +73,7 @@ export default class WorkTab extends Vue {
    * 监听当前页面变化
    */
   @Watch("currentPage")
-  onPageChanged(value: string) {
+  onCurrentPage(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
     let getTargetComponent = () => {
       return components.find(x => x.$options.name === this.getComponentName(value));

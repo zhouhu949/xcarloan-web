@@ -14,7 +14,7 @@
       </i-col>
       <!--表格-->
       <i-col :span="20">
-        <data-box :id="34" :columns="treeColumns" :data="treeDatabox" @onPageChange="roleReso" :page="pageService"></data-box>
+        <data-box :id="34" :columns="treeColumns" :data="treeDatabox" @on-page-change="roleReso" :page="pageService"></data-box>
       </i-col>
     </i-row>
 

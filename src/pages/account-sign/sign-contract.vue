@@ -9,7 +9,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="customerSignColumns" :data="customerSignDataSet" @onPageChange="refreshCustomerSign" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="customerSignColumns" :data="customerSignDataSet" @on-page-change="refreshCustomerSign" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
