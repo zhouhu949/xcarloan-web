@@ -10,11 +10,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
+import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 
 @Component({})
 export default class OrderInfoRepayPlan extends Vue {
-  @Dependencies(BasicCustomerCenterService) private basicCustomerCenterService: BasicCustomerCenterService;
+  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
   @Prop() id: Number
 
   private dataSet: Array<any> = [];
@@ -23,39 +23,16 @@ export default class OrderInfoRepayPlan extends Vue {
   created() {
     this.columns = [
       {
-        title: "操作",
-        width: 90,
-        fixed: "left",
         align: "center",
-        render: (h, { row, column, index }) => {
-          return h("div", [
-            h("i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  // click: () => this.$common.downloadFile(row.fileUrl.row.fileName)
-                }
-              },
-              "查看详情")
-          ])
-        }
-      },
-      {
-        align: "center",
-        title: "订单号",
+        title: "订单编号",
         key: "orderNo",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
-        title: '订单金额',
+        title: '贷款金额',
         key: 'orderPrice',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => h('p', {}, this.$filter.toThousands(row.orderPrice))
       },
       {
@@ -73,19 +50,19 @@ export default class OrderInfoRepayPlan extends Vue {
         render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderRepayType))
       }, {
         align: "center",
-        title: '操作时间',
+        title: '操作日期',
         key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime))
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime,"yyyy-MM-dd"))
       }]
 
   }
 
   mounted() {
-    // this.basicCustomerCenterService.findBasicCustomerOrderList(this.id).subscribe(
-    //   data => this.dataSet = data,
-    //   err => this.$Message.error(err.msg)
-    // )
+    this.basicCustomerOrderService.findCustomerOrderSchedule(this.id).subscribe(
+      data => this.dataSet = data,
+      err => this.$Message.error(err.msg)
+    )
   }
 
 

@@ -1,6 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { manageService } from '~/config/server/manage-service'
+import { PageService } from '~/utils/page.service';
 
 export class BasicCustomerOrderService {
   @Inject(NetService)
@@ -61,6 +62,83 @@ export class BasicCustomerOrderService {
   findCustomerCollateral(orderId) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.findCustomerCollateral,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /** 
+  *查询订单车辆
+  */
+  getOrderCar(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.getOrderCar,
+      append: orderId
+    })
+  }
+  /**
+   * 还款计划
+   */
+  findCustomerOrderSchedule(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderSchedule,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 订单操作记录
+   */
+  findCustomerOrderRecord(orderId, page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderRecord,
+      data: {
+        orderId: orderId
+      },
+      page: page
+    })
+  }
+  /**
+   * 收款记录
+   */
+  findCustomerOrderFinancialSituationList(orderId,page: PageService) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderFinancialSituationList,
+      data: {
+        orderId: orderId
+      },
+      page:page
+    })
+  }
+  /**
+   * 放款记录
+   */
+  findCustomerOrderFinanceLoanList(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderFinanceLoanList,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 提前收回记录
+   */
+  findCustomerOrderFinanceTakeBack(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderFinanceTakeBack,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 提前结清记录
+   */
+  findCustomerOrderFinanceSettleList(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.findCustomerOrderFinanceSettleList,
       data: {
         orderId: orderId
       }

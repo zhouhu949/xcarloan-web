@@ -5,14 +5,17 @@
         <i-form-item prop="name" label="姓名">
           <i-input v-model="model.name" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
-        <i-form-item prop="orderNo" label="订单号">
-          <i-input v-model="model.orderNo" placeholder="请输入订单号"></i-input>
-        </i-form-item>
         <i-form-item prop="idCard" label="身份证号">
           <i-input v-model="model.idCard" placeholder="请输入身份证号"></i-input>
         </i-form-item>
         <i-form-item prop="phone" label="联系方式">
           <i-input v-model="model.phone" placeholder="请输入联系方式"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNo" label="订单号">
+          <i-input v-model="model.orderNo" placeholder="请输入订单号"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderStatus" label="订单状态">
+          <i-input v-model="model.orderStatus" placeholder="请输入订单状态"></i-input>
         </i-form-item>
       </template>
     </data-form>

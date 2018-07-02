@@ -22,4 +22,6 @@ export default {
     action: 'getOrderFile',
     type: requestType.Get
   }
+
+ 
 }
