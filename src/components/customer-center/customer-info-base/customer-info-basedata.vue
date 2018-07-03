@@ -87,7 +87,7 @@ export default class CustomerInfoBasedata extends Vue {
       },
       render: h => h(ModifyCustomerInfoBasedata, {
         props: {
-          data: this.customerBaseInfo
+          data: Object.assign({}, this.customerBaseInfo)
         }
       })
     })

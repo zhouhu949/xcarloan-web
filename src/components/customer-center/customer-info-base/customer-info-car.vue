@@ -25,7 +25,7 @@
             <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
             <data-grid-item label="购买方式" :span="4">{{item.buyType | dictConvert}}</data-grid-item>
             <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
-            <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum | dictConvert}}</data-grid-item>
+            <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum}}</data-grid-item>
             <data-grid-item label="备注" :span="12">{{item.remark}}</data-grid-item>
           </data-grid>
         </i-card>
@@ -100,6 +100,7 @@ export default class CustomerInfoCar extends Vue {
    */
   private onModifyClick(carInfo) {
     carInfo.customerId = this.id
+    let tmpData = Object.assign({}, carInfo)
     this.$dialog.show({
       title: "修改车产信息",
       footer: true,
@@ -115,7 +116,7 @@ export default class CustomerInfoCar extends Vue {
       },
       render: h => h(ModifyCustomerInfoCar, {
         props: {
-          data: carInfo
+          data: tmpData
         }
       })
     })

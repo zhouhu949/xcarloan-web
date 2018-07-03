@@ -97,6 +97,7 @@ export default class CustomerInfoHouse extends Vue {
    */
   private onModifyClick(houseInfo) {
     houseInfo.customerId = this.id
+    let tmpData = Object.assign({}, houseInfo)
     this.$dialog.show({
       title: "修改房产信息",
       footer: true,
@@ -112,7 +113,7 @@ export default class CustomerInfoHouse extends Vue {
       },
       render: h => h(ModifyCustomerInfoHouse, {
         props: {
-          data: houseInfo
+          data: tmpData
         }
       })
     })
