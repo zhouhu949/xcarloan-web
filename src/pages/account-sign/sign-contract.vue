@@ -170,7 +170,9 @@ export default class SignContract extends Page {
         editable: true,
         title: "教育程度",
         key: "education",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.education))
       },
       {
         align: "center",
@@ -184,7 +186,9 @@ export default class SignContract extends Page {
         editable: true,
         title: "是否接受勘查",
         key: "houseProspecting",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.houseProspecting))
       },
       {
         align: "center",
@@ -198,7 +202,9 @@ export default class SignContract extends Page {
         editable: true,
         title: "身份证有效期类型",
         key: "idCardValidityPeriodType",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.idCardValidityPeriodType))
       },
       {
         align: "center",

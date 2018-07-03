@@ -97,10 +97,26 @@ export class FinancialManagementService {
    * @param orderId 订单ID
    */
   @Debounce()
-  financialAffirm(orderId:Number) {
+  financialAffirm(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.financialAffirm,
       append: orderId,
+      loadding: true
+    })
+  }
+
+  /**
+   * 供应商开票
+   * @param model 开票实体
+   */
+  @Debounce()
+  financialAffirmInvoice(model: any): any {
+    return this.netService.send({
+      server: manageService.financialManagementController.financialAffirmInvoice,
+      data: {
+        id: model.id,
+        url: model.url
+      },
       loadding: true
     })
   }

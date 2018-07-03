@@ -47,6 +47,11 @@ export default class UploadVoucher extends Vue {
   })
   isShowUpload: boolean;
 
+  @Prop({
+    type:String
+  })
+  acceptFileType;
+
   @Model("on-resource-change", {
     default: () => []
   })
@@ -86,7 +91,8 @@ export default class UploadVoucher extends Vue {
       render: h => {
         return h(FileUpload, {
           props: {
-            fileNumberLimit: this.fileNumberLimit
+            fileNumberLimit: this.fileNumberLimit,
+            acceptFileType:this.acceptFileType
           },
           on: {
             "on-success": (fileList) => {

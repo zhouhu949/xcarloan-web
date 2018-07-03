@@ -75,5 +75,14 @@ export default {
     controller: CONTROLLER,
     action: 'financialAffirm',
     type: requestType.Post
+  },
+  /**
+   * 供应商开票
+   */
+  financialAffirmInvoice: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'financialAffirmInvoice',
+    type: requestType.Post
   }
 }

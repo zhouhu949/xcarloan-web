@@ -3,15 +3,14 @@
     <page-header title="供应商开票" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshData">
       <template slot="input">
-        <i-form-item prop="hasInvoice" label="是否已开票">
-            <i-select v-model="queryParamsModel.hasInvoice">
-              <i-option v-for="{value,label} in $dict.getDictData(10001)" placeholder="请选择是否已开票" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-form-item>
         <i-form-item label="供应商" prop="supplierId">
           <i-select v-model="queryParamsModel.supplierId">
             <i-option v-for="{id,supplierName} in supplierDataSet" placeholder="请选择供应商" :key="id" :label="supplierName" :value="id"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="hasInvoice" label="是否已开票">
+          <i-select v-model="queryParamsModel.hasInvoice">
+            <i-option v-for="{value,label} in $dict.getDictData(10001)" placeholder="请选择是否已开票" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
       </template>
@@ -23,7 +22,7 @@
 <script lang="tsx">
 import Page from "~/core/page";
 import Component from "vue-class-component";
-import ModifyRefundCustomer from "~/components/finance-manage/modify-refund-customer.vue";
+import ModifySupplierInvoice from "~/components/finance-manage/modify-supplier-invoice.vue";
 import { namespace } from "vuex-class";
 import { PageService } from "~/utils/page.service";
 import { Form, Button } from "iview";
@@ -52,7 +51,9 @@ export default class SupplierInvoice extends Page {
   private supplierDataSet: Array<any> = [];
 
   private queryParamsModel: any = {
+    // 供应商Id
     supplierId: "",
+    // 是否已开票
     hasInvoice: ""
   };
 
@@ -66,24 +67,25 @@ export default class SupplierInvoice extends Page {
         fixed: "left",
         align: "center",
         minWidth: this.$common.getOperateWidth(1),
-        render: (h, { row }) =>{
-          if(row.hasInvoice===10003){
+        render: (h, { row }) => {
+          // 判断是否已开票 10002：是；10003:否
+          if (row.hasInvoice === 10003) {
             return (
-          <i-button
-            type="text"
-            v-show="row.hasInvoice ===10003"
-            class="row-command-button"
-            onClick={() => this.onSubmitClick(row.orderId)}
-          >
-            开票
-          </i-button>
-        );
+              <i-button
+                type="text"
+                class="row-command-button"
+                onClick={() => this.onSubmitClick(row.orderId)}
+              >
+                开票
+              </i-button>
+            );
           }
-        } 
-      },{
-        align:"center",
-        title:"供应商名称",
-        key:"supplierName",
+        }
+      },
+      {
+        align: "center",
+        title: "供应商名称",
+        key: "supplierName",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
           <span>{this.$filter.dictConvert(row.supplierName)}</span>
@@ -142,25 +144,27 @@ export default class SupplierInvoice extends Page {
   }
 
   mounted() {
-    this.refreshData();
+    // 获取供应商列表
     this.getBasicSupplier();
+    // 刷新列表
+    this.refreshData();
   }
 
   /**
-   * 退款操作
+   * 开票操作
    */
   private onSubmitClick(orderId: number) {
     this.$dialog.show({
-      title: "退款",
+      title: "开票",
       footer: true,
-      onOk: refundCustomer => {
-        return refundCustomer.submit().then(v => {
+      onOk: supplierInvoice => {
+        return supplierInvoice.submit().then(v => {
           if (v) this.refreshData();
           return v;
         });
       },
       render: h =>
-        h(ModifyRefundCustomer, {
+        h(ModifySupplierInvoice, {
           props: {
             orderId: orderId
           }
@@ -176,7 +180,7 @@ export default class SupplierInvoice extends Page {
         err => this.$Message.error(err.msg)
       );
   }
-  
+
   /**
    * 获取供应商信息
    */
@@ -191,7 +195,6 @@ export default class SupplierInvoice extends Page {
       );
     });
   }
-
 }
 </script>
 

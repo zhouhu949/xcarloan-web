@@ -81,7 +81,6 @@ export default class Assessment extends Page {
                 on: {
                   click: () => {
                     this.onGetAssessmentReportList(row.carId);
-                    // this.onModifyCustomerAssessment(row);
                   }
                 }
               },
