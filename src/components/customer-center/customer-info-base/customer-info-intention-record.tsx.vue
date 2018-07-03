@@ -14,14 +14,14 @@
 <script lang="tsx">
 import Vue from 'vue';
 import Component from 'vue-class-component'
-import { Prop } from "vue-property-decorator";
-import { Dependencies } from "~/core/decorator";
-import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
-import { namespace } from "vuex-class";
 import CustomerInfoFollowRecord from "~/components/customer-center/customer-info-base/customer-info-follow-record.vue"
 import ModifyCustomerInfoFollow from "~/components/customer-center/customer-info-base/modify-customer-info-follow.vue"
 import ModifyCustomerInfoIntention from "~/components/customer-center/customer-info-base/modify-customer-info-intention.vue"
 import { Button } from "iview";
+import { namespace } from "vuex-class";
+import { Prop } from "vue-property-decorator";
+import { Dependencies } from "~/core/decorator";
+import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 

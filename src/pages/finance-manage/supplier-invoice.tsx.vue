@@ -1,19 +1,18 @@
 <template>
   <section class="page supplier-invoice">
     <page-header title="供应商开票" hidden-print hidden-export></page-header>
-    <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshData" :page="pageService">
+    <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshData">
       <template slot="input">
-        <i-form-item prop="name" label="姓名">
-          <i-input v-model="queryParamsModel.name" placeholder="请输入客户姓名"></i-input>
+        <i-form-item prop="hasInvoice" label="是否已开票">
+            <i-select v-model="queryParamsModel.hasInvoice">
+              <i-option v-for="{value,label} in $dict.getDictData(10001)" placeholder="请选择是否已开票" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
         </i-form-item>
-        <i-form-item prop="orderNo" label="订单号">
-          <i-input v-model="queryParamsModel.orderNo" placeholder="请输入订单号"></i-input>
-        </i-form-item>
-        <i-form-item prop="idCard" label="身份证号">
-          <i-input v-model="queryParamsModel.idCard" placeholder="请输入身份证号"></i-input>
-        </i-form-item>
-        <i-form-item prop="phone" label="联系电话">
-          <i-input v-model="queryParamsModel.phone" placeholder="请输入联系电话"></i-input>
+        <i-form-item label="供应商" prop="supplierId">
+          <i-select v-model="queryParamsModel.supplierId">
+            <i-option v-for="{id,supplierName} in supplierDataSet" placeholder="请选择供应商" :key="id" :label="supplierName" :value="id"></i-option>
+          </i-select>
         </i-form-item>
       </template>
     </data-form>
@@ -24,12 +23,12 @@
 <script lang="tsx">
 import Page from "~/core/page";
 import Component from "vue-class-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import ModifyRefundCustomer from "~/components/finance-manage/modify-refund-customer.vue";
 import { namespace } from "vuex-class";
 import { PageService } from "~/utils/page.service";
 import { Form, Button } from "iview";
 import { Layout, Dependencies } from "~/core/decorator";
+import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
@@ -45,14 +44,16 @@ export default class SupplierInvoice extends Page {
   private financialQueryService: FinancialQueryService;
   @Dependencies(FinancialManagementService)
   private financialManagementService: FinancialManagementService;
+  @Dependencies(BasicSupplierService)
+  private basicSupplierService: BasicSupplierService;
 
   @CustomerOrderModule.Action showOrderInfo;
 
+  private supplierDataSet: Array<any> = [];
+
   private queryParamsModel: any = {
-    name: "",
-    orderNo: "",
-    idCard: "",
-    phone: ""
+    supplierId: "",
+    hasInvoice: ""
   };
 
   private columns: Array<any> = [];
@@ -65,83 +66,73 @@ export default class SupplierInvoice extends Page {
         fixed: "left",
         align: "center",
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row }) => (
+        render: (h, { row }) =>{
+          if(row.hasInvoice===10003){
+            return (
           <i-button
             type="text"
+            v-show="row.hasInvoice ===10003"
             class="row-command-button"
             onClick={() => this.onSubmitClick(row.orderId)}
           >
             开票
           </i-button>
-        )
-      },
-      {
-        align: "center",
-        title: " 订单号",
-        key: "orderNo",
+        );
+          }
+        } 
+      },{
+        align:"center",
+        title:"供应商名称",
+        key:"supplierName",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
-          <i-button
-            type="text"
-            class="row-command-button"
-            onClick={() => this.onOrderNumberClick(row.orderId)}
-          >
-            {row.orderNo}
-          </i-button>
+          <span>{this.$filter.dictConvert(row.supplierName)}</span>
         )
       },
       {
         align: "center",
-        title: " 订单状态",
-        key: "orderStatus",
+        title: " 放款类型",
+        key: "loanType",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
-          <span>{this.$filter.dictConvert(row.orderStatus)}</span>
+          <span>{this.$filter.dictConvert(row.loanType)}</span>
         )
       },
       {
         align: "center",
-        title: " 订单类型",
-        key: "orderType",
+        title: " 放款金额",
+        key: "loanMoney",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
-          <span>{this.$filter.dictConvert(row.orderType)}</span>
+          <span>{this.$filter.toThousands(row.loanMoney)}</span>
         )
       },
       {
         align: "center",
-        title: " 订单期数",
-        key: "orderPeriods",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        title: " 订单金额",
-        key: "orderPrice",
+        title: "是否收到发票",
+        key: "hasInvoice",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
-          <div class="col-decimal">
-            {this.$filter.toThousands(row.orderPrice)}
-          </div>
+          <span>{this.$filter.dictConvert(row.hasInvoice)}</span>
         )
       },
       {
         align: "center",
-        title: " 客户姓名",
-        key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "是否收到收据",
+        key: "hasReceipt ",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (
+          <span>{this.$filter.dictConvert(row.hasReceipt)}</span>
+        )
       },
       {
         align: "center",
-        title: " 电话号码",
-        key: "customerPhone",
-        minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        title: " 身份证号",
-        key: "idCard",
-        minWidth: this.$common.getColumnWidth(4)
+        title: "放款日期",
+        key: "loanDate",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => (
+          <span>{this.$filter.dateFormat(row.loanDate)}</span>
+        )
       }
     ];
   }
@@ -152,14 +143,11 @@ export default class SupplierInvoice extends Page {
 
   mounted() {
     this.refreshData();
+    this.getBasicSupplier();
   }
 
   private onOrderNumberClick(orderId: number) {
     this.showOrderInfo(orderId);
-    this.$dialog.show({
-      width: 1050,
-      render: h => h(OrderCustomerInfo)
-    });
   }
 
   /**
@@ -192,6 +180,22 @@ export default class SupplierInvoice extends Page {
         err => this.$Message.error(err.msg)
       );
   }
+  
+  /**
+   * 获取供应商信息
+   */
+  private getBasicSupplier() {
+    return new Promise((resolve, reject) => {
+      this.basicSupplierService.getBasicSupplierList().subscribe(
+        data => {
+          this.supplierDataSet = data;
+          resolve(true);
+        },
+        err => reject(err)
+      );
+    });
+  }
+
 }
 </script>
 

@@ -20,12 +20,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { namespace } from "vuex-class";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
-import { namespace } from "vuex-class";
+
 const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Component({

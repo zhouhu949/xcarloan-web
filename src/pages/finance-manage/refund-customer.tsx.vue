@@ -24,7 +24,6 @@
 <script lang="tsx">
 import Page from "~/core/page";
 import Component from "vue-class-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import ModifyRefundCustomer from "~/components/finance-manage/modify-refund-customer.vue";
 import { namespace } from "vuex-class";
 import { PageService } from "~/utils/page.service";
@@ -65,15 +64,9 @@ export default class RefundCustomer extends Page {
         fixed: "left",
         align: "center",
         minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row }) => (
-          <i-button
-            type="text"
-            class="row-command-button"
-            onClick={() => this.onSubmitClick(row.orderId)}
-          >
-            退款
-          </i-button>
-        )
+        render: (h, { row, column, index }) => (
+                <i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>退款</i-button>
+            )
       },
       {
         align: "center",
@@ -171,10 +164,6 @@ export default class RefundCustomer extends Page {
 
   private onOrderNumberClick(orderId: number) {
     this.showOrderInfo(orderId);
-    this.$dialog.show({
-      width: 1050,
-      render: h => h(OrderCustomerInfo)
-    });
   }
 
   /**

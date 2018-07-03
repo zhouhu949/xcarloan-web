@@ -8,11 +8,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component'
+import { namespace } from "vuex-class";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { namespace } from "vuex-class";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
+
 const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Component({})

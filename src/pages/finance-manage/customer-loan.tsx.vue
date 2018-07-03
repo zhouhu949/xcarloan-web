@@ -23,13 +23,12 @@
 
 <script lang="tsx">
 import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
-import { PageService } from "~/utils/page.service";
-import { namespace } from "vuex-class";
 import { Button } from "iview";
+import { namespace } from "vuex-class";
+import { PageService } from "~/utils/page.service";
+import { Layout, Dependencies } from '~/core/decorator'
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
@@ -128,10 +127,6 @@ export default class CustomerLoan extends Page {
 
   private onOrderNumberClick(orderId: Number) {
     this.showOrderInfo(orderId)
-    this.$dialog.show({
-      width: 1050,
-      render: h => h(OrderCustomerInfo)
-    })
   }
 
   /**
