@@ -64,14 +64,14 @@ export default class RefundCustomer extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row, column, index }) => (
                 <i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>退款</i-button>
             )
       },
       {
         align: "center",
-        title: " 订单号",
+        title: "订单号",
         key: "orderNo",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
@@ -86,7 +86,7 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 客户姓名",
+        title: "客户姓名",
         key: "customerName",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
@@ -111,19 +111,19 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 电话号码",
+        title: "电话号码",
         key: "customerPhone",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
-        title: " 身份证号",
+        title: "身份证号",
         key: "idCard",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
-        title: " 订单状态",
+        title: "订单状态",
         key: "orderStatus",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
@@ -132,7 +132,7 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 订单类型",
+        title: "订单类型",
         key: "orderType",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
@@ -141,13 +141,13 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 订单期数",
+        title: "订单期数",
         key: "orderPeriods",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
-        title: " 订单金额",
+        title: "退款金额",
         key: "orderPrice",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
@@ -158,7 +158,7 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 还款方式",
+        title: "还款方式",
         key: "orderRepayType",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
@@ -167,7 +167,7 @@ export default class RefundCustomer extends Page {
       },
       {
         align: "center",
-        title: " 还款方案名称",
+        title: "还款方案名称",
         key: "schemeName",
         minWidth: this.$common.getColumnWidth(4)
       }

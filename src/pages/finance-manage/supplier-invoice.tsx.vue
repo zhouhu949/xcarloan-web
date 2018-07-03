@@ -4,12 +4,12 @@
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshData">
       <template slot="input">
         <i-form-item label="供应商" prop="supplierId">
-          <i-select v-model="queryParamsModel.supplierId">
+          <i-select v-model="queryParamsModel.supplierId" clearable>
             <i-option v-for="{id,supplierName} in supplierDataSet" placeholder="请选择供应商" :key="id" :label="supplierName" :value="id"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="hasInvoice" label="是否已开票">
-          <i-select v-model="queryParamsModel.hasInvoice">
+          <i-select v-model="queryParamsModel.hasInvoice" clearable>
             <i-option v-for="{value,label} in $dict.getDictData(10001)" placeholder="请选择是否已开票" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -66,7 +66,7 @@ export default class SupplierInvoice extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row }) => {
           // 判断是否已开票 10002：是；10003:否
           if (row.hasInvoice === 10003) {
@@ -74,9 +74,19 @@ export default class SupplierInvoice extends Page {
               <i-button
                 type="text"
                 class="row-command-button"
-                onClick={() => this.onSubmitClick(row.orderId)}
+                onClick={() => this.onSubmitClick(row.id)}
               >
                 开票
+              </i-button>
+            );
+          } else {
+            return (
+              <i-button
+                type="text"
+                class="row-command-button"
+                onClick={() => this.onDetailsClick(row.id, row.fileUrl)}
+              >
+                查看
               </i-button>
             );
           }
@@ -86,10 +96,7 @@ export default class SupplierInvoice extends Page {
         align: "center",
         title: "供应商名称",
         key: "supplierName",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (
-          <span>{this.$filter.dictConvert(row.supplierName)}</span>
-        )
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
@@ -153,10 +160,11 @@ export default class SupplierInvoice extends Page {
   /**
    * 开票操作
    */
-  private onSubmitClick(orderId: number) {
+  private onSubmitClick(id: number) {
     this.$dialog.show({
       title: "开票",
       footer: true,
+      okText: "开票",
       onOk: supplierInvoice => {
         return supplierInvoice.submit().then(v => {
           if (v) this.refreshData();
@@ -166,7 +174,23 @@ export default class SupplierInvoice extends Page {
       render: h =>
         h(ModifySupplierInvoice, {
           props: {
-            orderId: orderId
+            id: id
+          }
+        })
+    });
+  }
+
+  private onDetailsClick(id: number, url: string) {
+    this.$dialog.show({
+      title: "详情",
+      isView: true,
+      footer: true,
+      render: h =>
+        h(ModifySupplierInvoice, {
+          props: {
+            id: id,
+            url: url,
+            isView: true
           }
         })
     });
