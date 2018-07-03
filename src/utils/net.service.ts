@@ -4,6 +4,7 @@ import Qs from 'qs'
 import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 import { LoadingService } from "~/utils/loading.service";
+import { DialogService } from "~/utils/dialog.service";
 // import cookie from 'js-cookie'
 import router from '~/router'
 
@@ -222,6 +223,7 @@ export class NetService {
             break;
           case 401:
             error.msg = "用户身份过期,请重新登录"
+            DialogService.clear()
             setTimeout(() => {
               router.push('/')
             }, 3000);

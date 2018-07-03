@@ -76,9 +76,9 @@ export class FinancialQueryService {
    * @param queryData 
    * @param page 
    */
-  findRepayOrderList(queryData, page: PageService) {
+  queryRepayOrderList(queryData, page: PageService) {
     return this.netService.send({
-      server: manageService.financialQueryController.findRepayOrderList,
+      server: manageService.financialQueryController.queryRepayOrderList,
       data: {
         customerName: queryData.name,
         orderNo: queryData.orderNo,
@@ -112,13 +112,10 @@ export class FinancialQueryService {
    * @param orderId 
    * @param period 
    */
-  selectRepayInfo(orderId: Number, period: Number) {
+  selectRepayInfo(orderId: Number) {
     return this.netService.send({
       server: manageService.financialQueryController.selectRepayInfo,
-      data: {
-        orderId: orderId,
-        periods: period
-      }
+      append: orderId
     })
   }
 

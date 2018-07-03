@@ -1,7 +1,6 @@
 import validator from 'async-validator'
 import DialogBox from '~/components/common/dialog-box.vue'
 import Vue from 'vue'
-import Dialog from '~/core/dialog';
 
 
 export class DialogService {
