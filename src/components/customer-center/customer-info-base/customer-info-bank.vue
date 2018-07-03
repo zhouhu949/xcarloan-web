@@ -66,6 +66,7 @@ export default class CustomerInfoBank extends Vue {
 
   private onEditClick(data) {
     data.customerId = this.id
+    let tmpData = Object.assign({},data)
     this.$dialog.show({
       title: "维护银行卡",
       footer: true,
@@ -75,7 +76,7 @@ export default class CustomerInfoBank extends Vue {
           return !!v
         })
       },
-      render: h => h(ModifyCustomerInfoBank, { props: { data } })
+      render: h => h(ModifyCustomerInfoBank, { props: { data:tmpData } })
     })
   }
 

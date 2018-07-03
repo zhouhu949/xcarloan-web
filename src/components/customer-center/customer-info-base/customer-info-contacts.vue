@@ -101,6 +101,7 @@ export default class CustomerInfoContacts extends Vue {
    */
   private onModifyClick(contactInfo) {
     contactInfo.customerId = this.id
+    let tmpData = Object.assign({}, contactInfo)
     this.$dialog.show({
       title: "修改联系人信息",
       footer: true,
@@ -116,7 +117,7 @@ export default class CustomerInfoContacts extends Vue {
       },
       render: h => h(ModifyCustomerInfoContacts, {
         props: {
-          data: contactInfo
+          data: tmpData
         }
       })
     })

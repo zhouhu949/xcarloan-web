@@ -222,7 +222,9 @@ export class NetService {
             break;
           case 401:
             error.msg = "用户身份过期,请重新登录"
-            router.push('/')
+            setTimeout(() => {
+              router.push('/')
+            }, 3000);
             break;
           default:
             error.msg = "服务器内部错误,请稍后重试"

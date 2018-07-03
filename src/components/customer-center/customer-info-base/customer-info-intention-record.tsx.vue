@@ -30,7 +30,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
   @Dependencies(BasicCustomerService) private basicCustomerService: BasicCustomerService;
   @Prop() id: Number;
   @CustomerOrderModule.Action showOrderInfo;
-  
+
   // 是否可编辑
   @Prop() edit;
 
@@ -38,28 +38,19 @@ export default class CustomerInfoIntentionRecord extends Vue {
   private columns: Array<any> = [];
 
   created() {
-    
+
     this.columns = [
       {
         title: "操作",
-        width: this.edit ? 110 : 200,
+        width: this.$common.getOperateWidth(2),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
-          if (this.edit) {
-            return (
-              <div>
-                <i-button type="text" class="row-command-button" onClick={() => this.checkFollowRecord(row.id)}>查看跟进记录</i-button>
-              </div>
-            )
-          } else {
-            return (
-              <div>
-                <i-button type="text" class="row-command-button" onClick={() => this.addFollowRecord(row.id)}>新增跟进记录</i-button>
-                <i-button type="text" class="row-command-button" onClick={() => this.checkFollowRecord(row.id)}>查看跟进记录</i-button>
-              </div>
-            )
+          let arrayButton = [(<i-button type="text" class="row-command-button" onClick={() => this.checkFollowRecord(row.id)}>查看跟进记录</i-button>)]
+          if (!this.edit) {
+            arrayButton.unshift((<i-button type="text" class="row-command-button" onClick={() => this.addFollowRecord(row.id)}>新增跟进记录</i-button>))
           }
+          return h('div', {}, arrayButton)
         }
       },
       {
@@ -81,7 +72,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
         title: "意向等级",
         key: 'intentionLevel',
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row }) => h('Rate', { props: { value: row.intentionLevel, disabled: true} })
+        render: (h, { row }) => h('Rate', { props: { value: row.intentionLevel, disabled: true } })
       },
       {
         align: "center",
@@ -137,7 +128,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
       width: 700,
       onOk: add => {
         return add.addFollowRecord().then(v => {
-          if(v) this.refreshData()
+          if (v) this.refreshData()
           return v
         })
       },
@@ -148,7 +139,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
       })
     })
   }
-  
+
   /**
    * 新增意向记录
    */
@@ -159,7 +150,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
       width: 700,
       onOk: add => {
         return add.addFollowRecord().then(v => {
-          if(v) this.refreshData()
+          if (v) this.refreshData()
           return v
         })
       },
@@ -173,7 +164,7 @@ export default class CustomerInfoIntentionRecord extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.component.customer-info-intention-record{
+.component.customer-info-intention-record {
   .add-intention {
     text-align: right;
     margin: 10px 30px 0px auto;
