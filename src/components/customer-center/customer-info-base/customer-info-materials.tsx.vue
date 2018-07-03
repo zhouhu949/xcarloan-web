@@ -152,11 +152,11 @@ export default class CustomerInfoMaterials extends Vue {
           on: {
             "on-success": (fileList) => {
               // 提取参数数据
-              let uploadPics = fileList.map(val => {
+              let uploadPics = fileList.map(v => {
                 return {
                   customerId: this.id,
-                  fileUrl: val.response.url,
-                  fileName: val.response.name,
+                  fileUrl: v.response.url,
+                  fileName: v.name,
                   dataType: this.dataType
                 };
               });
