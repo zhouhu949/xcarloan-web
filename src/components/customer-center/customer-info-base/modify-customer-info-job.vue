@@ -1,7 +1,7 @@
 <!--维护职业信息-->
 <template>
   <section class="component modify-customer-info-job">
-    <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
+    <i-form ref="form" inline :model="model" :rules="rules" :label-width="140">
       <i-form-item label="单位名称" prop="companyName">
         <i-input v-model="model.companyName"></i-input>
       </i-form-item>
@@ -93,9 +93,6 @@
       <i-form-item label="年收入" prop="yearlySalaries">
         <i-input-number v-model="model.yearlySalaries" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
-      <i-form-item label="备注" prop="remark">
-        <i-input v-model="model.remark"></i-input>
-      </i-form-item>
     </i-form>
   </section>
 </template>
@@ -147,8 +144,7 @@ export default class ModifyCustomerInfoJob extends Vue {
       identity: '', // 身份
       monthOtherIncome: 0, // 每月其它收入
       otherIncomeSource: '', // 其它收入来源
-      yearlySalaries: 0, // 年收入
-      remark: '' // 备注
+      yearlySalaries: 0 // 年收入
     }
 
     this.rules = {

@@ -35,7 +35,6 @@
             <data-grid-item label="发薪方式" :span="4">{{item.payWay}}</data-grid-item>
             <data-grid-item label="单位地址" :span="4">{{item.companyAddress}}</data-grid-item>
             <data-grid-item label="单位地址详细" :span="4">{{item.companyAddressDetail }}</data-grid-item>
-            <data-grid-item label="备注" :span="12">{{item.remark}}</data-grid-item>
           </data-grid>
         </i-card>
       </i-col>
