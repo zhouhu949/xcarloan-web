@@ -8,10 +8,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component'
+import { namespace } from "vuex-class";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-import { namespace } from "vuex-class";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 

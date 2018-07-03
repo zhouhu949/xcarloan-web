@@ -16,16 +16,15 @@
 
 <script lang="tsx">
 import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
-import { PageService } from "~/utils/page.service";
-import { namespace } from "vuex-class";
-import { Button } from "iview";
-import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 import CarParams from "~/components/base-data/car-params.vue";
+import { Button } from "iview";
+import { namespace } from "vuex-class";
+import { PageService } from "~/utils/page.service";
+import { Layout, Dependencies } from '~/core/decorator'
 import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 

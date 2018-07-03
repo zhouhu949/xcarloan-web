@@ -16,21 +16,23 @@
 </template>
 
 <script lang="tsx">
-import Vue from "vue";
-import Component from "vue-class-component";
+import Vue from 'vue';
+import Component from 'vue-class-component'
+import { Button } from "iview";
+import { namespace } from "vuex-class";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { namespace } from "vuex-class";
-import { Button } from "iview";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-const CustomerOrderModule = namespace("customerOrderSpace");
+
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Component({
-  components: {
+components: {
     DataGrid, DataGridItem
-  }})
+  }
+})
 export default class OrderInfoCustomerList extends Vue {
   @Dependencies(BasicCustomerOrderService)
   private basicCustomerOrderService: BasicCustomerOrderService;

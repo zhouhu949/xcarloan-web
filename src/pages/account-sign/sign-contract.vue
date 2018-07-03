@@ -17,10 +17,13 @@
 import Page from "~/core/page";
 import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
+import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import ContractUpload from "~/components/customer-center/contract-upload.vue";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
+
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Layout("workspace")
 @Component({
@@ -30,6 +33,9 @@ export default class SignContract extends Page {
   @Dependencies(BasicCustomerService)
   basicCustomerService: BasicCustomerService;
   @Dependencies(PageService) pageService: PageService;
+
+  @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private customerSignColumns: any = [];
   private customerSignDataSet: Array<Object> = [];
@@ -96,14 +102,52 @@ export default class SignContract extends Page {
         editable: true,
         title: "客户姓名",
         key: "customerName",
-        minWidth: this.$common.getColumnWidth(5)
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showCustomerInfo({id:row.customerId});
+                }
+              }
+            },
+            row.customerName
+          );
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "订单编号",
+        title: "订单号",
         key: "orderNo",
-        minWidth: this.$common.getColumnWidth(5)
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showOrderInfo(row.orderId);
+                }
+              }
+            },
+            row.orderNo
+          );
+        }
       },
       {
         align: "center",

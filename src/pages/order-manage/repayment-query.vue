@@ -24,14 +24,13 @@
 
 <script lang="ts">
 import Page from "~/core/page";
-import { Layout } from "~/core/decorator";
 import Component from "vue-class-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import OrderRepaySchemeDetails from "~/components/financial-query/order-repay-scheme-details.vue";
 import { namespace } from "vuex-class";
+import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
-import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { PageService } from "~/utils/page.service";
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
 @Layout("workspace")
@@ -131,10 +130,6 @@ export default class RepaymentQuery extends Page {
               on: {
                 click: () => {
                   this.showCustomerInfo({ id: row.customerId });
-                  this.$dialog.show({
-                    width: 1050,
-                    render: h => h(OrderCustomerInfo)
-                  });
                 }
               }
             },

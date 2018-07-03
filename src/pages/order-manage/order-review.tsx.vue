@@ -25,13 +25,12 @@
 
 <script lang="tsx">
 import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
-import { PageService } from "~/utils/page.service";
-import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
-import { namespace } from "vuex-class";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { Button } from "iview";
+import { namespace } from "vuex-class";
+import { PageService } from "~/utils/page.service";
+import { Layout, Dependencies } from '~/core/decorator'
+import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
 
@@ -77,7 +76,7 @@ export default class OrderReview extends Page {
         title: ' 订单号',
         key: 'orderNo',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onReviewClick(row.orderId)}>{row.orderNo}</i-button>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showOrderInfo(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
@@ -132,14 +131,6 @@ export default class OrderReview extends Page {
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
-  }
-
-  private onReviewClick(id:Number){
-    this.showOrderInfo(id)
-    this.$dialog.show({
-      width:1050,
-      render: h => (<OrderCustomerInfo></OrderCustomerInfo>)
-    })
   }
 
   /**
