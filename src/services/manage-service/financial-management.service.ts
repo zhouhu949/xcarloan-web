@@ -15,20 +15,21 @@ export class FinancialManagementService {
     return this.netService.send({
       server: manageService.financialManagementController.customerOrderLoan,
       append: orderId,
-      loadding: true
+      loading: true
     })
   }
   /**
    * 提前收回
    */
   @Debounce()
-  earlyRecycle(orderId: Number) {
+  earlyRecycle(model) {
     return this.netService.send({
       server: manageService.financialManagementController.earlyRecycle,
-      data: {
-        orderId
+      data:{
+        orderId: model.orderId,
+        money: model.recoverMoney
       },
-      loadding: true
+      loading: true
     })
   }
   /**
@@ -38,10 +39,8 @@ export class FinancialManagementService {
   earlyRepayMoney(orderId: Number) {
     return this.netService.send({
       server: manageService.financialManagementController.earlyRepayMoney,
-      data: {
-        orderId
-      },
-      loadding: true
+      append: orderId,
+      loading: true
     })
   }
   /**
@@ -77,7 +76,7 @@ export class FinancialManagementService {
         orderId,
         periods
       },
-      loadding: true
+      loading: true
     })
   }
   /**
@@ -88,7 +87,7 @@ export class FinancialManagementService {
     return this.netService.send({
       server: manageService.financialManagementController.supplierOrderLoan,
       append: carId,
-      loadding: true
+      loading: true
     })
   }
 

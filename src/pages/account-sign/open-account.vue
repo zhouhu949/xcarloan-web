@@ -17,7 +17,7 @@
 import Page from "~/core/page";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
-import CustomerBankList from "~/components/customer-center/customer-bank-list.vue";
+import CustomerBankList from "~/components/customer-center/customer-bank-list.tsx.vue";
 import { Form, Model } from "iview";
 import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";

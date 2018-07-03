@@ -30,9 +30,9 @@ export class FinancialQueryService {
    * @param orderId 提前收回或提前结清查询
    */
   @Debounce()
-  findBalance(orderId: Number) {
+  findBalanceInfo(orderId: Number) {
     return this.netService.send({
-      server: manageService.financialQueryController.findBalance,
+      server: manageService.financialQueryController.findBalanceInfo,
       append: orderId
     })
   }

@@ -79,7 +79,6 @@ export default class ModifyCustomerInfoBank extends Vue {
    */
   private addBankInfo() {
     return new Promise((resolve, reject) => {
-      console.log(this.model)
       this.basicCustomerService.addBasicCustomerBank(this.model).subscribe(
         data => resolve(),
         err => reject(err)
@@ -92,7 +91,6 @@ export default class ModifyCustomerInfoBank extends Vue {
    */
   private modifyBankInfo() {
     return new Promise((resolve, reject) => {
-      console.log(this.model)
       this.basicCustomerService.updateCustomerBank(this.model).subscribe(
         data => resolve(),
         err => reject(err)

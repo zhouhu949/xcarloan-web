@@ -1,7 +1,7 @@
 <!--财务·上传图片-->
 <template>
   <section class="component contract-upload">
-    <Button class="contract-title" type="primary" @click="showFileUpload" v-show="!hiddenUpload && !isView">上传</Button>
+    <i-button class="contract-title" type="primary" @click="showFileUpload" v-show="!hiddenUpload && !isView">上传</i-button>
     <i-table :height="300" :columns="uploadedColumns" :data="uploadedDataSet"></i-table>
   </section>
 </template>
@@ -21,8 +21,7 @@ import { resolve } from "url";
   components: {}
 })
 export default class ContractUpload extends Vue {
-  @Dependencies(BasicOrderFileService)
-  basicOrderFileService: BasicOrderFileService;
+  @Dependencies(BasicOrderFileService) basicOrderFileService: BasicOrderFileService;
 
   @Prop({
     default: 0

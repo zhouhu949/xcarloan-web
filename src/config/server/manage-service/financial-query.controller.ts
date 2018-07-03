@@ -16,10 +16,10 @@ export default {
   /**
    * 提前收回或提前结清查询
    */
-  findBalance: {
+  findBalanceInfo: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'findBalance',
+    action: 'findBalanceInfo',
     type: requestType.Get
   },
   /**

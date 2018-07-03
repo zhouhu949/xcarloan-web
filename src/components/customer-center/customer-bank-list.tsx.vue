@@ -8,7 +8,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Vue from "vue";
 import Component from "vue-class-component";
 import ModifyCustomerInfoBank from "~/components/customer-center/customer-info-base/modify-customer-info-bank.vue";
@@ -79,7 +79,7 @@ export default class CustomerBankList extends Vue {
         title: "开户地址",
         key: "depositCity",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) => h("p", {}, `${this.$city.getCityName(row.province)} ${this.$city.getCityName(row.depositCity)}`)
+        render: (h, { row, columns, index }) => (<div>{this.$city.getCityName(row.province)} {this.$city.getCityName(row.depositCity)}</div>)
       },
       {
         align: "center",
