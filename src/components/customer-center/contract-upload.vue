@@ -243,14 +243,12 @@ export default class ContractUpload extends Vue {
       if (!this.orderId) return resolve(false);
 
       // 提取参数数据
-      let fileModels = this.uploadedDataSet.map(val => {
-        return {
+      let fileModels = this.uploadedDataSet.map(val => ({
           orderId: this.orderId,
           fileName: val.name,
           fileUrl: val.url,
           fileType: val.fileType
-        };
-      });
+        }));
 
       this.basicOrderFileService
         .addUploadBasicOrderFile({
@@ -268,8 +266,7 @@ export default class ContractUpload extends Vue {
   getContractResourceAll(orderId) {
     this.basicOrderFileService.getOrderFile(orderId).subscribe(
       data => {
-        this.uploadedDataSet = data.map(v => {
-          return {
+        this.uploadedDataSet = data.map(v => ({
             id: "",
             realName: "",
             type: "",
@@ -280,8 +277,7 @@ export default class ContractUpload extends Vue {
             createTime: "",
             creator: null,
             fileType: v.orderFileType
-          };
-        });
+        }));
       },
       err => this.$Message.error(err.msg)
     );

@@ -16,6 +16,7 @@ import { State, Getter, namespace } from "vuex-class";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { PageService } from "~/utils/page.service";
 
 @Component({
   components: {
@@ -36,6 +37,18 @@ export default class ModifySupplierInvoice extends Vue {
   })
   id: number;
 
+  @Prop({
+    default: "",
+    type: String
+  })
+  url: string;
+
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  isView: boolean;
+
   private dataSet: Array<any> = [];
 
   // 票据图片
@@ -44,10 +57,28 @@ export default class ModifySupplierInvoice extends Vue {
   /**
    *
    */
-  mounted() {}
+  mounted() {
+    // 加载图片
+    this.getCarPictureList();
+  }
+
+  /**
+   * 获取图片
+   */
+  private getCarPictureList() {
+    if (this.url) {
+      let picture = [];
+      picture.push({
+        url: this.url,
+        name: ""
+      });
+      this.instrumentsPhotos = picture;
+    }
+  }
 
   submit() {
-    if (!this.instrumentsPhotos) return this.$Message.alert("请上传票据图片");
+    if (!this.instrumentsPhotos) return this.$Message.warning("请上传票据图片");
+
     return new Promise((resolve, reject) => {
       this.financialManagementService
         .financialAffirmInvoice({
