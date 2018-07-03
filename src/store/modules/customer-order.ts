@@ -72,6 +72,8 @@ export default {
      * 显示订单 /  客户详情信息
      */
     showModalInfo() {
+      // let component = await CreateOrderCustomerInfo()
+      console.log()
       DialogService.show({
         width: 1050,
         render: h => h(CreateOrderCustomerInfo())

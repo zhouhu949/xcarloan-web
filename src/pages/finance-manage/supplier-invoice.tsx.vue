@@ -84,7 +84,7 @@ export default class SupplierInvoice extends Page {
           <i-button
             type="text"
             class="row-command-button"
-            onClick={() => this.onOrderNumberClick(row.orderId)}
+            onClick={() => this.showOrderInfo(row.orderId)}
           >
             {row.orderNo}
           </i-button>
@@ -154,13 +154,6 @@ export default class SupplierInvoice extends Page {
     this.refreshData();
   }
 
-  private onOrderNumberClick(orderId: number) {
-    this.showOrderInfo(orderId);
-    this.$dialog.show({
-      width: 1050,
-      render: h => h(OrderCustomerInfo)
-    });
-  }
 
   /**
    * 退款操作

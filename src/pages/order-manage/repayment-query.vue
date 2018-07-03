@@ -105,10 +105,6 @@ export default class RepaymentQuery extends Page {
               on: {
                 click: () => {
                   this.showOrderInfo(row.orderId);
-                  this.$dialog.show({
-                    width: 1050,
-                    render: h => h(OrderCustomerInfo)
-                  });
                 }
               }
             },

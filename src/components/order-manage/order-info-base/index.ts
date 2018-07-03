@@ -4,7 +4,7 @@ import OrderInfoCollateral from "./order-info-collateral.vue";
 import OrderInfoMaterials from "./order-info-materials.vue";
 import OrderInfoRecord from "./order-info-record.vue";
 import OrderInfoRepayPlan from "./order-info-repay-plan.vue";
-import OrderInfoCustomerList from "./order-info-customer-list.vue";
+import OrderInfoCustomerList from "./order-info-customer-list.tsx.vue";
 
 import OrderInfoBaseFinanceEarlyRecoveryCost from "./order-info-base-finance-early-recovery-cost.vue";
 import OrderInfoBaseFinanceEarlySettlement from "./order-info-base-finance-early-settlement.vue";
