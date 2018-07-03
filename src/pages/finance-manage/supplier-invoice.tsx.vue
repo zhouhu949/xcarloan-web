@@ -65,7 +65,7 @@ export default class SupplierInvoice extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(1),
         render: (h, { row }) =>{
           if(row.hasInvoice===10003){
             return (
@@ -144,10 +144,6 @@ export default class SupplierInvoice extends Page {
   mounted() {
     this.refreshData();
     this.getBasicSupplier();
-  }
-
-  private onOrderNumberClick(orderId: number) {
-    this.showOrderInfo(orderId);
   }
 
   /**

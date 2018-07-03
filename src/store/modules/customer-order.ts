@@ -72,9 +72,11 @@ export default {
      * 显示订单 /  客户详情信息
      */
     showModalInfo() {
-      DialogService.show({
-        width: 1050,
-        render: h => h(CreateOrderCustomerInfo())
+      CreateOrderCustomerInfo().then(({ default: component }) => {
+        DialogService.show({
+          width: 1050,
+          render: h => h(component)
+        })
       })
     }
   }

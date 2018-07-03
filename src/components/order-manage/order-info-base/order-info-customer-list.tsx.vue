@@ -5,9 +5,10 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Vue from 'vue';
 import Component from 'vue-class-component'
+import { Button } from "iview";
 import { namespace } from "vuex-class";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
@@ -17,11 +18,12 @@ const CustomerOrderModule = namespace("customerOrderSpace");
 
 @Component({})
 export default class OrderInfoCustomerList extends Vue {
-  @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
+  @Dependencies(BasicCustomerOrderService)
+  private basicCustomerOrderService: BasicCustomerOrderService;
   @Prop() id: Number;
   @CustomerOrderModule.Action showCustomerInfo;
   private dataSet: Array<any> = [];
-  private columns: Array<any> = []
+  private columns: Array<any> = [];
 
   created() {
     this.columns = [
@@ -29,63 +31,56 @@ export default class OrderInfoCustomerList extends Vue {
         align: "center",
         title: "客户姓名",
         width: 90,
-        render: (h, { row }) => h('div', {}, [
-          h("i-button", {
-            props: {
-              type: "text"
-            },
-            style: {
-              color: "#265EA2"
-            },
-            on: {
-              click: () => this.showCustomerInfo(row.id)
-            }
-          }, row.customerName)
-        ])
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showCustomerInfo({id: row.id})}>{row.customerName}</i-button>)
       },
       {
         align: "center",
-        title: '联系电话',
-        key: 'customerPhone',
+        title: "联系电话",
+        key: "customerPhone",
         minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: "center",
-        title: '客户性别',
-        key: 'customerSex',
+        title: "客户性别",
+        key: "customerSex",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerSex))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dictConvert(row.customerSex))
       },
       {
         align: "center",
-        title: '身份证号',
-        key: 'idCard',
+        title: "身份证号",
+        key: "idCard",
         minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: "center",
-        title: '客户状态',
-        key: 'customerStatus',
+        title: "客户状态",
+        key: "customerStatus",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.customerStatus))
-      }, {
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dictConvert(row.customerStatus))
+      },
+      {
         align: "center",
-        title: '创建时间',
-        key: 'createTime',
+        title: "创建时间",
+        key: "createTime",
         sortable: true,
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.createTime,"yyyy-MM-dd"))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dateFormat(row.createTime, "yyyy-MM-dd"))
       }
-    ]
+    ];
   }
 
   mounted() {
-    this.basicCustomerOrderService.getCustomerInfoByOrderId(this.id).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    this.basicCustomerOrderService
+      .getCustomerInfoByOrderId(this.id)
+      .subscribe(
+        data => (this.dataSet = data),
+        err => this.$Message.error(err.msg)
+      );
   }
-
 }
 </script>
 <style lang="less" scoped>

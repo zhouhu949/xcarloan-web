@@ -76,7 +76,7 @@ export default class OrderReview extends Page {
         title: ' 订单号',
         key: 'orderNo',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onOrderNumberClick(row.orderId)}>{row.orderNo}</i-button>)
+        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.showOrderInfo(row.orderId)}>{row.orderNo}</i-button>)
       },
       {
         align: 'center',
@@ -138,10 +138,6 @@ export default class OrderReview extends Page {
    */
   private onCloseClick(orderId: Number) {
 
-  }
-
-  private onOrderNumberClick(orderId: Number) {
-    this.showOrderInfo(orderId)
   }
 
 }

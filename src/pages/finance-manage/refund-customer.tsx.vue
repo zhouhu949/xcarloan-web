@@ -77,7 +77,7 @@ export default class RefundCustomer extends Page {
           <i-button
             type="text"
             class="row-command-button"
-            onClick={() => this.onOrderNumberClick(row.orderId)}
+            onClick={() => this.showOrderInfo(row.orderId)}
           >
             {row.orderNo}
           </i-button>
@@ -160,10 +160,6 @@ export default class RefundCustomer extends Page {
 
   mounted() {
     this.refreshData();
-  }
-
-  private onOrderNumberClick(orderId: number) {
-    this.showOrderInfo(orderId);
   }
 
   /**
