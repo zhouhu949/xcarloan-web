@@ -19,15 +19,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Dependencies } from '~/core/decorator';
 import Component from "vue-class-component";
-import { PageService } from "~/utils/page.service";
-import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { namespace } from "vuex-class";
+import { Dependencies } from '~/core/decorator';
+import { PageService } from "~/utils/page.service";
 import { Prop, Emit } from "vue-property-decorator";
-const CustomerOrderModule = namespace("customerOrderSpace")
+import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
 
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Component({
   components: {}
@@ -87,10 +86,6 @@ export default class ChooseCustomer extends Vue {
                 on: {
                   click: () => {
                     this.showCustomerInfo({ id: row.id })
-                    this.$dialog.show({
-                      width: 1050,
-                      render: h => h(OrderCustomerInfo)
-                    })
                   }
                 }
               },

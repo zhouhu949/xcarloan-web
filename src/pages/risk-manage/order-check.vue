@@ -25,12 +25,11 @@
 <script lang="ts">
 import Page from "~/core/page";
 import Component from "vue-class-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
-import { Layout } from "~/core/decorator";
 import { namespace } from "vuex-class";
+import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
-import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 import { PageService } from "~/utils/page.service";
+import { WorkFlowApprovalService } from "~/services/manage-service/work-flow-approval.service";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
 
@@ -238,10 +237,6 @@ export default class OrderCheck extends Page {
               on: {
                 click: () => {
                   this.showCustomerInfo({ id: row.customerId });
-                  this.$dialog.show({
-                    width: 1050,
-                    render: h => h(OrderCustomerInfo)
-                  });
                 }
               }
             },

@@ -23,14 +23,16 @@
 
 <script lang="tsx">
 import Page from '~/core/page'
-import { Layout, Dependencies } from '~/core/decorator'
-import { PageService } from "~/utils/page.service";
 import Component from "vue-class-component";
-import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import ProceedsCustomerInfo from "~/components/finance-manage/proceeds-customer-info.vue";
 import { Button } from "iview";
 import { namespace } from "vuex-class";
+import { PageService } from "~/utils/page.service";
+import { Layout, Dependencies } from '~/core/decorator'
+import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+
 const CustomerOrderModule = namespace("customerOrderSpace")
+
 @Layout('workspace')
 @Component({
   components: {}

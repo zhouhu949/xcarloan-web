@@ -106,7 +106,7 @@ export class FinancialQueryService {
       page: page
     })
   }
-  
+
   /**
    * 查询当前期的还款详情
    * @param orderId 
@@ -142,12 +142,13 @@ export class FinancialQueryService {
     return this.netService.send({
       server: manageService.financialQueryController.supplierLoanRecord,
       data: {
-
+        supplierId: queryParamsModel.supplierId,
+        hasInvoice: queryParamsModel.hasInvoice
       },
       page: page
     })
   }
-  
+
   /**
    * 收款列表查询
    * @param queryData 

@@ -23,10 +23,9 @@
 import Page from '~/core/page'
 import Component from "vue-class-component";
 import { namespace } from "vuex-class";
-import { Layout, Dependencies } from '~/core/decorator'
 import { PageService } from "~/utils/page.service";
+import { Layout, Dependencies } from '~/core/decorator'
 import { BasicCustomerCenterService } from "~/services/manage-service/basic-customer-center.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 
@@ -76,10 +75,6 @@ export default class FormalCustomer extends Page {
                 on: {
                   click: () => {
                     this.showCustomerInfo({ id: row.id })
-                    this.$dialog.show({
-                      width: 1050,
-                      render: h => h(OrderCustomerInfo)
-                    })
                   }
                 }
               },
