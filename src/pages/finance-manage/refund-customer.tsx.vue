@@ -46,6 +46,7 @@ export default class RefundCustomer extends Page {
   private financialManagementService: FinancialManagementService;
 
   @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private queryParamsModel: any = {
     name: "",
@@ -63,7 +64,7 @@ export default class RefundCustomer extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getOperateWidth(1),
         render: (h, { row, column, index }) => (
                 <i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>退款</i-button>
             )
@@ -87,7 +88,26 @@ export default class RefundCustomer extends Page {
         align: "center",
         title: " 客户姓名",
         key: "customerName",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showCustomerInfo({id:row.customerId});
+                }
+              }
+            },
+            row.customerName
+          );
+        }
       },
       {
         align: "center",

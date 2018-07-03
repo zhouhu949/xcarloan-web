@@ -65,7 +65,7 @@ export default class SupplierInvoice extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getColumnWidth(1),
+        minWidth: this.$common.getOperateWidth(1),
         render: (h, { row }) =>{
           if(row.hasInvoice===10003){
             return (

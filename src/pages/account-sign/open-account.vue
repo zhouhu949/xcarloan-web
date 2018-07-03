@@ -19,11 +19,14 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import CustomerBankList from "~/components/customer-center/customer-bank-list.vue";
 import { Form, Model } from "iview";
+import { namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { BasicCustomerService } from "~/services/manage-service/basic-customer.service";
 import { BasicCustomerAccountService } from "~/services/manage-service/basic-customer-account.service";
 import { Layout } from "~/core/decorator";
+
+const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Layout("workspace")
 @Component({
@@ -37,6 +40,9 @@ export default class OpenAccount extends Page {
   private basicCustomerService: BasicCustomerService;
   @Dependencies(BasicCustomerAccountService)
   private basicCustomerAccountService: BasicCustomerAccountService;
+
+  @CustomerOrderModule.Action showOrderInfo;
+  @CustomerOrderModule.Action showCustomerInfo;
 
   private openAccountColumns: any = [];
   private openAccountDataSet: Array<Object> = [];
@@ -103,7 +109,26 @@ export default class OpenAccount extends Page {
         editable: true,
         title: "客户姓名",
         key: "customerName",
-        minWidth: this.$common.getColumnWidth(5)
+        minWidth: this.$common.getColumnWidth(5),
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  this.showCustomerInfo({id:row.customerId});
+                }
+              }
+            },
+            row.customerName
+          );
+        }
       },
       {
         align: "center",
