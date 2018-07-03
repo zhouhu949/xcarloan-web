@@ -61,10 +61,10 @@ export default {
   /**
    * 查询客户还款中的订单
    */
-  findRepayOrderList: {
+  queryRepayOrderList: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'findRepayOrderList',
+    action: 'queryRepayOrderList',
     type: requestType.Get
   },
   /**
