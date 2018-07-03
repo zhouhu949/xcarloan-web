@@ -30,8 +30,8 @@
         <data-grid-item label="排量" :span="6">{{assessmentReportInfo.displacement}}</data-grid-item>
       </data-grid>
 
-      <i-collapse v-if="assessmentReportInfo.carAttributeModelList" style="margin-top:20px;">
-        <i-panel v-for="item in assessmentReportInfo.carAttributeModelList" :name="item.configType" :key="item.configType">
+      <i-collapse v-if="assessmentReportInfo.carAttributeModels" style="margin-top:20px;">
+        <i-panel v-for="item in assessmentReportInfo.carAttributeModels" :name="$filter.dictConvert(item.configType)" :key="item.configType">
           {{ item.configType| dictConvert }}
           <data-grid slot="content" :labelWidth="110" labelAlign="right" contentAlign="left" style="margin:-16px;">
             <data-grid-item v-for="item in item.data" :label="item.attrValue" :span="6" :key="item.attrName">
