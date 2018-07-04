@@ -49,7 +49,7 @@ export default class SupplierManage extends Page {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(2),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

@@ -113,8 +113,7 @@ export default class ContractUpload extends Vue {
       },
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 150,
+        width: this.$common.getOperateWidth(2),
         align: "center",
         render: (h, { row, column, index }) => {
           if (this.isView) {

@@ -38,7 +38,7 @@ export default class DeviceManage extends Vue {
       {
         title: "操作",
         align: "center",
-        width: 300,
+        width: this.$common.getOperateWidth(3),
         render: (h, { row, column, index }) => {
           return h("div", [
             h(

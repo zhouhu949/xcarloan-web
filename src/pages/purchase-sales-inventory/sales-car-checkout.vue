@@ -58,7 +58,7 @@ export default class SalesCarCheckout extends Page {
     this.enterShellSaveColumns = [
       {
         title: "操作",
-        width: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(2),
         align: "center",
         render: (h, { row, column, index }) => {
           // 根据状态执行不同的操作 10123 : 待采购 ; 10046 : 整备中 ; 10047 : 整备完成 ; 10048 : 已提车

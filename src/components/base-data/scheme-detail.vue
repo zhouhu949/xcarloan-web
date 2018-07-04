@@ -161,7 +161,7 @@ export default class SchemeDetail extends Vue {
           ]);
         }
       },
-      width: 60
+       width: this.$common.getOperateWidth(1)
     }
 
     if (!this.view) {

@@ -59,7 +59,7 @@ export default class RepaymentQuery extends Page {
     this.repayOrderColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
+        Width: this.$common.getOperateWidth(1),
         width: 160,
         align: "center",
         render: (h, { row, column, index }) => {
