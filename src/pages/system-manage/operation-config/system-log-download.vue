@@ -81,7 +81,7 @@ export default class SystemLogDownload extends Page {
         render: (h, { row, columns, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
+            FilterService.dateTimeFormat(row.operateTime)
           )
         }
       },

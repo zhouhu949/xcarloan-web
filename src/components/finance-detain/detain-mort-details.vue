@@ -6,10 +6,10 @@
       <data-grid-item label="设备厂商" :span="6">{{model.gpsManufactor | dictConvert}}</data-grid-item>
       <data-grid-item label="安装状态" :span="6">{{model.gpsStatus | dictConvert}}</data-grid-item>
       <data-grid-item label="抵押号" :span="6">{{model.mortgageNo}}</data-grid-item>
-      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
-      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat}}</data-grid-item>
+      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat}}</data-grid-item>
       <data-grid-item label="操作人" :span="6">{{model.operator}}</data-grid-item>
-      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作时间" :span="6">{{model.operatorTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>

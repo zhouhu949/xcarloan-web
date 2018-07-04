@@ -3,8 +3,8 @@
   <section class="component order-info-base-finance-early-recovery-cost">
     <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id" >
       <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="4">{{item.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
-      <data-grid-item label="提前收回时间 " :span="4">{{item.takebackDate  | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
+      <data-grid-item label="提前收回时间 " :span="4">{{item.takebackDate  | dateFormat}}</data-grid-item>
       <data-grid-item label="提前收回金额" :span="4">{{item.takebackMoney }}</data-grid-item>
       <data-grid-item label="收款记录ID" :span="4">{{item.receivableId }}</data-grid-item> 
       <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>

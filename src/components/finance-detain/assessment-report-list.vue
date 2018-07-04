@@ -117,7 +117,7 @@ export default class AssessmentReportList extends Vue {
           h(
             "span",
             {},
-            this.$filter.dateFormat(row.assessmentApplyDate, "yyyy-MM-dd")
+            this.$filter.dateFormat(row.assessmentApplyDate)
           )
       },
       {
@@ -130,7 +130,7 @@ export default class AssessmentReportList extends Vue {
           h(
             "span",
             {},
-            this.$filter.dateFormat(row.assessmentDate, "yyyy-MM-dd")
+            this.$filter.dateFormat(row.assessmentDate)
           )
       },
       {

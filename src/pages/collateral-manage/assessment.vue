@@ -130,7 +130,7 @@ export default class Assessment extends Page {
           h(
             "span",
             {},
-            this.$filter.dateFormat(row.stockInDate, "yyyy-MM-dd hh:mm:ss")
+            this.$filter.dateTimeFormat(row.stockInDate)
           )
       },
       {

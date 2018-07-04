@@ -9,8 +9,8 @@
       <data-grid-item label="客户性别" :span="4">{{customerInfo.customerSex | dictConvert}}</data-grid-item>
       <data-grid-item label="身份证号" :span="4">{{customerInfo.idCard }}</data-grid-item>
       <data-grid-item label="客户状态" :span="4">{{customerInfo.customerStatus | dictConvert}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="4">{{customerInfo.accountStatus | dateFormat("yyyy-MM-dd")}}</data-grid-item>
-      <data-grid-item label="创建日期" :span="4">{{customerInfo.createTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="4">{{customerInfo.accountStatus | dateFormat}}</data-grid-item>
+      <data-grid-item label="创建日期" :span="4">{{customerInfo.createTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>
