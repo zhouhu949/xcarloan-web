@@ -4,28 +4,23 @@
       <command-button label="新增费用项" @click="basicExpenseOperate()"></command-button>
       <command-button label="复制模板" @click="copyTemplate()"></command-button>
     </page-header>
-    <data-box :id="20" :columns="expenseColumns" :data="expenseDataSet" ref="databox"></data-box>
+    <data-box :id="20" :columns="expenseColumns" :data="expenseDataSet" :page="pageService" @on-page-change="refreshData" ref="databox"></data-box>
   </section>
 </template>
 <script lang="ts">
 import Page from "~/core/page";
-import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
+import { PageService } from "~/utils/page.service";
 import ModifyBasicExpense from "~/components/base-data/modify-basic-expense.vue";
 import { Dependencies } from "~/core/decorator";
 import { BasicExpenseService } from "~/services/manage-service/basic-expense.service";
 import { Layout } from "~/core/decorator";
-import { Modal } from "iview";
 
 @Layout("workspace")
-@Component({
-  components: {
-    DataBox
-  }
-})
+@Component({})
 export default class BasicExpenseManage extends Page {
-  @Dependencies(BasicExpenseService)
-  private basicExpenseService: BasicExpenseService;
+  @Dependencies(BasicExpenseService) private basicExpenseService: BasicExpenseService;
+  @Dependencies(PageService) private pageService: PageService;
 
   private expenseColumns: any;
   private expenseDataSet: any = [];
@@ -109,15 +104,15 @@ export default class BasicExpenseManage extends Page {
 
   mounted() {
     // 加载列表数据
-    this.refreshBasicExpenseByOrg();
+    this.refreshData();
   }
-  
+
   /**
    * keep-alive生命周期钩子函数
    */
-  activated(){
+  activated() {
     // 加载列表数据
-    this.refreshBasicExpenseByOrg();
+    this.refreshData();
   }
 
   /**
@@ -130,7 +125,7 @@ export default class BasicExpenseManage extends Page {
       footer: true,
       onOk: modifyBasicExpense => {
         return modifyBasicExpense.submit().then(v => {
-          if (v) this.refreshBasicExpenseByOrg();
+          if (v) this.refreshData();
           return v;
         });
       },
@@ -150,8 +145,7 @@ export default class BasicExpenseManage extends Page {
     this.basicExpenseService.copyTemplate().subscribe(
       val => {
         this.$Message.success("模板复制成功！");
-
-        this.refreshBasicExpenseByOrg();
+        this.refreshData();
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -170,8 +164,7 @@ export default class BasicExpenseManage extends Page {
         this.basicExpenseService.deleteBasicExpense(row.id).subscribe(
           val => {
             this.$Message.success("删除成功！");
-
-            this.refreshBasicExpenseByOrg();
+            this.refreshData();
           },
           ({ msg }) => {
             this.$Message.error(msg);
@@ -184,13 +177,11 @@ export default class BasicExpenseManage extends Page {
   /**
    * 获取自己所能操作的所有费用项
    */
-  private refreshBasicExpenseByOrg() {
-    this.basicExpenseService
-      .findBasicExpenseByOrg()
-      .subscribe(
-        data => (this.expenseDataSet = data),
-        err => this.$Message.error(err.msg)
-      );
+  private refreshData() {
+    this.basicExpenseService.findBasicExpensePageByOrg(this.pageService).subscribe(
+      data => (this.expenseDataSet = data),
+      err => this.$Message.error(err.msg)
+    );
   }
 }
 </script>

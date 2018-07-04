@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import { PageService } from '~/utils/page.service';
 export class BasicExpenseService {
   @Inject()
   private netService: NetService
@@ -69,6 +70,16 @@ export class BasicExpenseService {
   findBasicExpenseByOrg(): any {
     return this.netService.send({
       server: manageService.basicExpenseController.findBasicExpenseByOrg,
+      loading: true
+    })
+  }
+   /**
+   * 获取当前用户所属机构下的费用项 带分页
+   */
+  findBasicExpensePageByOrg(page: PageService): any {
+    return this.netService.send({
+      server: manageService.basicExpenseController.findBasicExpensePageByOrg,
+      page,
       loading: true
     })
   }

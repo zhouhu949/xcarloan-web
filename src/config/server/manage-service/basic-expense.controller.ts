@@ -48,5 +48,14 @@ export default {
     controller: CONTROLLER,
     action: 'findBasicExpenseByOrg',
     type: requestType.Get
+  },
+  /**
+   * 获取当前用户所属机构下的费用项 带分页
+   */
+  findBasicExpensePageByOrg:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findBasicExpensePageByOrg',
+    type: requestType.Get
   }
 }
