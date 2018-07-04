@@ -13,7 +13,7 @@
         <data-tree :data="treeData" showEdit :editConfig="editConfig" @on-select-change="val => currentNode = val" @on-edit="onEditClick" @on-delete="onDeleteClick"></data-tree>
       </i-col>
       <i-col :span="18" class="scheme-table-cell">
-        <scheme-detail :schemeId="schemeId"></scheme-detail>
+        <scheme-detail :schemeId="schemeId" ref="schemeDetail"></scheme-detail>
       </i-col>
     </i-row>
 
@@ -87,7 +87,7 @@ export default class RepayScheme extends Page {
       title: "新增还款方案",
       footer: true,
       onOk: addScheme => {
-        return addScheme.addOrModifyScheme().then(v => {
+        return addScheme.submit().then(v => {
           if (v) this.refreshData()
           return v
         })
@@ -103,9 +103,11 @@ export default class RepayScheme extends Page {
       title: "编辑还款方案",
       footer: true,
       onOk: modifyScheme => {
-        return modifyScheme.addOrModifyScheme().then(v => {
+        return modifyScheme.submit().then(v => {
           if (v) {
             this.refreshData()
+            let schemeDetail = this.$refs.schemeDetail as schemeDetail
+            schemeDetail.getSchemeInfo()
           }
           return v
         })

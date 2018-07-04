@@ -177,7 +177,6 @@ export default class SchemeDetail extends Vue {
    * 根据id获取还款方案比例详情
    */
   private getSchemeFeeItems() {
-
     this.repaySchemeService.findSchemeExpenseBySchemeId(this.schemeId).subscribe(
       val => this.scehmeDetailData = val,
       err => this.$Message.error(err.msg)

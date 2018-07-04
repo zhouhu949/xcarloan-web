@@ -40,7 +40,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="融资最小金额" prop="moneyMin">
-        <i-input-number v-model="model.moneyMin" :min="0"></i-input-number>
+        <i-input-number v-model="model.moneyMin" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="还款日" prop="accountDay">
         <i-select v-model="model.accountDay">
@@ -48,7 +48,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="融资最大金额" prop="moneyMax">
-        <i-input-number v-model="model.moneyMax" :min="0"></i-input-number>
+        <i-input-number v-model="model.moneyMax" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
       <i-form-item label="冲抵策略" prop="offsetId">
         <i-select v-model="model.offsetId">
@@ -86,7 +86,6 @@ export default class ModifySchemeInfo extends Vue {
   @Dependencies(BasicOffsetService) private basicOffsetService: BasicOffsetService
   @Prop() id
 
-  private form: Form
   private offsetArr: Array<any> = [];
 
   private model: any = {
@@ -144,8 +143,9 @@ export default class ModifySchemeInfo extends Vue {
     * 确定新增还款方案
     */
   submit() {
+    let form = this.$refs.form
     return new Promise((resolve) => {
-      this.form.validate(valid => {
+      form.validate(valid => {
         if (!valid) return resolve(false)
         this.repaySchemeService.repayScheme(this.model)
           .subscribe(
