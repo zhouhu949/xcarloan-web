@@ -7,7 +7,7 @@ export default {
   /**
    * 查询供应商数据
    */
-  queryBasicSupplierPage:{
+  queryBasicSupplierPage: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'queryBasicSupplierPage',
@@ -38,7 +38,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'editBasicSupplier',
-    type: requestType.Post
+    type: requestType.Put
   },
   /**
    * 删除供应商

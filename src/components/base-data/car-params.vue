@@ -17,15 +17,15 @@
         添加参数
       </a>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-        <data-grid-item label="长宽高" :span="6">{{carBaseInfo.modelVolume}}</data-grid-item>
-        <data-grid-item label="车身结构" :span="6">{{carBaseInfo.structure}}</data-grid-item>
-        <data-grid-item label="驱动方式" :span="6">{{carBaseInfo.diveway}}</data-grid-item>
-        <data-grid-item label="燃料形式" :span="6">{{carBaseInfo.fulyway}}</data-grid-item>
-        <data-grid-item label="综合油耗" :span="6">{{carBaseInfo.modelFuel}}</data-grid-item>
-        <data-grid-item label="车辆排量" :span="6">{{carBaseInfo.displacement}}</data-grid-item>
-        <data-grid-item label="车身颜色" :span="6">{{carBaseInfo.modelColors}}</data-grid-item>
-        <data-grid-item label="内饰颜色" :span="6">{{carBaseInfo.innerColor}}</data-grid-item>
-        <data-grid-item label="参考价格" :span="6">{{carBaseInfo.referencePrice | moneyFormat}}</data-grid-item>
+        <data-grid-item label="长宽高" :span="4">{{carBaseInfo.modelVolume}}</data-grid-item>
+        <data-grid-item label="车身结构" :span="4">{{carBaseInfo.structure}}</data-grid-item>
+        <data-grid-item label="驱动方式" :span="4">{{carBaseInfo.diveway}}</data-grid-item>
+        <data-grid-item label="燃料形式" :span="4">{{carBaseInfo.fulyway}}</data-grid-item>
+        <data-grid-item label="综合油耗" :span="4">{{carBaseInfo.modelFuel}}</data-grid-item>
+        <data-grid-item label="车辆排量" :span="4">{{carBaseInfo.displacement}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="4">{{carBaseInfo.modelColors}}</data-grid-item>
+        <data-grid-item label="内饰颜色" :span="4">{{carBaseInfo.innerColor}}</data-grid-item>
+        <data-grid-item label="参考价格" :span="4">{{carBaseInfo.referencePrice | moneyFormat}}</data-grid-item>
       </data-grid>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
         <data-grid-item v-for="(item,index) of carParamList" :key="index" :span="4" :label="item.carParamName">

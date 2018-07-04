@@ -16,14 +16,7 @@
           </div>
         </i-col>
         <i-col class="command" :span="20">
-          <data-form hidden-date-search :model="dictAguments" @on-search="seach">
-            <template slot="input">
-              <i-form-item prop="dictItemName" label="数据名称">
-                <i-input v-model="dictAguments.dictItemName"></i-input>
-              </i-form-item>
-            </template>
-          </data-form>
-          <data-box :columns="columns1" :data="dataNames" :noDefaultRow="true"></data-box>
+          <data-box :columns="columns" :data="dataNames" :height="620"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -54,7 +47,7 @@ export default class SysDict extends Page {
   private searchOptions: Boolean = false;
   private checkId: Number = 1;
   private item: any;
-  private columns1: any;
+  private columns: Array<any> = [];
   private dictAguments: any = {};
   private id: any = "";
   private rulesAddDate: any = {};
@@ -75,19 +68,24 @@ export default class SysDict extends Page {
       dictItemName: "",
       id: ""
     };
-    this.getAllDictType();
-    this.columns1 = [
+    this.columns = [
       {
         title: "序号",
         type: "index",
         fixed: "left",
         align: "center",
-        minWidth: this.$common.getColumnWidth(3)
+        width: 50
       },
       {
         align: "center",
-        title: " 名称",
+        title: "名称",
         key: "dictItemName",
+        minWidth: this.$common.getColumnWidth(5)
+      },
+      {
+        align: "center",
+        title: "编号",
+        key: "id",
         minWidth: this.$common.getColumnWidth(5)
       }
     ];
@@ -123,26 +121,10 @@ export default class SysDict extends Page {
       });
   }
 
-  /**
-   * 搜索
-   */
-  seach() {
-    this.checkDataType(this.checked);
-  }
-
-  /**
-   * 重置搜索
-   */
-  resetSeach() {
-    this.dictAguments = {
-      // dictCode: '',
-      dictItemName: "",
-      id: ""
-    };
-  }
 
   mounted() {
     this.checkId = 10000;
+    this.getAllDictType();
   }
 }
 </script>
