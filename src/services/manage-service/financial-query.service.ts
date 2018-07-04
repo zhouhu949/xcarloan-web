@@ -191,4 +191,22 @@ export class FinancialQueryService {
     })
   }
 
+  /**
+   * 查询客户还款中的订单
+   * @param queryParamsModel 查询参数实体
+   * @param page 分页实体
+   */
+  findRepayOrderList(queryParamsModel: any, page: PageService): any {
+    return this.netService.send({
+      server: manageService.financialQueryController.findRepayOrderList,
+      data: {
+        customerName: queryParamsModel.customerName,
+        orderNo: queryParamsModel.orderNo,
+        idCard: queryParamsModel.idCard,
+        customerPhone: queryParamsModel.customerPhone,
+      },
+      page: page,
+      loading: true
+    })
+  }
 }

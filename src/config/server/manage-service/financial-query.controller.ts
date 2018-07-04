@@ -129,5 +129,14 @@ export default {
     controller: CONTROLLER,
     action: 'queryFinancialInvoice',
     type: requestType.Get
+  },
+  /**
+   * 查询客户还款中的订单
+   */
+  findRepayOrderList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findRepayOrderList',
+    type: requestType.Get
   }
 }

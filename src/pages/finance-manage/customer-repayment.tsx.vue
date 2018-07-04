@@ -27,6 +27,8 @@ import Page from '~/core/page'
 import Component from "vue-class-component";
 import CarParams from "~/components/base-data/car-params.vue";
 import CustomerRepaymentCurrentPeriod from "~/components/finance-manage/customer-repayment-current-period.vue";
+import CustomerRepaymentDetails from "~/components/finance-manage/customer-repayment-details.tsx.vue";
+import SchemeDetail from "~/components/base-data/scheme-detail.vue";
 import { Button } from "iview";
 import { namespace } from "vuex-class";
 import { PageService } from "~/utils/page.service";
@@ -39,7 +41,8 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 
 @Layout('workspace')
 @Component({
-  components: {}
+  components: {
+  }
 })
 export default class ProceedsForCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService;

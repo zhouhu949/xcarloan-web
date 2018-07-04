@@ -120,6 +120,8 @@ export class BasicCarManageService {
         remark: data.remark,
         seriesId: data.seriesId,
         structure: data.carStructure,
+        // 参考价格
+        referencePrice: data.referencePrice,
       },
       loading: true,
       server: manageService.basicCarManagecontroller.addCarModel,
