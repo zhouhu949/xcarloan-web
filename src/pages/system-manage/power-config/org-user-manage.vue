@@ -106,7 +106,7 @@ export default class OrgUserManage extends Page {
 
   mounted() {
     this.userSearchform = this.$refs["user-search-form"] as DataForm;
-    
+
     this.searchUserByCondition();
   }
 
@@ -183,7 +183,14 @@ export default class OrgUserManage extends Page {
                 },
                 on: {
                   click: () => {
-                    this.resetPwd(row);
+                    this.$Modal.confirm({
+                      title: "提示",
+                      content: "确定执行重置密码操作吗？",
+                      transfer: false,
+                      onOk: () => {
+                        this.resetPwd(row);
+                      }
+                    });
                   }
                 }
               },
@@ -310,7 +317,7 @@ export default class OrgUserManage extends Page {
    */
   private onSelectionChange(selection) {
     // 清空已选用户
-    this.userIds=[];
+    this.userIds = [];
 
     this.userIds = (selection || []).map(v => v.id);
   }
@@ -412,7 +419,7 @@ export default class OrgUserManage extends Page {
         })
     });
   }
-  
+
   /**
    * 批量分配角色
    */

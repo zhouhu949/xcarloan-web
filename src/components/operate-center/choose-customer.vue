@@ -70,7 +70,7 @@ export default class ChooseCustomer extends Vue {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(1),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

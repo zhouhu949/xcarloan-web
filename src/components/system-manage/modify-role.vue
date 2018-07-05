@@ -13,8 +13,8 @@
           <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="备注" prop="roleRemark">
-        <i-input type="textarea" v-model="model.roleRemark" :maxlength="100"></i-input>
+      <i-form-item label="备注" prop="roleDesc">
+        <i-input type="textarea" v-model="model.roleDesc" :maxlength="100"></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -69,7 +69,7 @@ export default class ModifyRole extends Vue {
       this.model.orgId = this.roleData.deptId
       this.model.roleName = this.roleData.roleName
       this.model.roleStatus = this.roleData.roleStatus
-      this.model.roleRemark = this.roleData.roleRemark
+      this.model.roleDesc = this.roleData.roleDesc
       this.model.deptNames = this.getOwnerData(this.model.orgId)
     }
   }

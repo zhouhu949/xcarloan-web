@@ -79,7 +79,7 @@ export default class InventoryQuery extends Page {
     this.inventoryColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
+        Width: this.$common.getOperateWidth(1),
         width: 160,
         align: "center",
         render: (h, { row, column, index }) => {

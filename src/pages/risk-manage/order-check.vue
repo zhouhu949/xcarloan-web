@@ -60,7 +60,7 @@ export default class OrderCheck extends Page {
         title: "操作",
         fixed: 'left',
         align: "center",
-        width: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(5),
         render: (h, { row, column, index }) => {
           return h("div", [
             h(

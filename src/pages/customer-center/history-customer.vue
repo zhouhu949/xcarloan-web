@@ -59,7 +59,7 @@ export default class HistoryCustomer extends Page {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(3),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

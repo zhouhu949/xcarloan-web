@@ -35,8 +35,7 @@ export default class AssessmentReportList extends Vue {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 80,
+        width: this.$common.getOperateWidth(1),
         align: "center",
         render: (h, { row, column, index }) => {
           return h(

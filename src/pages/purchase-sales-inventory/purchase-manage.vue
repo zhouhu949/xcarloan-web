@@ -58,8 +58,7 @@ export default class PurchaseManage extends Page {
     this.enterShellSaveColumns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
-        width: 160,
+        Width: this.$common.getOperateWidth(2),
         align: "center",
         render: (h, { row, column, index }) => {
           // 根据状态执行不同的操作 10123 : 待采购 10046 : 整备中 10047 : 整备完成 10048 : 已提车

@@ -84,7 +84,7 @@ export class SysRoleService {
   @Debounce()
   deleteRole(id) {
     return this.netService.send({
-      server: manageService.sysRoleController.updateRole,
+      server: manageService.sysRoleController.deleteRole,
       append: id,
       loading: true
     })
