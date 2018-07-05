@@ -1,7 +1,10 @@
 <!--押品资料-->
 <template>
   <section class="component order-info-collateral">
-    <data-grid class="collateral-info" :labelWidth="110" labelAlign="right" contentAlign="left" v-for="item of item" :key="item.id">
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-grid v-else class="collateral-info" :labelWidth="110" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
       <data-grid-item label="车牌号" :span="4">{{item.carNo }}</data-grid-item>
       <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
       <data-grid-item label="购车价格" :span="4">{{item.carPrice | toThousands}}</data-grid-item>
@@ -37,14 +40,14 @@ export default class OrderInfoCollateral extends Vue {
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
   @Prop() id: Number
 
-  private item: Array<any> = [];
+  private dataSet: Array<any> = [];
 
   mounted() {
     /**
      * 获取押品资料
      */
     this.basicCustomerOrderService.findCustomerCollateral(this.id).subscribe(
-      data => this.item = data,
+      data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
   }
