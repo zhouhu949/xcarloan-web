@@ -182,7 +182,14 @@ export default class OrgUserManage extends Page {
               },
               on: {
                 click: () => {
-                  this.resetPwd(row)
+                  this.$Modal.confirm({
+                      title: "提示",
+                      content: "确定执行重置密码操作吗？",
+                      transfer: false,
+                      onOk: () => {
+                        this.resetPwd(row)
+                      }
+                    });
                 }
               }
             },

@@ -240,7 +240,7 @@ export default class RoleMaintenance extends Page {
    */
   private roleOperate(val?: Object) {
     this.$dialog.show({
-      title: val ? "新增角色" : "角色维护",
+      title: val ? "角色维护" : "新增角色",
       footer: true,
       onOk: modifyRole => {
         return modifyRole.submit().then(v => {

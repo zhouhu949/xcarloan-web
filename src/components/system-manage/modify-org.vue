@@ -84,7 +84,7 @@ export default class ModifyOrg extends Vue {
         this.sysOrgService.addOrganization(this.orgModel)
           .subscribe(
             data => {
-              this.$Message.success('修改成功')
+              this.$Message.success('新增成功')
               resolve(true)
             },
             err => {

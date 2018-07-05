@@ -1,4 +1,4 @@
-<!--订单信息-->
+<!--订单详情-->
 <template>
   <section class="component order-info">
     <div class="left">
