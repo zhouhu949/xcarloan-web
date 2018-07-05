@@ -2,6 +2,8 @@
 <template>
   <section class="page basic-offset">
     <page-header title="冲抵项管理" hiddenPrint hiddenExport>
+      <command-button class="command-add" label="取消发布" @click="cancelRelease" v-show="isPublish"></command-button>
+      <command-button class="command-add" label="发布" @click="publish" v-show="!isPublish"></command-button>
       <command-button class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row type="flex" class="data-form">
@@ -17,7 +19,8 @@
           <data-tree style="flex:1;" :data="treeData" showEdit :editConfig="editConfig" @on-select-change="onCheckedBasicOffset" @on-edit="basicOffsetOperate" @on-delete="onDeleteBasicOffset"></data-tree>
         </i-col>
         <i-col class="command" :span="20">
-          <data-box :columns="basicOffsetItemColumns" :data="basicOffsetItemDataSet"></data-box>
+          <data-box :columns="basicOffsetItemColumns" :data="basicOffsetItemDataSet" v-show="isPublish"></data-box>
+          <data-box :columns="basicOffsetItemColumnsNon" :data="basicOffsetItemDataSet" v-show="!isPublish"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -38,6 +41,7 @@ import { BasicExpenseService } from "~/services/manage-service/basic-expense.ser
 import { BasicOffsetService } from "~/services/manage-service/basic-offset.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
+import { Object } from "core-js";
 
 @Layout("workspace")
 @Component({
@@ -54,16 +58,28 @@ export default class BasicOffsetManage extends Page {
 
   private treeData: Array<any> = [];
   private expenseDataSet: any = [];
-  private basicOffsetItemColumns: any;
-  private basicOffsetItemDataSet: any = [];
+  private basicOffsetItemColumns: Array<any>;
+  private basicOffsetItemColumnsNon: Array<any>;
+  private basicOffsetItemDataSet: Array<any> = [];
 
   private checkedBasicOffsetId: number = 0;
+  private isPublish: boolean = false;
 
   // 编辑类型
   private readonly editConfig = [EditType.MODIFY, EditType.DELETE];
 
   created() {
     this.basicOffsetItemColumns = [
+      {
+        align: "center",
+        editable: true,
+        title: "费用项名称",
+        key: "expenseName",
+        minWidth: this.$common.getColumnWidth(3)
+      }
+    ];
+
+    this.basicOffsetItemColumnsNon = [
       {
         align: "center",
         editable: true,
@@ -195,6 +211,46 @@ export default class BasicOffsetManage extends Page {
   }
 
   /**
+   * 发布冲抵策略
+   */
+  private publish() {
+    if (!this.checkedBasicOffsetId)
+      return this.$Message.warning("请选择冲抵策略！");
+    this.basicOffsetService.publishOffset(this.checkedBasicOffsetId).subscribe(
+      val => {
+        this.$Message.success("发布成功成功！");
+
+        //刷新列表数据
+        this.refreshBasicOffset();
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
+  }
+
+  /**
+   * 取消发布冲抵策略
+   */
+  private cancelRelease() {
+    if (!this.checkedBasicOffsetId)
+      return this.$Message.warning("请选择冲抵策略！");
+    this.basicOffsetService
+      .cancelPublishOffset(this.checkedBasicOffsetId)
+      .subscribe(
+        val => {
+          this.$Message.success("取消发布成功！");
+
+          //刷新列表数据
+          this.refreshBasicOffset();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
+  /**
    * 冲抵项维护
    * @param offsetId 冲抵策略Id
    * @param expense 费用项列表
@@ -235,6 +291,8 @@ export default class BasicOffsetManage extends Page {
    */
   onCheckedBasicOffset(item) {
     this.checkedBasicOffsetId = item.id;
+    // 10207 未发布 10208 已发布
+    this.isPublish = item.offsetStatus === 10208;
 
     //刷新冲抵项列表数据
     this.getBasicOffsetItemList(item.id);
@@ -353,13 +411,12 @@ export default class BasicOffsetManage extends Page {
               offsetName: v.offsetName,
               // 费用项类型
               offsetType: v.offsetType,
+              // 冲抵策略状态
+              offsetStatus: v.offsetStatus,
               // 备注
               remark: v.remark
             };
           });
-
-          console.log(this.treeData);
-
           resolve(true);
         },
         err => {

@@ -111,5 +111,32 @@ export default {
     controller: CONTROLLER,
     action: 'moveUP',
     type: requestType.Get
+  },
+  /**
+   * 获取当前用户所属机构下的已发布的冲抵策略
+   */
+  findPublishBasicOffsetByOrg: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findPublishBasicOffsetByOrg',
+    type: requestType.Get
+  },
+  /**
+   * 冲抵策略取消发布
+   */
+  cancelPublishOffset: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'cancelPublishOffset',
+    type: requestType.Put
+  },
+  /**
+   * 冲抵策略发布
+   */
+  publishOffset: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'publishOffset',
+    type: requestType.Put
   }
 }

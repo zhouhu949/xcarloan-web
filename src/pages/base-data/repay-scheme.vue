@@ -106,7 +106,7 @@ export default class RepayScheme extends Page {
         return modifyScheme.submit().then(v => {
           if (v) {
             this.refreshData()
-            let schemeDetail = this.$refs.schemeDetail as schemeDetail
+            let schemeDetail = this.$refs.schemeDetail as SchemeDetail
             schemeDetail.getSchemeInfo()
           }
           return v

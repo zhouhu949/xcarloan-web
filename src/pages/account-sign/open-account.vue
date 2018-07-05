@@ -60,7 +60,7 @@ export default class OpenAccount extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           //10093:已开户；10094:未开户
-          if (row.accountStatus === 10094) {
+          if (!row.accountStatus || row.accountStatus === 10094) {
             return h("div", [
               h(
                 "i-button",

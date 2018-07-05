@@ -8,13 +8,6 @@
             <i-input v-model="model.offsetName"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="12">
-          <i-form-item label="冲抵类型" prop="offsetType">
-            <i-select v-model="model.offsetType">
-              <i-option v-for="{value,label} in $dict.getDictData(10025)" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
       </i-row>
       <i-row :gutter="15">
         <i-col :span="24">
@@ -46,7 +39,6 @@ export default class ModifyBasicOffset extends Vue {
   private model: any = {
     id: 0,
     offsetName: "",
-    offsetType: "",
     orgId: 0,
     remark: ""
   };
@@ -79,8 +71,6 @@ export default class ModifyBasicOffset extends Vue {
     if (this.offsetData) {
       this.model.id = this.offsetData.id;
       this.model.offsetName = this.offsetData.offsetName;
-      this.model.offsetType =
-        this.offsetData.offsetType > 0 ? this.offsetData.offsetType : "";
       this.model.orgId = this.offsetData.orgId;
       this.model.remark = this.offsetData.remark;
     }

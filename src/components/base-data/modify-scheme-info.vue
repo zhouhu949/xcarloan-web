@@ -126,7 +126,7 @@ export default class ModifySchemeInfo extends Vue {
   }
 
   mounted() {
-    this.basicOffsetService.findBasicOffsetByOrg().subscribe(val => {
+    this.basicOffsetService.findPublishBasicOffsetByOrg().subscribe(val => {
       this.offsetArr = val
     })
     if (this.id) {
@@ -143,7 +143,7 @@ export default class ModifySchemeInfo extends Vue {
     * 确定新增还款方案
     */
   submit() {
-    let form = this.$refs.form
+    let form = this.$refs.form as Form
     return new Promise((resolve) => {
       form.validate(valid => {
         if (!valid) return resolve(false)
