@@ -10,7 +10,7 @@
       <data-grid-item label="客户性别" :span="4">{{customerBaseInfo.customerSex | dictConvert}}</data-grid-item>
       <data-grid-item label="民族" :span="4">{{customerBaseInfo.nation}}</data-grid-item>
       <data-grid-item label="电话" :span="4">{{customerBaseInfo.customerPhone}}</data-grid-item>
-      <data-grid-item label="出生日期" :span="4">{{customerBaseInfo.birthTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="出生日期" :span="4">{{customerBaseInfo.birthTime | dateFormat}}</data-grid-item>
       <data-grid-item label="QQ" :span="4">{{customerBaseInfo.qq}}</data-grid-item>
       <data-grid-item label="微信" :span="4">{{customerBaseInfo.wechat}}</data-grid-item>
       <data-grid-item label="邮箱" :span="4">{{customerBaseInfo.email}}</data-grid-item>

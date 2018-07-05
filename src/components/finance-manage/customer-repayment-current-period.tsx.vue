@@ -31,7 +31,6 @@ import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 import { namespace } from "vuex-class";
 const CustomerOrderModule = namespace("customerOrderSpace")
 

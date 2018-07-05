@@ -1,7 +1,7 @@
 <!--修改角色-->
 <template>
   <section class="component modify-supplier">
-    <i-form ref="form" :model="model" :label-width="110" :rules="rules">
+    <i-form ref="form" :model="model" :label-width="140" :rules="rules" inline>
       <i-form-item label="名称" prop="supplierName">
         <i-input v-model="model.supplierName"></i-input>
       </i-form-item>

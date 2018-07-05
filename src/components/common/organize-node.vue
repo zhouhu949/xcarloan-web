@@ -1,6 +1,7 @@
 <template>
   <div style="text-align:left;padding:1px" class="component organize-node">
-     <div draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave" @dragover.prevent="handleDragOver"  @dragend.prevent="handleDragEnd" id="tree-node" :style="getSubTreeStyle()">  <!-- @drop.stop="handleDrop($event)" -->
+    <div draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave" @dragover.prevent="handleDragOver" @dragend.prevent="handleDragEnd" id="tree-node" :style="getSubTreeStyle()">
+      <!-- @drop.stop="handleDrop($event)" -->
       <div>
         <span @click="expanedItemHandle" v-show="!data.isLeaf" class="el-tree-node__expand-icon" :class="{expanded:expanded}">
           <Icon v-show="!this.expanded" type="arrow-right-b"></Icon>
@@ -42,7 +43,7 @@ import Vue from "vue";
 export default class OrganizeNode extends Vue {
   @Prop({
     required: true,
-    default: () => {}
+    default: () => { }
   })
   data;
   private expanded = true;
@@ -54,26 +55,7 @@ export default class OrganizeNode extends Vue {
   created() {
     this.expanded = this.data.expand && !this.data.isLeaf;
   }
-  // data() {
-  //     return {
-  //       expanded: this.data.expand && !this.data.isLeaf, // 当前节点展开状态
-  //       root: {}, // 根节点对象
-  //       show_oprators: false,
-  //       is_draged: false
-  //     }
-  //   },
-  // props: {
-  //   data: Object // 当前节点对象
-  // },
-  // computed: {
-  //   /**
-  //    * 当前节点是否被选中
-  //    */
-  //   selected() {
-  //     return this.root.selected === this.data
-  //   }
-  // },
-  // methods: {
+
   getSubTreeStyle() {
     return {
       marginLeft: this.data.isLeaf === true ? "2em" : "1em",
@@ -117,8 +99,7 @@ export default class OrganizeNode extends Vue {
    * 修改节点处理
    */
   editItemHandle() {
-    // let root = < any > this.root
-    this.root.$emit("edit", this.data);
+    this.root.$emit("edit", Object.assign({}, this.data));
   }
   /**
    * 添加节点处理
@@ -195,7 +176,7 @@ export default class OrganizeNode extends Vue {
       this.$el.style.backgroundColor = "";
     }
   }
-  handleDragOver() {}
+  handleDragOver() { }
   showOprators() {
     this.show_oprators = true;
   }
@@ -214,5 +195,4 @@ export default class OrganizeNode extends Vue {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

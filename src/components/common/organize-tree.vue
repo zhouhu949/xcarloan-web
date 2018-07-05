@@ -47,10 +47,6 @@ export default class OrganizeTree extends Vue {
           // 递归构建子节点
           let children = fun(node.id)
           // 添加icon标识
-          // node.isIcon = true
-          // if (!this.isIcon) {
-          //   node.isIcon = false
-          // }
           // 节点添加children或leaf属性
           if (children && children.length) {
             // 设置子元素
@@ -97,17 +93,6 @@ export default class OrganizeTree extends Vue {
       // 发送change事件
       this.$emit('change', value)
     }
-  }
-  // TODO:暂时性解决办法
-  forceRefresh() {
-    let temp = this.dataTree
-    this.dataTree = []
-    this.$nextTick(() => {
-      this.dataTree = temp
-    })
-  }
-  refresh() {
-
   }
 }
 

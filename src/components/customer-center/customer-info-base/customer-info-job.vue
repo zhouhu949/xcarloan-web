@@ -26,7 +26,7 @@
             <data-grid-item label="职业类型" :span="4">{{item.jobType | dictConvert}}</data-grid-item>
             <data-grid-item label="基本月薪" :span="4">{{item.basicSalary | toThousands}}</data-grid-item>
             <data-grid-item label="职级 " :span="4">{{item.rank}}</data-grid-item>
-            <data-grid-item label="入职时间" :span="4">{{item.accessCompanyTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+            <data-grid-item label="入职时间" :span="4">{{item.accessCompanyTime | dateFormat}}</data-grid-item>
             <data-grid-item label="注册资本" :span="4">{{item.registeredCapital | toThousands}}</data-grid-item>
             <data-grid-item label="员工人数" :span="4">{{item.employeesNumber }}</data-grid-item>
             <data-grid-item label="经营归属地" :span="4">{{item.enterpriseManageBelong }}</data-grid-item>

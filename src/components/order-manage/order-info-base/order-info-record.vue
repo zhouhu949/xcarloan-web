@@ -44,7 +44,7 @@ export default class OrderInfoRecord extends Vue {
         title: '操作时间',
         key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime,"yyyy-MM-dd"))
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime))
       },
       {
         align: "center",

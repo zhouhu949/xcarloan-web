@@ -53,7 +53,7 @@ export default class OrderInfoRepayPlan extends Vue {
         title: '操作日期',
         key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime,"yyyy-MM-dd"))
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime))
       }]
 
   }

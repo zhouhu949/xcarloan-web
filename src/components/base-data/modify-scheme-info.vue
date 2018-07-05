@@ -215,7 +215,7 @@ export default class ModifySchemeInfo extends Vue {
    */
   submit() {
     let form = this.$refs.form as Form;
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       form.validate(valid => {
         if (!valid) return resolve(false);
         this.repaySchemeService.repayScheme(this.model).subscribe(

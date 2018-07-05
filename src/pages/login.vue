@@ -167,7 +167,6 @@ export default class Login extends Vue {
    */
   checkAccount() {
     if (!this.loginModel.username) {
-      console.log(878);
       this.loginModel.password = "";
       this.loginModel.remember = false;
       // this.$refs['verify-code'].reset()

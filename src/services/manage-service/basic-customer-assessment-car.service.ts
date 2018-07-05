@@ -45,9 +45,9 @@ export class BasicCustomerAssessmentCarService {
       server: manageService.basicCustomerAssessmentCarController.addBasicCustomerAssessment,
       data: {
         // 申请评估日期
-        assessmentApplyDate: FilterService.dateFormat(model.assessmentApplyDate, "yyyy-MM-dd"),
+        assessmentApplyDate: FilterService.dateFormat(model.assessmentApplyDate),
         // 评估日期
-        assessmentDate: FilterService.dateFormat(model.assessmentDate, "yyyy-MM-dd"),
+        assessmentDate: FilterService.dateFormat(model.assessmentDate),
         // 评估结果
         assessmentResult: model.assessmentResult,
         // 评估状态
@@ -69,7 +69,7 @@ export class BasicCustomerAssessmentCarService {
         // 估价
         evaluation: model.evaluation,
         // 出厂日期
-        factoryTime: FilterService.dateFormat(model.factoryTime, "yyyy-MM-dd"),
+        factoryTime: FilterService.dateFormat(model.factoryTime),
         // 行驶里程
         mileAge: model.mileAge,
         // 备注

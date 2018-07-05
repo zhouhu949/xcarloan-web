@@ -118,9 +118,9 @@ export default class RepayScheme extends Page {
       onOk: modifyScheme => {
         return modifyScheme.submit().then(v => {
           if (v) {
-            this.refreshData();
-            let schemeDetail = this.$refs.schemeDetail as SchemeDetail;
-            schemeDetail.getSchemeInfo();
+            let schemeDetail = this.$refs.schemeDetail as SchemeDetail
+            schemeDetail.getSchemeInfo()
+            this.refreshData()
           }
           return v;
         });

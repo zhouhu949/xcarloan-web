@@ -278,7 +278,7 @@ export default class OrgUserManage extends Page {
         render: (h, { row, columns, index }) => {
           return h(
             'span',
-            this.$filter.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateTimeFormat(row.operatorTime)
           )
         }
       },

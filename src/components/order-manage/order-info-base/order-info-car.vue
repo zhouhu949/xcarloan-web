@@ -11,9 +11,9 @@
       <data-grid-item label="贷款还清状态" :span="4">{{item.isLoanFinished | dictConvert }}</data-grid-item>
       <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
       <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum}}</data-grid-item>
-      <data-grid-item label="操作时间" :span="4">{{item.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作时间" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
       <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
-      <data-grid-item label="初次登记时间" :span="4">{{item.registerTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="初次登记时间" :span="4">{{item.registerTime | dateFormat}}</data-grid-item>
       <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
     </data-grid>
   </section>

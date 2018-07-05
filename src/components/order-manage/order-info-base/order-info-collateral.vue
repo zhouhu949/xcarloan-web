@@ -14,7 +14,7 @@
       <data-grid-item label="抵押方式" :span="4">{{item.orderMortgageType | dictConvert}}</data-grid-item>
       <data-grid-item label="订单编号" :span="4">{{item.orderNo }}</data-grid-item>
       <data-grid-item label="组织id " :span="4">{{item.orgId }}</data-grid-item>
-      <data-grid-item label="初次登记日期" :span="4">{{item.registerTime | dateFormat("yyyy-MM-dd") }}</data-grid-item>
+      <data-grid-item label="初次登记日期" :span="4">{{item.registerTime | dateFormat }}</data-grid-item>
     </data-grid>
   </section>
 </template>

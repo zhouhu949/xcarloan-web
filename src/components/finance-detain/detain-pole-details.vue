@@ -5,10 +5,10 @@
       <data-grid-item label="质押编号" :span="6">{{model.pledgeNo}}</data-grid-item>
       <data-grid-item label="质押地点" :span="6">{{model.pledgePlace}}</data-grid-item>
       <data-grid-item label="质押位置" :span="12">{{model.pledgePosition }}</data-grid-item>
-      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat("yyyy-MM-dd")}}</data-grid-item>
-      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat("yyyy-MM-dd") }}</data-grid-item>
+      <data-grid-item label="入库日期" :span="6">{{model.stockInDate | dateFormat}}</data-grid-item>
+      <data-grid-item label="出库日期" :span="6">{{model.stockOutDate | dateFormat}}</data-grid-item>
       <data-grid-item label="操作人" :span="6">{{model.operator}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="6">{{model.operatorTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>

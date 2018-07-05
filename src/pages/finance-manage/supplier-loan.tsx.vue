@@ -81,7 +81,7 @@ export default class SupplierLoan extends Page {
         title: '操作时间',
         key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dateFormat(row.operatorTime, 'yyyy-MM-dd')}</span>)
+        render: (h, { row }) => (<span>{this.$filter.dateFormat(row.operatorTime)}</span>)
       }
     ]
   }
