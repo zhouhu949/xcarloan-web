@@ -1,36 +1,30 @@
 <!--联系人信息-->
 <template>
   <section class="component customer-info-contacts">
-    <i-row :gutter="16">
-      <i-col v-if="dataSet.length === 0">
-        <div class="no-data-notice">
-          暂无数据
-        </div>
-      </i-col>
-      <i-col class="col-contacts" v-for="item of dataSet" :key="item.id" :span="24" v-else>
-        <i-card class="contacts" :title="item.contactName">
-          <div slot="extra" v-if="edit">
-            <a @click="onDeleteClick(item)">
-              <svg-icon iconClass="delete-bold"></svg-icon>
-              删除
-            </a>
-            <a @click="onModifyClick(item)" style="margin-left: 20px;">
-              <svg-icon iconClass="tianxie"></svg-icon>
-              修改
-            </a>
-          </div>
-          <data-grid class="contacts-info" :labelWidth="90" labelAlign="right" contentAlign="left">
-            <data-grid-item label="姓名" :span="4">{{item.contactName }}</data-grid-item>
-            <data-grid-item label="电话" :span="4">{{item.contactPhone}}</data-grid-item>
-            <data-grid-item label="性别" :span="4">{{item.contactSex | dictConvert}}</data-grid-item>
-            <data-grid-item label="身份关系" :span="4">{{item.contactRelation | dictConvert}}</data-grid-item>
-            <data-grid-item label="电子邮箱" :span="4">{{item.contactEmail}}</data-grid-item>
-            <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
-          </data-grid>
-        </i-card>
-      </i-col>
-    </i-row>
-    <div class="add-customer-info" v-if="edit">
+    <div class="no-data-notice" v-if="dataSet.length === 0" key="no-data">
+      暂无数据
+    </div>
+    <i-card class="contacts" v-else v-for="item of dataSet" :key="item.id" :title="item.contactName">
+      <div slot="extra" v-if="edit">
+        <a @click="onDeleteClick(item)">
+          <svg-icon iconClass="delete-bold"></svg-icon>
+          删除
+        </a>
+        <a @click="onModifyClick(item)" style="margin-left: 20px;">
+          <svg-icon iconClass="tianxie"></svg-icon>
+          修改
+        </a>
+      </div>
+      <data-grid class="contacts-info" :labelWidth="90" labelAlign="right" contentAlign="left">
+        <data-grid-item label="姓名" :span="4">{{item.contactName }}</data-grid-item>
+        <data-grid-item label="电话" :span="4">{{item.contactPhone}}</data-grid-item>
+        <data-grid-item label="性别" :span="4">{{item.contactSex | dictConvert}}</data-grid-item>
+        <data-grid-item label="身份关系" :span="4">{{item.contactRelation | dictConvert}}</data-grid-item>
+        <data-grid-item label="电子邮箱" :span="4">{{item.contactEmail}}</data-grid-item>
+        <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
+      </data-grid>
+    </i-card>
+    <div class="add-customer-info" v-if="edit" key="edit">
       <a @click="addContactInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增联系人信息

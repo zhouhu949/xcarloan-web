@@ -34,6 +34,8 @@ export default {
     });
     dispatch("orgSpace/getOrgData")
     dispatch("carSpace/getAllCar")
+    // 登录或者刷新。重置订单/客户信息状态
+    commit("customerOrderSpace/resetData")
     commit("updateTokenExpire", false)
   },
   /**
