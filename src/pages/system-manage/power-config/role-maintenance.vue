@@ -229,7 +229,7 @@ export default class RoleMaintenance extends Page {
         title: '操作时间',
         key: 'operatorTime',
         minWidth: this.$common.getColumnWidth(6),
-        render: (h, { row, columns, index }) => h('span', {}, this.$filter.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
+        render: (h, { row, columns, index }) => h('span', {}, this.$filter.dateTimeFormat(row.operatorTime))
       }
     ]
   }

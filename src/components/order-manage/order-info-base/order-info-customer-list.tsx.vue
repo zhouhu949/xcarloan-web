@@ -9,8 +9,8 @@
       <data-grid-item label="客户性别" :span="4">{{customerInfo.customerSex | dictConvert}}</data-grid-item>
       <data-grid-item label="身份证号" :span="4">{{customerInfo.idCard }}</data-grid-item>
       <data-grid-item label="客户状态" :span="4">{{customerInfo.customerStatus | dictConvert}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="4">{{customerInfo.accountStatus | dateFormat("yyyy-MM-dd")}}</data-grid-item>
-      <data-grid-item label="创建日期" :span="4">{{customerInfo.createTime | dateFormat("yyyy-MM-dd")}}</data-grid-item>
+      <data-grid-item label="操作日期" :span="4">{{customerInfo.accountStatus | dateFormat}}</data-grid-item>
+      <data-grid-item label="创建日期" :span="4">{{customerInfo.createTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>
@@ -24,7 +24,6 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 

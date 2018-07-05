@@ -77,7 +77,7 @@ export default class ChooseCustomerCar extends Vue {
         align: "center",
         title: "初次登记时间",
         key: 'registerTime',
-        render: (h, { row }) => (<p>{this.$filter.dateFormat(row.registerTime, "yyyy-MM-dd")}</p>)
+        render: (h, { row }) => (<p>{this.$filter.dateFormat(row.registerTime)}</p>)
       }
     ]
   }

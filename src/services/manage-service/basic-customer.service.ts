@@ -64,7 +64,7 @@ export class BasicCustomerService {
   @Debounce()
   addBasicCustomer(data) {
     let result = Object.assign({}, data)
-    result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
+    result.birthTime = FilterService.dateFormat(result.birthTime)
     return this.netService.send({
       server: manageService.basicCustomerController.addBasicCustomer,
       data: result,
@@ -77,7 +77,7 @@ export class BasicCustomerService {
   @Debounce()
   editBasicCustomer(data) {
     let result = Object.assign({}, data)
-    result.birthTime = FilterService.dateFormat(result.birthTime, "yyyy-MM-dd")
+    result.birthTime = FilterService.dateFormat(result.birthTime)
     return this.netService.send({
       server: manageService.basicCustomerController.editBasicCustomer,
       data: result,

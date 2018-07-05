@@ -42,7 +42,7 @@ export class FinanceDetainService {
         id: model.id,
         gpsNo: model.gpsNo,
         gpsManufactor: model.gpsManufactor,
-        stockDate: FilterService.dateFormat(model.stockDate, "yyyy-MM-dd")
+        stockDate: FilterService.dateFormat(model.stockDate)
       },
       loading: true
     })
@@ -61,7 +61,7 @@ export class FinanceDetainService {
       server: manageService.financeDetainController.financeMortgageOutStorage,
       data: {
         id: data.id,
-        stockOutDate: FilterService.dateFormat(model.stockOutDate, "yyyy-MM-dd")
+        stockOutDate: FilterService.dateFormat(model.stockOutDate)
       },
       loading: true
     })
@@ -82,7 +82,7 @@ export class FinanceDetainService {
         id: model.id,
         pledgePlace: model.pledgePlace,
         pledgePosition: model.pledgePosition,
-        stockDate: FilterService.dateFormat(model.stockDate, "yyyy-MM-dd")
+        stockDate: FilterService.dateFormat(model.stockDate)
       },
       loading: true
     })
@@ -101,7 +101,7 @@ export class FinanceDetainService {
       server: manageService.financeDetainController.financePledgeOutStorage,
       data: {
         id: model.id,
-        stockOutDate: FilterService.dateFormat(model.stockOutDate, "yyyy-MM-dd")
+        stockOutDate: FilterService.dateFormat(model.stockOutDate)
       },
       loading: true
     })

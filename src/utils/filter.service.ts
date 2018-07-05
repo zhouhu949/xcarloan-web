@@ -1,6 +1,6 @@
 import store from '~/store'
 import * as enumData from '~/config/enum.config'
-import moment from 'moment'
+import { endOfDay as DateFnsEndOfDay, startOfDay as DateFnsStartOfDay, format as DateFnsFormat } from "date-fns";
 import { LodashService } from './lodash.service'
 
 export class FilterService {
@@ -37,11 +37,11 @@ export class FilterService {
   }
 
   /**
-   * 日期范围转换
-   * @param dateRange
-   * @param fmt
-   */
-  static dateRanageFormat(dateRange, fmt = "yyyy-MM-dd hh:mm:ss") {
+  * 日期时间范围转换
+  * @param dateRange
+  * @param fmt
+  */
+  static dateTimeRanageFormat(dateRange, fmt = "YYYY-MM-DD HH:mm:ss") {
     let target: any = {
       start: '',
       end: ''
@@ -51,13 +51,38 @@ export class FilterService {
       return target
     }
 
+    // 获取开始时间
     target.start = FilterService.dateFormat(dateRange[0], fmt)
 
-    let tmpDate = moment(dateRange[1])
-    if (tmpDate.isValid()) {
-      let endTime = moment(dateRange[1]).add(1, 'd').subtract(1, 's').toDate()
-      target.end = FilterService.dateFormat(endTime, fmt)
+    // 获取当前的最后时间点
+    target.end = FilterService.dateFormat(dateRange[1], fmt)
+
+    return target
+  }
+
+  /**
+   * 日期范围转换
+   * @param dateRange
+   * @param fmt
+   */
+  static dateRanageFormat(dateRange, fmt = "YYYY-MM-DD HH:mm:ss") {
+    let target: any = {
+      start: '',
+      end: ''
     }
+    // 检测非法输入
+    if (!dateRange || dateRange.length === 0 || !(dateRange instanceof Array)) {
+      return target
+    }
+
+    // 获取开始时间
+    let tmpDate = DateFnsStartOfDay(dateRange[0])
+    target.start = FilterService.dateFormat(tmpDate, fmt)
+
+    // 获取当前的最后时间点
+    tmpDate = DateFnsEndOfDay(dateRange[1])
+    target.end = FilterService.dateFormat(tmpDate, fmt)
+
     return target
   }
 
@@ -65,34 +90,12 @@ export class FilterService {
    * 日期格式化
    * @param date
    */
-  static dateFormat(date, fmt = "yyyy-MM-dd"): string {
+  static dateFormat(date, fmt = "YYYY-MM-DD"): string {
     // 空数据处理
     if (date === null || date === undefined || date === '') {
       return ''
     }
-
-    // 如果是时间戳则转化为时间
-    if (typeof date === 'number') {
-      date = new Date(date)
-    }
-
-    let o = {
-      'M+': date.getMonth() + 1, // 月份
-      'd+': date.getDate(), // 日
-      'h+': date.getHours(), // 小时
-      'm+': date.getMinutes(), // 分
-      's+': date.getSeconds(), // 秒
-      'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
-      'S': date.getMilliseconds() // 毫秒
-    }
-
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-
-    for (var k in o) {
-      if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
-    }
-
-    return fmt
+    return DateFnsFormat(date, fmt)
   }
 
   /**
@@ -100,7 +103,7 @@ export class FilterService {
    * @param date
    * @param fmt
    */
-  static dateTimeFormat(date, fmt = "yyyy-MM-dd HH:mm:ss"): string {
+  static dateTimeFormat(date, fmt = "YYYY-MM-DD HH:mm:ss"): string {
     return FilterService.dateFormat(date, fmt)
   }
   /**
