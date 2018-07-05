@@ -3,7 +3,7 @@
     <page-header title="意向客户" hidden-print hidden-export>
       <command-button label="添加意向客户" @click="onCreatePotentialClick"></command-button>
     </page-header>
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
+    <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="姓名：">
           <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
@@ -63,7 +63,7 @@ export default class PotentialClients extends Page {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(2),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

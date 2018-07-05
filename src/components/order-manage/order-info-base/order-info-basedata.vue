@@ -9,7 +9,7 @@
       <data-grid-item label="抵押方式" :span="4">{{dataSet.orderMortgageType | dictConvert}}</data-grid-item>
       <data-grid-item label="征信保护天数" :span="4">{{dataSet.orderCreditDays}}</data-grid-item>
       <data-grid-item label="逾期保护天数" :span="4">{{dataSet.orderOverdueDays}}</data-grid-item>
-      <data-grid-item label="利率(%)" :span="4">{{dataSet.orderInterestRate}}</data-grid-item>
+      <data-grid-item label="利率(%)" :span="4">{{dataSet.orderInterestRate|decimalToPrecent}}</data-grid-item>
       <data-grid-item label="周期类型" :span="4">{{dataSet.orderCycleType | dictConvert}}</data-grid-item>
       <data-grid-item label="还款日" :span="4">{{dataSet.orderAccountDay}}</data-grid-item>
       <data-grid-item label="期数" :span="4">{{dataSet.orderPeriods}}</data-grid-item>

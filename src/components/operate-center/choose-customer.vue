@@ -1,6 +1,6 @@
 <template>
   <section class="component choose-customer">
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
+    <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="客户姓名">
           <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
@@ -70,7 +70,7 @@ export default class ChooseCustomer extends Vue {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(1),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

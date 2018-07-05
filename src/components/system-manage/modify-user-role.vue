@@ -1,14 +1,14 @@
 <!--分配角色-->
 <template>
-  <section class="component user-role-manage">
-    <data-form ref="user-search-form" hidden-date-search :model="queryParamsModel" @on-search="searchRolesByAuth">
+  <section class="component modify-user-role">
+    <data-form ref="user-search-form" hidden-date-search :model="queryParamsModel" @on-search="refreshUserRoles">
       <template slot="input">
         <i-form-item prop="roleName" label="角色名：">
           <i-input v-model="queryParamsModel.roleName" placeholder="请输入角色名称"></i-input>
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns" :data="dataSet" ref="databox" @on-selection-change="onSelectionChanged" @on-page-change="searchRolesByAuth" :page="pageService" :height="500"></data-box>
+    <data-box :columns="columns" :data="dataSet" ref="databox" @on-selection-change="onSelectionChanged" @on-page-change="refreshUserRoles" :page="pageService" :height="500"></data-box>
   </section>
 </template>
 
@@ -17,23 +17,22 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { SysUserService } from "~/services/manage-service/sys-user.service";
-import { SysRoleService } from "~/services/manage-service/sys-role.service";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { Object } from "core-js";
 @Component({
   components: {}
 })
-export default class UserRoleManage extends Vue {
-  @Dependencies(SysRoleService) private sysRoleService: SysRoleService;
-  @Dependencies(SysUserService) private sysUserService:SysUserService;
+export default class ModifyUserRole extends Vue {
+  @Dependencies(SysUserService) private sysUserService: SysUserService;
   @Dependencies(PageService) private pageService: PageService;
-  @Prop() userIds: any;
+  @Prop() userId: any;
 
   // 用户所拥有的角色ID
   private userRoles: Set<Number> = new Set<Number>();
   private dataSet: Array<any> = [];
   private queryParamsModel: any = {
+    id: this.userId,
     roleName: ""
   };
 
@@ -53,7 +52,7 @@ export default class UserRoleManage extends Vue {
     {
       align: "center",
       title: "备注",
-      key: "roleDesc",
+      key: "remark",
       minWidth: this.$common.getColumnWidth(5)
     }
   ];
@@ -63,20 +62,25 @@ export default class UserRoleManage extends Vue {
    */
   private onSelectionChanged(selections) {
     // 清空已选项
-    this.userRoles=new Set<Number>();
+    this.userRoles = new Set<Number>();
 
-    selections.forEach(v => this.userRoles.add(v.id));
+    selections.forEach(v => this.userRoles.add(v.roleId));
   }
 
   /**
-   * 获取自己所能分配的所有角色
+   * 获取用户的角色
    */
-  private searchRolesByAuth() {
-    this.sysRoleService
-      .findAllEnableRoleByAuth(this.queryParamsModel, this.pageService)
+  private refreshUserRoles() {
+    this.sysUserService
+      .findUserRole(this.queryParamsModel, this.pageService)
       .subscribe(
         data => {
-          this.dataSet = data;
+          this.dataSet = data.map(v => {
+            // 设置选中项
+            if (v.selected) this.userRoles.add(v.roleId);
+            
+            return Object.assign({ _checked: v.selected }, v);
+          });
         },
         err => this.$Message.error(err.msg)
       );
@@ -88,7 +92,7 @@ export default class UserRoleManage extends Vue {
   updateUserRole() {
     return new Promise(resolve => {
       this.sysUserService
-        .userBatchAllocateRoles(Array.from(this.userRoles), this.userIds)
+        .userBatchAllocateRoles(Array.from(this.userRoles), [this.userId])
         .subscribe(
           data => {
             this.$Message.success("更新成功");
@@ -103,7 +107,7 @@ export default class UserRoleManage extends Vue {
   }
 
   mounted() {
-    this.searchRolesByAuth();
+    this.refreshUserRoles();
   }
 }
 </script>

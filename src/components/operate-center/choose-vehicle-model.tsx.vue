@@ -1,7 +1,7 @@
 <!--选择车辆-->
 <template>
   <section class="component choose-vehicle-model">
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hiddenDateSearch>
+    <data-form :model="model" @on-search="refreshData" hiddenDateSearch>
       <template slot="input">
         <i-form-item prop="brand" label="品牌:">
           <i-input v-model="model.brand" placeholder="请输入品牌名称"></i-input>

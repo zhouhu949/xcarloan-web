@@ -26,7 +26,7 @@
 import Page from '~/core/page'
 import Component from "vue-class-component";
 import CarParams from "~/components/base-data/car-params.vue";
-import CustomerRepaymentCurrentPeriod from "~/components/finance-manage/customer-repayment-current-period.vue";
+import CustomerRepaymentCurrentPeriod from "~/components/finance-manage/customer-repayment-current-period.tsx.vue";
 import CustomerRepaymentDetails from "~/components/finance-manage/customer-repayment-details.tsx.vue";
 import SchemeDetail from "~/components/base-data/scheme-detail.vue";
 import { Button } from "iview";

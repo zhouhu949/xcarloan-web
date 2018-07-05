@@ -58,7 +58,7 @@ export default class SelectScheme extends Vue {
         align: "center",
         key: "interestRate",
         render: (h, { row, column, index }) => {
-          return h("span", {}, row.interestRate * 100 + '%');
+          return h("span", {}, this.$filter.decimalToPrecent(row.interestRate));
         }
       }
     ];

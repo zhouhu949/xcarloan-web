@@ -36,7 +36,6 @@ export default class BatchManageDevice extends Vue {
   // 设备状态数据表
   private dataSet: any = [];
 
-
   created() {
     this.columns1 = [
       {
@@ -77,46 +76,50 @@ export default class BatchManageDevice extends Vue {
   }
 
   mounted() {
-    if (this.userIds) this.getData()
+    if (this.userIds) this.getData();
   }
 
   /**
    * 选择项发生改变
    */
   private onSelectionChanged(selecton) {
-    this.multipleSelect = selecton
-    this.deviceIds = (selecton || []).map(v => v.id)
+    this.multipleSelect = selecton;
+
+    this.deviceIds = (selecton || []).map(v => v.id);
   }
 
   /**
    * 一键启用/禁用设备
    */
   onKeyEnableDevice(enable) {
-    if (!this.deviceIds.length) {
+    if (this.deviceIds.length === 0) {
       this.$Message.error("请选择设备");
     } else {
-      this.sysUserService.updateUserDevice(0, this.deviceIds, enable ? 10002 : 10003)
+      this.sysUserService
+        .updateUserDevice(0, this.deviceIds, enable ? 10002 : 10003)
         .subscribe(
           data => {
             this.$Message.success("设置成功");
-            this.getData()
+            this.getData();
           },
           err => this.$Message.error(err.msg)
         );
     }
   }
+
   /**
    * 一键启用/禁用设备
    */
   onKeyEnableLock(enable) {
-    if (!this.deviceIds.length) {
+    if (this.deviceIds.length === 0) {
       this.$Message.error("请选择设备");
     } else {
-      this.sysUserService.updateUserDevice(1, this.deviceIds, enable ? 10002 : 10003)
+      this.sysUserService
+        .updateUserDevice(1, this.deviceIds, enable ? 10002 : 10003)
         .subscribe(
           data => {
             this.$Message.success("设置成功");
-            this.getData()
+            this.getData();
           },
           err => this.$Message.error(err.msg)
         );
@@ -127,17 +130,16 @@ export default class BatchManageDevice extends Vue {
    * 一键重置设备
    */
   onKeyResetDevice() {
-    if (!this.deviceIds.length) {
+    if (this.deviceIds.length === 0) {
       this.$Message.error("请选择设备");
     } else {
-      this.sysUserService.updateUserDevice(2, this.deviceIds)
-        .subscribe(
-          data => {
-            this.$Message.success("设置成功");
-            this.getData()
-          },
-          err => this.$Message.error(err.msg)
-        );
+      this.sysUserService.updateUserDevice(2, this.deviceIds).subscribe(
+        data => {
+          this.$Message.success("设置成功");
+          this.getData();
+        },
+        err => this.$Message.error(err.msg)
+      );
     }
   }
 
@@ -145,15 +147,16 @@ export default class BatchManageDevice extends Vue {
    * 获取用户设备状态数据
    */
   getData() {
-    this.sysUserService.findUserDevice(this.userIds)
+    this.sysUserService
+      .findUserDevice(this.userIds)
       .subscribe(
-        data => this.dataSet = data,
+        data => (this.dataSet = data),
         err => this.$Message.error(err.msg)
       );
   }
-
 }
 </script>
+
  <style lang="less" scoped>
 .component .batch-manage-device {
   .command-button {

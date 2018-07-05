@@ -76,6 +76,15 @@ export default class SchemeDetail extends Vue {
   created() {
     this.columns = [
       {
+        title: "费用项",
+        align: "center",
+        key: "expenseId",
+        minWidth: this.$common.getColumnWidth(3),
+        render: (h, { row, column, index }) => {
+          return h("span", {}, row.expenseName);
+        }
+      },
+      {
         title: "是否首付款",
         align: "center",
         key: "isFirst",
@@ -140,22 +149,13 @@ export default class SchemeDetail extends Vue {
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$filter.dictConvert(row.isRefund));
         }
-      },
-      {
-        title: "费用项",
-        align: "center",
-        key: "expenseId",
-        minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, column, index }) => {
-          return h("span", {}, row.expenseName);
-        }
       }
     ];
 
     let opeaterColumn = {
       title: "操作",
       align: "center",
-      width: this.$common.getOperateWidth(1),
+      width: this.$common.getOperateWidth(2),
       render: (h, { row, column, index }) => {
         if (!this.publishState) {
           return h("div", {}, [
@@ -219,12 +219,16 @@ export default class SchemeDetail extends Vue {
    * 根据id获取还款方案信息
    */
   getSchemeInfo() {
-    this.repaySchemeService
-      .findSchemeById(this.schemeId)
-      .subscribe(
-        val => (this.scehmeData = val),
-        err => this.$Message.error(err.msg)
-      );
+    this.repaySchemeService.findSchemeById(this.schemeId).subscribe(
+      val => {
+        if (val) {
+          this.scehmeData = val;
+          // 利率
+          this.scehmeData.interestRate;
+        }
+      },
+      err => this.$Message.error(err.msg)
+    );
   }
 
   /**

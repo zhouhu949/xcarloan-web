@@ -111,6 +111,14 @@ export default {
     controller: CONTROLLER,
     action: 'deleteRoleOrg',
     type: requestType.Delete
+  },
+  /**
+   * 获取数据权限内的所有启用的角色
+   */
+  findAllEnableRoleByAuth: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findAllEnableRoleByAuth',
+    type: requestType.Get
   }
-
 }

@@ -23,22 +23,19 @@ export default class DeviceManage extends Vue {
   @Prop({
     required: true,
     type: Object
-  }) userInfo;
+  })
+  userInfo;
 
   private columns1: any;
   private deviceList: Array<any> = [];
-  private id: any = '';
+  private id: any = "";
 
-
-  mounted() {
-    this.getUserLocks()
-  }
   created() {
     this.columns1 = [
       {
         title: "操作",
         align: "center",
-        width: 300,
+        width: this.$common.getOperateWidth(3),
         render: (h, { row, column, index }) => {
           return h("div", [
             h(
@@ -52,7 +49,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row, 0)
+                    this.setLockState(row, 0);
                   }
                 }
               },
@@ -69,7 +66,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row, 1)
+                    this.setDeviceValidate(row, 1);
                   }
                 }
               },
@@ -86,7 +83,7 @@ export default class DeviceManage extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.setLockState(row, 2)
+                    this.setLockState(row, 2);
                   }
                 }
               },
@@ -106,44 +103,71 @@ export default class DeviceManage extends Vue {
       {
         align: "center",
         title: "设备是否启用",
-        key: "deviceValidate",
+        key: "deviceStatus",
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$filter.dictConvert(row.deviceValidate));
+          return h("span", {}, this.$filter.dictConvert(row.deviceStatus));
         }
       },
       {
         align: "center",
         title: "设备锁是否启用",
-        key: "deviceStatus",
+        key: "deviceValidate",
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$filter.dictConvert(row.deviceStatus));
+          return h("span", {}, this.$filter.dictConvert(row.deviceValidate));
         }
       }
     ];
   }
 
+  mounted() {
+    this.refreshUserLocks();
+  }
+
   /**
    * 获取用户设备锁
    */
-  getUserLocks() {
-    this.sysUserService.findUserDevice([this.userInfo.id])
+  refreshUserLocks() {
+    this.sysUserService
+      .findUserDevice([this.userInfo.id])
       .subscribe(
-        data => this.deviceList = data,
+        data => (this.deviceList = data),
         err => this.$Message.error(err.msg)
       );
   }
 
   /**
-   * 设置锁状态
+   * 设置设备状态
    */
   setLockState(row, type) {
-    this.sysUserService.updateUserDevice(type, [row.id],row.deviceStatus).subscribe(
-      data => {
-        this.$Message.success("设置成功")
-        this.getUserLocks()
-      },
-      err => this.$Message.error(err.msg)
-    )
+    let deviceStatus = row.deviceStatus === 10002 ? 10003 : 10002;
+
+    this.sysUserService
+      .updateUserDevice(type, [row.id], deviceStatus)
+      .subscribe(
+        data => {
+          this.$Message.success("设置成功");
+          this.refreshUserLocks();
+        },
+        err => this.$Message.error(err.msg)
+      );
+  }
+
+  
+  /**
+   * 设置锁状态
+   */
+  setDeviceValidate(row, type) {
+    let deviceValidate = row.deviceValidate === 10002 ? 10003 : 10002;
+
+    this.sysUserService
+      .updateUserDevice(type, [row.id], deviceValidate)
+      .subscribe(
+        data => {
+          this.$Message.success("设置成功");
+          this.refreshUserLocks();
+        },
+        err => this.$Message.error(err.msg)
+      );
   }
 }
 </script>

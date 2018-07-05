@@ -48,13 +48,14 @@ export default class OrderInfoRepayPlan extends Vue {
         key: 'orderRepayType',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.orderRepayType))
-      }, {
+      },
+      {
         align: "center",
-        title: '操作日期',
-        key: 'operatorTime',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.operatorTime))
-      }]
+        title: "期数",
+        key: "periods",
+        minWidth: this.$common.getColumnWidth(4)
+      }
+    ]
 
   }
 

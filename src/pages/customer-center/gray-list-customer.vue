@@ -1,7 +1,7 @@
 <template>
   <section class="page gray-list-customer">
     <page-header title="灰名单客户" hidden-print hidden-export> </page-header>
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
+    <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="姓名">
           <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>
@@ -58,7 +58,7 @@ export default class GrayListCustomer extends Page {
     this.columns = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(4),
+        Width: this.$common.getOperateWidth(2),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
