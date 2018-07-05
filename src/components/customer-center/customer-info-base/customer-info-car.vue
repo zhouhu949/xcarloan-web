@@ -1,37 +1,33 @@
 <!--车辆信息-->
 <template>
   <section class="component customer-info-car">
-    <i-row :gutter="16">
-      <i-col v-if="dataSet.length === 0">
-        <div class="no-data-notice">
-          暂无数据
-        </div>
-      </i-col>
-      <i-col class="col-car" v-for="item of dataSet" :key="item.id" :span="24" v-else>
-        <i-card class="car" :title="item.carNo">
-          <div slot="extra" v-if="edit">
-            <a @click="onDeleteClick(item)">
-              <svg-icon iconClass="delete-bold"></svg-icon>
-              删除
-            </a>
-            <a @click="onModifyClick(item)" style="margin-left: 20px;">
-              <svg-icon iconClass="tianxie"></svg-icon>
-              修改
-            </a>
-          </div>
-          <data-grid class="car-info" :labelWidth="120" labelAlign="right" contentAlign="left">
-            <data-grid-item label="车牌号" :span="4">{{item.carNo}}</data-grid-item>
-            <data-grid-item label="购车价格" :span="4">{{item.carPrice | toThousands}}</data-grid-item>
-            <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
-            <data-grid-item label="购买方式" :span="4">{{item.buyType | dictConvert}}</data-grid-item>
-            <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
-            <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum}}</data-grid-item>
-            <data-grid-item label="备注" :span="12">{{item.remark}}</data-grid-item>
-          </data-grid>
-        </i-card>
-      </i-col>
-    </i-row>
-    <div class="add-customer-info" v-if="edit">
+
+    <div class="no-data-notice" v-if="dataSet.length === 0" key="no-data">
+      暂无数据
+    </div>
+    <i-card class="car" v-for="item of dataSet" :key="item.id" v-else :title="item.carNo">
+      <div slot="extra" v-if="edit">
+        <a @click="onDeleteClick(item)">
+          <svg-icon iconClass="delete-bold"></svg-icon>
+          删除
+        </a>
+        <a @click="onModifyClick(item)" style="margin-left: 20px;">
+          <svg-icon iconClass="tianxie"></svg-icon>
+          修改
+        </a>
+      </div>
+      <data-grid class="car-info" :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="车牌号" :span="4">{{item.carNo}}</data-grid-item>
+        <data-grid-item label="购车价格" :span="4">{{item.carPrice | toThousands}}</data-grid-item>
+        <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
+        <data-grid-item label="购买方式" :span="4">{{item.buyType | dictConvert}}</data-grid-item>
+        <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
+        <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum}}</data-grid-item>
+        <data-grid-item label="备注" :span="12">{{item.remark}}</data-grid-item>
+      </data-grid>
+    </i-card>
+
+    <div class="add-customer-info" v-if="edit" key="edit">
       <a @click="onAddCarInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增车产信息

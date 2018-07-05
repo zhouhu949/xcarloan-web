@@ -1,11 +1,14 @@
 <!--提前结清-->
 <template>
   <section class="component order-info-base-finance-early-settlement">
-      <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id" >
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-grid v-else class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
       <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
       <data-grid-item label="操作日期" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
       <data-grid-item label="收款记录ID" :span="4">{{item.receivableId}}</data-grid-item>
-      <data-grid-item label="提前结清日期" :span="4">{{item.settleDate  | dateFormat}}</data-grid-item>
+      <data-grid-item label="提前结清日期" :span="4">{{item.settleDate | dateFormat}}</data-grid-item>
       <data-grid-item label="提前结清金额" :span="4">{{item.settleMoney | toThousands}}</data-grid-item>
       <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
     </data-grid>
@@ -30,7 +33,7 @@ export default class OrderInfoBaseFinanceEarlySettlement extends Vue {
   private dataSet: Array<any> = []
 
   mounted() {
-   this.basicCustomerOrderService.findCustomerOrderFinanceSettleList(this.id).subscribe(
+    this.basicCustomerOrderService.findCustomerOrderFinanceSettleList(this.id).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )

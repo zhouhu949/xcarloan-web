@@ -1,7 +1,10 @@
 <!--订单车辆-->
 <template>
   <section class="component order-info-car">
-    <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-grid v-else class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
       <data-grid-item label="购买方式" :span="4">{{item.buyType}}</data-grid-item>
       <data-grid-item label="车型名称" :span="4">{{item.carModelName}}</data-grid-item>
       <data-grid-item label="车牌号" :span="4">{{item.carNo}}</data-grid-item>

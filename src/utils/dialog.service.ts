@@ -1,10 +1,11 @@
 import validator from 'async-validator'
 import DialogBox from '~/components/common/dialog-box.vue'
 import Vue from 'vue'
+import { WSAESHUTDOWN } from 'constants';
 
 
 export class DialogService {
-  private static instances = []
+  static instances = []
   /**
    * 显示弹出框
    * @param type 
@@ -35,6 +36,7 @@ export class DialogService {
             onOk: option.onOk,
             cancelText: option.cancelText,
             onCancel: option.onCancel,
+            onRemove: option.onRemove,
             isView: option.isView
           },
           on: {
@@ -68,7 +70,9 @@ export class DialogService {
         },
         onOk() { },
         onCancel() { },
-        onRemove() { }
+        onRemove() {
+          if (option.onRemove) option.onRemove()
+        }
       }
     });
 

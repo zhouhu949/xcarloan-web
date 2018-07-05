@@ -1,33 +1,27 @@
 <!--银行卡信息-->
 <template>
   <section class="component customer-info-bank">
-    <i-row :gutter="16">
-      <i-col v-if="dataSet.length === 0">
-        <div class="no-data-notice">
-          暂无数据
-        </div>
-      </i-col>
-      <i-col class="col-card" v-for="item of dataSet" :key="item.id" :span="12" v-else>
-        <i-card class="card" :title="item.bankName">
-          <div slot="extra" v-if="edit">
-            <a @click.prevent="onEditClick(item)">
-              <svg-icon iconClass="tianxie"></svg-icon>
-              修改
-            </a>
-            <a @click.prevent="onRemoveClick(item)">
-              <svg-icon iconClass="delete-bold"></svg-icon>
-              删除
-            </a>
-          </div>
-          <p class="card-no">{{item.cardNo}}</p>
-          <p class="card-branch">{{item.bankBranch}}</p>
-          <p class="card-clientno">{{item.clientNumber}}</p>
-          <p class="card-state">{{item.accountStatus | dictConvert}}</p>
-        </i-card>
-      </i-col>
-    </i-row>
+    <div class="no-data-notice" v-if="dataSet.length === 0" key="no-data">
+      暂无数据
+    </div>
+    <i-card class="card" v-else v-for="item of dataSet" :key="item.id" :title="item.bankName">
+      <div slot="extra" v-if="edit">
+        <a @click.prevent="onEditClick(item)">
+          <svg-icon iconClass="tianxie"></svg-icon>
+          修改
+        </a>
+        <a @click.prevent="onRemoveClick(item)">
+          <svg-icon iconClass="delete-bold"></svg-icon>
+          删除
+        </a>
+      </div>
+      <p class="card-no">{{item.cardNo}}</p>
+      <p class="card-branch">{{item.bankBranch}}</p>
+      <p class="card-clientno">{{item.clientNumber}}</p>
+      <p class="card-state">{{item.accountStatus | dictConvert}}</p>
+    </i-card>
 
-    <div class="add-customer-info" v-if="edit">
+    <div class="add-customer-info" v-if="edit" key="edit">
       <a @click="onAddCardClick">
         <svg-icon iconClass="add"></svg-icon>
         新增银行卡
@@ -66,7 +60,7 @@ export default class CustomerInfoBank extends Vue {
 
   private onEditClick(data) {
     data.customerId = this.id
-    let tmpData = Object.assign({},data)
+    let tmpData = Object.assign({}, data)
     this.$dialog.show({
       title: "维护银行卡",
       footer: true,
@@ -76,7 +70,7 @@ export default class CustomerInfoBank extends Vue {
           return !!v
         })
       },
-      render: h => h(ModifyCustomerInfoBank, { props: { data:tmpData } })
+      render: h => h(ModifyCustomerInfoBank, { props: { data: tmpData } })
     })
   }
 
