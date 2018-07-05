@@ -34,11 +34,6 @@
       <i-form-item label="期数" prop="periods">
         <i-input-number v-model="model.periods" :min="0"></i-input-number>
       </i-form-item>
-      <i-form-item label="账期类型" prop="accountPeriodType">
-        <i-select v-model="model.accountPeriodType">
-          <i-option v-for="{value,label} in $dict.getDictData(10020)" :key="value" :label="label" :value="value"></i-option>
-        </i-select>
-      </i-form-item>
       <i-form-item label="融资最小金额" prop="moneyMin">
         <i-input-number v-model="model.moneyMin" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
       </i-form-item>
@@ -102,7 +97,6 @@ export default class ModifySchemeInfo extends Vue {
     cycleType: "", // 周期类型
     moneyMin: null, // 融资最小金额
     moneyMax: null, // 融资最大金额
-    accountPeriodType: "", // 账期类型
     accountDay: "", // 还款日
     offsetId: "", // 冲抵策略
     remark: "", // 备注
@@ -168,12 +162,6 @@ export default class ModifySchemeInfo extends Vue {
     moneyMax: {
       required: true,
       message: "请输入融资最大金额",
-      trigger: "blur",
-      type: "number"
-    },
-    accountPeriodType: {
-      required: true,
-      message: "请选择账期类型",
       trigger: "blur",
       type: "number"
     },

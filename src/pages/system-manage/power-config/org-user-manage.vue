@@ -26,8 +26,8 @@
             <i-form-item prop="realName" label="姓名：">
               <i-input v-model="userSearchModel.realName" placeholder="请输入姓名"></i-input>
             </i-form-item>
-            <i-form-item prop="status" label="是否启用">
-              <i-select v-model="userSearchModel.userStatus">
+            <i-form-item prop="userStatus" label="是否启用">
+              <i-select v-model="userSearchModel.userStatus" clearable>
                 <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
@@ -121,7 +121,7 @@ export default class OrgUserManage extends Page {
     this.userSearchModel = {
       userName: '',
       realName: '',
-      status: '',
+      userStatus: '',
       orgId: ''
     }
     this.columns1 = [

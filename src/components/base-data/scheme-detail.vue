@@ -16,7 +16,6 @@
         <data-grid-item label="周期类型" :span="6">{{scehmeData.cycleType | dictConvert}}</data-grid-item>
         <data-grid-item label="融资最小金额" :span="6">{{scehmeData.moneyMin | toThousands}}</data-grid-item>
         <data-grid-item label="融资最大金额" :span="6">{{scehmeData.moneyMax | toThousands}}</data-grid-item>
-        <data-grid-item label="账期类型" :span="6">{{scehmeData.accountPeriodType | dictConvert}}</data-grid-item>
         <data-grid-item label="还款日" :span="6">{{scehmeData.accountDay}}</data-grid-item>
         <data-grid-item label="冲抵策略" :span="6">{{scehmeData.offsetName}}</data-grid-item>
         <data-grid-item label="备注" :span="6">{{scehmeData.remark}}</data-grid-item>
@@ -94,7 +93,9 @@ export default class SchemeDetail extends Vue {
           return h(
             "span",
             {},
-            this.$filter.decimalToPrecent(row.repayProportion)
+            row.repayProportion !== null
+              ? this.$filter.decimalToPrecent(row.repayProportion)
+              : ""
           );
         }
       },
@@ -107,7 +108,9 @@ export default class SchemeDetail extends Vue {
           return h(
             "div",
             { class: { "col-decimal": true } },
-            this.$filter.toThousands(row.fixedCost)
+            row.fixedCost !== null
+              ? this.$filter.toThousands(row.fixedCost)
+              : ""
           );
         }
       },
@@ -216,10 +219,12 @@ export default class SchemeDetail extends Vue {
    * 根据id获取还款方案信息
    */
   getSchemeInfo() {
-    this.repaySchemeService.findSchemeById(this.schemeId).subscribe(
-      val => this.scehmeData = val,
-      err => this.$Message.error(err.msg)
-    )
+    this.repaySchemeService
+      .findSchemeById(this.schemeId)
+      .subscribe(
+        val => (this.scehmeData = val),
+        err => this.$Message.error(err.msg)
+      );
   }
 
   /**
@@ -261,7 +266,7 @@ export default class SchemeDetail extends Vue {
         h(ModifySchemeFeeItem, {
           props: {
             schemeId: this.schemeId,
-            data: Object.assign({},row)
+            data: Object.assign({}, row)
           }
         })
     });
