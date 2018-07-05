@@ -197,7 +197,7 @@ export default class SchemeDetail extends Vue {
   }
 
   get publishState() {
-    return (this.scehmeData.schemeStatus || 10056) === 10057;
+    return (this.scehmeData.schemeStatus || 10057) === 10057;
   }
 
   /**

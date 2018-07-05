@@ -13,7 +13,7 @@
         <data-tree :data="treeData" showEdit :editConfig="editConfig" @on-select-change="val => currentNode = val" @on-edit="onEditClick" @on-delete="onDeleteClick"></data-tree>
       </i-col>
       <i-col :span="18" class="scheme-table-cell">
-        <scheme-detail :schemeId="schemeId" ref="schemeDetail"></scheme-detail>
+        <scheme-detail v-if="isRefreshDetails" :schemeId="schemeId" ref="schemeDetail"></scheme-detail>
       </i-col>
     </i-row>
 
@@ -26,11 +26,11 @@ import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import DataTree from "~/components/common/data-tree.vue";
 import { EditType } from "~/config/enum.config";
-import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service'
+import { RepaySchemeService } from "~/services/manage-service/basic-repay-scheme.service";
 import ModifySchemeInfo from "~/components/base-data/modify-scheme-info.vue";
 import SchemeDetail from "~/components/base-data/scheme-detail.vue";
 
-@Layout('workspace')
+@Layout("workspace")
 @Component({
   components: {
     DataTree,
@@ -38,12 +38,12 @@ import SchemeDetail from "~/components/base-data/scheme-detail.vue";
   }
 })
 export default class RepayScheme extends Page {
-  @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
-
+  @Dependencies(RepaySchemeService)
+  private repaySchemeService: RepaySchemeService;
 
   // 编辑类型
-  private readonly editConfig = [EditType.MODIFY, EditType.DELETE]
-  private treeData: Array<any> = []
+  private readonly editConfig = [EditType.MODIFY, EditType.DELETE];
+  private treeData: Array<any> = [];
   // 当前选中项
   private currentNode: any = null;
 
@@ -52,18 +52,22 @@ export default class RepayScheme extends Page {
   private item: any;
   private dialogTitle: String;
   private isRelease: Boolean = false;
+  private isRefreshDetails: boolean = true;
 
   get schemeId(): Number {
-    return this.currentNode && this.currentNode.id
+    return this.currentNode && this.currentNode.id;
   }
 
   mounted() {
-    this.refreshData()
+    this.refreshData();
   }
   /**
    * 获取当前用户下组织机构下所有的还款方案
    */
   refreshData() {
+    // 初始化页面处理
+    this.isRefreshDetails = this.currentNode ? false : true;
+
     this.repaySchemeService.getAllBasicSchemeByOrgId().subscribe(
       val => {
         this.treeData = val.map(v => {
@@ -72,11 +76,20 @@ export default class RepayScheme extends Page {
             id: v.id,
             pid: 0,
             _disabled: v.schemeStatus === 10057 // 禁止编辑
-          }
-        })
+          };
+        });
+
+        if (this.currentNode) {
+          this.currentNode = this.treeData.filter(
+            v => v.id === this.currentNode.id
+          )[0];
+
+          // 动态刷新页面
+          this.isRefreshDetails = true;
+        }
       },
       err => this.$Message.error(err.msg)
-    )
+    );
   }
 
   /**
@@ -88,12 +101,12 @@ export default class RepayScheme extends Page {
       footer: true,
       onOk: addScheme => {
         return addScheme.submit().then(v => {
-          if (v) this.refreshData()
-          return v
-        })
+          if (v) this.refreshData();
+          return v;
+        });
       },
       render: h => h(ModifySchemeInfo)
-    })
+    });
   }
   /**
    * 编辑还款方案
@@ -105,37 +118,40 @@ export default class RepayScheme extends Page {
       onOk: modifyScheme => {
         return modifyScheme.submit().then(v => {
           if (v) {
-            this.refreshData()
-            let schemeDetail = this.$refs.schemeDetail as SchemeDetail
-            schemeDetail.getSchemeInfo()
+            this.refreshData();
+            let schemeDetail = this.$refs.schemeDetail as SchemeDetail;
+            schemeDetail.getSchemeInfo();
           }
-          return v
-        })
+          return v;
+        });
       },
-      render: h => h(ModifySchemeInfo, {
-        props: {
-          id: this.schemeId
-        }
-      })
-    })
+      render: h =>
+        h(ModifySchemeInfo, {
+          props: {
+            id: this.schemeId
+          }
+        })
+    });
   }
   /**
-  * 删除还款方案
-  */
+   * 删除还款方案
+   */
   onDeleteClick(data) {
     this.$Modal.confirm({
-      title: '提示',
-      content: '确定删除此还款方案吗？',
+      title: "提示",
+      content: "确定删除此还款方案吗？",
       onOk: () => {
-        this.repaySchemeService.deleteRepayScheme(data.id).subscribe(() => {
-          this.$Message.success('删除成功！')
-          this.refreshData()
-        },
+        this.repaySchemeService.deleteRepayScheme(data.id).subscribe(
+          () => {
+            this.$Message.success("删除成功！");
+            this.refreshData();
+          },
           err => {
-            this.$Message.error(err.msg)
-          })
+            this.$Message.error(err.msg);
+          }
+        );
       }
-    })
+    });
   }
 
   /**
@@ -145,15 +161,17 @@ export default class RepayScheme extends Page {
     this.$Modal.confirm({
       content: `确定取消发布此还款方案吗？`,
       onOk: () => {
-        this.repaySchemeService.releaseRepayScheme(this.schemeId, 10056).subscribe(
-          val => {
-            this.$Message.success(`取消成功！`)
-            this.refreshData()
-          },
-          err => this.$Message.error(err.msg)
-        )
+        this.repaySchemeService
+          .releaseRepayScheme(this.schemeId, 10056)
+          .subscribe(
+            val => {
+              this.$Message.success(`取消成功！`);
+              this.refreshData();
+            },
+            err => this.$Message.error(err.msg)
+          );
       }
-    })
+    });
   }
 
   /**
@@ -162,11 +180,11 @@ export default class RepayScheme extends Page {
   publish() {
     this.repaySchemeService.releaseRepayScheme(this.schemeId, 10057).subscribe(
       val => {
-        this.$Message.success(`发布成功！`)
-        this.refreshData()
+        this.$Message.success(`发布成功！`);
+        this.refreshData();
       },
       err => this.$Message.error(err.msg)
-    )
+    );
   }
 }
 </script>

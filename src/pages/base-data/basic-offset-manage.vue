@@ -2,8 +2,10 @@
 <template>
   <section class="page basic-offset">
     <page-header title="冲抵项管理" hiddenPrint hiddenExport>
-      <command-button class="command-add" label="取消发布" @click="cancelRelease" v-show="isPublish"></command-button>
-      <command-button class="command-add" label="发布" @click="publish" v-show="!isPublish"></command-button>
+      <div v-if="checkedBasicOffsetId">
+        <command-button class="command-add" label="取消发布" @click="cancelRelease" v-show="isPublish"></command-button>
+        <command-button class="command-add" label="发布" @click="publish" v-show="!isPublish"></command-button>
+      </div>
       <command-button class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row type="flex" class="data-form">
