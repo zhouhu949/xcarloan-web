@@ -44,7 +44,7 @@ export class BasicEnterShellSaveService {
     return this.netService.send({
       server: manageService.basicEnterShellSaveController.addOrderCarStock,
       data: {
-        orderId: data.orderId,
+        stockId: data.stockId,
         supplierId: data.supplierId,
         stockCarNo: data.stockCarNo,
         stockEngineNo: data.stockEngineNo,
