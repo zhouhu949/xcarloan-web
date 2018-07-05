@@ -1,14 +1,17 @@
 <!--放款记录-->
 <template>
   <section class="component order-info-base-finance-loan">
-    <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id" >
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-grid v-else class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
       <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
       <data-grid-item label="操作日期" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
       <data-grid-item label="是否收到发票" :span="4">{{item.hasInvoice }}</data-grid-item>
       <data-grid-item label="是否收到收据" :span="4">{{item.hasReceipt }}</data-grid-item>
       <data-grid-item label="放款日期" :span="4">{{item.loanDate | dateFormat}}</data-grid-item>
       <data-grid-item label="放款金额" :span="4">{{item.loanMoney | toThousands}}</data-grid-item>
-      <data-grid-item label="放款类型" :span="4">{{item.loanType  }}</data-grid-item> 
+      <data-grid-item label="放款类型" :span="4">{{item.loanType }}</data-grid-item>
       <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
     </data-grid>
   </section>

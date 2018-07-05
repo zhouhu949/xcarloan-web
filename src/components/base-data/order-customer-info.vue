@@ -31,7 +31,7 @@ export default class OrderCustomerInfo extends Vue {
    * 获取标题
    */
   get title() {
-    let current = this.componentNameList.find(x => x.name === this.currentComponent)
+    let current = this.componentNameList.find(x => x.name === this.currentComponent) || {}
     return current.title || ""
   }
 }

@@ -44,7 +44,7 @@ export class SysUserService {
   @Debounce()
   updateUser(data) {
     return this.netService.send({
-      server: manageService.sysUserController.addUser,
+      server: manageService.sysUserController.updateUser,
       data: {
         id: data.id,
         deptId: data.orgId,

@@ -16,7 +16,6 @@
         <data-grid-item label="周期类型" :span="6">{{scehmeData.cycleType | dictConvert}}</data-grid-item>
         <data-grid-item label="融资最小金额" :span="6">{{scehmeData.moneyMin | toThousands}}</data-grid-item>
         <data-grid-item label="融资最大金额" :span="6">{{scehmeData.moneyMax | toThousands}}</data-grid-item>
-        <data-grid-item label="账期类型" :span="6">{{scehmeData.accountPeriodType | dictConvert}}</data-grid-item>
         <data-grid-item label="还款日" :span="6">{{scehmeData.accountDay}}</data-grid-item>
         <data-grid-item label="冲抵策略" :span="6">{{scehmeData.offsetName}}</data-grid-item>
         <data-grid-item label="备注" :span="6">{{scehmeData.remark}}</data-grid-item>
@@ -34,13 +33,14 @@
   </section>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import { Dependencies } from '~/core/decorator';
+import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
-import { RepaySchemeService } from '~/services/manage-service/basic-repay-scheme.service'
+import { RepaySchemeService } from "~/services/manage-service/basic-repay-scheme.service";
 import ModifySchemeFeeItem from "./modify-scheme-fee-item.vue";
+import { Object } from "core-js";
 
 @Component({
   components: {
@@ -49,7 +49,8 @@ import ModifySchemeFeeItem from "./modify-scheme-fee-item.vue";
   }
 })
 export default class SchemeDetail extends Vue {
-  @Dependencies(RepaySchemeService) private repaySchemeService: RepaySchemeService
+  @Dependencies(RepaySchemeService)
+  private repaySchemeService: RepaySchemeService;
 
   /**
    * 是否查看状态
@@ -57,14 +58,15 @@ export default class SchemeDetail extends Vue {
   @Prop({
     type: Boolean,
     default: false
-  }) view: Boolean
+  })
+  view: Boolean;
 
   @Prop() schemeId: Number;
-  @Watch('schemeId', { immediate: true })
+  @Watch("schemeId", { immediate: true })
   onSchemeIdChange(value) {
-    if (!value) return
-    this.getSchemeFeeItems()
-    this.getSchemeInfo()
+    if (!value) return;
+    this.getSchemeFeeItems();
+    this.getSchemeInfo();
   }
 
   private columns: Array<any> = [];
@@ -97,7 +99,13 @@ export default class SchemeDetail extends Vue {
         key: "repayProportion",
         minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$filter.decimalToPrecent(row.repayProportion));
+          return h(
+            "span",
+            {},
+            row.repayProportion !== null
+              ? this.$filter.decimalToPrecent(row.repayProportion)
+              : ""
+          );
         }
       },
       {
@@ -106,7 +114,13 @@ export default class SchemeDetail extends Vue {
         minWidth: this.$common.getColumnWidth(3),
         key: "fixedCost",
         render: (h, { row, column, index }) => {
-          return h("div", { class: { 'col-decimal': true } }, this.$filter.toThousands(row.fixedCost));
+          return h(
+            "div",
+            { class: { "col-decimal": true } },
+            row.fixedCost !== null
+              ? this.$filter.toThousands(row.fixedCost)
+              : ""
+          );
         }
       },
       {
@@ -141,78 +155,121 @@ export default class SchemeDetail extends Vue {
     let opeaterColumn = {
       title: "操作",
       align: "center",
+      width: this.$common.getOperateWidth(2),
       render: (h, { row, column, index }) => {
         if (!this.publishState) {
           return h("div", {}, [
-            h('i-button',
+            h(
+              "i-button",
               {
                 props: {
                   type: "text"
                 },
                 class: {
-                  'row-command-button': true
+                  "row-command-button": true
+                },
+                on: {
+                  click: () => this.editRepaySchemeDetail(row)
+                }
+              },
+              "编辑"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                class: {
+                  "row-command-button": true
                 },
                 on: {
                   click: () => this.feeItemDelete(row.id)
                 }
               },
-              '删除'
+              "删除"
             )
           ]);
         }
-      },
-       width: this.$common.getOperateWidth(1)
-    }
+      }
+    };
 
     if (!this.view) {
-      this.columns.unshift(opeaterColumn)
+      this.columns.unshift(opeaterColumn);
     }
   }
 
   get publishState() {
-    return (this.scehmeData.schemeStatus || 10056) === 10057
+    return (this.scehmeData.schemeStatus || 10057) === 10057;
   }
 
   /**
    * 根据id获取还款方案比例详情
    */
   private getSchemeFeeItems() {
-    this.repaySchemeService.findSchemeExpenseBySchemeId(this.schemeId).subscribe(
-      val => this.scehmeDetailData = val,
-      err => this.$Message.error(err.msg)
-    )
+    this.repaySchemeService
+      .findSchemeExpenseBySchemeId(this.schemeId)
+      .subscribe(
+        val => (this.scehmeDetailData = val),
+        err => this.$Message.error(err.msg)
+      );
   }
-
 
   /**
    * 根据id获取还款方案信息
    */
   getSchemeInfo() {
-    this.repaySchemeService.findSchemeById(this.schemeId).subscribe(
-      val => this.scehmeData = val,
-      err => this.$Message.error(err.msg)
-    )
+    this.repaySchemeService
+      .findSchemeById(this.schemeId)
+      .subscribe(
+        val => (this.scehmeData = val),
+        err => this.$Message.error(err.msg)
+      );
   }
 
   /**
-  * 新增还款方案比例详情
-  */
+   * 新增还款方案比例详情
+   */
   addRepaySchemeDetail() {
     this.$dialog.show({
       title: "新增还款方案比例详情",
       footer: true,
       onOk: schemeFeeItem => {
         return schemeFeeItem.submit().then(v => {
-          if (v) this.getSchemeFeeItems()
-          return v
-        })
+          if (v) this.getSchemeFeeItems();
+          return v;
+        });
       },
-      render: h => h(ModifySchemeFeeItem, {
-        props: {
-          schemeId: this.schemeId
-        }
-      })
-    })
+      render: h =>
+        h(ModifySchemeFeeItem, {
+          props: {
+            schemeId: this.schemeId
+          }
+        })
+    });
+  }
+
+  /**
+   * 编辑还款方案比例详情
+   */
+  editRepaySchemeDetail(row) {
+    this.$dialog.show({
+      title: "编辑还款方案比例详情",
+      footer: true,
+      onOk: schemeFeeItem => {
+        return schemeFeeItem.submit().then(v => {
+          if (v) this.getSchemeFeeItems();
+          return v;
+        });
+      },
+      render: h =>
+        h(ModifySchemeFeeItem, {
+          props: {
+            schemeId: this.schemeId,
+            data: Object.assign({}, row)
+          }
+        })
+    });
   }
 
   /**
@@ -220,20 +277,19 @@ export default class SchemeDetail extends Vue {
    */
   private feeItemDelete(id: Number) {
     this.$Modal.confirm({
-      title: '提示',
-      content: '确定删除此还款方案比例详情吗？',
+      title: "提示",
+      content: "确定删除此还款方案比例详情吗？",
       onOk: () => {
         this.repaySchemeService.deleteRepaySchemeExpense(id).subscribe(
           val => {
-            this.$Message.success('删除成功！')
-            this.getSchemeInfo()
+            this.$Message.success("删除成功！");
+            this.getSchemeInfo();
           },
           err => this.$Message.error(err.msg)
-        )
+        );
       }
-    })
+    });
   }
-
 }
 </script>
 

@@ -16,7 +16,6 @@ export class BasicOffsetService {
       server: manageService.basicOffsetController.addBasicOffset,
       data: {
         offsetName: data.offsetName,
-        offsetType: data.offsetType,
         orgId: data.orgId,
         remark: data.remark
       },
@@ -51,7 +50,6 @@ export class BasicOffsetService {
       data: {
         id: data.id,
         offsetName: data.offsetName,
-        offsetType: data.offsetType,
         remark: data.remark
       },
       loading: true
@@ -160,6 +158,41 @@ export class BasicOffsetService {
     return this.netService.send({
       server: manageService.basicOffsetController.moveUP,
       append: offsetItemId,
+      loading: true
+    })
+  }
+
+  /**
+   * 获取当前用户所属机构下的已发布的冲抵策略
+   */
+  findPublishBasicOffsetByOrg(): any {
+    return this.netService.send({
+      server: manageService.basicOffsetController.findPublishBasicOffsetByOrg
+    })
+  }
+
+  /**
+   * 取消冲抵策略发布
+   * @param id 冲抵策略Id
+   */
+  @Debounce()
+  cancelPublishOffset(id: number): any {
+    return this.netService.send({
+      server: manageService.basicOffsetController.cancelPublishOffset,
+      append: id,
+      loading: true
+    })
+  }
+
+  /**
+   * 冲抵策略发布
+   * @param id 冲抵策略Id
+   */
+  @Debounce()
+  publishOffset(id: number): any {
+    return this.netService.send({
+      server: manageService.basicOffsetController.publishOffset,
+      append: id,
       loading: true
     })
   }

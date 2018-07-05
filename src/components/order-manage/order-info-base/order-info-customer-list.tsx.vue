@@ -1,7 +1,7 @@
 <!--客户信息列表-->
 <template>
   <section class="component order-info-customer-list">
-    <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-if="customerInfo">
+    <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left">
       <data-grid-item label="客户姓名" :span="4">
           <i-button type="text" class="row-command-button" @click="showCustomerInfo({id:customerInfo.id})">{{customerInfo.customerName}}</i-button>
       </data-grid-item>

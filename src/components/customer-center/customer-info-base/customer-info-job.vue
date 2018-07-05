@@ -1,45 +1,39 @@
 <!--职业信息-->
 <template>
   <section class="component customer-info-job">
-    <i-row :gutter="16">
-      <i-col v-if="dataSet.length === 0">
-        <div class="no-data-notice">
-          暂无数据
-        </div>
-      </i-col>
-      <i-col class="col-job" v-for="item of dataSet" :key="item.id" :span="24" v-else>
-        <i-card class="job" :title="item.companyName">
-          <div slot="extra" v-if="edit">
-            <a @click="onDeleteClick(item)">
-              <svg-icon iconClass="delete-bold"></svg-icon>
-              删除
-            </a>
-            <a @click="onModifyClick(item)" style="margin-left: 20px;">
-              <svg-icon iconClass="tianxie"></svg-icon>
-              修改
-            </a>
-          </div>
-          <data-grid class="job-info" :labelWidth="120" labelAlign="right" contentAlign="left">
-            <data-grid-item label="单位名称 " :span="4">{{item.companyName }}</data-grid-item>
-            <data-grid-item label="单位性质" :span="4">{{item.companyNature | dictConvert}}</data-grid-item>
-            <data-grid-item label="所属行业" :span="4">{{item.industry | dictConvert}}</data-grid-item>
-            <data-grid-item label="职业类型" :span="4">{{item.jobType | dictConvert}}</data-grid-item>
-            <data-grid-item label="基本月薪" :span="4">{{item.basicSalary | toThousands}}</data-grid-item>
-            <data-grid-item label="职级 " :span="4">{{item.rank}}</data-grid-item>
-            <data-grid-item label="入职时间" :span="4">{{item.accessCompanyTime | dateFormat}}</data-grid-item>
-            <data-grid-item label="注册资本" :span="4">{{item.registeredCapital | toThousands}}</data-grid-item>
-            <data-grid-item label="员工人数" :span="4">{{item.employeesNumber }}</data-grid-item>
-            <data-grid-item label="经营归属地" :span="4">{{item.enterpriseManageBelong }}</data-grid-item>
-            <data-grid-item label="企业经营年限" :span="4">{{item.enterpriseManageYears }}</data-grid-item>
-            <data-grid-item label="每月发薪日" :span="4">{{item.payDay}}</data-grid-item>
-            <data-grid-item label="发薪方式" :span="4">{{item.payWay}}</data-grid-item>
-            <data-grid-item label="单位地址" :span="4">{{item.companyAddress}}</data-grid-item>
-            <data-grid-item label="单位地址详细" :span="4">{{item.companyAddressDetail }}</data-grid-item>
-          </data-grid>
-        </i-card>
-      </i-col>
-    </i-row>
-    <div class="add-customer-info" v-if="edit">
+    <div class="no-data-notice" v-if="dataSet.length === 0" key="no-data">
+      暂无数据
+    </div>
+    <i-card class="job" v-else v-for="item of dataSet" :key="item.id" :span="24" :title="item.companyName">
+      <div slot="extra" v-if="edit">
+        <a @click="onDeleteClick(item)">
+          <svg-icon iconClass="delete-bold"></svg-icon>
+          删除
+        </a>
+        <a @click="onModifyClick(item)" style="margin-left: 20px;">
+          <svg-icon iconClass="tianxie"></svg-icon>
+          修改
+        </a>
+      </div>
+      <data-grid class="job-info" :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="单位名称 " :span="4">{{item.companyName }}</data-grid-item>
+        <data-grid-item label="单位性质" :span="4">{{item.companyNature | dictConvert}}</data-grid-item>
+        <data-grid-item label="所属行业" :span="4">{{item.industry | dictConvert}}</data-grid-item>
+        <data-grid-item label="职业类型" :span="4">{{item.jobType | dictConvert}}</data-grid-item>
+        <data-grid-item label="基本月薪" :span="4">{{item.basicSalary | toThousands}}</data-grid-item>
+        <data-grid-item label="职级 " :span="4">{{item.rank}}</data-grid-item>
+        <data-grid-item label="入职时间" :span="4">{{item.accessCompanyTime | dateFormat}}</data-grid-item>
+        <data-grid-item label="注册资本" :span="4">{{item.registeredCapital | toThousands}}</data-grid-item>
+        <data-grid-item label="员工人数" :span="4">{{item.employeesNumber }}</data-grid-item>
+        <data-grid-item label="经营归属地" :span="4">{{item.enterpriseManageBelong }}</data-grid-item>
+        <data-grid-item label="企业经营年限" :span="4">{{item.enterpriseManageYears }}</data-grid-item>
+        <data-grid-item label="每月发薪日" :span="4">{{item.payDay}}</data-grid-item>
+        <data-grid-item label="发薪方式" :span="4">{{item.payWay}}</data-grid-item>
+        <data-grid-item label="单位地址" :span="4">{{item.companyAddress}}</data-grid-item>
+        <data-grid-item label="单位地址详细" :span="4">{{item.companyAddressDetail }}</data-grid-item>
+      </data-grid>
+    </i-card>
+    <div class="add-customer-info" v-if="edit" :key="edit">
       <a @click="onAddJobInfo">
         <svg-icon iconClass="add"></svg-icon>
         新增职业信息

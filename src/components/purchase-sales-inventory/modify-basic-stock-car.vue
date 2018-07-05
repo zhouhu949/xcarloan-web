@@ -154,7 +154,7 @@ export default class ModifyBasicStockCar extends Vue {
   }
 
   /**
-   * 添加冲抵策略
+   * 
    */
   private addBasicStock() {
     return new Promise((resolve, reject) => {
@@ -165,13 +165,13 @@ export default class ModifyBasicStockCar extends Vue {
   }
 
   /**
-   * 修改冲抵策略
+   * 
    */
   private modifyBasicStock() {
     return new Promise((resolve, reject) => {
       // 参数
       let model = {
-        orderId: this.stockCarData.orderId,
+        stockId: this.stockCarData.stockId,
         supplierId: this.model.supplierId,
         stockCarNo: this.model.stockCarNo,
         stockEngineNo: this.model.stockEngineNo,
@@ -187,7 +187,7 @@ export default class ModifyBasicStockCar extends Vue {
   }
 
   /**
-   * 提交冲抵策略数据
+   * 
    */
   submit() {
     let form = this.$refs["form"] as Form;
