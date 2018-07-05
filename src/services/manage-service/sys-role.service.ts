@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import { PageService } from '~/utils/page.service';
 export class SysRoleService {
   @Inject()
   private netService: NetService
@@ -177,6 +178,21 @@ export class SysRoleService {
     return this.netService.send({
       server: manageService.sysRoleController.deleteRoleOrg,
       append: authId
+    })
+  }
+
+  /**
+   * 获取数据权限内的所有启用的角色
+   * @param queryParamsModel 
+   * @param page 
+   */
+  findAllEnableRoleByAuth(queryParamsModel: any, page: PageService) {
+    return this.netService.send({
+      server: manageService.sysRoleController.findAllEnableRoleByAuth,
+      data: {
+        roleName: queryParamsModel.roleName
+      },
+      page: page
     })
   }
 }

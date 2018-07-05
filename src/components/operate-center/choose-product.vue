@@ -1,7 +1,7 @@
 <!--选择产品方案-->
 <template>
   <section class="component choose-product">
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
+    <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="方案名称">
           <i-input placeholder="请输入方案名称" v-model="model.name"></i-input>

@@ -2,7 +2,7 @@
   <section class="page update-customer-data">
     <page-header title="补填资料" hidden-print hidden-export>
     </page-header>
-    <data-form :model="model" :page="pageService" @on-search="refreshData" hidden-date-search>
+    <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">
         <i-form-item prop="name" label="姓名：">
           <i-input placeholder="请输入客户姓名" v-model="model.name"></i-input>

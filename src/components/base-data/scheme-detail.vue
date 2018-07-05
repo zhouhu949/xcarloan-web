@@ -219,12 +219,16 @@ export default class SchemeDetail extends Vue {
    * 根据id获取还款方案信息
    */
   getSchemeInfo() {
-    this.repaySchemeService
-      .findSchemeById(this.schemeId)
-      .subscribe(
-        val => (this.scehmeData = val),
-        err => this.$Message.error(err.msg)
-      );
+    this.repaySchemeService.findSchemeById(this.schemeId).subscribe(
+      val => {
+        if (val) {
+          this.scehmeData = val;
+          // 利率
+          this.scehmeData.interestRate;
+        }
+      },
+      err => this.$Message.error(err.msg)
+    );
   }
 
   /**

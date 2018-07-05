@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import { PageService } from '~/utils/page.service';
 
 export class SysUserService {
   @Inject(NetService)
@@ -9,10 +10,14 @@ export class SysUserService {
   /**
    * 获取用户所属角色
    */
-  findUserRole(userId: Number) {
+  findUserRole(queryParamsModel: any, page: PageService) {
     return this.netService.send({
       server: manageService.sysUserController.findUserRole,
-      append: userId
+      data: {
+        id: queryParamsModel.id,
+        roleName: queryParamsModel.roleName
+      },
+      page: page
     })
   }
   /**
@@ -87,15 +92,15 @@ export class SysUserService {
 
   /**
    * 修改用户设备锁状态
-   * @param deviceState 当前状态
+   * @param deviceStatus 当前状态
    * @param type 需要修改的状态
    * @param ids 所选设备锁ID集合
    */
-  updateUserDevice(type: Number, ids: Array<Number>, deviceState?: Number) {
+  updateUserDevice(type: Number, ids: Array<Number>, deviceStatus?: Number) {
     return this.netService.send({
       server: manageService.sysUserController.updateUserDevice,
       data: {
-        deviceState: deviceState,
+        deviceStatus: deviceStatus,
         type: type,
         ids: ids
       }
@@ -123,7 +128,7 @@ export class SysUserService {
    * @param data 查询用户实体
    * @param page 分页服务
    */
-  findUserByOrgAuth(data,page){
+  findUserByOrgAuth(data, page) {
     return this.netService.send({
       server: manageService.sysUserController.findUserByOrgAuth,
       data: {

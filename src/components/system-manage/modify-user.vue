@@ -36,7 +36,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="所属机构" prop="deptNames">
-            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" @on-change="onDeptChange" change-on-select :disabled="!!orgId"></Cascader>
+            <Cascader :data="orgTreeData" :render-format="format" v-model="model.deptNames" @on-change="onDeptChange" change-on-select :disabled="!!model.orgId"></Cascader>
           </i-form-item>
         </i-col>
       </i-row>

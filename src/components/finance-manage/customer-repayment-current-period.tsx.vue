@@ -3,7 +3,7 @@
   <section class="component customer-repayment-current-period">
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
       <data-grid-item label="客户姓名" :span="4">
-        <i-button type="text" class="row-command-button" @click="showCustomerInfo(orderInfo.customerId)">{{orderInfo.customerName}}</i-button>
+        <i-button type="text" class="row-command-button" @click="showCustomerInfo({id:orderInfo.customerId})">{{orderInfo.customerName}}</i-button>
       </data-grid-item>
       <data-grid-item label="订单号" :span="4">
         <i-button type="text" class="row-command-button" @click="showOrderInfo(orderId)">{{orderInfo.orderNumber}}</i-button>
