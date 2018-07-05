@@ -215,21 +215,11 @@ export default class SchemeDetail extends Vue {
   /**
    * 根据id获取还款方案信息
    */
-<<<<<<< HEAD
-  public getSchemeInfo() {
-    this.repaySchemeService
-      .findSchemeById(this.schemeId)
-      .subscribe(
-        val => (this.scehmeData = val),
-        err => this.$Message.error(err.msg)
-      );
-=======
   getSchemeInfo() {
     this.repaySchemeService.findSchemeById(this.schemeId).subscribe(
       val => this.scehmeData = val,
       err => this.$Message.error(err.msg)
     )
->>>>>>> d5d3fc3c85fa8de4517ef42f3e9faaed0bc2c7dd
   }
 
   /**
