@@ -61,48 +61,71 @@ export default class InStorage extends Page {
         align: "center",
         render: (h, { row, column, index }) => {
           // 10139 : 未入库 ; 10140 : 已入库 ; 10141 : 已出库
-          if (row.mortgageStatus == 10139) {
-            return h("div", [
-              h(
-                "i-button",
-                {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      // 10054 : 质押 ; 10055 : 抵押
-                      if (row.orderMrtgageType === 10055) {
-                        this.onMortgageInStorage(row);
-                      } else if (row.orderMrtgageType === 10054) {
-                        this.onPledgeInStorage(row);
+          if (row.mortgageStatus === 10139) {
+            // 评估状态 10061 已评估  10062 待评估
+            if (!row.assessmentStatus || row.assessmentStatus === 10062) {
+              return h("div", [
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainDetails(row.id);
                       }
                     }
-                  }
-                },
-                "入库"
-              ),
-              h(
-                "i-button",
-                {
-                  props: {
-                    type: "text"
                   },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.onDetainDetails(row.id);
+                  "详情"
+                )
+              ]);
+            } else {
+              return h("div", [
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        // 10054 : 质押 ; 10055 : 抵押
+                        if (row.orderMrtgageType === 10055) {
+                          this.onMortgageInStorage(row);
+                        } else if (row.orderMrtgageType === 10054) {
+                          this.onPledgeInStorage(row);
+                        }
+                      }
                     }
-                  }
-                },
-                "详情"
-              )
-            ]);
+                  },
+                  "入库"
+                ),
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    style: {
+                      color: "#265EA2"
+                    },
+                    on: {
+                      click: () => {
+                        this.onDetainDetails(row.id);
+                      }
+                    }
+                  },
+                  "详情"
+                )
+              ]);
+            }
           } else {
             // 10054 : 质押 ; 10055 : 抵押
             if (row.orderMrtgageType === 10055) {
@@ -220,7 +243,8 @@ export default class InStorage extends Page {
         title: "入库日期",
         key: "stockInDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockInDate))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dateFormat(row.stockInDate))
       },
       {
         align: "center",
@@ -228,7 +252,8 @@ export default class InStorage extends Page {
         title: "出库日期",
         key: "stockOutDate",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.stockOutDate))
+        render: (h, { row }) =>
+          h("p", {}, this.$filter.dateFormat(row.stockOutDate))
       },
       {
         align: "center",
@@ -238,6 +263,21 @@ export default class InStorage extends Page {
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) =>
           h("p", {}, this.$filter.dictConvert(row.mortgageStatus))
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "评估状态",
+        key: "assessmentStatus",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h(
+            "p",
+            {},
+            row.assessmentStatus == null
+              ? "待评估"
+              : this.$filter.dictConvert(row.assessmentStatus)
+          )
       }
     ];
   }
@@ -246,11 +286,11 @@ export default class InStorage extends Page {
     // 加载数据
     this.refreshInStorage();
   }
-  
+
   /**
    * keep-alive生命周期钩子函数
    */
-  activated(){
+  activated() {
     // 加载数据
     this.refreshInStorage();
   }
