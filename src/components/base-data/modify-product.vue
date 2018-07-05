@@ -57,29 +57,32 @@ export default class ModifyProduct extends Vue {
 
   private rules = {
     productName: { required: true, message: '请输入产品名称', trigger: 'blur' },
-    schemeName: { required: true, message: '请选择还款方案', trigger: 'blur' }
+    schemeName: { required: true, message: '请选择还款方案', trigger: 'change' }
   }
 
-  created() {
-    this.model.configId = this.carId
-    if (Object.keys(this.productData).length != 0) {
-      this.model.productName = this.productData.productName
-      this.model.fileUrl = this.productData.fileUrl
-      this.model.schemeName = this.productData.schemeName
-      this.model.schemeId = this.productData.schemeId
-      this.model.id = this.productData.id
-    }
+  /**
+   * 反显数据
+   */
+  revertData() {
+    this.model.productName = this.productData.productName
+    this.model.fileUrl = this.productData.fileUrl
+    this.model.schemeName = this.productData.schemeName
+    this.model.schemeId = this.productData.schemeId
+    this.model.id = this.productData.id
   }
+
   mounted() {
     this.form = this.$refs['add-modify-product-form']
+    if (this.productData) this.revertData()
+    if (this.carId) this.model.configId = this.carId
   }
   /**
     * 确定新增产品
     */
   addProduct() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.form.validate(valid => {
-        if (!valid) return reject()
+        if (!valid) return resolve(false)
         this.basicProductService.addBasicProduct(this.model)
           .subscribe(
             data => {

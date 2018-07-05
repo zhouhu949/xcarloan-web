@@ -178,7 +178,7 @@ export default class ProductManage extends Page {
       onOk: add => {
         return add.addProduct().then(v => {
           if (v) {
-            this.refreshProductList()
+            this.refreshData()
           }
           return v
         })
@@ -196,9 +196,7 @@ export default class ProductManage extends Page {
       width: 700,
       onOk: modify => {
         return modify.editProduct().then(v => {
-          if (v) {
-            this.refreshProductList()
-          }
+          if (v) this.refreshData()
           return v
         })
       },
@@ -239,7 +237,7 @@ export default class ProductManage extends Page {
         this.basicProductService.publishedBasicProduct(productId).subscribe(
           val => {
             this.$Message.success('发布成功！')
-            this.refreshProductList()
+            this.refreshData()
           },
           err => this.$Message.error(err.msg)
         )
@@ -256,7 +254,7 @@ export default class ProductManage extends Page {
       onOk: () => {
         this.basicProductService.cancelPublishedBasicProduct(productId).subscribe(val => {
           this.$Message.success('取消发布成功！')
-          this.refreshProductList()
+          this.refreshData()
         },
           err => {
             this.$Message.error(err.msg)
@@ -274,7 +272,7 @@ export default class ProductManage extends Page {
       onOk: () => {
         this.basicProductService.deleteBasicProduct(productId).subscribe(val => {
           this.$Message.success('删除成功！')
-          this.refreshProductList()
+          this.refreshData()
         },
           err => {
             this.$Message.error(err.msg)
@@ -285,7 +283,7 @@ export default class ProductManage extends Page {
   /**
    * 刷新
    */
-  refreshProductList() {
+  refreshData() {
     this.basicProductService.findBasicProductList(this.carId, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)

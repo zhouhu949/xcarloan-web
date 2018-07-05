@@ -24,7 +24,6 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
-import OrderCustomerInfo from "~/components/base-data/order-customer-info.vue";
 
 const CustomerOrderModule = namespace("customerOrderSpace")
 

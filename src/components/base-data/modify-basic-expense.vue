@@ -1,26 +1,16 @@
 <!--修改角色-->
 <template>
   <section class="component modify-basic-expense">
-    <i-form ref="form" :model="model" :label-width="90" :rules="rules">
-      <i-row :gutter="15">
-        <i-col :span="12">
-          <i-form-item label="费用项编码" prop="expenseCode">
-            <i-input v-model="model.expenseCode" :readonly="model.id"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="费用项名称" prop="expenseName">
-            <i-input v-model="model.expenseName"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row :gutter="15">
-        <i-col :span="24">
-          <i-form-item label="备注" prop="remark">
-            <i-input type="textarea" v-model="model.remark" :maxlength="100"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
+    <i-form ref="form" :model="model" :label-width="140" :rules="rules" inline>
+      <i-form-item label="费用项编码" prop="expenseCode">
+        <i-input v-model="model.expenseCode" :readonly="model.id"></i-input>
+      </i-form-item>
+      <i-form-item label="费用项名称" prop="expenseName">
+        <i-input v-model="model.expenseName"></i-input>
+      </i-form-item>
+      <i-form-item label="备注" prop="remark">
+        <i-input type="textarea" v-model="model.remark" :maxlength="100"></i-input>
+      </i-form-item>
     </i-form>
   </section>
 </template>
