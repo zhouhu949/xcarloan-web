@@ -72,7 +72,7 @@ export default class AheadCostRecover extends Page {
         title: "操作",
         fixed: "left",
         align: "center",
-        Width: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row }) => (
           <i-button
             type="text"
