@@ -388,7 +388,13 @@ export default class ModifyCustomerAssessment extends Vue {
 
         this.basicCustomerAssessmentCarService
           .addBasicCustomerAssessment(model)
-          .subscribe(data => resolve(true), err => reject(err));
+          .subscribe(
+            data => resolve(true),
+            err => {
+              this.$Message.error(err.msg);
+              reject(err);
+            }
+          );
       });
     });
   }

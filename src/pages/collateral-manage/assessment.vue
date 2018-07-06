@@ -100,25 +100,30 @@ export default class Assessment extends Page {
       {
         align: "center",
         editable: true,
-        title: "订单编号",
-        key: "orderNo",
+        title: "评估编号",
+        key: "assessmentNo ",
         minWidth: this.$common.getColumnWidth(4)
       },
-      {
-        align: "center",
-        editable: true,
-        title: "订单状态",
-        key: "orderStatus",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.orderStatus))
-      },
+      
       {
         align: "center",
         editable: true,
         title: "车辆编号",
         key: "carNo",
         minWidth: this.$common.getColumnWidth(4)
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "申请评估日期",
+        key: "assessmentApplyDate",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h(
+            "span",
+            {},
+            this.$filter.dateFormat(row.assessmentApplyDate)
+          )
       },
       {
         align: "center",
@@ -130,7 +135,7 @@ export default class Assessment extends Page {
           h(
             "span",
             {},
-            this.$filter.dateTimeFormat(row.stockInDate)
+            this.$filter.dateFormat(row.assessmentDate)
           )
       },
       {
@@ -147,7 +152,7 @@ export default class Assessment extends Page {
         key: "assessmentStatus",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.assessmentStatus))
+          h("p", {}, row.assessmentStatus?this.$filter.dictConvert(row.assessmentStatus):"待评估")
       }
     ];
   }

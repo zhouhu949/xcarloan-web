@@ -86,7 +86,7 @@ export default class CustomerInfoJob extends Vue {
     this.$dialog.show({
       title: '新增职业信息',
       footer: true,
-      width: 700,
+      width: 760,
       onOk: addCustomerInfoJob => {
         return addCustomerInfoJob.submit().then(v => {
           if (v) this.refreshData()
