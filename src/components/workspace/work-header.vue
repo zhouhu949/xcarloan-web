@@ -80,7 +80,7 @@ export default class WorkHeader extends Vue {
   created() {
     this.loginPerson = this.$store.state.userData.username
     this.loginName = this.$store.state.userData.realname
-    this.operateTime = FilterService.dateFormat(this.$store.state.userData.operateTime, 'yyyy-MM-dd hh:mm:ss')
+    this.operateTime = FilterService.dateTimeFormat(this.$store.state.userData.operateTime)
   }
   modifyPwd() {
     this.modifyPwdModal = true
