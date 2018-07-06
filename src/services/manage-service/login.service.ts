@@ -32,67 +32,6 @@ export class LoginService {
       server: manageService.loginController.getUserInfoByToken
     })
   }
-  /**
-   *  重置密码
-   */
-  resetPassword({ userId }) {
-    return this.netService.send({
-      server: manageService.loginController.resetPassword,
-      data: {
-        userId: userId
-      }
-    })
-  }
-  /**
-   * 启用、禁用设备
-   */
-  disableDevice({ userIds, userType, userStatus }) {
-    return this.netService.send({
-      server: manageService.loginController.disableDevice,
-      data: {
-        userIds: userIds,
-        userType: userType,
-        userStatus: userStatus
-      }
-    })
-  }
-  /**
-   * 启用、停用设备锁
-   */
-  enableDeviceKey({ userIds, userType, userValidate }) {
-    return this.netService.send({
-      server: manageService.loginController.enableDeviceKey,
-      data: {
-        userIds: userIds,
-        userType: userType,
-        userValidate: userValidate
-      }
-    })
-  }
-  /**
-   * 获取当前用户设备
-   */
-  getUserDevice({ userId }) {
-    return this.netService.send({
-      server: manageService.loginController.getUserDevice,
-      data: {
-        userId: userId
-      }
-    })
-  }
-
-  /**
-   * 重置设备
-   */
-  resetDevice({ userIds, userType }) {
-    return this.netService.send({
-      server: manageService.loginController.resetDevice,
-      data: {
-        userIds: userIds,
-        userType: userType
-      }
-    })
-  }
 
   /**
    * 注销用户
@@ -103,12 +42,17 @@ export class LoginService {
     })
   }
   /**
-   * 修改密码
+   * 
+   * @param data 修改密码
    */
-  modifyPassword(data) {
+  @Debounce()
+  updatePassword(data) {
     return this.netService.send({
-      server: manageService.loginController.modifyPassword,
-      data: data
+      server: manageService.loginController.updatePassword,
+      data: {
+        newPassword: data.newPassword,
+        oldPassword: data.oldPassword
+      }
     })
   }
 }

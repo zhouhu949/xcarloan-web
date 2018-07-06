@@ -105,7 +105,7 @@ export default class OrderCheck extends Page {
                       transfer: false,
                       onOk: () => {
                         // 参数 oriderId ; type:2-移入黑名单
-                        this.approval({ orderId: row.oriderId, type: 2 });
+                        this.approval({ orderId: row.orderId, type: 2 });
                       }
                     });
                   }

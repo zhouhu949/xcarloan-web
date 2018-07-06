@@ -57,23 +57,35 @@ export default class DataTree extends Vue {
     // this.currentNode = null
   }
 
+  /**
+   * 选中的节点发生变更
+   */
   @Emit("on-select-change")
   emitSelectChange(data) { }
 
+  /**
+   * 当前节点checked属性变更
+   */
   @Emit("on-currentChecked-change")
   emitCurrentCheckedChange(id, value) { }
 
+  /**
+   * 点击当前节点的edit按钮时
+   */
   @Emit('on-edit')
   emitEdit(data) { }
 
+  /**
+   * 点击当前节点的add按钮时
+   */
   @Emit('on-add')
   addEdit(data) { }
 
+  /**
+   * 点击当前节点的delete按钮时
+   */
   @Emit('on-delete')
   deleteEdit(data) { }
-
-  @Emit('on-clickNode')
-  clickNode(data) { }
 
   private nodeMap = new Map<DataTreeNode, any>();
 
