@@ -1,5 +1,7 @@
 <template>
   <section class="page order-review">
+    <page-header title="订单查看" hiddenPrint hiddenExport>
+    </page-header>
     <data-form hidden-date-search :model="model" @on-search="refreshData" :page="pageService">
       <template slot="input">
         <i-form-item prop="name" label="姓名">
