@@ -15,28 +15,31 @@
 </template>
 
 <script lang="tsx">
-import Page from '~/core/page'
+import Page from "~/core/page";
 import Component from "vue-class-component";
 import CarParams from "~/components/base-data/car-params.vue";
 import { Button } from "iview";
 import { namespace } from "vuex-class";
 import { PageService } from "~/utils/page.service";
-import { Layout, Dependencies } from '~/core/decorator'
+import { Layout, Dependencies } from "~/core/decorator";
 import { BasicSupplierService } from "~/services/manage-service/basic-supplier.service";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
 import { FinancialManagementService } from "~/services/manage-service/financial-management.service";
 
-const CustomerOrderModule = namespace("customerOrderSpace")
+const CustomerOrderModule = namespace("customerOrderSpace");
 
-@Layout('workspace')
+@Layout("workspace")
 @Component({
   components: {}
 })
 export default class SupplierLoan extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
-  @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
-  @Dependencies(BasicSupplierService) private basicSupplierService: BasicSupplierService;
+  @Dependencies(FinancialQueryService)
+  private financialQueryService: FinancialQueryService;
+  @Dependencies(FinancialManagementService)
+  private financialManagementService: FinancialManagementService;
+  @Dependencies(BasicSupplierService)
+  private basicSupplierService: BasicSupplierService;
   @CustomerOrderModule.Action showOrderInfo;
 
   private model: any = {
@@ -49,53 +52,75 @@ export default class SupplierLoan extends Page {
    * 供应商列表
    */
   private supplierList: Array<{
-    label: String,
-    value: Number
-  }> = []
+    label: String;
+    value: Number;
+  }> = [];
 
   created() {
     this.columns = [
       {
-        title: '操作',
-        fixed: 'left',
-        align: 'center',
-        minWidth: this.$common.getColumnWidth(1),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.id)}>放款</i-button>)
+        title: "操作",
+        fixed: "left",
+        align: "center",
+        width: this.$common.getOperateWidth(1),
+        render: (h, { row }) => (
+          <i-button
+            type="text"
+            class="row-command-button"
+            onClick={() => this.onSubmitClick(row.id)}
+          >
+            放款
+          </i-button>
+        )
       },
       {
-        align: 'center',
-        title: '车辆名称',
-        key: 'orderCarName',
+        align: "center",
+        title: "车架号",
+        key: "stockCarNo",
+        ellipsis: true,
+        minWidth: this.$common.getColumnWidth(1)
+      },
+      {
+        align: "center",
+        title: "发动机号",
+        key: "stockEngineNo",
+        ellipsis: true,
+        minWidth: this.$common.getColumnWidth(1)
+      },
+      {
+        align: "center",
+        title: "是否已放款",
+        key: "hasSupplierLoan",
         ellipsis: true,
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onClickNameClick(row.modelId)}>{row.orderCarName}</i-button>)
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.hasSupplierLoan))
       },
       {
-        align: 'center',
-        title: '车型颜色',
-        key: 'orderCarColor',
+        align: "center",
+        title: "车型颜色",
+        key: "stockCarColor",
         minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: 'center',
-        title: '操作时间',
-        key: 'operatorTime',
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<span>{this.$filter.dateFormat(row.operatorTime)}</span>)
       }
-    ]
+    ];
   }
 
   activated() {
-    this.refreshData()
+    this.refreshData();
   }
 
   mounted() {
-    this.basicSupplierService.getBasicSupplierList().subscribe(
-      data => this.supplierList = (data || []).map(v => ({ label: v.supplierName, value: v.id })),
-      err => this.$Message.error(err.msg)
-    )
-    this.refreshData()
+    this.basicSupplierService
+      .getBasicSupplierList()
+      .subscribe(
+        data =>
+          (this.supplierList = (data || []).map(v => ({
+            label: v.supplierName,
+            value: v.id
+          }))),
+        err => this.$Message.error(err.msg)
+      );
+    this.refreshData();
   }
 
   private onClickNameClick(carId: Number) {
@@ -104,8 +129,8 @@ export default class SupplierLoan extends Page {
       width: 1000,
       footer: true,
       isView: true,
-      render: h => (<CarParams carId={carId} isView={true}></CarParams>)
-    })
+      render: h => <CarParams carId={carId} isView={true} />
+    });
   }
 
   /**
@@ -117,22 +142,23 @@ export default class SupplierLoan extends Page {
       onOk: () => {
         this.financialManagementService.supplierOrderLoan(carId).subscribe(
           data => {
-            this.$Message.success('操作成功')
-            this.refreshData()
+            this.$Message.success("操作成功");
+            this.refreshData();
           },
           err => this.$Message.error(err.msg)
-        )
+        );
       }
-    })
+    });
   }
 
   private refreshData() {
-    this.financialQueryService.findBasicOrderCarList(this.model, this.pageService).subscribe(
-      data => this.dataSet = data,
-      err => this.$Message.error(err.msg)
-    )
+    this.financialQueryService
+      .findBasicOrderCarList(this.model, this.pageService)
+      .subscribe(
+        data => (this.dataSet = data),
+        err => this.$Message.error(err.msg)
+      );
   }
-
 }
 </script>
 
