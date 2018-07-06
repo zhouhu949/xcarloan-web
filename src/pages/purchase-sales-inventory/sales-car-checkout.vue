@@ -230,7 +230,7 @@ export default class SalesCarCheckout extends Page {
    * 提车操作
    */
   onPickUp(data) {
-    this.basicStockCarService.updateCarStockStatus(data.stockId).subscribe(
+    this.basicStockCarService.updateCarStockStatus(data).subscribe(
       data => {
         this.$Message.success("操作成功！");
         this.refreshEnterShellSave();

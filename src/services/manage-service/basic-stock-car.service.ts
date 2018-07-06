@@ -66,10 +66,13 @@ export class BasicStockCarService {
    * @param id 
    */
   @Debounce()
-  updateCarStockStatus(id: number): any {
+  updateCarStockStatus(model: any): any {
     return this.netService.send({
       server: manageService.basicStockCarManageController.updateCarStockStatus,
-      append: id,
+      data: {
+        orderId: model.orderId,
+        id: model.stockId
+      },
       loading: true
     })
   }
