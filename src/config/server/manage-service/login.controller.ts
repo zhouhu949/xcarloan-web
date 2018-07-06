@@ -79,10 +79,10 @@ export default {
   /**
    * 修改密码
    */
-  modifyPassword: {
+  updatePassword: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'modifyPassword',
-    type: 'POST'
+    action: 'updatePassword',
+    type: requestType.Put
   }
 }

@@ -111,7 +111,7 @@ export default class WorkHeader extends Vue {
       return
     } else {
       this.loginService
-        .modifyPassword({
+        .updatePassword({
           newPassword: md5(this.repairModel.newPassword),
           oldPassword: md5(this.repairModel.oldPassword)
         })
