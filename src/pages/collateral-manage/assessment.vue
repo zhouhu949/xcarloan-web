@@ -104,6 +104,7 @@ export default class Assessment extends Page {
         key: "assessmentNo",
         minWidth: this.$common.getColumnWidth(4)
       },
+      
       {
         align: "center",
         editable: true,

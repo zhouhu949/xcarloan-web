@@ -249,7 +249,7 @@ export default class PurchaseManage extends Page {
    * @param data
    */
   onChangeCsrStockStatus(data) {
-    this.basicStockCarService.updateCarStockStatus(data.stockId).subscribe(
+    this.basicStockCarService.updateCarStockStatus(data).subscribe(
       data => {
         this.$Message.success("操作成功！");
         this.refreshEnterShellSave();
