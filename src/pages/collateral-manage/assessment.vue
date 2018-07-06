@@ -127,11 +127,7 @@ export default class Assessment extends Page {
         key: "assessmentDate",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) =>
-          h(
-            "span",
-            {},
-            this.$filter.dateTimeFormat(row.stockInDate)
-          )
+          h("span", {}, this.$filter.dateTimeFormat(row.stockInDate))
       },
       {
         align: "center",
@@ -147,7 +143,13 @@ export default class Assessment extends Page {
         key: "assessmentStatus",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) =>
-          h("p", {}, this.$filter.dictConvert(row.assessmentStatus))
+          h(
+            "p",
+            {},
+            row.assessmentStatus
+              ? this.$filter.dictConvert(row.assessmentStatus)
+              : "待评估"
+          )
       }
     ];
   }
