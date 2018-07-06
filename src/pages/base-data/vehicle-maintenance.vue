@@ -8,7 +8,7 @@
           <span>车辆品牌</span>
         </i-row>
         <div class="data-form-tree">
-          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-clickNode="onClickNode" @on-edit="onEdit" @on-add="onAddClick" @on-delete="ondeleteClick"></data-tree>
+          <data-tree ref="data-tree" showEdit :data="carTreeData" @on-select-change="onTreeNodeChanged" @on-edit="onEdit" @on-add="onAddClick" @on-delete="ondeleteClick"></data-tree>
         </div>
       </i-col>
       <i-col class="command" :span="18">
@@ -297,7 +297,7 @@ export default class VehicleMaintenance extends Page {
   }
 
   // 点击树当前节点 
-  private onClickNode(data) {
+  private onTreeNodeChanged(data) {
     if (data.type === CarPropertyType.MODEL) {
       this.carId = data.id
     } else {

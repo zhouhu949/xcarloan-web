@@ -70,8 +70,9 @@ export default class RepayScheme extends Page {
 
     this.repaySchemeService.getAllBasicSchemeByOrgId().subscribe(
       val => {
-        this.treeData = val.map(v => {
+        this.treeData = val.map((v, index) => {
           return {
+            _selected: index === 0,
             title: v.schemeName,
             id: v.id,
             pid: 0,

@@ -1,7 +1,7 @@
 <template>
   <section class="component data-tree-node">
     <div :style="getSubTreeStyle()">
-      <div @click="onSelect" class="node-title" :class="{selected:selected}">
+      <div @click="onNodeClick" class="node-title" :class="{selected:selected}">
         <span @click="onExpand" v-if="!isLeaf" :class="{expanded:expanded}">
           <Icon v-show="!this.expanded" type="arrow-right-b"></Icon>
           <Icon v-show="this.expanded" type="arrow-down-b"></Icon>
@@ -9,7 +9,7 @@
         <span v-if="showCheckbox">
           <i-checkbox :indeterminate="indeterminate" v-model="checked" @on-change="onChecked"></i-checkbox>
         </span>
-        <span @click="currentNode">{{data[propsObject.title]}}</span>
+        <span>{{data[propsObject.title]}}</span>
         <small v-show="selected && showEdit" class="icon-box">
           <a @click="editHandle" href="#" :disabled="disabled" v-if="hasEdit">
             <div style="display:inline-block">
@@ -48,8 +48,6 @@ export default class DataTreeNode extends Vue {
     required: true
   })
   data;
-
-
 
   public expanded = true;
   public selected = false;
@@ -166,16 +164,16 @@ export default class DataTreeNode extends Vue {
   /**
    * 更新子节点选中状态
    */
-  updateChildrenChecked(value) {
+  updateChildrenChecked(value: Boolean) {
     if (this.data.children && this.data.children.length) {
       // 获取子节点组件
-      let nodes = this.$refs['children-node'] as any
+      let nodes = this.$refs['children-node'] as Array<DataTreeNode>
       // 通知子组件更新
       nodes.forEach(item => {
         item.checked = value
         // 发送节点更新事件
         this.root.emitCurrentCheckedChange(item.data.id, value)
-        item.updateChildrenChecked()
+        item.updateChildrenChecked(value)
       })
     }
   }
@@ -201,7 +199,7 @@ export default class DataTreeNode extends Vue {
   /**
    * 节点选择处理
    */
-  onSelect() {
+  onNodeClick() {
     this.selected = true
     this.root.selected = this
   }
@@ -221,13 +219,13 @@ export default class DataTreeNode extends Vue {
     }
 
     return parent as any;
-
   }
 
 
   mounted() {
     this.root.registerNode(this, this.data)
     this.checked = !!this.data._checked
+    if (this.data._selected) this.onNodeClick()
   }
 
 
