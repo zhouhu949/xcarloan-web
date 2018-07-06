@@ -228,4 +228,16 @@ export class BasicCustomerOrderService {
       }
     })
   }
+
+  /**
+   * 订单结案操作
+   */
+  updateOrderStatus(orderId) {
+    return this.netService.send({
+      server: manageService.basicCustomerOrderController.updateOrderStatus,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

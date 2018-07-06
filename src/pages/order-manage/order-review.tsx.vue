@@ -69,7 +69,7 @@ export default class OrderReview extends Page {
         minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           if (this.CLOSE_STATUS.includes(row.orderStatus)) {
-            return (<i-button type="text" class="row-command-button" onClick={() => this.onCloseClick(row.orderId)}>结案</i-button>)
+            return (<i-button type="text" class="row-command-button" onClick={() => this.onCloseClick(row)}>结案</i-button>)
           }
         }
       },
@@ -138,9 +138,20 @@ export default class OrderReview extends Page {
   /**
    * 结案
    */
-  private onCloseClick(orderId: Number) {
-
-  }
+  private onCloseClick(item) {
+    this.$Modal.confirm({
+      content: `是否确认结案？结案后该订单将无法进行任何操作！`,
+      onOk: () => {
+        this.basicCustomerOrderService.updateOrderStatus(item.orderId).subscribe(
+          data => {
+            this.$Message.success(`订单<b>${item.orderNo}</b>已结案！`)
+            this.refreshData()
+          },
+          err => this.$Message.error(err.msg)
+        )
+      }
+    })
+  } 
 
 }
 </script>

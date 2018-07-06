@@ -58,7 +58,7 @@ export default class FormalCustomer extends Page {
     this.columns = [
       {
         title: "操作",
-        Width: this.$common.getOperateWidth(1),
+        width: this.$common.getOperateWidth(1),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

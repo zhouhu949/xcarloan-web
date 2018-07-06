@@ -58,7 +58,7 @@ export default class ProductManage extends Page {
     this.columns = [
       {
         title: "操作",
-        Width: this.$common.getOperateWidth(3),
+        width: this.$common.getOperateWidth(3),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

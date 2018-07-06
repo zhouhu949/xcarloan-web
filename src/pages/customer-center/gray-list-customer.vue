@@ -58,7 +58,7 @@ export default class GrayListCustomer extends Page {
     this.columns = [
       {
         title: "操作",
-        Width: this.$common.getOperateWidth(2),
+        width: this.$common.getOperateWidth(2),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {

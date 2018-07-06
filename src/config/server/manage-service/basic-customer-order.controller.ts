@@ -156,5 +156,14 @@ export default {
     controller: CONTROLLER,
     action: 'updateOrderPrice',
     type: requestType.Put
+  },
+  /**
+   * 订单结案操作
+   */
+  updateOrderStatus: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateOrderStatus',
+    type: requestType.Post
   }
 }
