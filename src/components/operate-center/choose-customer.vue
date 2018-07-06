@@ -85,7 +85,7 @@ export default class ChooseCustomer extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.showCustomerInfo({ id: row.id })
+                    this.showCustomerInfo({ customerId: row.customerId })
                   }
                 }
               },

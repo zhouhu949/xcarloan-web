@@ -23,7 +23,7 @@ export class BasicCustomerJobService {
   @Debounce()
   addPersonalJob(data) {
     let model = Object.assign({}, data)
-    model.accessCompanyTime = FilterService.dateFormat(model.accessCompanyTime, 'yyyy-MM-dd')
+    model.accessCompanyTime = FilterService.dateFormat(model.accessCompanyTime)
     return this.netService.send({
       server: manageService.basicPersonalJobController.addPersonalJob,
       data: model,
@@ -36,7 +36,7 @@ export class BasicCustomerJobService {
   @Debounce()
   updatePersonalJob(data) {
     let model = Object.assign({}, data)
-    model.accessCompanyTime = FilterService.dateFormat(model.accessCompanyTime, 'yyyy-MM-dd')
+    model.accessCompanyTime = FilterService.dateFormat(model.accessCompanyTime)
     return this.netService.send({
       server: manageService.basicPersonalJobController.updatePersonalJob,
       data: model,
