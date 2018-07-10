@@ -220,7 +220,7 @@ export default class BasicOffsetManage extends Page {
       return this.$Message.warning("请选择冲抵策略！");
     this.basicOffsetService.publishOffset(this.checkedBasicOffsetId).subscribe(
       val => {
-        this.$Message.success("发布成功成功！");
+        this.$Message.success("发布成功！");
 
         //刷新列表数据
         this.refreshBasicOffset();
@@ -416,7 +416,9 @@ export default class BasicOffsetManage extends Page {
               // 冲抵策略状态
               offsetStatus: v.offsetStatus,
               // 备注
-              remark: v.remark
+              remark: v.remark,
+              // 禁止编辑
+              _disabled: v.offsetStatus === 10208
             };
           });
           resolve(true);

@@ -158,7 +158,7 @@ export default class PotentialClients extends Page {
    * 查看客户详情
    */
   private viewCustomerInfo(id) {
-    this.showCustomerInfo({ id, enabledEdit: true });
+    this.showCustomerInfo({ id, enabledEdit: true, callBack: this.refreshData});
   }
 
   /**
