@@ -69,7 +69,7 @@ export default class SupplierInvoice extends Page {
         width: this.$common.getOperateWidth(1),
         render: (h, { row }) => {
           // 判断是否已开票 10002：是；10003:否
-          if (row.hasInvoice === 10003) {
+          if (row.hasInvoice === 10003 || row.hasInvoice === null) {
             return (
               <i-button
                 type="text"
@@ -122,16 +122,7 @@ export default class SupplierInvoice extends Page {
         key: "hasInvoice",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (
-          <span>{this.$filter.dictConvert(row.hasInvoice)}</span>
-        )
-      },
-      {
-        align: "center",
-        title: "是否收到收据",
-        key: "hasReceipt ",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (
-          <span>{this.$filter.dictConvert(row.hasReceipt)}</span>
+          <span>{row.hasInvoice ? this.$filter.dictConvert(row.hasInvoice) : '否'}</span>
         )
       },
       {
