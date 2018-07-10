@@ -416,7 +416,9 @@ export default class BasicOffsetManage extends Page {
               // 冲抵策略状态
               offsetStatus: v.offsetStatus,
               // 备注
-              remark: v.remark
+              remark: v.remark,
+              // 禁止编辑
+              _disabled: v.offsetStatus === 10208
             };
           });
           resolve(true);

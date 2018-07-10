@@ -73,12 +73,6 @@ export default class ModulePower extends Vue {
     this.columns = [
       {
         align: "center",
-        type: "index",
-        title: "序号",
-        minWidth: this.$common.getColumnWidth(1)
-      },
-      {
-        align: "center",
         type: "selection",
         key: "_checked",
         title: "选择",

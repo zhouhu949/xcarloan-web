@@ -17,7 +17,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="电话" prop="phone">
-            <i-input v-model="model.phone"></i-input>
+            <i-input v-model="model.phone" :maxlength="11"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
