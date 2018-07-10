@@ -122,7 +122,7 @@ export default class OpenAccount extends Page {
               },
               on: {
                 click: () => {
-                  this.showCustomerInfo({id:row.customerId});
+                  this.showCustomerInfo({ id:row.id });
                 }
               }
             },
