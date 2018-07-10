@@ -60,6 +60,7 @@ export default class CustomerInfoBasedata extends Vue {
 
   /** 是否可编辑 */
   @Prop({ default: false }) edit: Boolean
+  @Prop({ default: () => {} }) callBack: () => void
 
   private customerBaseInfo: any = {}
 
@@ -81,7 +82,10 @@ export default class CustomerInfoBasedata extends Vue {
       width: 1050,
       onOk: modifyCustomerInfoBasedata => {
         return modifyCustomerInfoBasedata.submit().then(v => {
-          if (v) this.refreshData()
+          if (v){
+            this.refreshData()
+            if(this.callBack) this.callBack(); 
+          } 
           return !!v
         })
       },

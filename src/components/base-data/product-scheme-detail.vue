@@ -73,6 +73,9 @@ export default class ProductSchemeDetail extends Vue {
    * 创建数据列
    */
   private createClumnItem(hearder: Object) {
+    // 清空列数据
+    this.columns=[];
+
     if (!hearder) return [];
     let createItem = ([key, vaule]) => {
       if (key === "periods") {

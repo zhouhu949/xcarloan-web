@@ -20,10 +20,11 @@ export default {
      * @param name 组件名称
      * @param customerId 客户ID
      */
-    updateCustomerInfo(state, { name, customerId, enabledEdit }) {
+    updateCustomerInfo(state, { name, customerId, enabledEdit,callBack }) {
       state.currentComponent = name
       state.customerId = customerId
       state.edit = enabledEdit
+      state.callBack = callBack
     },
     /**
      * 更新订单信息
@@ -63,10 +64,10 @@ export default {
      * @param param0 
      * @param customer 客户信息页面配置
      */
-    async showCustomerInfo({ state, commit, getters, dispatch }, customer: { id: Number, enabledEdit?: Boolean }) {
+    async showCustomerInfo({ state, commit, getters, dispatch }, customer: { id: Number, enabledEdit?: Boolean, callBack?: ()=> void }) {
       let current = getters.componentNameList.find(x => x.type === InfoCompontentType.CUSTOMER)
       if (!state.currentComponent) await dispatch('showModalInfo')
-      commit('updateCustomerInfo', { name: current.name, customerId: customer.id, enabledEdit: customer.enabledEdit || false })
+      commit('updateCustomerInfo', { name: current.name, customerId: customer.id, enabledEdit: customer.enabledEdit || false, callBack: customer.callBack })
     },
     /**
      * 显示订单详情信息页面
