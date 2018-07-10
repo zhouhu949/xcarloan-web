@@ -220,7 +220,7 @@ export default class BasicOffsetManage extends Page {
       return this.$Message.warning("请选择冲抵策略！");
     this.basicOffsetService.publishOffset(this.checkedBasicOffsetId).subscribe(
       val => {
-        this.$Message.success("发布成功成功！");
+        this.$Message.success("发布成功！");
 
         //刷新列表数据
         this.refreshBasicOffset();
