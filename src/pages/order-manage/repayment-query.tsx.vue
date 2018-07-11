@@ -22,7 +22,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Page from "~/core/page";
 import Component from "vue-class-component";
 import OrderRepaySchemeDetails from "~/components/financial-query/order-repay-scheme-details.vue";
@@ -31,6 +31,7 @@ import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { FinancialQueryService } from "~/services/manage-service/financial-query.service";
+import CustomerRepaymentDetails from "~/components/finance-manage/customer-repayment-details.tsx.vue";
 
 const CustomerOrderModule = namespace("customerOrderSpace");
 @Layout("workspace")
@@ -78,7 +79,7 @@ export default class RepaymentQuery extends Page {
                   }
                 }
               },
-              "详情"
+              "还款总览"
             )
           ]);
         }
@@ -197,13 +198,6 @@ export default class RepaymentQuery extends Page {
         title: "还款方案名称",
         key: "schemeName",
         minWidth: this.$common.getColumnWidth(4)
-      },
-      {
-        align: "center",
-        editable: true,
-        title: "订单审核环节名称",
-        key: "workFlowLinkName",
-        minWidth: this.$common.getColumnWidth(4)
       }
     ];
   }
@@ -221,18 +215,17 @@ export default class RepaymentQuery extends Page {
     this.refreshRepayOrder();
   }
 
-  onOrderRepaySchemeDetails(orderId: number) {
+   /**
+    * 点击详情
+    */
+  onOrderRepaySchemeDetails(orderId: Number) {
     this.$dialog.show({
-      title: "查看详情",
-      isView: true,
+      title: "还款总览",
       footer: true,
-      render: h =>
-        h(OrderRepaySchemeDetails, {
-          props: {
-            orderId: orderId
-          }
-        })
-    });
+      isView: true,
+      width: 1200,
+      render: h => (<CustomerRepaymentDetails orderId={orderId}></CustomerRepaymentDetails>)
+    })
   }
   /**
    * 刷新列表
