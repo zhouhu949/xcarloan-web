@@ -132,16 +132,16 @@ export default class ProceedsForCustomer extends Page {
       {
         align: 'center',
         title: '已还金额',
-        key: 'isReplayMoney',
+        key: 'finishMoney',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.isReplayMoney)}</div>)
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.finishMoney)}</div>)
       },
       {
         align: 'center',
         title: '未还金额',
-        key: 'repayMoney',
+        key: 'remainRepayment',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.repayMoney)}</div>)
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.remainRepayment)}</div>)
       },
       {
         align: 'center',
