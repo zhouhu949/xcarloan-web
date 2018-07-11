@@ -59,7 +59,7 @@ export default class CustomerRepaymentDetails extends Vue {
     let createItem = feeItem => {
       return {
         align: "center",
-        title: `${feeItem.expenseName} ${feeItem.expenseCode}`,
+        title: `${feeItem.expenseName}`,
         children: [
           {
             align: "center",

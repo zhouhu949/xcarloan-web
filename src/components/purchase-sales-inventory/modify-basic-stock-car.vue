@@ -104,7 +104,7 @@ export default class ModifyBasicStockCar extends Vue {
         trigger: "change"
       },
       {
-        max: 20,
+        max: 200,
         message: "长度不能超过200个字符",
         trigger: "blur"
       }
@@ -116,7 +116,7 @@ export default class ModifyBasicStockCar extends Vue {
         trigger: "change"
       },
       {
-        max: 20,
+        max: 200,
         message: "长度不能超过200个字符",
         trigger: "blur"
       }
