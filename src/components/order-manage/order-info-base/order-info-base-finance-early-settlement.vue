@@ -4,14 +4,7 @@
     <div v-if="dataSet.length === 0" class="no-data-notice">
       暂无数据
     </div>
-    <data-grid v-else class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
-      <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
-      <data-grid-item label="操作日期" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
-      <data-grid-item label="收款记录ID" :span="4">{{item.receivableId}}</data-grid-item>
-      <data-grid-item label="提前结清日期" :span="4">{{item.settleDate | dateFormat}}</data-grid-item>
-      <data-grid-item label="提前结清金额" :span="4">{{item.settleMoney | toThousands}}</data-grid-item>
-      <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
-    </data-grid>
+    <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
 
@@ -31,6 +24,33 @@ export default class OrderInfoBaseFinanceEarlySettlement extends Vue {
   @Prop() id: Number
 
   private dataSet: Array<any> = []
+  private columns: Array<any> = []
+  
+  created() {
+    this.columns = [
+      {
+        align: "center",
+        title: '提前结清金额',
+        key: 'settleMoney',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => h('p', {}, this.$filter.toThousands(row.settleMoney))
+      },
+      {
+        align: "center",
+        title: "提前结清日期",
+        key: 'settleDate',
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h, { row }) => h('p', {}, this.$filter.dateFormat(row.settleDate))
+      },
+      {
+        align: "center",
+        title: '备注',
+        key: 'remark ',
+        minWidth: this.$common.getColumnWidth(4)
+      }
+    ]
+
+  }
 
   mounted() {
     this.basicCustomerOrderService.findCustomerOrderFinanceSettleList(this.id).subscribe(

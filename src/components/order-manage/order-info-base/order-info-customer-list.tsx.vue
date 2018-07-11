@@ -1,4 +1,4 @@
-<!--客户信息列表-->
+<!--客户资料-->
 <template>
   <section class="component order-info-customer-list">
     <data-grid class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left">
@@ -10,7 +10,6 @@
       <data-grid-item label="身份证号" :span="4">{{customerInfo.idCard }}</data-grid-item>
       <data-grid-item label="客户状态" :span="4">{{customerInfo.customerStatus | dictConvert}}</data-grid-item>
       <data-grid-item label="操作日期" :span="4">{{customerInfo.accountStatus | dateFormat}}</data-grid-item>
-      <data-grid-item label="创建日期" :span="4">{{customerInfo.createTime | dateFormat}}</data-grid-item>
     </data-grid>
   </section>
 </template>

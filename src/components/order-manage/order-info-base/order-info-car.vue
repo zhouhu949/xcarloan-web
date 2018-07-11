@@ -5,19 +5,12 @@
       暂无数据
     </div>
     <data-grid v-else class="car-info" :labelWidth="90" labelAlign="right" contentAlign="left" v-for="item of dataSet" :key="item.id">
-      <data-grid-item label="购买方式" :span="4">{{item.buyType}}</data-grid-item>
-      <data-grid-item label="车型名称" :span="4">{{item.carModelName}}</data-grid-item>
-      <data-grid-item label="车牌号" :span="4">{{item.carNo}}</data-grid-item>
-      <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
-      <data-grid-item label="车辆型号" :span="4">{{item.carType | dictConvert}}</data-grid-item>
-      <data-grid-item label="客户ID" :span="4">{{item.customerId}}</data-grid-item>
-      <data-grid-item label="贷款还清状态" :span="4">{{item.isLoanFinished | dictConvert }}</data-grid-item>
-      <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
-      <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum}}</data-grid-item>
+      <data-grid-item label="是否外采" :span="4">{{item.isSupplier  | dictConvert}}</data-grid-item>
+      <data-grid-item label="车型颜色" :span="4">{{item.orderCarColor}}</data-grid-item>
       <data-grid-item label="操作时间" :span="4">{{item.operatorTime | dateFormat}}</data-grid-item>
-      <data-grid-item label="订单ID" :span="4">{{item.orderId}}</data-grid-item>
-      <data-grid-item label="初次登记时间" :span="4">{{item.registerTime | dateFormat}}</data-grid-item>
-      <data-grid-item label="备注" :span="4">{{item.remark}}</data-grid-item>
+      <data-grid-item label="车型描述" :span="4">{{item.orderCarDesc}}</data-grid-item>
+      <data-grid-item label="车型名称" :span="4">{{item.orderCarName }}</data-grid-item>
+      <data-grid-item label="车型参数描述" :span="4">{{item.orderCarParamDesc}}</data-grid-item>
     </data-grid>
   </section>
 </template>
