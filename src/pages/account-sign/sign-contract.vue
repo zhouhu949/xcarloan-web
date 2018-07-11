@@ -179,7 +179,9 @@ export default class SignContract extends Page {
         editable: true,
         title: "居住状况",
         key: "homeStatus",
-        minWidth: this.$common.getColumnWidth(4)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, columns, index }) =>
+          h("p", {}, this.$filter.dictConvert(row.homeStatus))
       },
       {
         align: "center",

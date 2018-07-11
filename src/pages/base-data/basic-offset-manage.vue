@@ -6,7 +6,7 @@
         <command-button class="command-add" label="取消发布" @click="cancelRelease" v-show="isPublish"></command-button>
         <command-button class="command-add" label="发布" @click="publish" v-show="!isPublish"></command-button>
       </div>
-      <command-button class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
+      <command-button v-show="!isPublish" class="command-add" label="新增冲抵项" @click="basicOffsetItemOperate(checkedBasicOffsetId,expenseDataSet)"></command-button>
     </page-header>
     <i-row type="flex" class="data-form">
       <i-row type="flex" style="flex:1;">
