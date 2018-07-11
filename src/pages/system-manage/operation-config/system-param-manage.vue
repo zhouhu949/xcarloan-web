@@ -7,7 +7,7 @@
                 <i-form-item prop="paramName" label="参数名称：">
                     <i-input v-model="systemParameterModel.paramName"></i-input>
                 </i-form-item>
-                <i-form-item prop="paramStatus" label="是否启用：">
+                <i-form-item prop="paramStatus" label="是否启用：" >
                     <i-select v-model="systemParameterModel.paramStatus" clearable>
                         <i-option label="启用" :value="10002" :key="10002"></i-option>
                         <i-option label="停用" :value="10003" :key="10003"></i-option>

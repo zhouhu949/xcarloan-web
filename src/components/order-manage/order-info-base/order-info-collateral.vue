@@ -9,14 +9,11 @@
       <data-grid-item label="抵押状态" :span="4">{{item.carStatus | dictConvert}}</data-grid-item>
       <data-grid-item label="购车价格" :span="4">{{item.carPrice | toThousands}}</data-grid-item>
       <data-grid-item label="车辆型号" :span="4">{{item.carType | dictConvert}}</data-grid-item>
-      <data-grid-item label="贷款还清状态" :span="4">{{item.isLoanFinished | dictConvert}}</data-grid-item>
       <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>
       <data-grid-item label="抵押登记次数" :span="4">{{item.mortgageNum }}</data-grid-item>
       <data-grid-item label="操作人" :span="4">{{item.operator }}</data-grid-item>
-      <data-grid-item label="订单id" :span="4">{{item.orderId }}</data-grid-item>
       <data-grid-item label="抵押方式" :span="4">{{item.orderMortgageType | dictConvert}}</data-grid-item>
       <data-grid-item label="订单编号" :span="4">{{item.orderNo }}</data-grid-item>
-      <data-grid-item label="组织id " :span="4">{{item.orgId }}</data-grid-item>
       <data-grid-item label="初次登记日期" :span="4">{{item.registerTime | dateFormat }}</data-grid-item>
     </data-grid>
   </section>

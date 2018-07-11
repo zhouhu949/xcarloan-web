@@ -179,6 +179,8 @@ export default class VehicleMaintenance extends Page {
   }
   // 树点击新增事件
   private onAddClick(data) {
+    let dataTree = this.$refs["data-tree"] as any
+    console.log(this)
     switch (data.type) {
       case CarPropertyType.BRAND:
         console.log(data, '车系')
@@ -188,6 +190,7 @@ export default class VehicleMaintenance extends Page {
           onOk: addSeries => {
             let result = addSeries.confirmAddSeries().then(() => {
               this.getAllCar()
+              dataTree.currentNode.expanded = true
             }).catch(v => false)
             return result
           },
@@ -209,6 +212,7 @@ export default class VehicleMaintenance extends Page {
           onOk: addCar => {
             return addCar.addVehicle().then(() => {
               this.getAllCar()
+              dataTree.currentNode.expanded = true
             }).catch(v => false)
           },
           onCancel: () => { },
@@ -235,6 +239,7 @@ export default class VehicleMaintenance extends Page {
           onOk: addBrand => {
             let result = addBrand.confirmAddBrand().then(() => {
               this.getAllCar()
+              dataTree.currentNode.expanded = true
             }).catch(v => false)
             return result
           },

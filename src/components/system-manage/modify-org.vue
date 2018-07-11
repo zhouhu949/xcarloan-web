@@ -51,7 +51,7 @@ export default class ModifyOrg extends Vue {
     orgPid: '',
     orgName: '',
     orgRemark: '',
-    orgStatus: 10002,
+    orgStatus: 10022,
     orgType: 10006
   }
 
