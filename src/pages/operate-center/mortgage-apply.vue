@@ -22,7 +22,7 @@
       </i-card>
       <i-card title="贷款资料" v-show="!!basicModel.customerId">
         <i-form-item label="客户车产" prop="carsName">
-          <i-input type="textarea" :rows="1" v-model="basicModel.carsName" readonly @on-focus="dialog.selectedCar = true" placeholder="请选择融资车辆"></i-input>
+          <i-input type="textarea" :rows="1" v-model="basicModel.carsName" readonly @on-focus="dialog.selectedCar = true" placeholder="请选择抵押车辆"></i-input>
         </i-form-item>
         <i-form-item label="贷款金额" prop="loanAmt">
           <i-input-number v-model.lazy="basicModel.loanAmt" placeholder="请输入贷款金额" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
