@@ -17,6 +17,7 @@
         </a>
       </div>
       <data-grid class="car-info" :labelWidth="120" labelAlign="right" contentAlign="left">
+        <data-grid-item label="车辆型号" :span="4">{{item.carModelName}}</data-grid-item>
         <data-grid-item label="车牌号" :span="4">{{item.carNo}}</data-grid-item>
         <data-grid-item label="购车价格" :span="4">{{item.carPrice | toThousands}}</data-grid-item>
         <data-grid-item label="是否二手车" :span="4">{{item.isSecondHand | dictConvert}}</data-grid-item>

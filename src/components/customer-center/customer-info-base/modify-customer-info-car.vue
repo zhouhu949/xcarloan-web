@@ -2,6 +2,9 @@
 <template>
   <section class="component modify-customer-info-car">
     <i-form ref="form" inline :model="model" :rules="rules" :label-width="110">
+      <i-form-item label="车辆型号" prop="carModelName">
+        <i-input v-model="model.carModelName"></i-input>
+      </i-form-item>  
       <i-form-item label="车牌号" prop="carNo">
         <i-input v-model="model.carNo"></i-input>
       </i-form-item>
@@ -53,6 +56,7 @@ export default class ModifyCustomerInfoCar extends Vue {
 
   created() {
     this.model = {
+      carModelName:'',//车辆型号
       carNo: '', // 车牌号
       carPrice: 0, // 购车价格
       isSecondHand: '', // 是否二手车
@@ -68,6 +72,7 @@ export default class ModifyCustomerInfoCar extends Vue {
     }
 
     this.rules = {
+      carModelName: { required: true, message: "请填写车辆型号", trigger: "blur" },
       carNo: { required: true, message: "请填写车牌号", trigger: "blur" },
       carPrice: { required: true, message: "请填写购车价格", trigger: "blur", type: "number" },
       isSecondHand: { required: true, message: "请选择是否为二手车", trigger: "blur", type: "number" },
