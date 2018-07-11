@@ -26,7 +26,7 @@ const ORDER_BASE_COMPONENT = [
   { id: 2, pid: 0, title: "押品资料", component: "OrderInfoCollateral" },
   { id: 3, pid: 0, title: "订单车辆", component: "OrderInfoCar" },
   { id: 4, pid: 0, title: "附件资料", component: "OrderInfoMaterials" },
-  { id: 5, pid: 0, title: "还款计划", component: "OrderInfoRepayPlan" },
+  { id: 5, pid: 0, title: "还款总览", component: "OrderInfoView" },
   { id: 6, pid: 0, title: "操作记录", component: "OrderInfoRecord" },
   { id: 7, pid: 0, title: "财务情况" },
   { id: 8, pid: 0, title: "客户资料", component: "OrderInfoCustomerList" },

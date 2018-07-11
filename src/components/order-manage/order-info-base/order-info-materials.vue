@@ -38,7 +38,7 @@ export default class OrderInfoMaterials extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => this.$common.downloadFile(row.fileUrl.row.fileName)
+                  click: () => this.$common.downloadFile(row.fileUrl)
                 }
               },
               "下载")
