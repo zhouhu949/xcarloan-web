@@ -39,7 +39,7 @@ const CustomerOrderModule = namespace("customerOrderSpace")
 @Component({
   components: {}
 })
-export default class EarlySttlement extends Page {
+export default class EarlySettlement extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
   @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
@@ -125,9 +125,8 @@ export default class EarlySttlement extends Page {
       }
     ]
   }
-
-  activated() {
-    this.refreshData()
+  activated () {
+    this.refreshData();
   }
 
   mounted() {

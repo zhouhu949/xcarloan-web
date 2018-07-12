@@ -1,4 +1,4 @@
-<!--提前结清-->
+<!--提前结清/收回-->
 <template>
   <section class="component early-settlement-detail">
     <data-box :columns="columns" :data="dataSet"></data-box>

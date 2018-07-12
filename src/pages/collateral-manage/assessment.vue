@@ -1,5 +1,7 @@
+<!-- 押品评估-->
 <template>
   <section class="page assessment">
+    <page-header title="押品评估" hidden-print hidden-export></page-header>
     <data-form hidden-date-search :model="queryParamsModel" @on-search="refreshCustomerAssessmentCar">
       <template slot="input">
         <i-form-item prop="carNo" label="车牌号：">

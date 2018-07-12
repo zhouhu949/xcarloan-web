@@ -44,7 +44,7 @@ const CustomerOrderModule = namespace("customerOrderSpace")
   components: {
   }
 })
-export default class ProceedsForCustomer extends Page {
+export default class CustomerRepayment extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(FinancialQueryService) private financialQueryService: FinancialQueryService;
   @Dependencies(FinancialManagementService) private financialManagementService: FinancialManagementService;
