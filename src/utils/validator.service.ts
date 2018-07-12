@@ -42,7 +42,9 @@ export class ValidatorService {
     // 常规的字符串组合
     nomarlStr: /^[A-Za-z0-9\u4e00-\u9fa5]+$/,
     // 中文姓名
-    chineseName: /^[\u4e00-\u9fa5]{2,5}$/
+    chineseName: /^[\u4e00-\u9fa5]{2,5}$/,
+    // 车架号
+    carVIN: /^[A-HJ-NPR-Z0-9]{17}$/
   }
 
   /**
@@ -137,6 +139,16 @@ export class ValidatorService {
       callback();
     } else {
       callback(new Error("请输入2-5位长度汉字"));
+    }
+  }
+  /**
+   * 车架号
+   */
+  static carVIN(rule, value, callback) {
+    if (ValidatorService.regex.carVIN.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入17位正确的车架号"));
     }
   }
 
