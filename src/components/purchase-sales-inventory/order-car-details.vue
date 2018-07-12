@@ -9,7 +9,7 @@
       <data-grid-item label="发动机号" :span="6">{{model.stockEngineNo }}</data-grid-item>
       <data-grid-item label="车辆颜色" :span="6">{{model.modelColors}}</data-grid-item>
       <data-grid-item label="采购价格" :span="6">{{model.stockPrice | toThousands}}</data-grid-item>
-      <data-grid-item label="车型描述" :span="12">{{model.orderCarDesc}}</data-grid-item>
+      <data-grid-item label="车型描述" :span="6">{{model.orderCarDesc}}</data-grid-item>
     </data-grid>
   </section>
 </template>
