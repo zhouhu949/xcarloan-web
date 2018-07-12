@@ -1,4 +1,3 @@
-<!-- 客户银行卡列表 -->
 <template>
   <section class="component assessment-report-list">
     <data-box :height="300" :columns="columns" :data="assessmentReportDataSet" :page="pageService" ref="databox"></data-box>

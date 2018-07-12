@@ -1,7 +1,10 @@
 <!--订单操作记录-->
 <template>
   <section class="component order-info-record">
-    <data-box :columns="columns" :data="dataSet" :height="440" :page="pageService" ref="databox"></data-box>
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-box v-else :columns="columns" :data="dataSet" :height="440" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -16,7 +19,7 @@ import { PageService } from "~/utils/page.service";
 @Component({})
 export default class OrderInfoRecord extends Vue {
   @Dependencies(BasicCustomerOrderService) private basicCustomerOrderService: BasicCustomerOrderService;
-  @Dependencies(PageService) private pageService:PageService;
+  @Dependencies(PageService) private pageService: PageService;
 
   @Prop() id: Number
   private dataSet: Array<any> = [];
@@ -56,7 +59,7 @@ export default class OrderInfoRecord extends Vue {
   }
 
   mounted() {
-    this.basicCustomerOrderService.findCustomerOrderRecord(this.id,this.pageService).subscribe(
+    this.basicCustomerOrderService.findCustomerOrderRecord(this.id, this.pageService).subscribe(
       data => this.dataSet = data,
       err => this.$Message.error(err.msg)
     )
