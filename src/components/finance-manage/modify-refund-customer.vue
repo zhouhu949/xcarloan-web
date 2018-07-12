@@ -50,7 +50,7 @@ export default class ModifyRefundCustomer extends Vue {
   private getFinancialRefund() {
     if (this.orderId) {
       this.financialQueryService
-        .queryFinancialRefund(this.orderId)
+        .queryFinancialRefunds(this.orderId)
         .subscribe(
           data => (this.dataSet = data),
           err => this.$Message.error(err)

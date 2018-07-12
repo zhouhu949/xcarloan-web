@@ -123,9 +123,9 @@ export class FinancialQueryService {
    * 查询退款详情
    * @param orderId 订单id
    */
-  queryFinancialRefund(orderId: number): any {
+  queryFinancialRefunds(orderId: Number): any {
     return this.netService.send({
-      server: manageService.financialQueryController.queryFinancialRefund,
+      server: manageService.financialQueryController.queryFinancialRefunds,
       append: orderId
     })
   }

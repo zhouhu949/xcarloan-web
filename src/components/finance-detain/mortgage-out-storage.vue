@@ -31,7 +31,8 @@ export default class MortgageOutStorage extends Vue {
 
   private model: any = {
     id: 0,
-    stockOutDate: ""
+    stockOutDate: "",
+    orderId: ''
   };
 
   private rules = {
@@ -50,6 +51,7 @@ export default class MortgageOutStorage extends Vue {
     // 初始化数据
     if (this.outStorageData) {
       this.model.id = this.outStorageData.id;
+      this.model.orderId = this.outStorageData.orderId;
     }
   }
 
@@ -61,10 +63,18 @@ export default class MortgageOutStorage extends Vue {
     return new Promise((resolve, reject) => {
       form.validate(v => {
         if (!v) return resolve(false);
-
         this.financeDetainService
           .financeMortgageOutStorage(this.model)
-          .subscribe(data => resolve(true), err => reject(err));
+          .subscribe(
+            data => {
+              this.$Message.success('出库成功')
+              resolve(true)
+            }, 
+            err => {
+              this.$Message.error(err.msg)
+              resolve(false)
+            }
+          );
       });
     });
   }

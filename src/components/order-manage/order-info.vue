@@ -33,8 +33,9 @@ const ORDER_BASE_COMPONENT = [
   // 二级目录
   { id: 1071, pid: 7, title: "收款记录", component: "OrderInfoBaseFinanceReceipt" },
   { id: 1072, pid: 7, title: "放款记录", component: "OrderInfoBaseFinanceLoan" },
-  { id: 1073, pid: 7, title: "提前收回记录", component: "OrderInfoBaseFinanceEarlyRecoveryCost" },
-  { id: 1074, pid: 7, title: "提前结清记录", component: "OrderInfoBaseFinanceEarlySettlement" },
+  { id: 1073, pid: 7, title: "退款记录", component: "OrderInfoBaseFinanceRefund" },
+  { id: 1074, pid: 7, title: "提前收回记录", component: "OrderInfoBaseFinanceEarlyRecoveryCost" },
+  { id: 1075, pid: 7, title: "提前结清记录", component: "OrderInfoBaseFinanceEarlySettlement" },
 ]
 
 

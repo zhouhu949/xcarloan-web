@@ -33,12 +33,6 @@
       </i-card>
     </i-form>
     <i-card title="还款详情" v-show="!!basicModel.schemeId">
-      <div slot="extra">
-        <a @click="onCalcClick">
-          <i-icon type="ios-calculator"></i-icon>
-          计算详情
-        </a>
-      </div>
       <product-scheme-detail :queryParams="queryDetailModel" :productType="schemeType"></product-scheme-detail>
     </i-card>
 
