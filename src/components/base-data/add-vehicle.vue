@@ -65,11 +65,6 @@
           </i-form-item>
         </i-col>
         <i-col :span="24">
-          <i-form-item label="备注" prop="remark">
-            <i-input v-model="model.remark" class="item-full"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="24">
           <b class="item-span">**车身、内饰颜色参数中存在多个值,则需使用英文状态分号";"隔开。** 例如:</b> 红色;黑色
         </i-col>
       </i-row>

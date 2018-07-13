@@ -43,7 +43,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="是否启用" prop="state">
-            <i-select v-model="model.state" clearable>
+            <i-select v-model="model.state" >
               <i-option v-for="{value,label} in $dict.getDictData(10007)" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>

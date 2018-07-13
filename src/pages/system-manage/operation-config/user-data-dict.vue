@@ -202,7 +202,7 @@ export default class SysDict extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        width: this.$common.getOperateWidth(2),
         render: (h, { row, column, index }) => {
           return h('div', [
             h(

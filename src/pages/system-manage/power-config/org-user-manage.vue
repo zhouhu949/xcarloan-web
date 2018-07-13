@@ -133,7 +133,7 @@ export default class OrgUserManage extends Page {
       },
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(10),
+        width: this.$common.getOperateWidth(4),
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) =>

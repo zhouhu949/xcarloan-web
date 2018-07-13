@@ -68,7 +68,7 @@ export default class EarlySettlement extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getOperateWidth(2),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>提前结清</i-button>)
       },
       {

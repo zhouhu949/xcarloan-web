@@ -66,7 +66,7 @@ export default class OrderReview extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row, column, index }) => {
           if (this.CLOSE_STATUS.includes(row.orderStatus)) {
             return (<i-button type="text" class="row-command-button" onClick={() => this.onCloseClick(row)}>结案</i-button>)

@@ -59,7 +59,7 @@ export default class CustomerLoan extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row }) => (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>放款</i-button>)
       },
       {

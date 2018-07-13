@@ -62,7 +62,7 @@ export default class FinishOrderQuery extends Page {
         editable: true,
         title: "订单号",
         key: "orderNo",
-        minWidth: this.$common.getColumnWidth(4),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",
