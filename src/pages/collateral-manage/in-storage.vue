@@ -375,7 +375,7 @@ export default class InStorage extends Page {
    */
   onDetainMortDetails(id: number) {
     this.$dialog.show({
-      title: "低押详情",
+      title: "抵押详情",
       isView: true,
       footer: true,
       render: h =>
