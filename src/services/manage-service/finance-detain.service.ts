@@ -61,7 +61,8 @@ export class FinanceDetainService {
       server: manageService.financeDetainController.financeMortgageOutStorage,
       data: {
         id: data.id,
-        stockOutDate: FilterService.dateFormat(model.stockOutDate)
+        stockOutDate: FilterService.dateFormat(model.stockOutDate),
+        orderId: data.orderId
       },
       loading: true
     })
@@ -101,7 +102,8 @@ export class FinanceDetainService {
       server: manageService.financeDetainController.financePledgeOutStorage,
       data: {
         id: model.id,
-        stockOutDate: FilterService.dateFormat(model.stockOutDate)
+        stockOutDate: FilterService.dateFormat(model.stockOutDate),
+        orderId: data.orderId
       },
       loading: true
     })

@@ -44,11 +44,9 @@ const CustomerOrderModule = namespace("customerOrderSpace");
 })
 export default class PurchaseManage extends Page {
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(BasicEnterShellSaveService)
-  private basicEnterShellSaveService: BasicEnterShellSaveService;
-  @Dependencies(BasicStockCarService)
+  @Dependencies(BasicEnterShellSaveService) private basicEnterShellSaveService: BasicEnterShellSaveService;
+  @Dependencies(BasicStockCarService) private basicStockCarService: BasicStockCarService;
   @CustomerOrderModule.Action showOrderInfo;
-  private basicStockCarService: BasicStockCarService;
 
   private enterShellSaveColumns: any = [];
   private enterShellSaveDataSet: Array<any> = [];
@@ -66,98 +64,15 @@ export default class PurchaseManage extends Page {
         width: this.$common.getOperateWidth(2),
         align: "center",
         render: (h, { row, column, index }) => {
-          // 根据状态执行不同的操作 10123 : 待采购 10046 : 整备中 10047 : 整备完成 10048 : 已提车
-          switch (row.stockStatus) {
-            // 待采购
-            case 10123:
-              return h("div", [
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.onStockCarOperate(row.modelId, row);
-                      }
-                    }
-                  },
-                  "采购"
-                )
-              ]);
-            // 整备中
-            case 10046:
-              return h("div", [
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.onGetVehicleInfo(row);
-                      }
-                    }
-                  },
-                  "详情"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.$Modal.confirm({
-                          title: "提示",
-                          content: "确定执行车辆整备操作吗？",
-                          transfer: false,
-                          onOk: () => {
-                            this.onChangeCsrStockStatus(row);
-                          }
-                        });
-                      }
-                    }
-                  },
-                  "车辆整备"
-                )
-              ]);
-            default:
-              return h("div", [
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.onGetVehicleInfo(row);
-                      }
-                    }
-                  },
-                  "详情"
-                )
-              ]);
+          let buttons = [(<i-button type="text" class="row-command-button" onClick={() => this.onGetVehicleInfo(row)}>详情</i-button>)]
+          if (row.stockStatus === 10123) {
+            buttons.push(<i-button type="text" class="row-command-button" onClick={() => this.onStockCarOperate(row.modelId, row)}>采购</i-button>)
+          } else if (row.stockStatus === 10046) {
+            buttons.push(<i-button type="text" class="row-command-button" onClick={() => this.onChangeCsrStockStatus(row)}>车辆整备</i-button>)
           }
+          return h('div', {}, buttons)
         }
       },
-
       {
         align: "center",
         editable: true,
@@ -180,25 +95,7 @@ export default class PurchaseManage extends Page {
         title: "车型名称",
         key: "modelName",
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row, column, index }) => {
-          return h(
-            "i-button",
-            {
-              props: {
-                type: "text"
-              },
-              style: {
-                color: "#265EA2"
-              },
-              on: {
-                click: () => {
-                  this.onGetCarParams(row.modelId);
-                }
-              }
-            },
-            row.modelName
-          );
-        }
+        render: (h, { row, column, index }) => (<i-button type="text" class="row-command-button" onClick={() => this.onGetCarParams(row.modelId)}>{row.modelName}</i-button>)
       },
       {
         align: "center",
@@ -255,14 +152,19 @@ export default class PurchaseManage extends Page {
    * 修改库存状态
    * @param data
    */
-  onChangeCsrStockStatus(data) {
-    this.basicStockCarService.updateCarStockStatus(data).subscribe(
-      data => {
-        this.$Message.success("操作成功！");
-        this.refreshEnterShellSave();
-      },
-      err => this.$Message.error(err.msg)
-    );
+  onChangeCsrStockStatus(row) {
+    this.$Modal.confirm({
+      content: "确定执行车辆整备操作吗？",
+      onOk: () => {
+        this.basicStockCarService.updateCarStockStatus(row).subscribe(
+          data => {
+            this.$Message.success("操作成功！");
+            this.refreshEnterShellSave();
+          },
+          err => this.$Message.error(err.msg)
+        );
+      }
+    });
   }
 
   /**

@@ -138,5 +138,14 @@ export default {
     controller: CONTROLLER,
     action: 'findRepayOrderList',
     type: requestType.Get
+  },
+  /**
+   * 财务退款记录查询
+   */
+  queryFinancialRefunds: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryFinancialRefunds',
+    type: requestType.Get
   }
 }

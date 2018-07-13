@@ -61,7 +61,7 @@ export default class UpdateOrderData extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        width: this.$common.getOperateWidth(1),
         render: (h, { row, column, index }) => {
           if (row.orderType === this.OperateType) {
             return (

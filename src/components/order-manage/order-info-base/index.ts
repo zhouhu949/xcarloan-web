@@ -9,6 +9,7 @@ import OrderInfoCustomerList from "./order-info-customer-list.tsx.vue";
 import OrderInfoBaseFinanceEarlyRecoveryCost from "./order-info-base-finance-early-recovery-cost.vue";
 import OrderInfoBaseFinanceEarlySettlement from "./order-info-base-finance-early-settlement.vue";
 import OrderInfoBaseFinanceLoan from "./order-info-base-finance-loan.vue";
+import OrderInfoBaseFinanceRefund from "./order-info-base-finance-refund.vue";
 import OrderInfoBaseFinanceReceipt from "./order-info-base-finance-receipt.vue";
 
 /**
@@ -24,6 +25,7 @@ export default {
   OrderInfoBaseFinanceEarlyRecoveryCost,
   OrderInfoBaseFinanceEarlySettlement,
   OrderInfoBaseFinanceLoan,
+  OrderInfoBaseFinanceRefund,
   OrderInfoBaseFinanceReceipt,
   OrderInfoCustomerList
 }

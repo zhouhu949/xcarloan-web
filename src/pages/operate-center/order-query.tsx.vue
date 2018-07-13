@@ -59,7 +59,7 @@ export default class OrderQuery extends Page {
         title: '操作',
         fixed: 'left',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        width: this.$common.getOperateWidth(2),
         render: (h, { row, column, index }) => {
           if (row.orderStatus === 10107) {
             return (<i-button type="text" class="row-command-button" onClick={() => this.onSubmitClick(row.orderId)}>提交审核</i-button>)

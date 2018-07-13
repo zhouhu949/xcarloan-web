@@ -168,7 +168,7 @@ export default class ModuleFunction extends Page {
       {
         align: 'center',
         title: '操作',
-        minWidth: 260,
+        width: this.$common.getOperateWidth(3),
         fixed: 'left',
         render: (h, { row, columns, index }) => {
           return [

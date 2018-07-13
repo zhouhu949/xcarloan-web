@@ -82,7 +82,7 @@ export default class RoleMaintenance extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(12),
+        width: this.$common.getOperateWidth(5),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {

@@ -1,7 +1,10 @@
 <!--附件资料-->
 <template>
   <section class="component order-info-materials">
-    <data-box :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
+    <div v-if="dataSet.length === 0" class="no-data-notice">
+      暂无数据
+    </div>
+    <data-box v-else :columns="columns" :data="dataSet" :height="440" ref="databox"></data-box>
   </section>
 </template>
 

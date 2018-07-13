@@ -76,7 +76,7 @@ export default class OrgPower extends Vue {
     return [
       {
         title: '操作',
-        width: 90,
+        width: this.$common.getOperateWidth(1),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => h('div', [
