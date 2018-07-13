@@ -88,10 +88,10 @@ export default {
   /**
    * 查询退款详情
    */
-  queryFinancialRefunds: {
+  queryFinancialRefund: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'queryFinancialRefunds',
+    action: 'queryFinancialRefund',
     type: requestType.Get
   },
   /**
@@ -137,6 +137,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'findRepayOrderList',
+    type: requestType.Get
+  },
+  /**
+   * 财务退款记录查询
+   */
+  queryFinancialRefunds: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryFinancialRefunds',
     type: requestType.Get
   }
 }
