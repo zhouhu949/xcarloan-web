@@ -1,6 +1,12 @@
 <!--选择客户抵押车辆-->
 <template>
   <section class="component choose-customer-car">
+    <div class="add-customer-info">
+      <a @click="onAddCarInfo">
+        <svg-icon iconClass="add"></svg-icon>
+        新增车产信息
+      </a>
+    </div>
     <data-box :show-config-column="false" :height="400" :columns="columns" :data="dataSet" ref="databox" @on-selection-change="onSelectionChange"></data-box>
   </section>
 </template>
@@ -13,6 +19,7 @@ import { Dependencies } from "~/core/decorator";
 import { BasicCustomerAssessmentCarService } from "~/services/manage-service/basic-customer-assessment-car.service";
 import { PageService } from "~/utils/page.service";
 import { Button } from "iview";
+import ModifyCustomerInfoCar from "~/components/customer-center/customer-info-base/modify-customer-info-car.vue";
 
 @Component({
   components: {}
@@ -72,14 +79,30 @@ export default class ChooseCustomerCar extends Vue {
         key: 'isSecondHand',
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => (<p>{this.$filter.dictConvert(row.isSecondHand)}</p>)
-      },
-      {
-        align: "center",
-        title: "初次登记时间",
-        key: 'registerTime',
-        render: (h, { row }) => (<p>{this.$filter.dateFormat(row.registerTime)}</p>)
       }
     ]
+  }
+
+  /**
+   * 新增车产信息
+   */
+  private onAddCarInfo() {
+    this.$dialog.show({
+      title: '新增车产信息',
+      footer: true,
+      width: 700,
+      onOk: addCustomerInfoCar => {
+        return addCustomerInfoCar.submit().then(v => {
+          if (v) this.refreshData()
+          return !!v
+        })
+      },
+      render: h => h(ModifyCustomerInfoCar, {
+        props: {
+          customerId: this.customerId
+        }
+      })
+    })
   }
 
   /**

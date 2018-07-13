@@ -1,7 +1,7 @@
 <template>
   <section class="page potential-clients">
     <page-header title="意向客户" hidden-print hidden-export>
-      <command-button label="添加意向客户" @click="onCreatePotentialClick"></command-button>
+      <command-button label="新增意向客户" @click="onCreatePotentialClick"></command-button>
     </page-header>
     <data-form :model="model" @on-search="refreshData" hidden-date-search>
       <template slot="input">

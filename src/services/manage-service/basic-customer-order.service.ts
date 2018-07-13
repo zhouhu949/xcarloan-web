@@ -169,6 +169,7 @@ export class BasicCustomerOrderService {
    * @param schemeId 方案ID
    * @param loanAmt 贷款金额
    */
+  @Debounce()
   createMortgageOrder(customerId: Number, carIds: Array<Number>, schemeId: Number, loanAmt: Number) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.createMortgageOrder,
@@ -187,6 +188,7 @@ export class BasicCustomerOrderService {
    * @param carId 车辆ID
    * @param productId 产品ID
    */
+  @Debounce()
   createFinancingOrder(customerId: Number, carId: Number, productId: Number) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.createFinancingOrder,
@@ -219,6 +221,7 @@ export class BasicCustomerOrderService {
    * @param orderId 订单ID
    * @param orderAmt 订单金额
    */
+  @Debounce()
   updateOrderPrice(orderId: Number, orderAmt: Number) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.updateOrderPrice,
@@ -232,6 +235,7 @@ export class BasicCustomerOrderService {
   /**
    * 订单结案操作
    */
+  @Debounce()
   updateOrderStatus(orderId) {
     return this.netService.send({
       server: manageService.basicCustomerOrderController.updateOrderStatus,

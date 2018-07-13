@@ -107,7 +107,7 @@ export default class CustomerRepaymentCurrentPeriod extends Vue {
         title: '已还金额',
         key: 'isRepayMoney',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.repaisRepayMoneyyStatus)}</div>)
+        render: (h, { row }) => (<div class="col-decimal">{this.$filter.toThousands(row.isRepayMoney)}</div>)
       }
     ]
   }

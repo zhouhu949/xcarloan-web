@@ -149,7 +149,7 @@ export default class ChooseCustomer extends Vue {
   /**
    * 获取正式客户列表
    */
-  private refreshData() {
+  refreshData() {
     this.basicCustomerCenterService.findNotBlackCustomerList(this.model, this.pageService)
       .subscribe(
         data => {

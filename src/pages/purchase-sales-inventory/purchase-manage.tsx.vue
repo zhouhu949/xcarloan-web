@@ -54,7 +54,7 @@ export default class PurchaseManage extends Page {
   private queryParamsModel = {
     orderNo: "",
     customerName: "",
-    stockStatus: 10123
+    stockStatus: ""
   };
 
   created() {

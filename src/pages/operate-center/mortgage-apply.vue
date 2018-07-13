@@ -5,7 +5,11 @@
     <i-form ref="form" class="base-form" inline :label-width="110" :model="basicModel">
       <i-card title="客户基本信息">
         <div slot="extra">
-          <a @click="dialog.selectedCustomer=true">
+          <a @click="onCreatePotentialClick" style="margin-right: 10px;">
+            <i-icon type="plus"></i-icon>
+            新增意向客户
+          </a>
+          <a @click="onSelectCustomer">
             <i-icon type="search"></i-icon>
             选择客户
           </a>
@@ -64,6 +68,7 @@ import ChooseScheme from "~/components/base-data/choose-scheme.vue";
 import ProductSchemeDetail from "~/components/base-data/product-scheme-detail.vue";
 import { ProdSchemeDetailType } from "~/config/enum.config";
 import { BasicCustomerOrderService } from "~/services/manage-service/basic-customer-order.service";
+import ModifyCustomerInfoBasedata from "~/components/customer-center/customer-info-base/modify-customer-info-basedata.vue";
 
 @Layout('workspace')
 @Component({
@@ -158,6 +163,32 @@ export default class MortgageApply extends Page {
   }
 
   /**
+   * 新增意向客户
+   */
+  private onCreatePotentialClick() {
+    this.$dialog.show({
+      title: "新增意向客户",
+      footer: true,
+      width: 1050,
+      onOk: addCustomerInfoBasedata => {
+        return addCustomerInfoBasedata.submit().then(v => {
+          if(v) (this.$refs['chooseCustomer'] as ChooseCustomer).refreshData()
+          return !!v;
+        });
+      },
+      render: h => h(ModifyCustomerInfoBasedata)
+    });
+  }
+
+  /**
+   * 选择客户
+   */
+  onSelectCustomer() {
+    this.dialog.selectedCustomer=true;
+    (this.$refs['chooseCustomer'] as ChooseCustomer).refreshData()
+  }
+
+  /**
    * 车辆选择项改变
    */
   private onCarSelectedClick() {
@@ -171,6 +202,17 @@ export default class MortgageApply extends Page {
    * 联系人选择项改变
    */
   private onCustomerSelectedClick() {
+    this.basicModel = {
+      customerId: null,
+      name: "",
+      phone: "",
+      idCard: "",
+      loanAmt: 0,
+      schemeId: null,
+      schemeName: "",
+      carsName: "",
+      carIds: null
+    }
     let data = (this.$refs.chooseCustomer as ChooseCustomer).selectData
     if (!data) return
     this.basicModel.customerId = data.customerId
